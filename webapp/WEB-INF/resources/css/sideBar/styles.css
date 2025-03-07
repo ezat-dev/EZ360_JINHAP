@@ -78,7 +78,7 @@ a {
     position: fixed;
     top: 0px;
     left: 0;
-    width: 217px;
+    width: 230px;
     height: calc(100vh);
     background-color: var(--bg-color);
     color: var(--white-color);
