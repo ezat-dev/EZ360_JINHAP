@@ -1,9 +1,17 @@
 package com.jinhap.controller;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.jinhap.domain.Users;
 
 @Controller
 public class QualityController {
@@ -15,6 +23,18 @@ public class QualityController {
     public String tusTest(Model model) {
         return "/quality/tusTest.jsp"; // 
     }
+    
+    //온도균일성 테스트 - 조회
+	 @RequestMapping(value = "/quality/tustest/selectList", method = RequestMethod.POST) 
+	 @ResponseBody 
+	 public Map<String, Object> tusTestSelect() {
+		 Map<String, Object> rtnMap = new HashMap<String, Object>();
+		 
+		 rtnMap.put("last_page",1);
+		 rtnMap.put("data","");
+		 
+		 return rtnMap; 
+	 }
 	
 	//내식성 테스트 - SST, CCT, 부착량 시험, 내수 밀착성, 설비별 가열잔분, 탈지액 분석
     @RequestMapping(value= "/quality/resistTest", method = RequestMethod.GET)

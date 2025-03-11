@@ -22,11 +22,17 @@ public class MachineController {
     public String detailMonitoring(Model model) {
         return "/machine/detailMonitoring.jsp"; // 
     }
-	
-	//경보 발생빈도
+    
+    //경보 모니터링
     @RequestMapping(value= "/machine/alarmMonitoring", method = RequestMethod.GET)
     public String alarmMonitoring(Model model) {
-        return "/machine/alarmMonitoring.jsp"; // 
+    	return "/machine/alarmMonitoring.jsp"; // 
+    }
+	
+	//경보 발생빈도
+    @RequestMapping(value= "/machine/alarmList", method = RequestMethod.GET)
+    public String alarmList(Model model) {
+        return "/machine/alarmList.jsp"; // 
     }
 	
 	//설비별 온도경향 모니터링

@@ -251,7 +251,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 291px;
+  top: 262px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -262,7 +262,7 @@
   height: 21px;
   position: absolute;
   left: 258px;
-  top: 291px;
+  top: 262px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -273,18 +273,19 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 314px;
+  top: 285px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
 }
+
 .b-04-text-box {
   background: #dddddd;
   width: 127px;
   height: 21px;
   position: absolute;
   left: 258px;
-  top: 314px;
+  top: 285px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -295,7 +296,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 337px;
+  top: 308px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -309,7 +310,7 @@
   height: 21px;
   position: absolute;
   left: 147px;
-  top: 291px;
+  top: 262px;
 }
 .b-02 {
   background: #ffffff;
@@ -320,7 +321,7 @@
   height: 21px;
   position: absolute;
   left: 387px;
-  top: 291px;
+  top: 262px;
 }
 .b-03 {
   background: #ffffff;
@@ -331,7 +332,7 @@
   height: 21px;
   position: absolute;
   left: 147px;
-  top: 314px;
+  top: 285px;
 }
 .b-04 {
   background: #ffffff;
@@ -342,7 +343,7 @@
   height: 21px;
   position: absolute;
   left: 387px;
-  top: 314px;
+  top: 285px;
 }
 .b-05 {
   background: #ffffff;
@@ -353,7 +354,7 @@
   height: 21px;
   position: absolute;
   left: 147px;
-  top: 337px;
+  top: 308px;
 }
 .c-01-text-box {
   background: #dddddd;
@@ -361,7 +362,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 408px;
+  top: 398px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -372,7 +373,7 @@
   height: 21px;
   position: absolute;
   left: 273px;
-  top: 408px;
+  top: 398px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -383,7 +384,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 431px;
+  top: 421px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -394,7 +395,7 @@
   height: 21px;
   position: absolute;
   left: 273px;
-  top: 431px;
+  top: 421px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -405,7 +406,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 454px;
+  top: 444px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -416,7 +417,7 @@
   height: 21px;
   position: absolute;
   left: 273px;
-  top: 454px;
+  top: 444px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -427,7 +428,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 477px;
+  top: 467px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -438,7 +439,7 @@
   height: 21px;
   position: absolute;
   left: 273px;
-  top: 477px;
+  top: 467px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -449,7 +450,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 500px;
+  top: 490px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -460,7 +461,7 @@
   height: 21px;
   position: absolute;
   left: 273px;
-  top: 500px;
+  top: 540px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -471,7 +472,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 523px;
+  top: 563px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -482,7 +483,7 @@
   height: 21px;
   position: absolute;
   left: 273px;
-  top: 523px;
+  top: 563px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -496,7 +497,7 @@
   height: 21px;
   position: absolute;
   left: 178px;
-  top: 408px;
+  top: 398px;
 }
 .c-02 {
   background: #ffffff;
@@ -507,7 +508,7 @@
   height: 21px;
   position: absolute;
   left: 403px;
-  top: 408px;
+  top: 398px;
 }
 .c-03 {
   background: #ffffff;
@@ -518,7 +519,7 @@
   height: 21px;
   position: absolute;
   left: 178px;
-  top: 431px;
+  top: 421px;
 }
 .c-04 {
   background: #ffffff;
@@ -529,7 +530,7 @@
   height: 21px;
   position: absolute;
   left: 403px;
-  top: 431px;
+  top: 421px;
 }
 .c-05 {
   background: #ffffff;
@@ -540,7 +541,7 @@
   height: 21px;
   position: absolute;
   left: 178px;
-  top: 454px;
+  top: 444px;
 }
 .c-06 {
   background: #ffffff;
@@ -551,7 +552,7 @@
   height: 21px;
   position: absolute;
   left: 403px;
-  top: 454px;
+  top: 494px;
 }
 .c-07 {
   background: #ffffff;
@@ -562,7 +563,7 @@
   height: 21px;
   position: absolute;
   left: 178px;
-  top: 477px;
+  top: 517px;
 }
 .c-08 {
   background: #ffffff;
@@ -573,7 +574,7 @@
   height: 21px;
   position: absolute;
   left: 403px;
-  top: 477px;
+  top: 517px;
 }
 .c-09 {
   background: #ffffff;
@@ -584,7 +585,7 @@
   height: 21px;
   position: absolute;
   left: 178px;
-  top: 500px;
+  top: 540px;
 }
 .c-10 {
   background: #ffffff;
@@ -595,7 +596,7 @@
   height: 21px;
   position: absolute;
   left: 403px;
-  top: 500px;
+  top: 540px;
 }
 .c-11 {
   background: #ffffff;
@@ -606,7 +607,7 @@
   height: 21px;
   position: absolute;
   left: 178px;
-  top: 523px;
+  top: 563px;
 }
 .c-12 {
   background: #ffffff;
@@ -617,7 +618,7 @@
   height: 21px;
   position: absolute;
   left: 403px;
-  top: 523px;
+  top: 563px;
 }
 .d-01-text-box {
   background: #dddddd;
@@ -625,7 +626,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 594px;
+  top: 537px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -636,7 +637,7 @@
   height: 21px;
   position: absolute;
   left: 258px;
-  top: 594px;
+  top: 537px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -647,7 +648,7 @@
   height: 21px;
   position: absolute;
   left: 17px;
-  top: 617px;
+  top: 560px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -658,66 +659,12 @@
   height: 21px;
   position: absolute;
   left: 258px;
-  top: 617px;
+  top: 560px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
 }
-.d-05-text-box {
-  background: #dddddd;
-  width: 156px;
-  height: 21px;
-  position: absolute;
-  left: 17px;
-  top: 640px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.d-06-text-box {
-  background: #dddddd;
-  width: 156px;
-  height: 21px;
-  position: absolute;
-  left: 258px;
-  top: 640px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.d-07-text-box {
-  background: #dddddd;
-  width: 156px;
-  height: 21px;
-  position: absolute;
-  left: 17px;
-  top: 663px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.d-08-text-box {
-  background: #dddddd;
-  width: 156px;
-  height: 21px;
-  position: absolute;
-  left: 258px;
-  top: 663px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.d-09-text-box {
-  background: #dddddd;
-  width: 156px;
-  height: 21px;
-  position: absolute;
-  left: 17px;
-  top: 686px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
+
 .d-01 {
   background: #ffffff;
   border-style: solid;
@@ -727,7 +674,7 @@
   height: 21px;
   position: absolute;
   left: 175px;
-  top: 594px;
+  top: 537px;
 }
 .d-02 {
   background: #ffffff;
@@ -738,7 +685,7 @@
   height: 21px;
   position: absolute;
   left: 416px;
-  top: 594px;
+  top: 537px;
 }
 .d-03 {
   background: #ffffff;
@@ -749,7 +696,7 @@
   height: 21px;
   position: absolute;
   left: 175px;
-  top: 617px;
+  top: 560px;
 }
 .d-04 {
   background: #ffffff;
@@ -760,63 +707,10 @@
   height: 21px;
   position: absolute;
   left: 416px;
-  top: 617px;
+  top: 560px;
 }
-.d-05 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 73px;
-  height: 21px;
-  position: absolute;
-  left: 175px;
-  top: 640px;
-}
-.d-06 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 73px;
-  height: 21px;
-  position: absolute;
-  left: 416px;
-  top: 640px;
-}
-.d-07 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 73px;
-  height: 21px;
-  position: absolute;
-  left: 175px;
-  top: 663px;
-}
-.d-08 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 73px;
-  height: 21px;
-  position: absolute;
-  left: 416px;
-  top: 663px;
-}
-.d-09 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 73px;
-  height: 21px;
-  position: absolute;
-  left: 175px;
-  top: 686px;
-}
+
+
 .e-01-text-box {
   background: #dddddd;
   width: 138px;
@@ -883,24 +777,24 @@
   left: 649px;
   top: 145px;
 }
-.f-01-text-box {
+.e-05-text-box {
   background: #dddddd;
-  width: 134px;
+  width: 138px;
   height: 21px;
   position: absolute;
   left: 509px;
-  top: 216px;
+  top: 168px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
 }
-.f-02-text-box {
+.e-04-text-box {
   background: #dddddd;
-  width: 135px;
+  width: 151px;
   height: 21px;
   position: absolute;
-  left: 745px;
-  top: 216px;
+  left: 739px;
+  top: 145px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -916,18 +810,18 @@
   line-height: 21px; 
   font-size: 13px;
 }
-.f-04-text-box {
+.e-06-text-box {
   background: #dddddd;
-  width: 135px;
+  width: 151px;
   height: 21px;
   position: absolute;
-  left: 745px;
-  top: 239px;
+  left: 739px;
+  top: 168px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
 }
-.f-05-text-box {
+.f-01-text-box {
   background: #dddddd;
   width: 134px;
   height: 21px;
@@ -938,7 +832,7 @@
   line-height: 21px; 
   font-size: 13px;
 }
-.f-06-text-box {
+.f-02-text-box {
   background: #dddddd;
   width: 135px;
   height: 21px;
@@ -982,27 +876,28 @@
   line-height: 21px; 
   font-size: 13px;
 }
-.f-01 {
+.e-05 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  width: 90px;
+  width: 80px;
   height: 21px;
   position: absolute;
-  left: 645px;
-  top: 216px;
+  left: 649px;
+  top: 168px;
 }
-.f-02 {
+
+.e-04 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  width: 90px;
+  width: 80px;
   height: 21px;
   position: absolute;
-  left: 882px;
-  top: 216px;
+  left: 892px;
+  top: 145px;
 }
 .f-03 {
   background: #ffffff;
@@ -1015,18 +910,18 @@
   left: 645px;
   top: 239px;
 }
-.f-04 {
+.e-06 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
   border-width: 1px;
-  width: 90px;
+  width: 80px;
   height: 21px;
   position: absolute;
-  left: 882px;
-  top: 239px;
+  left: 892px;
+  top: 168px;
 }
-.f-05 {
+.f-01 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1037,7 +932,7 @@
   left: 645px;
   top: 262px;
 }
-.f-06 {
+.f-02 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1087,7 +982,7 @@
   height: 21px;
   position: absolute;
   left: 509px;
-  top: 379px;
+  top: 352px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -1098,7 +993,7 @@
   height: 21px;
   position: absolute;
   left: 748px;
-  top: 379px;
+  top: 352px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
@@ -1147,7 +1042,7 @@
   line-height: 21px; 
   font-size: 13px;
 }
-.g-07-text-box {
+.h-01-text-box {
   background: #dddddd;
   width: 158px;
   height: 21px;
@@ -1158,7 +1053,7 @@
   line-height: 21px; 
   font-size: 13px;
 }
-.g-08-text-box {
+.h-02-text-box {
   background: #dddddd;
   width: 153px;
   height: 21px;
@@ -1169,7 +1064,7 @@
   line-height: 21px; 
   font-size: 13px;
 }
-.g-09-text-box {
+.h-03-text-box {
   background: #dddddd;
   width: 158px;
   height: 21px;
@@ -1213,72 +1108,41 @@
   line-height: 21px; 
   font-size: 13px;
 }
-.g-13-text-box {
+.i-01-text-box {
   background: #dddddd;
   width: 158px;
   height: 21px;
   position: absolute;
   left: 509px;
-  top: 517px;
+  top: 537px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
 }
-.g-14-text-box {
+.i-02-text-box {
   background: #dddddd;
   width: 153px;
   height: 21px;
   position: absolute;
   left: 748px;
-  top: 517px;
+  top: 537px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
 }
-.g-15-text-box {
+.i-03-text-box {
   background: #dddddd;
   width: 158px;
   height: 21px;
   position: absolute;
   left: 509px;
-  top: 540px;
+  top: 560px;
   text-align: center; 
   line-height: 21px; 
   font-size: 13px;
 }
-.g-16-text-box {
-  background: #dddddd;
-  width: 153px;
-  height: 21px;
-  position: absolute;
-  left: 748px;
-  top: 540px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.g-17-text-box {
-  background: #dddddd;
-  width: 158px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 563px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.g-18-text-box {
-  background: #dddddd;
-  width: 153px;
-  height: 21px;
-  position: absolute;
-  left: 748px;
-  top: 563px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
+
+
 .g-01 {
   background: #ffffff;
   border-style: solid;
@@ -1288,7 +1152,7 @@
   height: 21px;
   position: absolute;
   left: 669px;
-  top: 379px;
+  top: 352px;
 }
 .g-02 {
   background: #ffffff;
@@ -1299,7 +1163,7 @@
   height: 21px;
   position: absolute;
   left: 903px;
-  top: 379px;
+  top: 352px;
 }
 .g-03 {
   background: #ffffff;
@@ -1345,7 +1209,7 @@
   left: 903px;
   top: 425px;
 }
-.g-07 {
+.h-01 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1356,7 +1220,7 @@
   left: 669px;
   top: 448px;
 }
-.g-08 {
+.h-02 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1367,7 +1231,7 @@
   left: 903px;
   top: 448px;
 }
-.g-09 {
+.h-03 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1411,7 +1275,7 @@
   left: 903px;
   top: 494px;
 }
-.g-13 {
+.i-01 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1420,9 +1284,9 @@
   height: 21px;
   position: absolute;
   left: 669px;
-  top: 517px;
+  top: 537px;
 }
-.g-14 {
+.i-02 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1431,9 +1295,9 @@
   height: 21px;
   position: absolute;
   left: 903px;
-  top: 517px;
+  top: 537px;
 }
-.g-15 {
+.i-03 {
   background: #ffffff;
   border-style: solid;
   border-color: #000000;
@@ -1442,7 +1306,7 @@
   height: 21px;
   position: absolute;
   left: 669px;
-  top: 540px;
+  top: 560px;
 }
 .g-16 {
   background: #ffffff;
@@ -1453,316 +1317,9 @@
   height: 21px;
   position: absolute;
   left: 903px;
-  top: 540px;
+  top: 560px;
 }
-.g-17 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 69px;
-  height: 21px;
-  position: absolute;
-  left: 669px;
-  top: 563px;
-}
-.g-18 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 69px;
-  height: 21px;
-  position: absolute;
-  left: 903px;
-  top: 563px;
-}
-.h-01-text-box {
-  background: #dddddd;
-  width: 148px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 634px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-02-text-box {
-  background: #dddddd;
-  width: 148px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 657px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-03-text-box {
-  background: #dddddd;
-  width: 149px;
-  height: 21px;
-  position: absolute;
-  left: 745px;
-  top: 657px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-04-text-box {
-  background: #dddddd;
-  width: 148px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 680px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-05-text-box {
-  background: #dddddd;
-  width: 149px;
-  height: 21px;
-  position: absolute;
-  left: 745px;
-  top: 680px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-06-text-box {
-  background: #dddddd;
-  width: 148px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 703px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-07-text-box {
-  background: #dddddd;
-  width: 149px;
-  height: 21px;
-  position: absolute;
-  left: 745px;
-  top: 703px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-08-text-box {
-  background: #dddddd;
-  width: 148px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 726px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-09-text-box {
-  background: #dddddd;
-  width: 149px;
-  height: 21px;
-  position: absolute;
-  left: 745px;
-  top: 726px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-10-text-box {
-  background: #dddddd;
-  width: 148px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 749px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-11-text-box {
-  background: #dddddd;
-  width: 149px;
-  height: 21px;
-  position: absolute;
-  left: 745px;
-  top: 749px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-12-text-box {
-  background: #dddddd;
-  width: 148px;
-  height: 21px;
-  position: absolute;
-  left: 509px;
-  top: 772px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-13-text-box {
-  background: #dddddd;
-  width: 149px;
-  height: 21px;
-  position: absolute;
-  left: 745px;
-  top: 772px;
-  text-align: center; 
-  line-height: 21px; 
-  font-size: 13px;
-}
-.h-01 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 659px;
-  top: 634px;
-}
-.h-02 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 659px;
-  top: 657px;
-}
-.h-03 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 896px;
-  top: 657px;
-}
-.h-04 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 659px;
-  top: 680px;
-}
-.h-05 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 896px;
-  top: 680px;
-}
-.h-06 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 659px;
-  top: 703px;
-}
-.h-07 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 896px;
-  top: 703px;
-}
-.h-08 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 659px;
-  top: 726px;
-}
-.h-09 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 896px;
-  top: 726px;
-}
-.h-10 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 659px;
-  top: 749px;
-}
-.h-11 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 896px;
-  top: 749px;
-}
-.h-12 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 659px;
-  top: 772px;
-}
-.h-13 {
-  background: #ffffff;
-  border-style: solid;
-  border-color: #000000;
-  border-width: 1px;
-  width: 76px;
-  height: 21px;
-  position: absolute;
-  left: 896px;
-  top: 772px;
-}
+
 .user-text-box {
   background: #dddddd;
   width: 76px;
@@ -1826,7 +1383,7 @@
   font-weight: 400;
   position: absolute;
   left: 35px;
-  top: 259px;
+  top: 234px;
 }
 .cc-text {
   color: #000000;
@@ -1836,7 +1393,7 @@
   font-weight: 400;
   position: absolute;
   left: 35px;
-  top: 376px;
+  top: 366px;
 }
 .dd-text {
   color: #000000;
@@ -1846,7 +1403,7 @@
   font-weight: 400;
   position: absolute;
   left: 35px;
-  top: 562px;
+  top: 512px;
 }
 .ee-text {
   color: #000000;
@@ -1866,7 +1423,7 @@
   font-weight: 400;
   position: absolute;
   left: 529px;
-  top: 184px;
+  top: 234px;
 }
 .gg-text {
   color: #000000;
@@ -1876,7 +1433,7 @@
   font-weight: 400;
   position: absolute;
   left: 529px;
-  top: 347px;
+  top: 327px;
 }
 .hh-text {
   color: #000000;
@@ -1886,7 +1443,17 @@
   font-weight: 400;
   position: absolute;
   left: 529px;
-  top: 602px;
+  top: 422px;
+}
+.ii-text {
+  color: #000000;
+  text-align: left;
+  font-family: "Inter-Regular", sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  position: absolute;
+  left: 529px;
+  top: 512px;
 }
 .useruser-text {
   color: #000000;
@@ -1911,15 +1478,16 @@
   height: 16px;
   position: absolute;
   left: 17px;
-  top: 258px;
+  top: 233px;
   object-fit: cover;
 }
+
 .sub-title-01-3 {
   width: 16px;
   height: 16px;
   position: absolute;
   left: 17px;
-  top: 375px;
+  top: 365px;
   object-fit: cover;
 }
 .sub-title-01-4 {
@@ -1927,7 +1495,7 @@
   height: 16px;
   position: absolute;
   left: 17px;
-  top: 561px;
+  top: 511px;
   object-fit: cover;
 }
 .sub-title-01-5 {
@@ -1943,7 +1511,7 @@
   height: 16px;
   position: absolute;
   left: 510px;
-  top: 183px;
+  top: 233px;
   object-fit: cover;
 }
 .sub-title-01-7 {
@@ -1951,7 +1519,7 @@
   height: 16px;
   position: absolute;
   left: 509px;
-  top: 346px;
+  top: 326px;
   object-fit: cover;
 }
 .sub-title-01-8 {
@@ -1959,7 +1527,7 @@
   height: 16px;
   position: absolute;
   left: 509px;
-  top: 601px;
+  top: 421px;
   object-fit: cover;
 }
 .sub-title-01-9 {
@@ -1968,6 +1536,14 @@
   position: absolute;
   left: 1040px;
   top: 95px;
+  object-fit: cover;
+}
+.sub-title-01-10 {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 509px;
+  top: 511px;
   object-fit: cover;
 }
 

@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.jinhap.domain.Permission;
 import com.jinhap.domain.Users;
 
 @Repository
@@ -16,28 +17,39 @@ public class UserDaoImpl implements UserDao{
 	private SqlSession sqlSession;
 	
 	@Override
-	public Users userMenuSelectCount(Users users) {
-		return sqlSession.selectOne("users.userMenuSelectCount",users);
+	public Users userLoginCheck(Users users) {
+		return sqlSession.selectOne("users.userLoginCheck", users);
 	}
 
 	@Override
-	public List<Users> usersMenuOkSelect(Users users) {
-		return sqlSession.selectList("users.usersMenuOkSelect",users);
+	public Permission userLoginPermission(Users loginUser) {
+		return sqlSession.selectOne("users.userLoginPermission", loginUser);
 	}
 
 	@Override
-	public void userMenuDelete(Users users) {
-		sqlSession.delete("users.userMenuDelete", users);
+	public void userInsertInsert(Users users) {
+		sqlSession.insert("users.userInsertInsert",users);
 	}
 
 	@Override
-	public void userMenuClick(Users users) {
-		sqlSession.insert("users.userMenuClick", users);
+	public void userPermissionUpdate(Permission permission) {
+		sqlSession.update("users.userPermissionUpdate",permission);
 	}
 
 	@Override
-	public Users getLoginUser(Users users) {
-		return sqlSession.selectOne("users.getLoginUser", users);
+	public List<Users> userPermissionUserSelect() {
+		return sqlSession.selectList("users.userPermissionUserSelect");
 	}
+
+	@Override
+	public List<Users> userInsertSelect() {
+		return sqlSession.selectList("users.userInsertSelect");
+	}
+
+	@Override
+	public Users userDuplicateCheck(Users users) {
+		return sqlSession.selectOne("users.userDuplicateCheck",users);
+	}
+
 
 }

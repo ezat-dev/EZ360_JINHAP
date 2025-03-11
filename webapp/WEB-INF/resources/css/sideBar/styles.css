@@ -4,7 +4,6 @@
 /* VARIABLES CSS */
 :root {
     --nav--width: 92px;
-
     /* Colors */
     --first-color: #236cf5;
     --bg-color: #33363d;
@@ -20,12 +19,6 @@
     --z-fixed: 100;
 }
 
-.header {
-    background-color: #0c5df4;
-    width: 1000px;
-    height: 100px;
-}
-
 .tkLogo{
     width: 180px;
     height: 70px;
@@ -38,7 +31,8 @@
 body {
     position: relative;
     margin: 0;
-    padding: 2rem 0 0 6.75rem;
+    /*padding: 2rem 0 0 6.75rem;*/
+    padding: 0 0 0 6.75rem;
     font-family: var(--body-font);
     font-size: var(--normal-font-size);
     transition: .5s;
@@ -58,13 +52,12 @@ ul {
 a {
     text-decoration: none;
 }
-
+/*
 .header {
     background-color: #c9c8c8; 
     width: 100%;
     margin-left: 217px;
     height: 33px; 
-    /* border: 1px solid rgb(44, 44, 44);  */
     position: fixed;
     top: 0; 
     left: 0;
@@ -74,6 +67,7 @@ a {
     padding: 0 1rem; 
     color: var(--white-color); 
 }
+*/
 .l-navbar {
     position: fixed;
     top: 0px;
@@ -112,7 +106,7 @@ a {
     justify-content: space-between;
     align-items: center;
     /* margin-bottom: 2rem; */
-    margin-left: 50px;
+    /*margin-left: 50px;*/
     margin-top: -5px;
 }
 
@@ -142,7 +136,7 @@ a {
 }
 
 .nav__link:hover {
-    background-color: var(--first-color);
+    background-color: #236cf5;
 }
 
 .nav__icon {
@@ -165,7 +159,7 @@ a {
 
 /* Active links menu */
 .active {
-    background-color: var(--first-color);
+/*    background-color: #236cf5;*/
 }
 
 /* COLLAPSE */
@@ -196,7 +190,7 @@ a {
 
 .collapse__sublink:hover {
     color: var(--white-color);
-    background-color: var(--first-color); 
+    background-color: #236cf5; 
 }
 
 /* Show collapse */
@@ -208,4 +202,18 @@ a {
 .rotate {
     transform: rotate(180deg);
     transition: .5s;
+}
+
+
+
+.main {
+    margin-left: 239px;
+    margin-right:8px; 
+    margin-top : 54px;
+    width : 87.12%;
+    height: calc(100vh - 66px); 
+    background-color: #ffffff; 
+/*    padding: 1rem; */
+     /* border : 1px solid rgb(53, 53, 53);  */
+    border-radius: 0px 0px 6px 6px;
 }

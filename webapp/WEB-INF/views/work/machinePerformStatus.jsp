@@ -6,9 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>설비별 생산실적</title>
-    <%@ include file="../include/sideBar.jsp" %>
 <style>
-	
+.search{
+	height:40px;
+}
 .container {
 	display: flex;
 	justify-content: space-between;
@@ -21,21 +22,31 @@
     
     
 <body>
+
+    <jsp:include page="../include/sideBar.jsp"/>
+    <jsp:include page="../include/headerBar.jsp"/>
+
+	<main class="main">
     
-    <div class="tab">
-    	생산관리 - 설비별 생산실적
-    </div>
-
-		<main class="main">
+    	<div class="search">
+    	
+    	</div>
+    
+		<jsp:include page="../include/tabBar.jsp"/>
+	   
 	    
+	    <!-- 화면표시 -->
+	    <div class="view">
+	    
+	    </div>    
 
-		</main>
+	</main>
 <script>
 	//전역변수
 
 	//로드
 	$(function(){
-
+		$(".headerP").text("생산관리 - 설비별 생산실적");
 	});
 
 	//이벤트

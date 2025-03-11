@@ -129,6 +129,53 @@ public class Permission {
 	private String h12;
 	private String h13;
 	private String h14;
+	
+	private String i01;
+	private String i02;
+	private String i03;
+	private String i04;
+	private String i05;
+	private String i06;
+	private String i07;
+	private String i08;
+	private String i09;
+	private String i10;
+	private String i11;
+	private String i12;
+	private String i13;
+	private String i14;
+	
+	private String j01;
+	private String j02;
+	private String j03;
+	private String j04;
+	private String j05;
+	private String j06;
+	private String j07;
+	private String j08;
+	private String j09;
+	private String j10;
+	private String j11;
+	private String j12;
+	private String j13;
+	private String j14;
+	
+	private String k01;
+	private String k02;
+	private String k03;
+	private String k04;
+	private String k05;
+	private String k06;
+	private String k07;
+	private String k08;
+	private String k09;
+	private String k10;
+	private String k11;
+	private String k12;
+	private String k13;
+	private String k14;
+	
+	
 	public int getPerm_code() {
 		return perm_code;
 	}
@@ -843,6 +890,259 @@ public class Permission {
 	public void setH14(String h14) {
 		this.h14 = h14;
 	}
+	public String getI01() {
+		return i01;
+	}
+	public void setI01(String i01) {
+		this.i01 = i01;
+	}
+	public String getI02() {
+		return i02;
+	}
+	public void setI02(String i02) {
+		this.i02 = i02;
+	}
+	public String getI03() {
+		return i03;
+	}
+	public void setI03(String i03) {
+		this.i03 = i03;
+	}
+	public String getI04() {
+		return i04;
+	}
+	public void setI04(String i04) {
+		this.i04 = i04;
+	}
+	public String getI05() {
+		return i05;
+	}
+	public void setI05(String i05) {
+		this.i05 = i05;
+	}
+	public String getI06() {
+		return i06;
+	}
+	public void setI06(String i06) {
+		this.i06 = i06;
+	}
+	public String getI07() {
+		return i07;
+	}
+	public void setI07(String i07) {
+		this.i07 = i07;
+	}
+	public String getI08() {
+		return i08;
+	}
+	public void setI08(String i08) {
+		this.i08 = i08;
+	}
+	public String getI09() {
+		return i09;
+	}
+	public void setI09(String i09) {
+		this.i09 = i09;
+	}
+	public String getI10() {
+		return i10;
+	}
+	public void setI10(String i10) {
+		this.i10 = i10;
+	}
+	public String getI11() {
+		return i11;
+	}
+	public void setI11(String i11) {
+		this.i11 = i11;
+	}
+	public String getI12() {
+		return i12;
+	}
+	public void setI12(String i12) {
+		this.i12 = i12;
+	}
+	public String getI13() {
+		return i13;
+	}
+	public void setI13(String i13) {
+		this.i13 = i13;
+	}
+	public String getI14() {
+		return i14;
+	}
+	public void setI14(String i14) {
+		this.i14 = i14;
+	}
+	public String getJ01() {
+		return j01;
+	}
+	public void setJ01(String j01) {
+		this.j01 = j01;
+	}
+	public String getJ02() {
+		return j02;
+	}
+	public void setJ02(String j02) {
+		this.j02 = j02;
+	}
+	public String getJ03() {
+		return j03;
+	}
+	public void setJ03(String j03) {
+		this.j03 = j03;
+	}
+	public String getJ04() {
+		return j04;
+	}
+	public void setJ04(String j04) {
+		this.j04 = j04;
+	}
+	public String getJ05() {
+		return j05;
+	}
+	public void setJ05(String j05) {
+		this.j05 = j05;
+	}
+	public String getJ06() {
+		return j06;
+	}
+	public void setJ06(String j06) {
+		this.j06 = j06;
+	}
+	public String getJ07() {
+		return j07;
+	}
+	public void setJ07(String j07) {
+		this.j07 = j07;
+	}
+	public String getJ08() {
+		return j08;
+	}
+	public void setJ08(String j08) {
+		this.j08 = j08;
+	}
+	public String getJ09() {
+		return j09;
+	}
+	public void setJ09(String j09) {
+		this.j09 = j09;
+	}
+	public String getJ10() {
+		return j10;
+	}
+	public void setJ10(String j10) {
+		this.j10 = j10;
+	}
+	public String getJ11() {
+		return j11;
+	}
+	public void setJ11(String j11) {
+		this.j11 = j11;
+	}
+	public String getJ12() {
+		return j12;
+	}
+	public void setJ12(String j12) {
+		this.j12 = j12;
+	}
+	public String getJ13() {
+		return j13;
+	}
+	public void setJ13(String j13) {
+		this.j13 = j13;
+	}
+	public String getJ14() {
+		return j14;
+	}
+	public void setJ14(String j14) {
+		this.j14 = j14;
+	}
+	public String getK01() {
+		return k01;
+	}
+	public void setK01(String k01) {
+		this.k01 = k01;
+	}
+	public String getK02() {
+		return k02;
+	}
+	public void setK02(String k02) {
+		this.k02 = k02;
+	}
+	public String getK03() {
+		return k03;
+	}
+	public void setK03(String k03) {
+		this.k03 = k03;
+	}
+	public String getK04() {
+		return k04;
+	}
+	public void setK04(String k04) {
+		this.k04 = k04;
+	}
+	public String getK05() {
+		return k05;
+	}
+	public void setK05(String k05) {
+		this.k05 = k05;
+	}
+	public String getK06() {
+		return k06;
+	}
+	public void setK06(String k06) {
+		this.k06 = k06;
+	}
+	public String getK07() {
+		return k07;
+	}
+	public void setK07(String k07) {
+		this.k07 = k07;
+	}
+	public String getK08() {
+		return k08;
+	}
+	public void setK08(String k08) {
+		this.k08 = k08;
+	}
+	public String getK09() {
+		return k09;
+	}
+	public void setK09(String k09) {
+		this.k09 = k09;
+	}
+	public String getK10() {
+		return k10;
+	}
+	public void setK10(String k10) {
+		this.k10 = k10;
+	}
+	public String getK11() {
+		return k11;
+	}
+	public void setK11(String k11) {
+		this.k11 = k11;
+	}
+	public String getK12() {
+		return k12;
+	}
+	public void setK12(String k12) {
+		this.k12 = k12;
+	}
+	public String getK13() {
+		return k13;
+	}
+	public void setK13(String k13) {
+		this.k13 = k13;
+	}
+	public String getK14() {
+		return k14;
+	}
+	public void setK14(String k14) {
+		this.k14 = k14;
+	}
 
-
+	
+	
 }

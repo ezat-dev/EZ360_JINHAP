@@ -150,9 +150,13 @@ public class MainController {
     
     @RequestMapping(value= "/", method = RequestMethod.GET)
     public String main(Model model) {
-//        return "/login.jsp"; //로그인 적용 후 변경예정
-    	return "/machine/allMonitoring.jsp";
+    	return "/login.jsp";
     }
+    
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(Users users) {
+    	return "/login.jsp";       
+    }    
     
     @RequestMapping(value= "/home/test", method = RequestMethod.GET)
     public String home(Model model) {
@@ -238,29 +242,31 @@ public class MainController {
 	}
 	
 	
-	/*사용자 로그인*/
-	@RequestMapping(value="/user/login", method=RequestMethod.POST)
-	@ResponseBody
-	public String login(@ModelAttribute Users users, HttpServletRequest request, HttpServletResponse response) {
-		//로그인을 클릭한 사용자의 아이디와 비밀번호가 같을 때
-		Users loginUser = userService.getLoginUser(users);
-		
-		String result = "";
-		request.getSession().setAttribute("user", loginUser);
-
-		return result;
-	}	
-	
 	//로그아웃
 	@RequestMapping(value="/user/logout", method=RequestMethod.GET)
-	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) {
-		Users users = (Users)session.getAttribute("user");
+	@ResponseBody
+	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session) throws IOException {
+		Users users = (Users)session.getAttribute("loginUser");
 		if(users != null) {
-			session.removeAttribute("user");
+			session.removeAttribute("loginUser");
+			session.removeAttribute("loginUserPage");
 			session.invalidate();
 		}
-		return "redirect:/";
-	}	
+		
+		return "asd";
+	}		
 	
+	//세션값 체크
+	public void sessionCheck(HttpSession session, HttpServletResponse response) {
+		Users users = (Users)session.getAttribute("loginUser");
+		
+		if(users == null) {
+			try {
+				response.sendRedirect("/");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
 	
 }

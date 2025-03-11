@@ -6,9 +6,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>생산모니터링</title>
-    <%@ include file="../include/sideBar.jsp" %>
 <style>
-	
+.search{
+height:40px;
+}
 .container {
 	display: flex;
 	justify-content: space-between;
@@ -21,21 +22,31 @@
     
     
 <body>
-    
-    <div class="tab">
-    	생산관리 - 생산모니터링
-    </div>
 
-		<main class="main">
+    <jsp:include page="../include/sideBar.jsp"/>
+    <jsp:include page="../include/headerBar.jsp"/>
+
+	<main class="main">
+    	<!-- 조회조건 표시 -->
+    	<div class="search">
+  		
+    	</div>
+    	
+		<jsp:include page="../include/tabBar.jsp"/>
+	   
+	    
+	    <!-- 화면표시 -->
+	    <div class="view">
+
+	    </div>
 	    
 
-		</main>
-<script>
+	</main><script>
 	//전역변수
 
 	//로드
 	$(function(){
-
+		$(".headerP").text("생산관리 - 생산모니터링");
 	});
 
 	//이벤트

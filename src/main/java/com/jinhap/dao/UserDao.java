@@ -2,18 +2,24 @@ package com.jinhap.dao;
 
 import java.util.List;
 
+import com.jinhap.domain.Permission;
 import com.jinhap.domain.Users;
 
 public interface UserDao {
 
-	Users userMenuSelectCount(Users users);
+	Users userLoginCheck(Users users);
 
-	List<Users> usersMenuOkSelect(Users users);
+	Permission userLoginPermission(Users loginUser);
 
-	void userMenuDelete(Users users);
+	void userInsertInsert(Users users);
 
-	void userMenuClick(Users users);
+	void userPermissionUpdate(Permission permission);
 
-	Users getLoginUser(Users users);
+	List<Users> userPermissionUserSelect();
+
+	List<Users> userInsertSelect();
+
+	Users userDuplicateCheck(Users users);
+
 
 }

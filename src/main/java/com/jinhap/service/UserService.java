@@ -2,21 +2,24 @@ package com.jinhap.service;
 
 import java.util.List;
 
+import com.jinhap.domain.Permission;
 import com.jinhap.domain.Users;
 
 public interface UserService {
 
-	Users userMenuSelectCount(Users users);
+	Users userLoginCheck(Users users);
 
-	List<Users> usersMenuOkSelect(Users users);
+	Permission userLoginPermission(Users loginUser);
 
-	void userMenuDelete(Users users);
+	void userInsertInsert(Users users);
 
-	void userMenuClick(Users users);
+	void userPermissionUpdate(Permission permission);
 
-	Users getLoginUser(Users users);
+	List<Users> userPermissionUserSelect();
 
-	//메뉴를 선택했을 때 사용자가 선택한 메뉴를 이름, 링크로 분리해서 보여주는 메서드
-	public List<Users> menuList(Users users);	
+	List<Users> userInsertSelect();
+
+	Users userDuplicateCheck(Users users);
+
 	
 }
