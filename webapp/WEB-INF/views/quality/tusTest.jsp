@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>온도균일성 테스트</title>
+<%@include file="../include/pluginpage.jsp" %>    
 <style>
 .search{
 	border-radius: 5px;
@@ -39,8 +40,6 @@
     
     
 <body>
-    <jsp:include page="../include/sideBar.jsp"/>
-    <jsp:include page="../include/headerBar.jsp"/>
 
 	<main class="main">
     	<!-- 조회조건 표시 -->
@@ -102,7 +101,7 @@
 		    headerHozAlign:"center",
 		    ajaxConfig:"POST",
 		    ajaxLoader:false,
-		    ajaxURL:"/jinhap/quality/tustest/selectList",
+		    ajaxURL:"/geomet/quality/tustest/selectList",
 		    ajaxProgressiveLoad:"scroll",
 		    ajaxParams:{},
 		    placeholder:"조회된 데이터가 없습니다.",

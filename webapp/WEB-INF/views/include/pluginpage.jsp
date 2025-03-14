@@ -2,30 +2,30 @@
     pageEncoding="UTF-8"%>
 
 <!-- 제이쿼리홈페이지 js -->
-<script type="text/javascript" src="/jinhap/js/jquery-3.7.1.min.js"></script>
+<script type="text/javascript" src="/geomet/js/jquery-3.7.1.min.js"></script>
 
 <!-- Tabulator 테이블 -->
-<script type="text/javascript" src="/jinhap/js/tabulator/tabulator.js"></script>
-<link rel="stylesheet" href="/jinhap/css/tabulator/tabulator_simple.css">
+<script type="text/javascript" src="/geomet/js/tabulator/tabulator.js"></script>
+<link rel="stylesheet" href="/geomet/css/tabulator/tabulator_simple.css">
 
 <!-- moment -->
-<script type="text/javascript" src="/jinhap/js/moment/moment.min.js"></script>
+<script type="text/javascript" src="/geomet/js/moment/moment.min.js"></script>
 
 <!-- 화면캡쳐용 -->
-<script type="text/javascript" src="/jinhap/js/html2canvas.js"></script>
+<script type="text/javascript" src="/geomet/js/html2canvas.js"></script>
 
 
 <!-- 하이차트 -->
-<script type="text/javascript" src="/jinhap/js/highchart/highcharts.js"></script>
-<script type="text/javascript" src="/jinhap/js/highchart/exporting.js"></script>
-<script type="text/javascript" src="/jinhap/js/highchart/export-data.js"></script>
-<script type="text/javascript" src="/jinhap/js/highchart/data.js"></script>
+<script type="text/javascript" src="/geomet/js/highchart/highcharts.js"></script>
+<script type="text/javascript" src="/geomet/js/highchart/exporting.js"></script>
+<script type="text/javascript" src="/geomet/js/highchart/export-data.js"></script>
+<script type="text/javascript" src="/geomet/js/highchart/data.js"></script>
 
 
 <!-- Air Datepicker -->
-<script type="text/javascript" src="/jinhap/js/airdatepicker/datepicker.min.js"></script>
-<script type="text/javascript" src="/jinhap/js/airdatepicker/datepicker.ko.js"></script>
-<link rel="stylesheet" href="/jinhap/css/airdatepicker/datepicker.min.css"> 
+<script type="text/javascript" src="/geomet/js/airdatepicker/datepicker.min.js"></script>
+<script type="text/javascript" src="/geomet/js/airdatepicker/datepicker.ko.js"></script>
+<link rel="stylesheet" href="/geomet/css/airdatepicker/datepicker.min.css"> 
 
 
 <style>
@@ -144,84 +144,84 @@ function rpImagePopup() {
 function pageObject(paramKey){
 //	console.log("받은 키값 : "+paramKey);
 	var obj = {
-			"a01":["/jinhap/machine/allMonitoring","통합 모니터링"],
-			"a02":["/jinhap/machine/detailMonitoring","설비별 모니터링"],
-			"a03":["/jinhap/machine/alarmMonitoring","경보 모니터링"],
-			"a04":["/jinhap/machine/alarmList","경보 발생빈도"],
-			"a05":["/jinhap/machine/tempMonitoring","온도경향 모니터링"],
+			"a01":["/geomet/machine/allMonitoring","통합 모니터링"],
+			"a02":["/geomet/machine/detailMonitoring","설비별 모니터링"],
+			"a03":["/geomet/machine/alarmMonitoring","경보 모니터링"],
+			"a04":["/geomet/machine/alarmList","경보 발생빈도"],
+			"a05":["/geomet/machine/tempMonitoring","온도경향 모니터링"],
 			"a06":"",
 			"a07":"",
-			"b01":["/jinhap/work/machinePerformStatus","설비별 생산실적"],
-			"b02":["/jinhap/work/machineEfficStatus","설비효율관리"],
-			"b03":["/jinhap/work/monitoringStatus","생산모니터링"],
-			"b04":["/jinhap/work/inventoryStatus","재고관리"],
+			"b01":["/geomet/work/machinePerformStatus","설비별 생산실적"],
+			"b02":["/geomet/work/machineEfficStatus","설비효율관리"],
+			"b03":["/geomet/work/monitoringStatus","생산모니터링"],
+			"b04":["/geomet/work/inventoryStatus","재고관리"],
 			"b05":"",
 			"b06":"",
 			"b07":"",
-			"c01":["/jinhap/condition/corrStatus","TC교체이력"],
-			"c02":["/jinhap/condition/machinePartTemp","설비별 액 관리"],
-			"c03":["/jinhap/condition/machineLiquidManage","신액 교반일지"],
-			"c04":["/jinhap/condition/dailyCheck","일상점검일지"],
-			"c05":["/jinhap/condition/divisionWeight","분할기준중량관리"],
+			"c01":["/geomet/condition/corrStatus","TC교체이력"],
+			"c02":["/geomet/condition/machinePartTemp","설비별 액 관리"],
+			"c03":["/geomet/condition/machineLiquidManage","신액 교반일지"],
+			"c04":["/geomet/condition/dailyCheck","일상점검일지"],
+			"c05":["/geomet/condition/divisionWeight","분할기준중량관리"],
 			"c06":"",
 			"c07":"",
-			"d01":["/jinhap/quality/tusTest","온도균일성 테스트"],
-			"d02":["/jinhap/quality/resistTest","내식성 테스트"],
-			"d03":["/jinhap/quality/inTest","수입검사"],
-			"d04":["/jinhap/quality/liquidAnalyze","욕액분석"],
-			"d05":["/jinhap/quality/nonProductManage","부적합품 관리"],
+			"d01":["/geomet/quality/tusTest","온도균일성 테스트"],
+			"d02":["/geomet/quality/resistTest","내식성 테스트"],
+			"d03":["/geomet/quality/inTest","수입검사"],
+			"d04":["/geomet/quality/liquidAnalyze","욕액분석"],
+			"d05":["/geomet/quality/nonProductManage","부적합품 관리"],
 			"d06":"",
 			"d07":"",
-			"e01":["/jinhap/user/planManage","자격인증관리"],
-			"e02":["/jinhap/user/workerManage","작업자 근무현황"],
-			"e03":["/jinhap/user/carManage","지게차,청소차 점검일지"],
-			"e04":["/jinhap/user/checkManage","유해화학물질 점검일지"],
-			"e05":["/jinhap/user/userPermission","사용자 권한부여"],
-			"e06":["/jinhap/user/userInsert","사용자 등록"],
+			"e01":["/geomet/user/planManage","자격인증관리"],
+			"e02":["/geomet/user/workerManage","작업자 근무현황"],
+			"e03":["/geomet/user/carManage","지게차,청소차 점검일지"],
+			"e04":["/geomet/user/checkManage","유해화학물질 점검일지"],
+			"e05":["/geomet/user/userPermission","사용자 권한부여"],
+			"e06":["/geomet/user/userInsert","사용자 등록"],
 			"e07":"",
-			"f01":["/jinhap/work/inputControlStatus","투입제어 및 모니터링"],
-			"f02":["/jinhap/work/machineRealStatus","설비 실시간정보"],
+			"f01":["/geomet/work/inputControlStatus","투입제어 및 모니터링"],
+			"f02":["/geomet/work/machineRealStatus","설비 실시간정보"],
 			"f03":"",
 			"f04":"",
 			"f05":"",
 			"f06":"",
 			"f07":"",
-			"g01":["/jinhap/work/lotReportStatus","LOT 보고서"],
-			"g02":["/jinhap/work/workConditionStatus","생산조건 모니터링"],
+			"g01":["/geomet/work/lotReportStatus","LOT 보고서"],
+			"g02":["/geomet/work/workConditionStatus","생산조건 모니터링"],
 			"g03":"",
 			"g04":"",
 			"g05":"",
 			"g06":"",
 			"g07":"",
-			"h01":["/jinhap/machine/checkPlan","정기점검 계획"],
-			"h02":["/jinhap/machine/nonTime","비가동현황"],
-			"h03":["/jinhap/machine/repairStatus","설비이력카드"],
+			"h01":["/geomet/machine/checkPlan","정기점검 계획"],
+			"h02":["/geomet/machine/nonTime","비가동현황"],
+			"h03":["/geomet/machine/repairStatus","설비이력카드"],
 			"h04":"",
 			"h05":"",
 			"h06":"",
 			"h07":"",
-			"i01":["/jinhap/user/standardDocManage","관리계획서 등 관리"],
-			"i02":["/jinhap/user/productDocManage","사양별 대기통수"],
-			"i03":["/jinhap/user/checkDocManage","점검일정 체크"],
+			"i01":["/geomet/user/standardDocManage","관리계획서 등 관리"],
+			"i02":["/geomet/user/productDocManage","사양별 대기통수"],
+			"i03":["/geomet/user/checkDocManage","점검일정 체크"],
 			"i04":"",
 			"i05":"",
 			"i06":"",
 			"i07":"",
-			"j01":["/jinhap/agvwash/missionCount","AGV 미션수행횟수"],
-			"j02":["/jinhap/agvwash/errorCount","AGV 오류발생 횟수"],
-			"j03":["/jinhap/agvwash/batteryStatus","AGV 배터리 소모이력"],
-			"j04":["/jinhap/agvwash/workOrderStatus","AGV 작업지시 조회"],
+			"j01":["/geomet/agvwash/missionCount","AGV 미션수행횟수"],
+			"j02":["/geomet/agvwash/errorCount","AGV 오류발생 횟수"],
+			"j03":["/geomet/agvwash/batteryStatus","AGV 배터리 소모이력"],
+			"j04":["/geomet/agvwash/workOrderStatus","AGV 작업지시 조회"],
 			"j05":"",
 			"j06":"",
 			"j07":"",
-			"k01":["/jinhap/agvwash/washList","세척투입리스트"],
-			"k02":["/jinhap/agvwash/washInput","세척투입"],
-			"k03":["/jinhap/agvwash/washShotWorkPerform","세척,쇼트 일 생산량"],
-			"k04":["/jinhap/agvwash/washShotWaitList","세척,쇼트 예약상태"],
-			"k05":["/jinhap/agvwash/workOrderList","작업지시 조회"],
-			"k06":["/jinhap/agvwash/lineInOutList","라인별 입출고이력"],
-			"k07":["/jinhap/agvwash/machineWorkPerform","설비별 작업실적"],
-			"k08":["/jinhap/agvwash/lineUseManage","라인별 사용유무관리"],
+			"k01":["/geomet/agvwash/washList","세척투입리스트"],
+			"k02":["/geomet/agvwash/washInput","세척투입"],
+			"k03":["/geomet/agvwash/washShotWorkPerform","세척,쇼트 일 생산량"],
+			"k04":["/geomet/agvwash/washShotWaitList","세척,쇼트 예약상태"],
+			"k05":["/geomet/agvwash/workOrderList","작업지시 조회"],
+			"k06":["/geomet/agvwash/lineInOutList","라인별 입출고이력"],
+			"k07":["/geomet/agvwash/machineWorkPerform","설비별 작업실적"],
+			"k08":["/geomet/agvwash/lineUseManage","라인별 사용유무관리"],
 			
 	};
 	

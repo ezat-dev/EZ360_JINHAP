@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/jinhap/css/login/style.css">
+  <link rel="stylesheet" href="/geomet/css/login/style.css">
   <%@include file="include/pluginpage.jsp" %>
   
   <style>
@@ -40,7 +40,7 @@
 <body>
   <div class="group-1">
     <div class="main"></div>
-    <img class="background-1" src="/jinhap/css/login/background-10.png" />
+    <img class="background-1" src="/geomet/css/login/background-10.png" />
     <div class="login-box"></div>
     
     
@@ -58,7 +58,7 @@
     <button class="login_btn" onclick="login();">로그인</button>
     <div class="text-5">아이디</div>
     <div class="text-6">패스워드</div>
-<!--     <img class="logo" src="/jinhap/css/login/logo0.svg" /> -->
+<!--     <img class="logo" src="/geomet/css/login/logo0.svg" /> -->
     <div class="text-4">주식회사 진합 로그인</div>
     <div class="text-3">
       Copyright 2025. EZAutomation Co. All rights reserved.
@@ -79,7 +79,7 @@ $("*").on("keydown",function(e){
 function login(){
 	var userData = new FormData($("#userForm")[0]);
 	$.ajax({
-		url:"/jinhap/user/login/check",
+		url:"/geomet/user/login/check",
 		type:"post",
 		contentType: false,
 		processData: false,
@@ -87,27 +87,9 @@ function login(){
 		data:userData,
 		success:function(result){
 //			console.log(result);
+			location.href = "/geomet/jinhapGeomet";
 			
-			var pageData = result.loginUserPage;
-			for(let key in pageData){
-//				console.log(key);
-//				console.log(pageData[key]);
-//				$("#"+key).val(data[key]);
-				if(key != "perm_code" && key != "user_code"){
-					if(pageData[key] != null && pageData[key] != "N"){
-//						console.log(key);
-//						console.log(pageData[key]);
-//						console.log(pageData);
-//						pageObject(key);
-						
-//						alert(result.data.user_name+"님 로그인");
-						location.href = pageObject(key)[0];
-						
-						break;
-					}
-				}
-			}
-
+//			var pageData = result.loginUserPage;
 		}
 	});
 }

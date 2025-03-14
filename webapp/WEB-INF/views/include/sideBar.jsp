@@ -4,11 +4,12 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="/jinhap/css/login/style.css">
+	<link rel="stylesheet" href="/geomet/css/login/style.css">
 
 	<script src="https://unpkg.com/ionicons@5.2.3/dist/ionicons.js"></script>  
-	<link rel="stylesheet" href="/jinhap/css/sideBar/styles.css">
-	<link rel="stylesheet" href="/jinhap/css/login/style2.css">
+	<link rel="stylesheet" href="/geomet/css/sideBar/styles.css">
+	<link rel="stylesheet" href="/geomet/css/login/style2.css">
+	<link rel="stylesheet" href="/geomet/css/headerBar/headerBar.css">
 <%@include file="../include/pluginpage.jsp" %>
   
 <title>진합</title>
@@ -24,22 +25,62 @@
 }
 
 
+.menuDivTab{
+/*    width: 150px;*/
+	text-align: center;
+    cursor: pointer;
+    margin-right: 10px;
+    background-color: white;
+    border-radius: 6px 6px 0px 0px;
+    margin-top: 8px;
+    padding-top: 5px;
+    border: 1px solid black;
+}
+
+.menuDiv{
+	display: flex;
+	width:92.7%;
+	height:40px;
+	background-color:lightgray;
+    margin-left: 131px;
+}
+
+.frameDiv{
+	display: flex;
+	width:92.7%;
+	height:90%;	
+	background-color:white;
+    margin-left: 131px;
+}
+
+.frameDiv #pageFrame{
+	width:100%;
+	height:100%;
+}
+
+.menuTab{
+	
+}
+
 </style>
 
 <body>
-<!-- 
+
     <header class="header">
-    	<div class="header-div">
-        	<p id="header-title" style="font-size : 20px;"></p>
-        </div> 
+	    <p class="headerP" style="font-size:20px; margin-left:40px; color : white; font-weight:800;"></p>
+	    <!-- 로그인정보 표현, 로그아웃 버튼 -->
+	    <p class="loginName" style="font-size:20px; margin-left:960px; color : white; font-weight:800;"></p>
+        <button class="logout-button">
+            <img src="/geomet/css/headerBar/exit-outline.svg" alt="select" class="button-image">로그아웃	           
+        </button>
     </header>
- -->
+
     <div class="hhhh"></div>
     <div class="l-navbar" id="navbar" style="overflow-y: auto;">
         <nav class="nav">
             <div>
             <div class="nav__brand">
-                 <a href="#" class="nav__logo"><img class="tkLogo" src="/jinhap/css/sideBar/jinhap4.gif"></a>
+                 <a href="#" class="nav__logo"><img class="tkLogo" src="/geomet/css/sideBar/jinhap4.gif"></a>
             </div>
 			<div class="nav__list">
                     
@@ -47,176 +88,120 @@
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">모니터링</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="aMenu">
-<!-- 				
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/allMonitoring','모니터링','통합 모니터링')">통합모니터링</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/detailMonitoring','모니터링','설비별 모니터링')">설비별 모니터링</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/alarmMonitoring','모니터링','경보 발생빈도')">경보 발생빈도</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/tempMonitoring','모니터링','온도경향 모니터링')">온도경향 모니터링</a></li>
--->					
-				</ul>
+				<ul class="collapse__menu" id="aMenu"></ul>
 			</div>
 
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">생산관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="bMenu">
-<!-- 
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/machinePerformStatus','생산관리','설비별 생산실적')">설비별 생산실적</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/machineEfficStatus','생산관리','설비효율관리')">설비효율관리</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/monitoringStatus','생산관리','생산모니터링')">생산모니터링</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/inventoryStatus','생산관리','재고관리')">재고관리</a></li>
- -->
-				</ul>
+				<ul class="collapse__menu" id="bMenu"></ul>
 			</div>
 
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">조건관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="cMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/condition/corrStatus','조건관리','TC교체이력')">TC교체이력</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/condition/machinePartTemp','조건관리','설비별 액 관리')">설비별 액 관리</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/condition/machineLiquidManage','조건관리','신액 교반일지')">신액 교반일지</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/condition/dailyCheck','조건관리','일상점검일지')">일상점검일지</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/condition/divisionWeight','조건관리','분할기준중량관리')">분할기준중량관리</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="cMenu"></ul>
 			</div>
 
 			<div class="nav__link collapse">
 				<ion-icon name="desktop-outline"></ion-icon>
 				<span class="nav_name">품질관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="dMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/quality/tusTest','품질관리','온도균일성 테스트')">온도균일성 테스트</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/quality/resistTest','품질관리','내식성 테스트')">내식성 테스트</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/quality/inTest','품질관리','수입검사')">수입검사</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/quality/liquidAnalyze','품질관리','욕액분석')">욕액분석</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/quality/nonProductManage','품질관리','부적합품 관리')">적합품 관리</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="dMenu"></ul>
 			</div>
 
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">인원 및 안전관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="eMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/planManage','인원 및 안전관리','자격인증관리')">자격인증관리</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/workerManage','인원 및 안전관리','작업자 근무현황')">작업자 근무현황</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/carManage','인원 및 안전관리','지게차,청소차 점검일지')">지게차,청소차 점검일지</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/checkManage','인원 및 안전관리','유해화학물질 점검일지')">유해화학물질 점검일지</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="eMenu"></ul>
 			</div>
 
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">투입 운전관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="fMenu">
-<!-- 
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/inputControlStatus','투입 운전관리','투입제어 및 모니터링')">투입제어 및 모니터링</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/machineRealStatus','투입 운전관리','설비 실시간정보')">설비 실시간정보</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="fMenu"></ul>
 			</div>
 
 			<div class="nav__link collapse">
 				<ion-icon name="folder-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">취출 운전관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="gMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/lotReportStatus','취출 운전관리','LOT 보고서')">LOT 보고서</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/work/workConditionStatus','취출 운전관리','생산조건 모니터링')">생산조건 모니터링</a></li>
--->					
-				</ul>
+				<ul class="collapse__menu" id="gMenu"></ul>
 			</div>
 	
 			<div class="nav__link collapse">
 				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">설비관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="hMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/checkPlan','설비관리','정기점검 계획')">정기점검 계획</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/nonTime','설비관리','비가동현황')">비가동현황</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/repairStatus','설비관리','설비이력카드')">설비이력카드</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="hMenu"></ul>
 			</div>
 
 			<div class="nav__link collapse">
 				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">문서관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="iMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/standardDocManage','문서관리','관리계획서 등 관리')">관리계획서 등 관리</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/productDocManage','문서관리','사양별 대기통수')">사양별 대기통수</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/checkDocManage','문서관리','점검일정 체크')">점검일정 체크</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="iMenu"></ul>
 			</div>
 			
 			<div class="nav__link collapse">
 				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">AGV 관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="jMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/standardDocManage','문서관리','관리계획서 등 관리')">관리계획서 등 관리</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/productDocManage','문서관리','사양별 대기통수')">사양별 대기통수</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/checkDocManage','문서관리','점검일정 체크')">점검일정 체크</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="jMenu"></ul>
 			</div>
 			
 			<div class="nav__link collapse">
 				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">세척 관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
-				<ul class="collapse__menu" id="kMenu">
-<!--
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/standardDocManage','문서관리','관리계획서 등 관리')">관리계획서 등 관리</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/productDocManage','문서관리','사양별 대기통수')">사양별 대기통수</a></li>
-					<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/user/checkDocManage','문서관리','점검일정 체크')">점검일정 체크</a></li>
--->
-				</ul>
+				<ul class="collapse__menu" id="kMenu"></ul>
 			</div>
 		</div>
 	</div>
 </nav>
-        
     </div>
     
+    <div class="menuDiv"></div>
+    <div class="frameDiv">
+		<iframe id="pageFrame" src="" frameborder="0"></iframe>
+    </div>
      <script>
-
      //로드
      $(function(){
-//    	var pageData = sessionStorage.getItem("loginUserPage");
+ 		var loginInfo = "${loginUser.user_name}";
+
+
+		$(".loginName").text(loginInfo+"님 로그인");
 		loginUserMenuSetting();
+		menuList();
      });
-/*
-<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/allMonitoring','모니터링','통합 모니터링')">통합모니터링</a></li>
-<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/detailMonitoring','모니터링','설비별 모니터링')">설비별 모니터링</a></li>
-<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/alarmMonitoring','모니터링','경보 발생빈도')">경보 발생빈도</a></li>
-<li><a href="#" class="collapse__sublink" onclick="updateHeaderAndNavigate(event,'/jinhap/machine/tempMonitoring','모니터링','온도경향 모니터링')">온도경향 모니터링</a></li>
- */     
+     
+    //이벤트
+   	$(".logout-button").on("click",function(){
+   		$.ajax({
+   			url:"/geomet/user/logout",
+   			type:"get",
+   			dataTypa:"json",
+   			success:function(result){
+   				location.href = "/geomet";
+   			}
+   		});
+   	});    
+     
+    //함수
 	function loginUserMenuSetting(){
 		$.ajax({
-			url:"/jinhap/user/login/menuSetting",
+			url:"/geomet/user/login/menuSetting",
 			type:"post",
 			dataType:"json",
 			success:function(result){
-				console.log(result.data);
+
 				var data = result.data;
+				var idx = 0;
 				for(let key in data){
 //					console.log(key);
 					if(key != "perm_code" && key != "user_code"){
@@ -226,51 +211,132 @@
 							var _link = pageObject(key)[0];
 							var _name = pageObject(key)[1];
 							
-							var _menu = "<li>";
-							_menu += "<a href="+_link+" class='collapse__sublink'>"+_name+"</a>"
-							_menu += "</li>";
+							var _group = "";
+							var _groupID = "";
+
 							if(key.indexOf("a") != -1){
-								$("#aMenu").append(_menu);
+								_group = "모니터링";
+								_groupID = "aMenu";
 							}else if(key.indexOf("b") != -1){
-								$("#bMenu").append(_menu);
+								_group = "생산관리";
+								_groupID = "bMenu";
 							}else if(key.indexOf("c") != -1){
-								$("#cMenu").append(_menu);
+								_group = "조건관리";
+								_groupID = "cMenu";
 							}else if(key.indexOf("d") != -1){
-								$("#dMenu").append(_menu);
+								_group = "품질관리";
+								_groupID = "dMenu";
 							}else if(key.indexOf("e") != -1){
-								$("#eMenu").append(_menu);
+								_group = "인원 및 안전관리";
+								_groupID = "eMenu";
 							}else if(key.indexOf("f") != -1){
-								$("#fMenu").append(_menu);
+								_group = "투입 운전관리";
+								_groupID = "fMenu";
 							}else if(key.indexOf("g") != -1){
-								$("#gMenu").append(_menu);
+								_group = "취출 운전관리";
+								_groupID = "gMenu";
 							}else if(key.indexOf("h") != -1){
-								$("#hMenu").append(_menu);
+								_group = "설비관리";
+								_groupID = "hMenu";
 							}else if(key.indexOf("i") != -1){
-								$("#iMenu").append(_menu);
+								_group = "문서관리";
+								_groupID = "iMenu";
 							}else if(key.indexOf("j") != -1){
-								$("#jMenu").append(_menu);
+								_group = "AGV관리";
+								_groupID = "jMenu";
 							}else if(key.indexOf("k") != -1){
-								$("#kMenu").append(_menu);
+								_group = "세척관리";
+								_groupID = "kMenu";
 							}
+							
+							
+							_group_t = _group.replace(/\s/gi,"&nbsp;");
+							_name_t = _name.replace(/\s/gi,"&nbsp;");
+							
+							var _menu = "<li>";
+							_menu += "<a class='collapse__sublink' onClick=updateHeaderAndNavigate(event,'"+_link+"','"+_group_t+"-"+_name_t+"');>"+_name+"</a>"
+							_menu += "</li>";
+							
+							$("#"+_groupID).append(_menu);
+							if(idx == 0){
+								iframeSrc(_link,(_group+"-"+_name));
+							}
+							idx++;
 						}
-					}					
+					}
 				}				
 			}
 		});
     }
+    
+    
+   	function iframeSrc(url, menuGroupName){
+   		$("#pageFrame").attr("src",url);
+   		$(".headerP").text(menuGroupName);
+   	}
+    
         // 메뉴 클릭 시 헤더 업데이트
-        function updateHeader(menuGroup, menuName) {
-//            document.getElementById('header-title').innerText = menuName;
-            //모니터링 - 통합 모니터링
-            $(".headerP").text(menuGroup+" - "+menuName);
-        }
+	function updateHeader(menuGroupName) {
+//		document.getElementById('header-title').innerText = menuName;
+	}
 
-        function updateHeaderAndNavigate(event, url, menuGroup, menuName) {
-            event.preventDefault(); // 기본 링크 동작 방지
-            updateHeader(menuGroup, menuName); // 헤더 업데이트
-            window.location.href = url; // 페이지 이동
-        }
+	function updateHeaderAndNavigate(event, url, menuGroupName) {
+		event.preventDefault(); // 기본 링크 동작 방지
+            
+		iframeSrc(url,menuGroupName);
+		//각 사용자별 메뉴 저장
+		var loginCode = "${loginUser.user_code}";
+		var menuUrl = url;
+		var menuName = menuGroupName;
+        
+		menuSave(loginCode, menuUrl, menuName);
+	}
+        
+	function menuSave(loginCode, menuUrl, menuName){
+		$.ajax({
+			url:"/geomet/user/login/menuSave",
+			type:"post",
+			dataType:"json",
+			data:{
+				"user_code":loginCode,
+				"menu_url":menuUrl,
+				"menu_name":menuName
+			},
+			success:function(result){     			
+				menuList();
+			}
+		});
+	}
 
+	function menuList(){
+		var loginCode = "${loginUser.user_code}";
+        	
+		$.ajax({
+			url:"/geomet/user/login/menuList",
+			type:"post",
+			dataType:"json",
+			data:{
+				"user_code":loginCode
+			},
+			success:function(result){
+				var data = result.data;
+				var _div = "";
+				$(".menuDiv").empty();
+        			
+				for(let key in data){
+					var menuName = data[key].menu_name;
+					var menuNameIndex = (data[key].menu_name).indexOf("-")+1;
+					menuName = menuName.substring(menuNameIndex,menuName.length);        				
+					menuName = menuName.replace("/\s/g","&nbsp;");
+
+					_div = "<label class='menuDivTab' onClick=iframeSrc('"+data[key].menu_url+"','"+(data[key].menu_name).replace("/\s/g","&nbsp;")+"')>"+menuName+"</label>"
+					$(".menuDiv").append(_div);
+				}
+         			
+			}
+		});
+	}
+        
         // DOMContentLoaded 이벤트로 DOM이 준비된 후 스크립트 실행
         document.addEventListener('DOMContentLoaded', function() {
             const linkColor = document.querySelectorAll('.nav__link');
@@ -293,6 +359,8 @@
                 });
             }
         });
+        
+        
     </script>
     
 </body>

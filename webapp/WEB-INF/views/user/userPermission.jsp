@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 권한부여</title>
-    
+<%@include file="../include/pluginpage.jsp" %>
     <style>
 	
 .view {
@@ -38,9 +38,6 @@
     
     
     <body>
-    
-    <jsp:include page="../include/sideBar.jsp"/>
-    <jsp:include page="../include/headerBar.jsp"/>
 
     <form method="post" id="permissionForm" name="permissionForm">
     	<input type="text" style="display:none;" id="user_code" name="user_code" />
@@ -450,16 +447,16 @@
 	    <div class="hh-text">설비관리</div>
 	    <div class="ii-text">문서관리</div>
 
-	    <img class="sub-title-01-1" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-2" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-3" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-4" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-5" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-6" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-7" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-8" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-9" src="/jinhap/css/login/sub-title-01-10.png" />
-	    <img class="sub-title-01-10" src="/jinhap/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-1" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-2" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-3" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-4" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-5" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-6" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-7" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-8" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-9" src="/geomet/css/login/sub-title-01-10.png" />
+	    <img class="sub-title-01-10" src="/geomet/css/login/sub-title-01-10.png" />
 	  	<div class="selectUserText">작업자 선택</div>
 	  	<div class="selectUserText2">작업자 : </div>
 	  	<div class="userName"></div>
@@ -514,7 +511,7 @@
 		    headerHozAlign:"center",
 		    ajaxConfig:"POST",
 		    ajaxLoader:false,
-		    ajaxURL:"/jinhap/user/userPermission/userSelect",
+		    ajaxURL:"/geomet/user/userPermission/userSelect",
 		    ajaxProgressiveLoad:"scroll",
 		    ajaxParams:{},
 		    placeholder:"조회된 데이터가 없습니다.",
@@ -572,7 +569,7 @@
 		var userCode = $("#user_code").val();
 		
 		$.ajax({
-			url:"/jinhap/user/userPermission/userSelectPermission",
+			url:"/geomet/user/userPermission/userSelectPermission",
 			type:"post",
 			dataType:"json",
 			data:{"user_code":userCode},
@@ -591,7 +588,7 @@
 		var permissionData = new FormData($("#permissionForm")[0]);
 		
 		$.ajax({
-			url:"/jinhap/user/userPermission/update",
+			url:"/geomet/user/userPermission/update",
 			type:"post",
 			contentType: false,
 			processData: false,

@@ -6,8 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 등록</title>
-    <link rel="stylesheet" href="/jinhap/css/userInsert/userInsert.css">
-    
+    <link rel="stylesheet" href="/geomet/css/userInsert/userInsert.css">
+<%@include file="../include/pluginpage.jsp" %>
     
     <style>
 .tabulator {
@@ -54,8 +54,6 @@
     
     
     <body>
-    <jsp:include page="../include/sideBar.jsp"/>
-    <jsp:include page="../include/headerBar.jsp"/>
         
     <main class="main">
     
@@ -140,7 +138,7 @@
 		    headerHozAlign:"center",
 		    ajaxConfig:"POST",
 		    ajaxLoader:false,
-		    ajaxURL:"/jinhap/user/userInsert/select",
+		    ajaxURL:"/geomet/user/userInsert/select",
 		    ajaxProgressiveLoad:"scroll",
 		    ajaxParams:{},
 		    placeholder:"조회된 데이터가 없습니다.",
@@ -260,7 +258,7 @@
 		console.log(userData);
 		
 		$.ajax({
-			url:"/jinhap/user/userInsert/insert",
+			url:"/geomet/user/userInsert/insert",
 			type:"post",
 			contentType: false,
 			processData: false,

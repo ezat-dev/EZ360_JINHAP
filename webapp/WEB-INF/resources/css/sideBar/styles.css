@@ -37,6 +37,7 @@ body {
     font-size: var(--normal-font-size);
     transition: .5s;
     background-color: #c9c8c8;
+    height:calc(99vh);
 }
 
 h1 {

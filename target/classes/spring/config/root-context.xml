@@ -17,7 +17,7 @@
 		http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task.xsd">
 		
 	<task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="false"/>
-	<bean id="commProcessor" class="com.jinhap.async.CommProcessor" />
+<!-- 	<bean id="commProcessor" class="com.geomet.async.CommProcessor" /> -->
 	<task:scheduler id="scheduler" pool-size="4" />
 	<task:executor id="executor" keep-alive="10" pool-size="10-20"
 		queue-capacity="10" rejection-policy="ABORT" />
@@ -44,5 +44,5 @@
 	       <property name="dataSource" ref="dataSource"/>
 	   </bean>
 
-	<context:component-scan base-package="com.jinhap.dao com.jinhap.service"/>
+	<context:component-scan base-package="com.geomet.dao com.geomet.service"/>
 </beans>

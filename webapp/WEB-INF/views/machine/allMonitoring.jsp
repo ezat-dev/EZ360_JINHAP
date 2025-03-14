@@ -6,12 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>통합 모니터링</title>
-<link rel="stylesheet" href="/jinhap/css/searchBar/searchBar.css">
+<link rel="stylesheet" href="/geomet/css/searchBar/searchBar.css">
+<%@include file="../include/pluginpage.jsp" %>
 <style>
-.search{
-	height:40px;
-}
-
 .view{
 	display: flex; 
 	justify-content: center;
@@ -20,22 +17,15 @@
     
     
 <body>
-    <jsp:include page="../include/sideBar.jsp"/>
-    <jsp:include page="../include/headerBar.jsp"/>
 
 	<main class="main">
-    	<!-- 조회조건 표시 -->
-    	<div class="search">
-    		
-    	</div>
-    	
-    	
-		<jsp:include page="../include/tabBar.jsp"/>
+    	<!-- 조회조건 표시 -->		
+    	<jsp:include page="../include/tabBar.jsp"/>
 	   
 	    
 	    <!-- 화면표시 -->
 	    <div class="view">
-	    	<img src="/jinhap/css/img/allMonitoring.png" alt="" />
+	    	<img src="/geomet/css/img/allMonitoring.png" alt="" />
 	    </div>
 
 	</main>
@@ -46,7 +36,6 @@
 	//로드
 	$(function(){
 		//헤더에 페이지명 적용
-		$(".headerP").text("모니터링 - 통합모니터링");
 		selectButtonNone();
 		insertButtonNone();
 		excelButtonNone();

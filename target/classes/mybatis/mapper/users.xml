@@ -117,5 +117,44 @@
 		       i07 = #{i07}
 		 WHERE user_code = #{user_code}	
 	</update>
+	
+	<!-- 유저메뉴 (카운트 수가 10개 미만인지) -->
+	<select id="userMenuCount" parameterType="userMenu" resultType="int">
+		SELECT COUNT(*) AS ccnt
+		FROM tb_usermenu
+		WHERE 1=1
+		AND menu_yn = 'Y'
+		AND user_code = #{user_code}
+	</select>
+	
+	<!-- 유저메뉴 (이미 추가되어 있는 메뉴인지) -->
+	<select id="userMenuCheck" parameterType="userMenu" resultType="string">
+		SELECT menu_yn
+		FROM tb_usermenu
+		WHERE 1=1
+		AND user_code = #{user_code}
+		AND menu_url = #{menu_url}
+	</select>
 
+	<!-- 유저메뉴 (추가되어 있지 않다면 INSERT) -->
+	<insert id="userLoginMenuSave" parameterType="userMenu">
+		INSERT INTO tb_usermenu (user_code, menu_url, menu_name, insert_date)
+		VALUES
+		(#{user_code}, #{menu_url}, #{menu_name}, NOW())
+	</insert>
+	
+	<update id="userLoginMenuUpdate" parameterType="userMenu">
+		UPDATE tb_usermenu SET menu_yn = 'Y', update_date = NOW()
+		WHERE 1=1
+		AND user_code = #{user_code}
+		AND menu_url = #{menu_url}
+	</update>
+	
+	<select id="userMenuList" parameterType="userMenu" resultType="userMenu">
+		SELECT *
+		FROM tb_usermenu
+		WHERE 1=1
+		AND user_code = #{user_code}
+		AND menu_yn = 'Y'
+	</select>	
 </mapper>

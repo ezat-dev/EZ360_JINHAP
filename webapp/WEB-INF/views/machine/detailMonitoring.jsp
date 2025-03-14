@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>설비별 모니터링</title>
-<link rel="stylesheet" href="/jinhap/css/searchBar/searchBar.css">    
+<link rel="stylesheet" href="/geomet/css/searchBar/searchBar.css">
+<%@include file="../include/pluginpage.jsp" %> 
 <style>
 .search{
 	border-radius: 5px;
@@ -48,9 +49,6 @@
     
 <body>
 
-    <jsp:include page="../include/sideBar.jsp"/>
-    <jsp:include page="../include/headerBar.jsp"/>
-
 	<main class="main">
     	<!-- 조회조건 표시 -->
     	<div class="search">
@@ -69,7 +67,7 @@
 	    
 	    <!-- 화면표시 -->
 	    <div class="view">
-	    	<img src="/jinhap/css/img/detailMonitoring.png" alt="" />
+	    	<img src="/geomet/css/img/detailMonitoring.png" alt="" />
 	    </div>
 	    
 
