@@ -117,11 +117,11 @@
 	    </select>
  -->
  
-	    <div class="b-01-text-box">설비별 생산실적 현황</div>
+	    <div class="b-01-text-box">설비별 생산실적</div>
 	    <div class="b-02-text-box">설비효율 관리</div>
 	    <div class="b-03-text-box">생산모니터링 현황</div>
 	    <div class="b-04-text-box">작업일보</div>
-	    <div class="b-05-text-box">재고관리</div>
+	    <div class="b-05-text-box">재고관리(약품)</div>
 	    
 	      <select id="b01" name="b01" class="b-01">
 	        <option value="N">없음</option>
@@ -149,11 +149,19 @@
 	        <option value="R">조회</option>
 	    </select>
 	   
-	    <div class="c-01-text-box">TC교체이력</div>
+	   
+	   	<div class="c-01-text-box">TC/조절계 이력</div>
+	    <div class="c-02-text-box">설비별 조건관리</div>
+	    <div class="c-03-text-box">설비별 관리일지</div>
+	    <div class="c-04-text-box">일상점검일지</div>
+	    <div class="c-05-text-box">기준 정보</div>
+	   
+	   
+<!-- 	    <div class="c-01-text-box">TC교체이력</div>
 	    <div class="c-02-text-box">설비별 액 관리</div>
 	    <div class="c-03-text-box">신액 교반일지</div>
 	    <div class="c-04-text-box">일상점검일지</div>
-	    <div class="c-05-text-box">분할기준중량관리</div>
+	    <div class="c-05-text-box">분할기준중량관리</div> -->
 <!-- 	    
 	    <div class="c-06-text-box">후세정작업실적</div>
 	    <div class="c-07-text-box">쇼트/포장 작업실적</div>
@@ -253,10 +261,11 @@
 	        <option value="U">수정</option>
 	    </select>
  -->
-	    <div class="d-01-text-box">온도균일성 테스트</div>
-	    <div class="d-02-text-box">내식성 테스트</div>
+	    <div class="d-01-text-box">온도균일성</div>
+	    <div class="d-02-text-box">테스트/시험정보</div>
 	    <div class="d-03-text-box">수입검사</div>
-	    <div class="d-04-text-box">욕액분석</div>
+	    <div class="d-04-text-box">액 분석 관리</div>
+	    <div class="d-04-text-box">부적합품 관리</div>
 <!-- 	    
 	    <div class="d-05-text-box">설비점검기준등록</div>
 	    <div class="d-06-text-box">설비별점검현황(일별)</div>
@@ -373,12 +382,12 @@
 	    <div class="g-01-text-box">LOT 보고서</div>
 	    <div class="g-02-text-box">생산조건 모니터링</div>
 	    
-	    <div class="h-01-text-box">정기점검계획</div>
-	    <div class="h-02-text-box">비가동현황</div>
-	    <div class="h-03-text-box">설비이력카드</div>
+	    <div class="h-01-text-box">정기점검 계획</div>
+	    <div class="h-02-text-box">설비 비가동 현황</div>
+	    <div class="h-03-text-box">설비 이력 관리</div>
 	    
 
-	    <div class="i-01-text-box">관리계획서 등 관리</div>
+	    <div class="i-01-text-box">온도 균일성</div>
 	    <div class="i-02-text-box">사양별 대기통수</div>
 	    <div class="i-03-text-box">점검일정 체크</div>
 	    

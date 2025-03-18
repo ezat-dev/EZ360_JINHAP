@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>자격인증관리</title>
 <%@include file="../include/pluginpage.jsp" %>    
+		<jsp:include page="../include/tabBar.jsp"/>
 <style>
 .search{
 	height:40px;
@@ -35,7 +36,24 @@
     	</div>
     	
     	
-		<jsp:include page="../include/tabBar.jsp"/>
+ 		<div class="tab">
+            <p class="tabP" style="font-size:20px; margin-left:40px; color : white; font-weight:800;"></p>
+            <div class="button-container">
+                <button class="select-button">
+                    <img src="/jinhap/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                </button>
+                <button class="insert-button">
+                    <img src="/jinhap/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                </button>
+                <button class="excel-button">
+                    <img src="/jinhap/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                </button>
+                <button class="printer-button">
+                    <img src="/jinhap/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
+                </button>
+            </div>  
+        </div>
+        
 	   
 	    
 	    <!-- 화면표시 -->

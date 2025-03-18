@@ -16,52 +16,123 @@
 </head>
 
 <style>
-*{
-	font-weight:700;
-}
-
-.row_select{
-	background-color:#9ABCEA !important;
-}
-
-
-.menuDivTab{
-/*    width: 150px;*/
-	text-align: center;
-    cursor: pointer;
-    margin-right: 10px;
-    background-color: white;
-    border-radius: 6px 6px 0px 0px;
-    margin-top: 8px;
-    padding-top: 5px;
-    border: 1px solid black;
-}
-
-.menuDiv{
-	display: flex;
-	width:92.7%;
-	height:40px;
-	background-color:lightgray;
-    margin-left: 131px;
-}
-
-.frameDiv{
-	display: flex;
-	width:92.7%;
-	height:90%;	
-	background-color:white;
-    margin-left: 131px;
-}
-
-.frameDiv #pageFrame{
-	width:100%;
-	height:100%;
-}
-
-.menuTab{
 	
-}
+	* {
+	    font-weight: 600;
+	    font-family: 'Pretendard', sans-serif;
+	    box-sizing: border-box;
+	}
+	
+	body {
+	    background-color: #f4f6f9;
+	}
+	
+	
+	.row_select {
+	    background-color: #9ABCEA !important;
+	}
+	
+	
+	.menuDiv {
+	    display: flex;
+	    align-items: center;
+	    width: 92.7%;
+	    height: 50px;
+	    
+	    margin-left: 131px;
+	    padding: 8px 14px;
+	    border-radius: 14px;
+	    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.12);
+	    overflow-x: auto;
+	    white-space: nowrap;
+	    gap: 8px;  /* 탭 간격 좁히기 */
+	    scrollbar-width: none;
+	    -ms-overflow-style: none;
+	}
+	
+	.menuDiv::-webkit-scrollbar {
+	    display: none;
+	}
+	
+	
+	.menuDivTab {
+	    text-align: center;
+	    cursor: pointer;
+	    background: white;
+	    border-radius: 10px;
+	    padding: 12px 18px;
+	    font-size: 14px;
+	    font-weight: 700;
+	    color: #333;
+	    border: 1px solid #ddd;
+	    transition: all 0.3s ease-in-out;
+	    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+	    user-select: none;
+	    display: flex;
+	    align-items: center;
+	    justify-content: center;
+	    gap: 6px;
+	    min-width: 100px;  
+	    height: 43px;
+	}
+	
+	.menuDivTab:hover {
+	    background: #f0f2f5;
+	    transform: translateY(-2px);
+	    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+	}
+	
+	.menuDivTab.active {
+	    background: #007aff;
+	    color: white;
+	    border: 1px solid #0062cc;
+	    box-shadow: 0 3px 8px rgba(0, 122, 255, 0.3);
+	    transform: translateY(-2px);
+	}
+	
+	
+	.menuDivTab i {
+	    font-size: 16px;
+	    color: inherit;
+	}
+	
+	
+	.menuDivTab .close-btn {
+	    font-size: 19px; 
+	    background: none;
+	    border: none;
+	    color: #888; 
+	    cursor: pointer;
+	    padding: 0;
+	    margin-left: 10px;
+	    display: flex;
+	    align-items: center; 
+	    justify-content: center;
+	    transition: color 0.2s ease-in-out;
+	}
 
+	
+	.menuDivTab .close-btn:hover {
+	    color: #ff3b30; 
+	}
+	
+	
+	.frameDiv {
+	    display: flex;
+	    width: 92.7%;
+	    height: 90%;
+	    background: white;
+	    margin-left: 131px;
+	    border-radius: 14px;
+	    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+	    overflow: hidden;
+	}
+	
+	.frameDiv #pageFrame {
+	    width: 100%;
+	    height: 100%;
+	    border: none;
+	}
 </style>
 
 <body>
@@ -307,59 +378,69 @@
 			}
 		});
 	}
-
 	function menuList(){
-		var loginCode = "${loginUser.user_code}";
-        	
-		$.ajax({
-			url:"/geomet/user/login/menuList",
-			type:"post",
-			dataType:"json",
-			data:{
-				"user_code":loginCode
-			},
-			success:function(result){
-				var data = result.data;
-				var _div = "";
-				$(".menuDiv").empty();
-        			
-				for(let key in data){
-					var menuName = data[key].menu_name;
-					var menuNameIndex = (data[key].menu_name).indexOf("-")+1;
-					menuName = menuName.substring(menuNameIndex,menuName.length);        				
-					menuName = menuName.replace("/\s/g","&nbsp;");
+	    var loginCode = "${loginUser.user_code}";
+	    
+	    $.ajax({
+	        url:"/geomet/user/login/menuList",
+	        type:"post",
+	        dataType:"json",
+	        data:{
+	            "user_code":loginCode
+	        },
+	        success:function(result){
+	            var data = result.data;
+	            var _div = "";
+	            $(".menuDiv").empty();
+	            
+	            for(let key in data){
+	                var menuName = data[key].menu_name;
+	                var menuNameIndex = (data[key].menu_name).indexOf("-")+1;
+	                menuName = menuName.substring(menuNameIndex,menuName.length);                
+	                menuName = menuName.replace("/\s/g","&nbsp;");
 
-					_div = "<label class='menuDivTab' onClick=iframeSrc('"+data[key].menu_url+"','"+(data[key].menu_name).replace("/\s/g","&nbsp;")+"')>"+menuName+"</label>"
-					$(".menuDiv").append(_div);
-				}
-         			
-			}
-		});
+	                _div = "<div class='menuDivTab'>";
+					_div += "<label class='menuName' onClick=iframeSrc('"+data[key].menu_url+"','"+menuName+"')>" + menuName + "</label>";
+	                _div += "<button class='close-btn' onClick=removeMenu(this)>×</button>";
+	                _div += "</div>";
+
+	                $(".menuDiv").append(_div);
+	            }
+	        }
+	    });
 	}
-        
-        // DOMContentLoaded 이벤트로 DOM이 준비된 후 스크립트 실행
-        document.addEventListener('DOMContentLoaded', function() {
-            const linkColor = document.querySelectorAll('.nav__link');
 
-            // 메뉴 클릭 시 활성화
-            function colorLink() {
-                linkColor.forEach(l => l.classList.remove('active'));
-                this.classList.add('active');
-            }
-            linkColor.forEach(l => l.addEventListener('click', colorLink));
 
-            const linkCollapse = document.getElementsByClassName('collapse__link');
-            let i;
-            for(i = 0; i < linkCollapse.length; i++) {
-                linkCollapse[i].addEventListener('click', function() {
-                    const collapseMenu = this.nextElementSibling;
-                    collapseMenu.classList.toggle('showCollapse');
-                    const rotate = collapseMenu.previousElementSibling;
-                    rotate.classList.toggle('rotate');
-                });
-            }
-        });
-        
+	function removeMenu(button) {
+	    var menuName = $(button).siblings('.menuName').text(); 
+	    console.log(menuName + " 메뉴 엑스 .");
+	 
+	    $(button).parent().remove();  
+	}
+	
+    // DOMContentLoaded 이벤트로 DOM이 준비된 후 스크립트 실행
+    document.addEventListener('DOMContentLoaded', function() {
+        const linkColor = document.querySelectorAll('.nav__link');
+
+        // 메뉴 클릭 시 활성화
+        function colorLink() {
+            linkColor.forEach(l => l.classList.remove('active'));
+            this.classList.add('active');
+        }
+        linkColor.forEach(l => l.addEventListener('click', colorLink));
+
+        const linkCollapse = document.getElementsByClassName('collapse__link');
+        let i;
+        for(i = 0; i < linkCollapse.length; i++) {
+            linkCollapse[i].addEventListener('click', function() {
+                const collapseMenu = this.nextElementSibling;
+                collapseMenu.classList.toggle('showCollapse');
+                const rotate = collapseMenu.previousElementSibling;
+                rotate.classList.toggle('rotate');
+            });
+        }
+    });
+
         
     </script>
     

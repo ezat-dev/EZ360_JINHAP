@@ -14,25 +14,7 @@
 
 <body>
 
-	    <div class="tab">
-	    	<!-- 버튼동작 표시  --> 
-		    <p class="tabP" style="font-size:20px; margin-left:40px; color : white; font-weight:800;"></p>
-		    <div class="button-container">
-		        <button class="select-button">
-		            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회	           
-		        </button>
-		        <button class="insert-button">
-		            <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가          
-		        </button>
-		        <button class="excel-button">
-		            <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-		        </button>
-		        <button class="printer-button">
-		            <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-		        </button>
-		    </div>  
-		     	
-	    </div>
+	 
 
 <script>
 
