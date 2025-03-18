@@ -25,7 +25,14 @@ public class WorkController {
     @RequestMapping(value= "/work/monitoringStatus", method = RequestMethod.GET)
     public String monitoringStatus(Model model) {
         return "/work/monitoringStatus.jsp"; // 
-    }		
+    }	
+    
+    
+	//작업일보함
+    @RequestMapping(value= "/work/workDailyReport", method = RequestMethod.GET)
+    public String workDailyReport(Model model) {
+        return "/work/workDailyReport.jsp"; // 
+    }
 	
 	//재고관리(약품) - 발주현황 반영
     @RequestMapping(value= "/work/inventoryStatus", method = RequestMethod.GET)

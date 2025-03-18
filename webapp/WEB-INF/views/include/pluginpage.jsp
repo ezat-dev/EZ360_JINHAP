@@ -154,7 +154,7 @@ function pageObject(paramKey){
 			"b01":["/geomet/work/machinePerformStatus","설비별 생산실적"],
 			"b02":["/geomet/work/machineEfficStatus","설비효율 관리"],
 			"b03":["/geomet/work/monitoringStatus","생산모니터링 현황"],
-			"b04":["/geomet/work/추가","작업일보"],
+			"b04":["/geomet/work/workDailyReport","작업일보"],
 			"b05":["/geomet/work/inventoryStatus","재고관리(약품)"],
 			"b06":"",
 			"b07":"",
