@@ -40,16 +40,16 @@
             <p class="tabP" style="font-size:20px; margin-left:40px; color : white; font-weight:800;"></p>
             <div class="button-container">
                 <button class="select-button">
-                    <img src="/jinhap/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
                 <button class="insert-button">
-                    <img src="/jinhap/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
                 <button class="excel-button">
-                    <img src="/jinhap/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
                 <button class="printer-button">
-                    <img src="/jinhap/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
+                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
                 </button>
             </div>  
         </div>
@@ -89,7 +89,7 @@
 		    headerHozAlign:"center",
 		    ajaxConfig:"POST",
 		    ajaxLoader:false,
-		    ajaxURL:"/jinhap/quality/tustest/selectList",
+		    ajaxURL:"/geomet/quality/tustest/selectList",
 		    ajaxProgressiveLoad:"scroll",
 		    ajaxParams:{},
 		    placeholder:"조회된 데이터가 없습니다.",
@@ -99,6 +99,7 @@
 		        return response; //return the response data to tabulator
 		    },
 		    columns:[
+		    	 	{title: "NO", field: "1", sorter: "string", width: 30, hozAlign: "center", headerSort: false},
 			        {title:"자격분류(CODE)", field:"g800", sorter:"string", width:140,
 			        	hozAlign:"center", headerSort:false},
 			        {title:"담당업무", field:"g600", sorter:"string", width:140,

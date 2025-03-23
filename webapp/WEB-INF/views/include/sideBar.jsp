@@ -249,6 +249,7 @@
 		$(".loginName").text(loginInfo+"님 로그인");
 		loginUserMenuSetting();
 		menuList();
+		
      });
      
     //이벤트
