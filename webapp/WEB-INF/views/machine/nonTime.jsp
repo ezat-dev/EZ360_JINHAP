@@ -45,7 +45,7 @@
 	        background: white;
 	        width: 24%;
 	        max-width: 500px;
-	        height: 80vh; 
+	      
 	        overflow-y: auto; 
 	        margin: 6% auto 0;
 	        padding: 20px;
@@ -169,11 +169,11 @@
               <div class="box1">
 	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
 	           <label class="daylabel">교체일자 :</label>
-				<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+				<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 				
 				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 	
-				<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 	
 	            <label class="daylabel">설비명 :</label>
             <select class="dayselect">

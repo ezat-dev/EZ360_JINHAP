@@ -6,53 +6,424 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>설비별 생산실적</title>
-<%@include file="../include/pluginpage.jsp" %>    
-<style>
-.search{
-	height:40px;
-}
-.container {
-	display: flex;
-	justify-content: space-between;
-	padding: 20px;
-	margin-left:1008px;
-	margin-top:200px;
-}
+    <%@include file="../include/pluginpage.jsp" %>    
+    <jsp:include page="../include/tabBar.jsp"/>
+
+  <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-left: 1008px;
+            margin-top: 200px;
+        }
+        .view {
+            display: flex;
+            justify-content: center;
+            margin-top: 1%;
+        }
+        .tab {
+            width: 95%;
+            margin-bottom: 37px;
+            margin-top: 5px;
+            height: 45px;
+            border-radius: 6px 6px 0px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease-in-out;
+        }
+	    .modal-content {
+	        background: white;
+	        width: 24%;
+	        max-width: 500px;
+	        height: 80vh; 
+	        overflow-y: auto; 
+	        margin: 6% auto 0;
+	        padding: 20px;
+	        border-radius: 10px;
+	        position: relative;
+	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+	        transform: scale(0.8);
+	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	        opacity: 0;
+	    }
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .close {
+            background-color:white;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        .modal-content input, .modal-content textarea {
+
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal-content button {
+            background-color: #d3d3d3;
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .modal-content button:hover {
+            background-color: #a9a9a9;
+        }
+        .button-container {
+    		display: flex;
+		    gap: 10px;
+		    margin-left: auto;
+		    margin-right: 10px;
+		    margin-top: 40px;
+		}
+		.box1 {
+		    display: flex;
+		    justify-content: right;
+		    align-items: center;
+		    width: 800px;
+		    margin-right: 20px;
+		    margin-top:4px;
+		}
+        .dayselect {
+            width: 20%;
+            text-align: center;
+            font-size: 15px;
+        }
+        .daySet {
+        	width: 20%;
+      		text-align: center;
+            height: 16px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        .daylabel {
+            margin-right: 10px;
+            margin-bottom: 13px;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+        button-container.button{
+        height: 16px;
+        }
+        .mid{
+        margin-right: 9px;
+	    font-size: 20px;
+	    font-weight: bold;
+	
+	    height: 42px;
+	    margin-left: 9px;
+        }
+        
+            /* 체크박스 스타일 */
+ /* 체크박스 스타일 */
+    .checkbox-group {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 10px;
+    }
+    .checkbox1{
+    margin-top:20px;
+    margin-right:10px;
     
-</style>
-    
-    
+    }
+
+    .checkbox-group label {
+        font-size: 16px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        transform: scale(1.7); /* 체크박스 크기 키우기 */
+    }
+        
+        
+    </style>
+</head>
+
 <body>
 
-	<main class="main">
-    
-    	<div class="search">
-    	
-    	</div>
-    
-		<jsp:include page="../include/tabBar.jsp"/>
-	   
-	    
-	    <!-- 화면표시 -->
-	    <div class="view">
-	    
-	    </div>    
+    <main class="main">
+        <div class="tab">
+        
 
-	</main>
-<script>
-	//전역변수
+            <div class="button-container">
+            
+  			<div class="box1">
+           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+           <label class="daylabel">교체일자 :</label>
+			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+			
+			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-	//로드
-	$(function(){
-		$(".headerP").text("생산관리 - 설비별 생산실적");
-	});
+			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
-	//이벤트
+            <label class="daylabel">설비명 :</label>
+            <select class="dayselect">
+             
+                <option value="G800">G800</option>
+                <option value="G600">G600</option>
+                <option value="K-BLACK">K-BLACK</option>
+                <option value="공용설비">공용설비</option>
+                <option value="방청">방청</option>
+                <option value="이코팅1호기">이코팅1호기</option>
+                <option value="이코팅2호기">이코팅2호기</option>
+                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
+                <option value="세척 1호기">세척 1호기</option>
+                <option value="세척 2호기">세척 2호기</option>
+            </select>
+			</div>
+                <button class="select-button">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                </button>
+                <button class="insert-button">
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                </button>
+                <button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                </button>
+                <button class="printer-button">
+                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
+                </button>
+            </div>
+        </div>
+
+        <div class="view">
+            <div id="dataList"></div>
+        </div>
+    </main>
 	
+	   <div id="modalContainer" class="modal">
+	    <div class="modal-content">
+	        <span class="close">&times;</span>
+	        <h2>생산실적 현황 등록</h2>
+	        <form id="corrForm">
+	        
+	        
+	        
+	        <label>설비</label>
+	         <select name="equipmentName">
+	                <option value="G800">G800</option>
+	                <option value="G600">G600</option>
+	                <option value="K-BLACK">K-BLACK</option>
+	                <option value="공용설비">공용설비</option>
+	                <option value="방청">방청</option>
+	                <option value="이코팅1호기">이코팅1호기</option>
+	                <option value="이코팅2호기">이코팅2호기</option>
+	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
+	                <option value="세척 1호기">세척 1호기</option>
+	                <option value="세척 2호기">세척 2호기</option>
+	            </select>
 	
-	//함수
+	            
+	            
+	            
+	            <label>설비코드</label>
+	            <select name="select2">
+	                <option value="1">1</option>
+	                <option value="2">2</option>
+	                <option value="3">3</option>
+	
+	            </select>
+	
 
-</script>
+
+	   	
+	
+	           
+	           <label>최대중량(kg)</label>
+				<input type="text" class="1" name="1" placeholder="">
+				
+				<label>C/T</label>
+				<input type="text" class="2" name="2" placeholder="">
+				
+				<label>분활 횟수</label>
+				<input type="text" class="3" name="3" placeholder="">
+				
+				<label>작업횟수(코팅)</label>
+				<input type="text" class="4" name="4" placeholder="">
+				
+				<label>가동일수</label>
+				<input type="text" class="5" name="5" placeholder="">
+				
+				<label>부여시간(hr)</label>
+				<input type="text" class="6" name="6" placeholder="">
+				
+				<label>목표 가동시간</label>
+				<input type="text" class="7" name="7" placeholder="">
+				
+				
+				  <label>비고</label>
+	            <textarea name="remarks" rows="3"></textarea>
+
+				
+	            <button type="submit" id="saveCorrStatus">저장</button>
+	            <button type="button" id="closeModal">닫기</button>
+	        </form>
+	    </div>
+	</div>
+
+
+    <script>
+        $(function() {
+            getDataList();
+        });
+
+        function getDataList() {
+            dataTable = new Tabulator("#dataList", {
+                height: "560px",
+                layout: "fitColumns",
+                selectable: true,
+                tooltips: true,
+                selectableRangeMode: "click",
+                reactiveData: true,
+                headerHozAlign: "center",
+                ajaxConfig: "POST",
+                ajaxLoader: false,
+                ajaxURL: "/geomet/quality/tustest/selectList",
+                ajaxProgressiveLoad: "scroll",
+                ajaxParams: {},
+                placeholder: "조회된 데이터가 없습니다.",
+                paginationSize: 20,
+                ajaxResponse: function(url, params, response) {
+                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+                    return response;
+                },
+                columns: [
+                  
+                    {title: "설비", field: "2", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "설비코드", field: "3", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "투입중량(kg)", field: "4", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
+                    {title: "C/T", field: "5", sorter: "string", width: 60, hozAlign: "center", headerSort: false},
+                    {title: "분활 횟수", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "잡업횟수(코팅)", field: "6", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
+                    {title: "가동일수", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "부여시간(hr)", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "목표 가동시간", field: "6", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
+                    {title: "CPA_일", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "생산실적", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "달성율", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "과부족량", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "Capa_월", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "누적capa", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "누적 생산실적", field: "6", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
+                    {title: "달성율", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "누적 과부족량", field: "6", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
+                    {title: "비고", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                  
+                     
+                  
+                ],
+                rowFormatter: function(row) {
+                    var data = row.getData();
+                    row.getElement().style.fontWeight = "700";
+                    row.getElement().style.backgroundColor = "#FFFFFF";
+                },
+                rowClick: function(e, row) {
+                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
+                        if ($(this).hasClass("row_select")) {
+                            $(this).removeClass('row_select');
+                            row.getElement().className += " row_select";
+                        } else {
+                            $("#dataList div.row_select").removeClass("row_select");
+                            row.getElement().className += " row_select";
+                        }
+                    });
+                },
+            });
+        }
+
+        document.querySelector(".insert-button").addEventListener("click", function() {
+            let modal = document.getElementById("modalContainer");
+            modal.classList.add("show");
+        });
+
+        document.querySelector(".close").addEventListener("click", function() {
+            let modal = document.getElementById("modalContainer");
+            modal.classList.remove("show");
+        });
+        document.getElementById("closeModal").addEventListener("click", function() {
+            document.getElementById("modalContainer").classList.remove("show");
+        });
+
+
+        $(document).ready(function () {
+            $("#saveCorrStatus").click(function (event) {
+                event.preventDefault();
+                
+                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+
+                // FormData의 값을 콘솔에 출력
+                corrForm.forEach(function(value, key){
+                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
+                });
+
+                $.ajax({
+                    url: "/geomet/condition/corrStatus/insert",
+                    type: "POST",
+                    data: corrForm,
+                    dataType: "json",
+                    processData: false,  
+                    contentType: false,  
+                    success: function (response) {
+                        alert("교체 이력이 성공적으로 저장되었습니다!");
+                        $("#modalContainer").hide(); 
+                    }
+                });
+            });
+
+            // 모달 닫기 버튼 이벤트
+            $("#closeModal").click(function () {
+                $("#modalContainer").hide();
+            });
+        });
+
+        	
+
+
+        
+    </script>
 
 </body>
 </html>

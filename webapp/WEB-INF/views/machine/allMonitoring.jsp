@@ -120,7 +120,7 @@
 		    display: flex;
 		    justify-content: right;
 		    align-items: center;
-		    width: 800px;
+		    width: 1000px;
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
@@ -156,6 +156,42 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
+        
+		.status {
+		    display: flex;
+		    align-items: center;
+		    font-size: 18px; 
+		    margin-right: 15px;
+		    margin-bottom: 13px;
+		}
+		
+		.status span {
+		    width: 17px; 
+		    height: 17px; 
+		    border-radius: 50%;
+		    display: inline-block;
+		    margin-right: 8px;
+		   
+		}
+		.running {
+		    background-color: green;
+		}
+		
+		.changing {
+		    background-color: orange;
+		}
+		
+		.stopped {
+		    background-color: red;
+		}
+		
+		.unit {
+		    margin-left: 10px;
+		    font-size: 18px; 
+		    color: gray;
+		     margin-bottom: 17px;
+		}
+
     </style>
 </head>
 
@@ -168,13 +204,27 @@
             <div class="button-container">
             
            <div class="box1">
+           
+           
+             <div class="status">
+		        <span class="running"></span> 운전중
+		    </div>
+		    <div class="status">
+		        <span class="changing"></span> 변경
+		    </div>
+		    <div class="status">
+		        <span class="stopped"></span> 정지
+		    </div>
+		    <div class="unit">단위: ton, %</div>
+           
+        
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
            <label class="daylabel">교체일자 :</label>
-			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+			<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 			
 			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+			<input type="text" autocomplete="off"class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
            
 			</div>

@@ -235,16 +235,15 @@
 	            <label>시리얼 번호</label>
 	            <input type="text" name="serialNumber" placeholder="시리얼 번호">
 	
-	            <label>교체일자</label>
-	            <input type="date"class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;">
+				<label>교체일자</label>
+				<input type="text" class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;" autocomplete="off">
+				
+				<label>차기 교체일자</label>
+				<input type="text" class="daySet" name="nextDate" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
+				
+				<label>교체 주기</label>
+				<input type="text" class="daySet" name="replacementCycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
 
-	
-	            <label>차기 교체일자</label>
-	            <input type="text" name="nextDate">
-	            
-	            <label>교체 주기</label>
-	            <input type="text" name="replacementCycle">
-	
 	            <label>비고</label>
 	            <textarea name="remarks" rows="3"></textarea>
 	
