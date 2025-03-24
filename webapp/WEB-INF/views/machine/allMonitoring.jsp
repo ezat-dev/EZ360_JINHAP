@@ -231,9 +231,9 @@
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
+<!--                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+                </button> -->
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
@@ -301,6 +301,25 @@
         });
 
         function getDataList() {
+            var data = [
+                { equipment: "탈유탈지1호기", status: "운전중", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "탈유탈지2호기", status: "변경", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "이코팅 1호기", status: "정지", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "이코팅 2호기", status: "정지", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "쇼트 1호기", status: "운전중", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "쇼트 2호기", status: "운전중", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "쇼트 3호기", status: "변경", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "쇼트 4호기", status: "정지", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "쇼트 5호기", status: "정지", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "쇼트 6호기", status: "운전중", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "쇼트 7호기(FDS)", status: "운전중", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "G800", status: "변경", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "G600", status: "정지", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "공용설비", status: "정지", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "K-BLACK", status: "운전중", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" },
+                { equipment: "방청", status: "운전중", production_per_hour: "", holding_time: "", charge_count: "", avg_charge_count: "", interval_per_ton: "", loss_time: "", operation_time: "" }
+            ];
+
             dataTable = new Tabulator("#dataList", {
                 height: "360px",
                 layout: "fitColumns",
@@ -309,33 +328,44 @@
                 selectableRangeMode: "click",
                 reactiveData: true,
                 headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
                 paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
+                data: data, // 하드코딩된 데이터를 데이터로 사용
                 columns: [
-                    {title: "설비", field: "equipment", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
-                    {title: "설비 상태", field: "status", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "시간당 생산 통수", field: "production_per_hour", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "보유 시간", field: "holding_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "장입 통수", field: "charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "평균 장입 통수", field: "avg_charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "통당 간격", field: "interval_per_ton", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "생산 LOSS 시간(비가동)", field: "loss_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "가동 시간", field: "operation_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    { title: "설비", field: "equipment", sorter: "string", width: 150, hozAlign: "center", headerSort: false },
+                    {
+                        title: "설비 상태", 
+                        field: "status", 
+                        sorter: "string", 
+                        width: 150, 
+                        hozAlign: "center", 
+                        headerSort: false,
+                        formatter: function(cell, formatterParams, onRendered) {
+                            var status = cell.getValue();
+                            var color = "black";  // 기본 글씨 색
+
+                            // 상태에 따른 글씨 색상 설정
+                            if (status === "운전중") {
+                                color = "#28a745"; // 초록색
+                            } else if (status === "변경") {
+                                color = "#fd7e14"; // 오렌지색
+                            } else if (status === "정지") {
+                                color = "#dc3545"; // 빨간색
+                            }
+
+                            // 글씨 색상 적용
+                            cell.getElement().style.color = color;
+
+                            return status;  // 셀에 표시할 값
+                        }
+                    },
+                    { title: "시간당 생산 통수", field: "production_per_hour", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "보유 시간", field: "holding_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "장입 통수", field: "charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "평균 장입 통수", field: "avg_charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "통당 간격", field: "interval_per_ton", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "생산 LOSS 시간(비가동)", field: "loss_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "가동 시간", field: "operation_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
                 ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
                 rowClick: function(e, row) {
                     $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
                         if ($(this).hasClass("row_select")) {
@@ -349,11 +379,6 @@
                 },
             });
         }
-
-
-
-
-
 
         function getDataList2() {
             dataTable = new Tabulator("#dataList2", {

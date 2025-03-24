@@ -16,6 +16,18 @@
             margin-left: 1008px;
             margin-top: 200px;
         }
+        
+		#dataList2 {
+		    position: absolute;
+		    top: 100px;
+		    left: 1%;
+		    /* transform: translateX(-50%); */
+		    /* width: 80%; */
+		    /* text-align: center; */
+		    /* display: none; */
+		    z-index: 9999;
+		}
+
         .view {
             flex-direction: column; /* 세로 배치 */
 		    align-items: center; /* 중앙 정렬 */
@@ -190,7 +202,11 @@
 		    color: gray;
 		     margin-bottom: 17px;
 		}
-
+		.car{
+			width: 60%;
+		    height: 20%;
+		    margin-left: 20%;
+		}
     </style>
 </head>
 
@@ -235,8 +251,9 @@
                     <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
                 </button>
             </div>
+              
         </div>
-
+ 		<img src="/geomet/css/tabBar/car.png"  class="car">
         <div class="view">
             <div id="dataList"></div>
             <div id="dataList2"></div>
@@ -284,7 +301,7 @@
     <script>
         $(function() {
             getDataList();
-            getDataList2();
+           /*  getDataList2(); */
         });
 
         function getDataList2() {
@@ -463,7 +480,26 @@
             });
         });
 
-        	
+        $(document).ready(function () {
+            getDataList();
+
+            $(".dayselect").change(function () {
+                var selectedValue = $(this).val();
+
+                if (selectedValue == "1") {
+                    $(".car").show();
+                    $("#dataList2").empty();
+                    getDataList();
+                } else if (selectedValue == "2") {
+                    $(".car").hide();
+                    $("#dataList").empty();
+                    getDataList2();
+                }
+            });
+
+            $(".dayselect").trigger("change");
+        });
+                	
 
 
         

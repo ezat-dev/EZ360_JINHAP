@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 권한부여</title>
 <%@include file="../include/pluginpage.jsp" %>
+    <link rel="stylesheet" href="/geomet/css/authority2/authority2.css">
+    
     <style>
 	
 .view {
@@ -35,13 +37,18 @@
     
     
     </style>
+    <body>
     
+    <div class="tab">
     
+
+</div>
+
     <body>
 
     <form method="post" id="permissionForm" name="permissionForm">
     	<input type="text" style="display:none;" id="user_code" name="user_code" />
-	 	<main class="main">
+
 	    
 	    <div class="a-01-text-box">통합 모니터링</div>
 	    <div class="a-02-text-box">설비별 모니터링</div>
@@ -481,7 +488,7 @@
 	     <div class="view">
 	        <div id="dataList" class="tabulator"></div>
 	    </div>
-	</main>
+
 <script>
 	//전역변수
     var userTable;	
@@ -504,7 +511,92 @@
 	    });
 	});
 	
-	
+  /*   $(document).ready(function() {
+        const selectBoxes = {
+            "a-01": "update",
+            "a-02": "update",
+            "a-03": "update",
+            "a-04": "update",
+            "a-05": "update",
+            "a-06": "update", 
+            "a-07": "select",
+            "a-08": "select",
+            "a-09": "select",
+            "a-10": "select",
+            "b-01": "update",
+            "b-02": "update",
+            "b-03": "update",
+            "b-04": "update",
+            "b-05": "update",
+            "c-01": "update",
+            "c-02": "update",
+            "c-03": "update",
+            "c-04": "update",
+            "c-05": "update",
+            "c-06": "update",
+            "c-07": "update",
+            "c-08": "update",
+            "c-09": "update",
+            "c-10": "update",
+            "c-11": "update",
+            "c-12": "update",
+            "d-01": "update",
+            "d-02": "update",
+            "d-03": "update",
+            "d-04": "update",
+            "d-05": "update",
+            "d-06": "select",
+            "d-07": "select",
+            "d-08": "select",
+            "d-09": "update",
+            "e-01": "select",
+            "e-02": "select",
+            "e-03": "select",
+            "f-01": "update",
+            "f-02": "update",
+            "f-03": "update",
+            "f-04": "update",
+            "f-05": "select",
+            "f-06": "select",
+            "f-07": "update",
+            "f-08": "select",
+            "f-09": "select",
+            "g-01": "update",
+            "g-02": "update",
+            "g-03": "update",
+            "g-04": "update",
+            "g-05": "update",
+            "g-06": "update",
+            "g-07": "select",
+            "g-08": "select",
+            "g-09": "select",
+            "g-10": "select",
+            "g-11": "select",
+            "g-12": "select",
+            "g-13": "select",
+            "g-14": "select",
+            "g-15": "select",
+            "g-16": "select",
+            "g-17": "update",
+            "g-18": "select",
+            "h-01": "update",
+            "h-02": "update",
+            "h-03": "update",
+            "h-04": "update",
+            "h-05": "update",
+            "h-06": "update",
+            "h-07": "update",
+            "h-08": "update",
+            "h-09": "update",
+            "h-10": "update",
+            "h-11": "update",
+            "h-12": "update",
+            "h-13": "update",
+               
+           
+        };
+    } */
+
 	
 	//함수
 	function getAllUserList(){
@@ -550,7 +642,7 @@
 				row.getElement().style.backgroundColor = "#FFFFFF";
 			},
 			rowClick:function(e, row){
-
+				
 				$("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item){
 						
 					if($(this).hasClass("row_select")){							
@@ -567,7 +659,8 @@
 				user_code = rowData.user_code;
 				$("#user_code").val(rowData.user_code);
 				$(".userName").text(rowData.user_name);
-				
+				console.log("user_code 값 입력된 후:", $("#user_code").val());
+			    console.log("user_name 값 입력된 후:", $(".userName").text());
 				getPermissionUserSelectPermission();
 			},
 		});		
@@ -592,23 +685,71 @@
 			}
 		})
 	}
+
+
 	
+	$(document).on('click', '.Aupdate', function() {
+	    var user_code = $("#user_code").val();
+	    var permissions = {};
+	    
+	    for (var i = 1; i <= 7; i++) {
+	        // 체크박스가 선택된 경우 'R', 그렇지 않으면 'N'
+	        permissions['a0' + i] = $("input[name='a0" + i + "']:checked").val() ? 'R' : 'N';
+	    }
+
+	    var permissionData = new FormData();
+	    permissionData.append("user_code", user_code);
+
+	    for (var key in permissions) {
+	        permissionData.append(key, permissions[key]);
+	    }
+
+	    permissionData.forEach(function(value, key) {
+	        console.log(key + ": " + value); // 콘솔에 전송되는 값 출력
+	    });
+
+	    $.ajax({
+	        url: "/geomet/user/userPermission/update",
+	        type: "POST",
+	        contentType: false,
+	        processData: false,
+	        dataType: "json",
+	        data: permissionData,
+	        success: function(result) {
+	            alert("권한이 수정되었습니다.");
+	            getPermissionUserSelect();
+	        },
+	        error: function(xhr, status, error) {
+	            console.error("AJAX 오류:", status, error);
+	            alert("오류가 발생했습니다.");
+	        }
+	    });
+	});
+
+
+	    
 	function saveAut(){
-		var permissionData = new FormData($("#permissionForm")[0]);
-		
-		$.ajax({
-			url:"/geomet/user/userPermission/update",
-			type:"post",
-			contentType: false,
-			processData: false,
-			dataType: "json",
-			data:permissionData,
-			success:function(result){
-				alert("권한이 수정되었습니다.");
-				getPermissionUserSelect();
-			}
-		});		
+	    var permissionData = new FormData($("#permissionForm")[0]);
+
+	    // FormData의 내용을 콘솔에 출력
+	    for (var pair of permissionData.entries()) {
+	        console.log(pair[0] + ': ' + pair[1]);
+	    }
+
+	    $.ajax({
+	        url: "/geomet/user/userPermission/update",
+	        type: "post",
+	        contentType: false,
+	        processData: false,
+	        dataType: "json",
+	        data: permissionData,
+	        success: function(result){
+	            alert("권한이 수정되었습니다.");
+	            getPermissionUserSelect();
+	        }
+	    });		
 	}
+
 
     </script>
 
