@@ -191,6 +191,12 @@
 		    color: gray;
 		     margin-bottom: 17px;
 		}
+		
+		.tabulator-row .tabulator-cell {
+
+	    padding: 11px;
+
+	}
 
     </style>
 </head>
@@ -297,7 +303,7 @@
     <script>
         $(function() {
             getDataList();
-            getDataList2();
+     
         });
 
         function getDataList() {
@@ -321,14 +327,19 @@
             ];
 
             dataTable = new Tabulator("#dataList", {
-                height: "360px",
+                height: "760px",
                 layout: "fitColumns",
                 selectable: true,
                 tooltips: true,
                 selectableRangeMode: "click",
                 reactiveData: true,
                 headerHozAlign: "center",
+                rowHeight: 39,
                 paginationSize: 20,
+                ajaxResponse: function(url, params, response) {
+    
+                    return response;
+                },
                 data: data, // 하드코딩된 데이터를 데이터로 사용
                 columns: [
                     { title: "설비", field: "equipment", sorter: "string", width: 150, hozAlign: "center", headerSort: false },
@@ -337,6 +348,7 @@
                         field: "status", 
                         sorter: "string", 
                         width: 150, 
+                 
                         hozAlign: "center", 
                         headerSort: false,
                         formatter: function(cell, formatterParams, onRendered) {
@@ -358,25 +370,28 @@
                             return status;  // 셀에 표시할 값
                         }
                     },
-                    { title: "시간당 생산 통수", field: "production_per_hour", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
-                    { title: "보유 시간", field: "holding_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
-                    { title: "장입 통수", field: "charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
-                    { title: "평균 장입 통수", field: "avg_charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
-                    { title: "통당 간격", field: "interval_per_ton", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
-                    { title: "생산 LOSS 시간(비가동)", field: "loss_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
-                    { title: "가동 시간", field: "operation_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "시간당생산<br/>통수", field: "production_per_hour", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    { title: "보유<br/>시간", field: "holding_time", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    { title: "장입<br/>통수", field: "charge_count", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    { title: "평균장입<br/>통수", field: "avg_charge_count", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    { title: "통당 간격", field: "interval_per_ton", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    { title: "생산LOSS<br/>시간(비가동)", field: "loss_time", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    { title: "가동 시간", field: "operation_time", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    {title: "현 생산 실적", field: "current_production", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "현 생산 목표", field: "current_target", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "실적 - 생산", field: "actual_production", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "실적 - 과부족", field: "over_shortage", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "달성률(%)", field: "achievement_rate", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "누적실적<br/>생산량", field: "cumulative_production", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "누적실적<br/>생산 통수", field: "cumulative_count", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "누적실적<br/>과부족량", field: "cumulative_over_shortage", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "누적실적<br/>과부족 통수", field: "cumulative_over_shortage_count", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "누적실적<br/>달성률", field: "cumulative_achievement_rate", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
                 ],
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
+
+              /*   rowFormatter: function(row) {
+                    row.getElement().style.height = "39px"; 
+                } */
             });
         }
 
@@ -396,12 +411,13 @@
                 ajaxParams: {},
                 placeholder: "조회된 데이터가 없습니다.",
                 paginationSize: 20,
+                rowHeight: 39,
                 ajaxResponse: function(url, params, response) {
                     $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
                     return response;
                 },
                 columns: [
-                    {title: "현 생산 실적", field: "current_production", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
+                  /*   {title: "현 생산 실적", field: "current_production", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
                     {title: "현 생산 목표", field: "current_target", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
                     {title: "실적 - 생산", field: "actual_production", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
                     {title: "실적 - 과부족", field: "over_shortage", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
@@ -410,11 +426,11 @@
                     {title: "누적실적 - 생산 통수", field: "cumulative_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
                     {title: "누적실적 - 과부족량", field: "cumulative_over_shortage", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
                     {title: "누적실적 - 과부족 통수", field: "cumulative_over_shortage_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "누적실적 - 달성률", field: "cumulative_achievement_rate", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "누적실적 - 달성률", field: "cumulative_achievement_rate", sorter: "string", width: 200, hozAlign: "center", headerSort: false}, */
                 ],
                 rowFormatter: function(row) {
                     var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
+                    row.getElement().style.fontWeight = "1000";
                     row.getElement().style.backgroundColor = "#FFFFFF";
                 },
                 rowClick: function(e, row) {

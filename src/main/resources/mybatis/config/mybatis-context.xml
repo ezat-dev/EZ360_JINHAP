@@ -9,5 +9,6 @@
   <mappers>
   	<mapper resource="mybatis/mapper/users.xml"/>
   	<mapper resource="mybatis/mapper/corrStatus.xml"/>
+  	<mapper resource="mybatis/mapper/condition.xml"/>
   </mappers>
 </configuration>

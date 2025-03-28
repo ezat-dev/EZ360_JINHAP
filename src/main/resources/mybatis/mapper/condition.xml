@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="condition">
+
+    <select id="getStandardInfoList" parameterType="map" resultType="StandardInfo">
+        SELECT *
+        FROM tb_standard_info
+        <where>
+            <if test="plating_no != null and plating_no != ''">
+                AND plating_no = #{plating_no}
+            </if>
+            <if test="pum_name != null and pum_name != ''">
+                AND pum_name = #{pum_name}
+            </if>
+            <if test="surface_spec != null and surface_spec != ''">
+                AND surface_spec = #{surface_spec}
+            </if>
+        </where>
+    </select>
+</mapper>

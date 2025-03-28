@@ -121,7 +121,7 @@
 		    display: flex;
 		    justify-content: right;
 		    align-items: center;
-		    width: 800px;
+		    width: 1000px;
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
@@ -145,6 +145,8 @@
             margin-bottom: 13px;
             font-size: 18px;
             margin-left: 20px;
+            
+    
         }
         button-container.button{
         height: 16px;
@@ -193,27 +195,19 @@
             
   			<div class="box1">
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">교체일자 :</label>
-			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+        
+        
+			<label class="daylabel">도금품번 :</label>
+			<input type="text" class="plating_no_in" id="plating_no" style="font-size: 16px; margin-bottom:10px;" placeholder="도금품번 선택" autocomplete="off">
 			
-			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
-
-			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-
-            <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
-             
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
+			<label class="daylabel">품명 :</label>
+			<input type="text" class="pum_name" id="pum_name" style="font-size: 16px; margin-bottom:10px;" placeholder="품명 선택" autocomplete="off">
+			
+			<label class="daylabel">표면처리사양 :</label>
+			<input type="text" class="surface_spec_ins" id="surface_spec" style="font-size: 16px; margin-bottom:10px;" placeholder="표면처리사양" autocomplete="off">
+			
+			
+			
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
@@ -224,9 +218,7 @@
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+
             </div>
         </div>
 
@@ -235,92 +227,88 @@
         </div>
     </main>
 	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>기준 정보 등록</h2>
-	        <form id="corrForm">
-	        
-	        
-	        
-	        
-	         <label>자제품번</label>
-	            <select name="select1">
-	                <option value="1">1</option>
-	                <option value="2">2</option>
-	                
-	            </select>
-	            
-	            
-	            
-	            <label>품명</label>
-	            <select name="select2">
-	                <option value="1">1</option>
-	                <option value="2">2</option>
-	                <option value="3">3</option>
-	
-	            </select>
-	
-		            <label>표면처리 사양</label>
-	            <select name="select3">
-	                <option value="1">1</option>
-	                <option value="2">2</option>
-	                <option value="3">3</option>
-	
-	            </select>
-	
+	<div id="modalContainer" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>기준 정보 등록</h2>
+        <form id="corrForm">
+        
+            <label>도금 품번</label>
+            <input type="text" name="plating_no" placeholder="">
+        
+            <label>자제품번</label>
+            <input type="text" name="material_no" placeholder="">
+            
+            <label>품명</label>
+            <input type="text" name="pum_name" placeholder="">
 
-	   	
-	
-	           
-	           <label>최대중량</label>
-				<input type="text" class="1" name="1" placeholder="">
-				
-				<label>최소중량</label>
-				<input type="text" class="2" name="2" placeholder="">
-				
-				<label>평균중량</label>
-				<input type="text" class="3" name="3" placeholder="">
-				
-				<label>설비명</label>
-				<input type="text" class="4" name="4" placeholder="">
-				
-				<label>장입기준</label>
-				<input type="text" class="5" name="5" placeholder="">
-				
-				<label>설비명</label>
-				<input type="text" class="6" name="6" placeholder="">
-				
-				<label>장입기준분할횟수</label>
-				<input type="text" class="7" name="7" placeholder="">
-				
-				<label>장입량(현재장입량)</label>
-				<input type="text" class="8" name="8" placeholder="">
-				
-				<label>G-800 (kg)</label>
-				<input type="text" class="9" name="9" placeholder="">
-				
-				<label>G600 (kg)</label>
-				<input type="text" class="10" name="10" placeholder="">
-				
-				<label>공용설비 (kg)</label>
-				<input type="text" class="11" name="11" placeholder="">
-				
-				<label>K-BLACK (kg)</label>
-				<input type="text" class="12" name="12" placeholder="">
-				
-				
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
+            <label>표면처리 사양</label>
+            <select name="surface_spec">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+
+            <label>최대중량</label>
+            <input type="text" name="max_weight" placeholder="">
+            
+            <label>최소중량</label>
+            <input type="text" name="min_weight" placeholder="">
+            
+            <label>평균중량</label>
+            <input type="text" name="avg_weight" placeholder="">
+            
+            <label>설비명</label>
+            <input type="text" name="equip_1" placeholder="">
+            
+            <label>장입기준</label>
+            <input type="text" name="load_1" placeholder="">
+            
+            <label>설비명</label>
+            <input type="text" name="equip_2" placeholder="">
+            
+            <label>장입기준분할횟수</label>
+            <input type="text" name="split_cnt" placeholder="">
+            
+            <label>장입량(현재장입량)</label>
+            <input type="text" name="avg_load" placeholder="">
+            
+            <label>G-800 (kg)</label>
+            <input type="text" name="g800" placeholder="">
+            
+            <label>G600 (kg)</label>
+            <input type="text" name="g600" placeholder="">
+            
+            <label>공용설비 (kg)</label>
+            <input type="text" name="common_equip" placeholder="">
+            
+            <label>K-BLACK (kg)</label>
+            <input type="text" name="k_black" placeholder="">
+            
+            <button type="submit" id="saveCorrStatus">저장</button>
+            <button type="button" id="closeModal">닫기</button>
+        </form>
+    </div>
+</div>
+
 
 
     <script>
-        $(function() {
-            getDataList();
+    $(document).ready(function () {
+     
+        getDataList();
+
+        
+        $(".select-button").click(function () {
+            dataTable.setData("/geomet/condition/divisionWeight/list", {
+                "plating_no": $("#plating_no").val() || "",
+                "pum_name": $("#pum_name").val() || "",
+                "surface_spec": $("#surface_spec").val() || "",
+            });
         });
+
+    });
+
 
         function getDataList() {
             dataTable = new Tabulator("#dataList", {
@@ -333,9 +321,14 @@
                 headerHozAlign: "center",
                 ajaxConfig: "POST",
                 ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
+                ajaxURL: "/geomet/condition/divisionWeight/list",
                 ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
+                ajaxParams: {
+                	 "plating_no": $("#plating_no").val() || "",
+                     "pum_name": $("#pum_name").val() || "",
+                     "surface_spec": $("#surface_spec").val() || "",
+                },
+
                 placeholder: "조회된 데이터가 없습니다.",
                 paginationSize: 20,
                 ajaxResponse: function(url, params, response) {
@@ -343,22 +336,23 @@
                     return response;
                 },
                 columns: [
-                    {title: "자제품번", field: "1", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
-                    {title: "품명", field: "2", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
-                    {title: "표면처리 사양", field: "3", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
-                    {title: "최대중량", field: "4", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "최소중량", field: "5", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "평균중량", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "MAIN설비명", field: "6", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "장입기준", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "SUB설비명", field: "6", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "장입기준", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "분할횟수", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "장입량", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "G-800", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "G600", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "공용설비", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "K-BLACK", field: "6", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                	{title: "도금품번", field: "plating_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
+                    {title: "자제품번", field: "material_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
+                    {title: "품명", field: "pum_name", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
+                    {title: "표면처리 사양", field: "surface_spec", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
+                    {title: "최대중량", field: "max_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "최소중량", field: "min_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "평균중량", field: "avg_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "MAIN설비명", field: "equip_1", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "장입기준", field: "load_1", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "SUB설비명", field: "equip_2", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "장입기준", field: "load_2", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "분할횟수", field: "split_cnt", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "장입량", field: "avg_load", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "G-800", field: "g800", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "G600", field: "g600", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "공용설비", field: "common_equip", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "K-BLACK", field: "k_black", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
                     
                   
                 ],
@@ -395,6 +389,8 @@
         });
 
 
+
+        
         $(document).ready(function () {
             $("#saveCorrStatus").click(function (event) {
                 event.preventDefault();

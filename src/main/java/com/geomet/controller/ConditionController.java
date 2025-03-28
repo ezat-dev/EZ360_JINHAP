@@ -1,6 +1,7 @@
 package com.geomet.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,9 +10,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.geomet.domain.CorrStatus;
+import com.geomet.domain.Condition;
+import com.geomet.service.ConditionService;
 import com.geomet.service.CorrStatusService;
 
 @Controller
@@ -20,6 +24,9 @@ public class ConditionController {
     @Autowired
     private CorrStatusService CorrStatusService;
 	
+    @Autowired
+    private ConditionService conditionService; 
+    
 	/*-----조건관리-----*/
 	
 	//TC 교체이력, 각종 조절계 교정이력
@@ -70,6 +77,72 @@ public class ConditionController {
     @RequestMapping(value= "/condition/divisionWeight", method = RequestMethod.GET)
     public String divisionWeight(Model model) {
         return "/condition/divisionWeight.jsp"; // 
-    }		
-	
+    }	
+    
+    @RequestMapping(value = "/condition/divisionWeight/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> workDetailList(
+            @RequestParam String plating_no,
+            @RequestParam String pum_name,
+            @RequestParam String surface_spec
+    ) {
+        // 요청 파라미터 로그 출력
+        System.out.println("Received request:");
+        System.out.println("plating_no: " + plating_no);
+        System.out.println("pum_name: " + pum_name);
+        System.out.println("surface_spec_in: " + surface_spec);
+
+        // 반환할 Map 생성
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        // 서비스 계층을 통해 데이터를 가져옴
+        try {
+           
+        	Condition standardInfo = new Condition();
+        	standardInfo.setPlating_no(plating_no.isEmpty() ? null : plating_no); 
+            standardInfo.setPum_name(pum_name.isEmpty() ? null : pum_name);        
+            standardInfo.setSurface_spec(surface_spec.isEmpty() ? null : surface_spec); 
+
+            List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
+
+            System.out.println("getStandardInfoList Size: " + standardInfoList.size());
+            // 성공 시 데이터 반환
+            rtnMap.put("status", "success");
+            rtnMap.put("last_page", 1);
+            rtnMap.put("data", standardInfoList);
+        } catch (Exception e) {
+            // 에러 발생 시 에러 메시지 반환
+            System.out.println("Error occurred: " + e.getMessage());
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+    
+    
+    
+    
+    
+
+    @RequestMapping(value = "/condition/divisionWeight/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> saveDivisionWeight(@ModelAttribute Condition condition) {
+        
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+        
+        if(condition.getPlating_no() == null) {
+        	rtnMap.put("data", "도금 푼번을 입력하시오!");
+        	return rtnMap;
+        }
+        
+        
+     
+        conditionService.saveDivisionWeight(condition); 
+        
+        return rtnMap;
+    }
+
+    
+    
 }
