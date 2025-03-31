@@ -11,4 +11,6 @@ public interface ConditionDao {
 	List<Condition> getStandardInfoList(Condition params); 
 	
 	  void saveDivisionWeight(Condition condition);
+	  
+	  void delDivisionWeight(Condition condition);
 }

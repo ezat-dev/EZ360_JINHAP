@@ -24,9 +24,13 @@ public List<Condition> getStandardInfoList(Condition params) {
 
 	
 	@Override
-
     public void saveDivisionWeight(Condition condition) {
 		conditionDao.saveDivisionWeight(condition);
+    }
+	
+	@Override
+    public void delDivisionWeight(Condition condition) {
+		conditionDao.delDivisionWeight(condition);
     }
  
 }

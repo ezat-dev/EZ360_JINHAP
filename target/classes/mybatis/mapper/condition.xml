@@ -4,19 +4,42 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="condition">
 
-    <select id="getStandardInfoList" parameterType="map" resultType="StandardInfo">
-        SELECT *
-        FROM tb_standard_info
-        <where>
-            <if test="plating_no != null and plating_no != ''">
-                AND plating_no = #{plating_no}
-            </if>
-            <if test="pum_name != null and pum_name != ''">
-                AND pum_name = #{pum_name}
-            </if>
-            <if test="surface_spec != null and surface_spec != ''">
-                AND surface_spec = #{surface_spec}
-            </if>
-        </where>
-    </select>
+<select id="getStandardInfoList" parameterType="map" resultType="Condition">
+    SELECT *
+    FROM tb_standard_info
+    <where>
+        <if test="plating_no != null and plating_no != ''">
+            AND plating_no = #{plating_no}
+        </if>
+        <if test="pum_name != null and pum_name != ''">
+            AND pum_name = #{pum_name}
+        </if>
+        <if test="surface_spec != null and surface_spec != ''">
+            AND surface_spec = #{surface_spec}
+        </if>
+    </where>
+    ORDER BY plating_no
+</select>
+
+    
+    
+    
+     <insert id="saveDivisionWeight" parameterType="Condition">
+        INSERT INTO tb_standard_info (
+            plating_no, material_no, pum_name, surface_spec, max_weight, min_weight,
+            avg_weight, equip_1, load_1, equip_2, load_2, split_cnt, avg_load, 
+            g800, g600, common_equip, k_black
+        )
+        VALUES (
+            #{plating_no}, #{material_no}, #{pum_name}, #{surface_spec}, #{max_weight}, 
+            #{min_weight}, #{avg_weight}, #{equip_1}, #{load_1}, #{equip_2}, 
+            #{load_2}, #{split_cnt}, #{avg_load}, #{g800}, #{g600}, #{common_equip}, 
+            #{k_black}
+        )
+    </insert>
+    
+        <delete id="delDivisionWeight" parameterType="string">
+        DELETE FROM tb_standard_info 
+        WHERE plating_no = #{plating_no}
+    </delete>
 </mapper>

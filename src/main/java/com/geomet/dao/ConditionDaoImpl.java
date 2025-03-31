@@ -24,4 +24,9 @@ public class ConditionDaoImpl implements ConditionDao {
     public void saveDivisionWeight(Condition condition) {
     	sqlSession.insert("condition.saveDivisionWeight",condition);
     }
+    
+    @Override
+    public void delDivisionWeight(Condition condition) {
+    	sqlSession.delete("condition.delDivisionWeight",condition);
+    }
 }

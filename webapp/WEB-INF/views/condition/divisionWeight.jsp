@@ -215,6 +215,9 @@
                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
+                 <button class="del-button">
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">삭제
+                </button>
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
@@ -293,140 +296,165 @@
 
 
 
-    <script>
-    $(document).ready(function () {
-     
-        getDataList();
+  <script>
+  $(document).ready(function () {
+	    getDataList();
 
-        
-        $(".select-button").click(function () {
-            dataTable.setData("/geomet/condition/divisionWeight/list", {
-                "plating_no": $("#plating_no").val() || "",
-                "pum_name": $("#pum_name").val() || "",
-                "surface_spec": $("#surface_spec").val() || "",
-            });
-        });
+	    $(".select-button").click(function () {
+	        dataTable.setData("/geomet/condition/divisionWeight/list", {
+	            "plating_no": $("#plating_no").val() || "",
+	            "pum_name": $("#pum_name").val() || "",
+	            "surface_spec": $("#surface_spec").val() || "",
+	        });
+	    });
 
+	    // 모달 열기 버튼 이벤트
+	    $(".insert-button").click(function () {
+	        let modal = $("#modalContainer");
+	        modal.show(); 
+	        modal.addClass("show");
+	    });
+
+	    // 모달 닫기 버튼 이벤트
+	    $(".close, #closeModal").click(function () {
+	        let modal = $("#modalContainer");
+	        modal.removeClass("show").hide(); 
+	    });
+  
     });
 
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/condition/divisionWeight/list",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {
-                	 "plating_no": $("#plating_no").val() || "",
-                     "pum_name": $("#pum_name").val() || "",
-                     "surface_spec": $("#surface_spec").val() || "",
-                },
 
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                	{title: "도금품번", field: "plating_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
-                    {title: "자제품번", field: "material_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
-                    {title: "품명", field: "pum_name", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
-                    {title: "표면처리 사양", field: "surface_spec", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
-                    {title: "최대중량", field: "max_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "최소중량", field: "min_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "평균중량", field: "avg_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "MAIN설비명", field: "equip_1", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "장입기준", field: "load_1", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "SUB설비명", field: "equip_2", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "장입기준", field: "load_2", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "분할횟수", field: "split_cnt", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "장입량", field: "avg_load", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "G-800", field: "g800", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "G600", field: "g600", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "공용설비", field: "common_equip", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    {title: "K-BLACK", field: "k_black", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
-                    
-                  
-                ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
+
+    $("#saveCorrStatus").click(function (event) {
+        event.preventDefault();
+
+        var corrForm = new FormData($("#corrForm")[0]);
+
+        $.ajax({
+            url: "/geomet/condition/divisionWeight/insert",
+            type: "POST",
+            data: corrForm,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("기준정보 성공적으로 저장되었습니다!");
+                $("#modalContainer").hide();
+
+             
+             
+            }
+        });
+        getDataList()
+    });
+
+
+
+    
+    $(".del-button").click(function(event) {
+        event.preventDefault();
+        
+        console.log("삭제 버튼 클릭됨");
+
+        if (!selectedRow) {
+            alert("삭제할 행을 선택하세요.");
+            return;
         }
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
-
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
-
-
-
+        var platingNo = selectedRow.getData().plating_no;
         
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
-                
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+        console.log("전송할 plating_no 값:", platingNo);
 
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
+        if (!platingNo) {
+            alert("삭제할 항목이 없습니다.");
+            return;
+        }
+
+        var requestData = JSON.stringify({ "plating_no": platingNo });
+        console.log("전송된 데이터:", requestData);
+
+        $.ajax({
+            url: "/geomet/condition/divisionWeight/del",
+            type: "POST",
+            contentType: "application/json",
+            data: requestData,
+            dataType: "json",
+            success: function(response) {
+                console.log("삭제 성공:", response);
+                alert("기준정보가 성공적으로 삭제되었습니다!");
+                selectedRow.delete();
+                selectedRow = null;
+
+                dataTable.setData("/geomet/condition/divisionWeight/list", {
+                    "plating_no": $("#plating_no").val() || "",
+                    "pum_name": $("#pum_name").val() || "",
+                    "surface_spec": $("#surface_spec").val() || "",
                 });
-
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
-
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
+            },
+            error: function(xhr, status, error) {
+                console.log("삭제 오류 발생:", xhr.responseText);
+                alert("삭제 중 오류가 발생했습니다: " + error);
+            }
         });
+    });
 
-        	
+    var selectedRow = null;
+    function getDataList() {
+        dataTable = new Tabulator("#dataList", {
+            height: "560px",
+            layout: "fitColumns",
+            selectable: true,
+            tooltips: true,
+            selectableRangeMode: "click",
+            reactiveData: true,
+            headerHozAlign: "center",
+            ajaxConfig: "POST",
+            ajaxLoader: false,
+            ajaxURL: "/geomet/condition/divisionWeight/list",
+            ajaxProgressiveLoad: "scroll",
+            ajaxParams: {
+                "plating_no": $("#plating_no").val() || "",
+                "pum_name": $("#pum_name").val() || "",
+                "surface_spec": $("#surface_spec").val() || "",
+            },
+            placeholder: "조회된 데이터가 없습니다.",
+            paginationSize: 20,
+            ajaxResponse: function(url, params, response) {
+                $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+                return response;
+            },
+            columns: [
+                { title: "도금품번", field: "plating_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+                { title: "자제품번", field: "material_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+                { title: "품명", field: "pum_name", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+                { title: "표면처리 사양", field: "surface_spec", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+                { title: "최대중량", field: "max_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "최소중량", field: "min_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "평균중량", field: "avg_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "MAIN설비명", field: "equip_1", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                { title: "장입기준", field: "load_1", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "SUB설비명", field: "equip_2", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                { title: "장입기준", field: "load_2", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "분할횟수", field: "split_cnt", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "장입량", field: "avg_load", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "G-800", field: "g800", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "G600", field: "g600", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "공용설비", field: "common_equip", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+                { title: "K-BLACK", field: "k_black", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            ],
+            rowClick: function(e, row) {
+                $("#dataList .tabulator-row").removeClass("row_select");
+                row.getElement().classList.add("row_select");
 
+                selectedRow = row; 
+                console.log("선택된 도금품번:", selectedRow.getData().plating_no);
+            }
 
-        
-    </script>
+        });
+    }
+</script>
+
 
 </body>
 </html>

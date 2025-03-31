@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -142,7 +143,29 @@ public class ConditionController {
         
         return rtnMap;
     }
+    
+    @RequestMapping(value = "/condition/divisionWeight/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> delDivisionWeight(@RequestBody Map<String, Object> requestBody) {
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+
+        String platingNo = (String) requestBody.get("plating_no");
+
+        System.out.println("서버에서 받은 plating_no: " + platingNo);
+
+        if (platingNo == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+     
+        Condition condition = new Condition();
+        condition.setPlating_no(platingNo);
 
     
+        conditionService.delDivisionWeight(condition); 
+        return rtnMap;
+    }
+
     
 }
