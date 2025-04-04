@@ -41,6 +41,8 @@ function printButtonNone(){
 	$(".printer-button").css("opacity","0.5");	
 }
 
+
+
 </script>
     
 </body>

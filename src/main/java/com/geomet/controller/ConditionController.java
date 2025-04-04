@@ -1,9 +1,27 @@
 package com.geomet.controller;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.poi.sl.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.FormulaEvaluator;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.xssf.usermodel.XSSFCell;
+import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
+import org.apache.poi.xssf.usermodel.XSSFRow;
+import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -146,26 +164,118 @@ public class ConditionController {
     
     @RequestMapping(value = "/condition/divisionWeight/del", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> delDivisionWeight(@RequestBody Map<String, Object> requestBody) {
-        Map<String, Object> rtnMap = new HashMap<String, Object>();
+    public Map<String, Object> delDivisionWeight(@RequestBody Condition condition) {
+        Map<String, Object> rtnMap = new HashMap<>();
 
-        String platingNo = (String) requestBody.get("plating_no");
-
-        System.out.println("서버에서 받은 plating_no: " + platingNo);
-
-        if (platingNo == null) {
+        if (condition.getPlating_no() == null) {
             rtnMap.put("data", "행 선택하세요");
             return rtnMap;
         }
 
-     
-        Condition condition = new Condition();
-        condition.setPlating_no(platingNo);
+        conditionService.delDivisionWeight(condition);
 
-    
-        conditionService.delDivisionWeight(condition); 
+        rtnMap.put("data", "success"); // 응답도 명확히
         return rtnMap;
     }
+
+
+    @RequestMapping(value = "/condition/divisionWeight/print", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> divisionWeightPrint(HttpServletRequest request) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        Condition standardInfo = new Condition();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
+        Date time = new Date();
+        String fileName = format.format(time) + ".xlsx";
+
+        FileOutputStream fos = null;
+        FileInputStream fis = null;
+        String openPath = "D:/GEOMET양식/";
+        String savePath = "D:/GEOMET양식/조건관리/";
+
+        List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
+        if (standardInfoList == null || standardInfoList.isEmpty()) {
+            rtnMap.put("error", "데이터 없음");
+            return rtnMap;
+        }
+
+        try {
+            fis = new FileInputStream(openPath + "03_05.조건관리_지오메트 분할기준중량.xlsx");
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+  
+            XSSFCellStyle styleCenterBorder = workbook.createCellStyle();
+            styleCenterBorder.setAlignment(HorizontalAlignment.CENTER);
+     
+            styleCenterBorder.setBorderTop(BorderStyle.THIN);
+            styleCenterBorder.setBorderBottom(BorderStyle.THIN);
+            styleCenterBorder.setBorderLeft(BorderStyle.THIN);
+            styleCenterBorder.setBorderRight(BorderStyle.THIN);
+            
+            XSSFFont font = workbook.createFont();
+            font.setFontHeightInPoints((short) 12);
+            styleCenterBorder.setFont(font);
+
+            String[] fields = {
+                "plating_no", "material_no", "pum_name", "surface_spec",
+                "max_weight", "min_weight", "avg_weight", "equip_1", "load_1",
+                "equip_2", "load_2", "split_cnt", "avg_load", "g800", "g600",
+                "common_equip", "k_black"
+            };
+
+            int startRow = 6;
+            for (int i = 0; i < standardInfoList.size(); i++) {
+                Condition item = standardInfoList.get(i);
+                XSSFRow row = sheet.createRow(startRow + i);
+                
+                
+                XSSFCell indexCell = row.createCell(0);
+                indexCell.setCellValue(i + 1);
+                indexCell.setCellStyle(styleCenterBorder);
+
+                for (int j = 0; j < fields.length; j++) {
+                    XSSFCell cell = row.createCell(j + 1); 
+
+                    String value = "";
+                    try {
+                        Field field = Condition.class.getDeclaredField(fields[j]);
+                        field.setAccessible(true);
+                        Object fieldValue = field.get(item);
+                        value = (fieldValue != null) ? fieldValue.toString() : "";
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        // 필드가 없거나 접근 불가능한 경우 공백 유지
+                    }
+
+                    cell.setCellValue(value);
+                    cell.setCellStyle(styleCenterBorder); // 🔹 모든 셀에 스타일 적용
+                }
+            }
+
+            workbook.setForceFormulaRecalculation(true);
+            fos = new FileOutputStream(savePath + fileName);
+            workbook.write(fos);
+            workbook.close();
+            fos.flush();
+
+            rtnMap.put("data", savePath + fileName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+        } finally {
+            try {
+                if (fis != null) fis.close();
+                if (fos != null) fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rtnMap;
+    }
+
 
     
 }

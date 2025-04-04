@@ -44,86 +44,61 @@ public class MainController {
 	private UserService userService;
 	
 	//통신상태 체크
-	public static void commCheck() {
-    	
-    	//1.메인, 백업서버의 핑테스트
-    	boolean mainPingCheck = pingTest(MAIN_IP);
-    	boolean subPingCheck = pingTest(SUB_IP);
-    	
-    	
-//    	System.out.println("메인아이피 : "+mainPingCheck);
-//    	System.out.println("서브아이피 : "+subPingCheck);
-    	
-    	//2.메인, 백업서버의 포트가 열려있는지 닫혀있는지 테스트
-    	boolean mainPortCheck = portTest(MAIN_IP, PORT);
-    	boolean subPortCheck = portTest(SUB_IP, PORT);
-    	
-//    	System.out.println("메인포트 : "+mainPortCheck);
-//    	System.out.println("서브포트 : "+subPortCheck);
-    	String tagValueSub = "-1";
-    	String tagValueMain = "-1";
-
-		if(mainPingCheck && mainPortCheck) {
-
-			if(clientMain != null) {
-				//IP : OK, PORT : OK, OPC : OK
-				//값을 하나 받아와서 해당값이 0이 아니라면 연결유지, 0이라면 null로 변경
-				OpcDataMap opcDataMap = new OpcDataMap();
-
-				try {
-					Map<String, Object> dataMap = opcDataMap.getOpcDataConnCheck(clientMain, "Transys.$SYSTEM$.$SystemStatus$");
-					tagValueMain = dataMap.get("value").toString();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-				
-//				System.out.println("tagValueMain : "+tagValueMain);
-
-
-			}else {
-				clientMain = opcConnection(MAIN_IP, PORT);				
-			}
-
-		}else {
-			clientMain = null;
-		}
-		
-		if(subPingCheck && subPortCheck) {
-
-			if(clientSub != null) {
-				//IP : OK, PORT : OK, OPC : OK
-				//값을 하나 받아와서 해당값이 0이 아니라면 연결유지, 0이라면 null로 변경
-				OpcDataMap opcDataMap = new OpcDataMap();
-				
-				try {
-					Map<String, Object> dataMap = opcDataMap.getOpcDataConnCheck(clientSub, "Transys.$SYSTEM$.$SystemStatus$");
-					tagValueSub = dataMap.get("value").toString();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				} catch (ExecutionException e) {
-					e.printStackTrace();
-				}
-//				System.out.println("tagValueSub : "+tagValueSub);
-				
-			}else {
-				clientSub = opcConnection(SUB_IP, PORT);				
-			}
-
-		}else {
-			clientSub = null;
-		}
-		
-		if("ACTIVE".equals(tagValueMain)) {
-			client = clientMain;
-		}
-		
-		if("ACTIVE".equals(tagValueSub)) {
-			client = clientSub;
-		}
-    	
-	}
+	/*public static void commCheck() {
+									 * 
+									 * //1.메인, 백업서버의 핑테스트 boolean mainPingCheck = pingTest(MAIN_IP); boolean
+									 * subPingCheck = pingTest(SUB_IP);
+									 * 
+									 * 
+									 * // System.out.println("메인아이피 : "+mainPingCheck); //
+									 * System.out.println("서브아이피 : "+subPingCheck);
+									 * 
+									 * //2.메인, 백업서버의 포트가 열려있는지 닫혀있는지 테스트 boolean mainPortCheck = portTest(MAIN_IP,
+									 * PORT); boolean subPortCheck = portTest(SUB_IP, PORT);
+									 * 
+									 * // System.out.println("메인포트 : "+mainPortCheck); //
+									 * System.out.println("서브포트 : "+subPortCheck); String tagValueSub = "-1"; String
+									 * tagValueMain = "-1";
+									 * 
+									 * if(mainPingCheck && mainPortCheck) {
+									 * 
+									 * if(clientMain != null) { //IP : OK, PORT : OK, OPC : OK //값을 하나 받아와서 해당값이 0이
+									 * 아니라면 연결유지, 0이라면 null로 변경 OpcDataMap opcDataMap = new OpcDataMap();
+									 * 
+									 * try { Map<String, Object> dataMap =
+									 * opcDataMap.getOpcDataConnCheck(clientMain,
+									 * "Transys.$SYSTEM$.$SystemStatus$"); tagValueMain =
+									 * dataMap.get("value").toString(); } catch (InterruptedException e) {
+									 * e.printStackTrace(); } catch (ExecutionException e) { e.printStackTrace(); }
+									 * 
+									 * // System.out.println("tagValueMain : "+tagValueMain);
+									 * 
+									 * 
+									 * }else { clientMain = opcConnection(MAIN_IP, PORT); }
+									 * 
+									 * }else { clientMain = null; }
+									 * 
+									 * if(subPingCheck && subPortCheck) {
+									 * 
+									 * if(clientSub != null) { //IP : OK, PORT : OK, OPC : OK //값을 하나 받아와서 해당값이 0이
+									 * 아니라면 연결유지, 0이라면 null로 변경 OpcDataMap opcDataMap = new OpcDataMap();
+									 * 
+									 * try { Map<String, Object> dataMap = opcDataMap.getOpcDataConnCheck(clientSub,
+									 * "Transys.$SYSTEM$.$SystemStatus$"); tagValueSub =
+									 * dataMap.get("value").toString(); } catch (InterruptedException e) {
+									 * e.printStackTrace(); } catch (ExecutionException e) { e.printStackTrace(); }
+									 * // System.out.println("tagValueSub : "+tagValueSub);
+									 * 
+									 * }else { clientSub = opcConnection(SUB_IP, PORT); }
+									 * 
+									 * }else { clientSub = null; }
+									 * 
+									 * if("ACTIVE".equals(tagValueMain)) { client = clientMain; }
+									 * 
+									 * if("ACTIVE".equals(tagValueSub)) { client = clientSub; }
+									 * 
+									 * }
+									 */
 	
     //OPC서버 연결시작
     public static void opcStart() {

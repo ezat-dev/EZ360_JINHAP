@@ -13,7 +13,7 @@ public class CommProcessor {
 	public void handle() {
 		if(MainController.client == null) {
 //			MainController.opcStart();
-			MainController.commCheck();
+//			MainController.commCheck();
 		}		
 	}
 }

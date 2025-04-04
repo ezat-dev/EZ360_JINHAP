@@ -117,6 +117,8 @@
 		    margin-right: 10px;
 		    margin-top: 40px;
 		}
+		
+
 		.box1 {
 		    display: flex;
 		    justify-content: right;
@@ -148,9 +150,9 @@
             
     
         }
-        button-container.button{
-        height: 16px;
-        }
+
+
+     
         .mid{
         margin-right: 9px;
 	    font-size: 20px;
@@ -159,9 +161,7 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
-        
-            /* 체크박스 스타일 */
- /* 체크박스 스타일 */
+
     .checkbox-group {
         display: flex;
         gap: 20px;
@@ -178,9 +178,21 @@
     }
 
     .checkbox-group input[type="checkbox"] {
-        transform: scale(1.7); /* 체크박스 크기 키우기 */
+        transform: scale(1.7); 
     }
-        
+    .delete-button {
+    height: 40px; /* tab보다 조금 작게 설정 */
+    padding: 0 11px; /* 좌우 패딩 */
+    border: 1px solid rgb(53, 53, 53);
+    border-radius: 4px; /* 모서리 둥글게 */
+    background-color: #ffffff; /* 배경색 */
+    cursor: pointer; /* 포인터 커서 */
+    display: flex; /* 내부 요소를 플렉스 박스로 설정 */
+    align-items: center; /* 버튼 안에서 세로 가운데 정렬 */
+	}
+	.delete-button:hover {
+	    background-color: #f0f0f0; /* hover 시 색상 변화 */
+	}
         
     </style>
 </head>
@@ -209,17 +221,20 @@
 			
 			
 			</div>
+			
+			
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
-                 <button class="del-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">삭제
-                </button>
+                 <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
+
                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >엑셀
                 </button>
 
             </div>
@@ -352,7 +367,7 @@
 
 
     
-    $(".del-button").click(function(event) {
+    $(".delete-button").click(function(event) {
         event.preventDefault();
         
         console.log("삭제 버튼 클릭됨");
@@ -453,6 +468,34 @@
 
         });
     }
+
+
+
+
+
+
+
+ // 엑셀 다운로드 버튼 클릭 이벤트
+    $(".excel-button").on("click", function () {
+    	  console.log("엑셀 다운로드 버튼 클릭됨"); 
+          
+        $.ajax({
+            url: "/geomet/condition/divisionWeight/print",
+            type: "post",
+            dataType: "json",
+            success: function (result) {
+                console.log(result);
+                alert("D:\\GEOMET양식\\기준정보 저장 완료되었습니다.");
+            },
+            error: function (xhr, status, error) {
+                alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+                console.error("Error:", error);
+            }
+        });
+    });
+
+
+    
 </script>
 
 
