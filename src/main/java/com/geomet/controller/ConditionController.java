@@ -31,11 +31,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.geomet.domain.CorrStatus;
 import com.geomet.domain.Condition;
 import com.geomet.service.ConditionService;
 import com.geomet.service.CorrStatusService;
+import com.geomet.service.ExcelService;
 
 @Controller
 public class ConditionController {
@@ -43,6 +45,9 @@ public class ConditionController {
     @Autowired
     private CorrStatusService CorrStatusService;
 	
+    @Autowired
+    private ExcelService excelService; 
+    
     @Autowired
     private ConditionService conditionService; 
     
@@ -177,11 +182,10 @@ public class ConditionController {
         rtnMap.put("data", "success"); // 응답도 명확히
         return rtnMap;
     }
-
-
-    @RequestMapping(value = "/condition/divisionWeight/print", method = RequestMethod.POST)
+    //기준정보 엑섹 저장
+    @RequestMapping(value = "/condition/divisionWeight/excel", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> divisionWeightPrint(HttpServletRequest request) {
+    public Map<String, Object> divisionWeightExcel(HttpServletRequest request) {
         Map<String, Object> rtnMap = new HashMap<>();
         Condition standardInfo = new Condition();
 
@@ -195,6 +199,10 @@ public class ConditionController {
         String savePath = "D:/GEOMET양식/조건관리/";
 
         List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
+        
+        // 받아온 데이터 개수 출력
+        System.out.println("getStandardInfoList Size: " + (standardInfoList != null ? standardInfoList.size() : 0));
+
         if (standardInfoList == null || standardInfoList.isEmpty()) {
             rtnMap.put("error", "데이터 없음");
             return rtnMap;
@@ -205,18 +213,14 @@ public class ConditionController {
             XSSFWorkbook workbook = new XSSFWorkbook(fis);
             XSSFSheet sheet = workbook.getSheetAt(0);
 
-  
             XSSFCellStyle styleCenterBorder = workbook.createCellStyle();
             styleCenterBorder.setAlignment(HorizontalAlignment.CENTER);
-     
             styleCenterBorder.setBorderTop(BorderStyle.THIN);
             styleCenterBorder.setBorderBottom(BorderStyle.THIN);
             styleCenterBorder.setBorderLeft(BorderStyle.THIN);
             styleCenterBorder.setBorderRight(BorderStyle.THIN);
-            
-            XSSFFont font = workbook.createFont();
-            font.setFontHeightInPoints((short) 12);
-            styleCenterBorder.setFont(font);
+
+
 
             String[] fields = {
                 "plating_no", "material_no", "pum_name", "surface_spec",
@@ -226,17 +230,19 @@ public class ConditionController {
             };
 
             int startRow = 6;
+
             for (int i = 0; i < standardInfoList.size(); i++) {
                 Condition item = standardInfoList.get(i);
                 XSSFRow row = sheet.createRow(startRow + i);
-                
-                
+
                 XSSFCell indexCell = row.createCell(0);
                 indexCell.setCellValue(i + 1);
                 indexCell.setCellStyle(styleCenterBorder);
 
+                StringBuilder logOutput = new StringBuilder("Row " + (i + 1) + " | ");
+
                 for (int j = 0; j < fields.length; j++) {
-                    XSSFCell cell = row.createCell(j + 1); 
+                    XSSFCell cell = row.createCell(j + 1);
 
                     String value = "";
                     try {
@@ -245,12 +251,18 @@ public class ConditionController {
                         Object fieldValue = field.get(item);
                         value = (fieldValue != null) ? fieldValue.toString() : "";
                     } catch (NoSuchFieldException | IllegalAccessException e) {
-                        // 필드가 없거나 접근 불가능한 경우 공백 유지
+                        value = "";
                     }
 
                     cell.setCellValue(value);
-                    cell.setCellStyle(styleCenterBorder); // 🔹 모든 셀에 스타일 적용
+                    cell.setCellStyle(styleCenterBorder);
+
+                    // 로그 출력용 문자열 추가
+                    logOutput.append(fields[j]).append(": ").append(value).append(", ");
                 }
+                
+                // 각 행별 데이터 출력
+                System.out.println(logOutput.toString());
             }
 
             workbook.setForceFormulaRecalculation(true);
@@ -276,6 +288,32 @@ public class ConditionController {
         return rtnMap;
     }
 
+
+    @RequestMapping(value = "/condition/divisionWeight/excelFileInput", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> importExcel(@RequestParam("file") MultipartFile file) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        if (file.isEmpty()) {
+            rtnMap.put("error", "파일이 비어 있습니다.");
+            return rtnMap;
+        }
+
+        try {
+            // 엑셀 파일을 읽고 DB에 저장하는 로직
+            List<Condition> importedData = excelService.parseExcelFile(file);
+            for (Condition condition : importedData) {
+                conditionService.saveDivisionWeight(condition);
+            }
+
+            rtnMap.put("message", "엑셀 데이터가 성공적으로 업로드되었습니다.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("error", "엑셀 파일 처리 중 오류 발생");
+        }
+
+        return rtnMap;
+    }
 
     
 }

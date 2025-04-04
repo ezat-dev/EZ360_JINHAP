@@ -18,9 +18,13 @@
     cursor: pointer; /* 포인터 커서 */
     display: flex; /* 내부 요소를 플렉스 박스로 설정 */
     align-items: center; /* 버튼 안에서 세로 가운데 정렬 */
+    margin-right: 30px;
+    
     /*opacity: 0.5;  버튼을 흐릿하게 */
  	/*pointer-events: none;  마우스 이벤트 차단 */
 }
+
+
 .logout-button:hover {
     background-color: #f0f0f0; /* hover 시 색상 변화 */
 }

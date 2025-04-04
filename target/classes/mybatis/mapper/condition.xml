@@ -15,7 +15,7 @@
             AND pum_name = #{pum_name}
         </if>
         <if test="surface_spec != null and surface_spec != ''">
-            AND surface_spec = #{surface_spec}
+            AND surface_spec LIKE CONCAT('%',#{surface_spec},'%')
         </if>
     </where>
     ORDER BY plating_no
@@ -24,19 +24,38 @@
     
     
     
-     <insert id="saveDivisionWeight" parameterType="Condition">
-        INSERT INTO tb_standard_info (
-            plating_no, material_no, pum_name, surface_spec, max_weight, min_weight,
-            avg_weight, equip_1, load_1, equip_2, load_2, split_cnt, avg_load, 
-            g800, g600, common_equip, k_black
-        )
-        VALUES (
-            #{plating_no}, #{material_no}, #{pum_name}, #{surface_spec}, #{max_weight}, 
-            #{min_weight}, #{avg_weight}, #{equip_1}, #{load_1}, #{equip_2}, 
-            #{load_2}, #{split_cnt}, #{avg_load}, #{g800}, #{g600}, #{common_equip}, 
-            #{k_black}
-        )
-    </insert>
+	<insert id="saveDivisionWeight" parameterType="Condition">
+    INSERT INTO tb_standard_info (
+        plating_no, material_no, pum_name, surface_spec, max_weight, min_weight,
+        avg_weight, equip_1, load_1, equip_2, load_2, split_cnt, avg_load, 
+        g800, g600, common_equip, k_black
+    )
+    SELECT 
+        #{plating_no}, #{material_no}, #{pum_name}, #{surface_spec}, #{max_weight}, 
+        #{min_weight}, #{avg_weight}, #{equip_1}, #{load_1}, #{equip_2}, 
+        #{load_2}, #{split_cnt}, #{avg_load}, #{g800}, #{g600}, #{common_equip}, 
+        #{k_black}
+    FROM DUAL
+    WHERE #{plating_no} IS NOT NULL AND #{plating_no} != ''
+    ON DUPLICATE KEY UPDATE 
+        material_no = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(material_no) ELSE material_no END,
+        pum_name = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(pum_name) ELSE pum_name END,
+        surface_spec = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(surface_spec) ELSE surface_spec END,
+        max_weight = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(max_weight) ELSE max_weight END,
+        min_weight = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(min_weight) ELSE min_weight END,
+        avg_weight = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(avg_weight) ELSE avg_weight END,
+        equip_1 = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(equip_1) ELSE equip_1 END,
+        load_1 = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(load_1) ELSE load_1 END,
+        equip_2 = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(equip_2) ELSE equip_2 END,
+        load_2 = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(load_2) ELSE load_2 END,
+        split_cnt = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(split_cnt) ELSE split_cnt END,
+        avg_load = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(avg_load) ELSE avg_load END,
+        g800 = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(g800) ELSE g800 END,
+        g600 = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(g600) ELSE g600 END,
+        common_equip = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(common_equip) ELSE common_equip END,
+        k_black = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(k_black) ELSE k_black END;
+</insert>
+
     
         <delete id="delDivisionWeight" parameterType="string">
         DELETE FROM tb_standard_info 

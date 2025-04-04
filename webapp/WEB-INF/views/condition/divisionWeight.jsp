@@ -180,20 +180,36 @@
     .checkbox-group input[type="checkbox"] {
         transform: scale(1.7); 
     }
-    .delete-button {
-    height: 40px; /* tab보다 조금 작게 설정 */
-    padding: 0 11px; /* 좌우 패딩 */
-    border: 1px solid rgb(53, 53, 53);
-    border-radius: 4px; /* 모서리 둥글게 */
-    background-color: #ffffff; /* 배경색 */
-    cursor: pointer; /* 포인터 커서 */
-    display: flex; /* 내부 요소를 플렉스 박스로 설정 */
-    align-items: center; /* 버튼 안에서 세로 가운데 정렬 */
+	.delete-button {
+	    height: 40px;
+	    padding: 0 11px;
+	    border: 1px solid rgb(53, 53, 53);
+	    border-radius: 4px;
+	    background-color: #ffffff;
+	    cursor: pointer;
+	    display: flex;
+	    align-items: center;
 	}
+	
 	.delete-button:hover {
-	    background-color: #f0f0f0; /* hover 시 색상 변화 */
+	    background-color: #f0f0f0;
 	}
-        
+	
+	.excel-import-button {
+	    height: 40px;
+	    padding: 0 11px;
+	    border: 1px solid rgb(53, 53, 53);
+	    border-radius: 4px;
+	    background-color: #ffffff;
+	    cursor: pointer;
+	    display: flex;
+	    align-items: center;
+	}
+	
+	.excel-import-button:hover {
+	    background-color: #f0f0f0;
+	}
+
     </style>
 </head>
 
@@ -234,9 +250,13 @@
 				</button>
 
                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >엑셀
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
                 </button>
-
+                
+                <button class="excel-import-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Upload
+                </button>
+			<input type="file" id="fileInput" style="display: none;">
             </div>
         </div>
 
@@ -315,6 +335,7 @@
   $(document).ready(function () {
 	    getDataList();
 
+
 	    $(".select-button").click(function () {
 	        dataTable.setData("/geomet/condition/divisionWeight/list", {
 	            "plating_no": $("#plating_no").val() || "",
@@ -356,12 +377,12 @@
             success: function (response) {
                 alert("기준정보 성공적으로 저장되었습니다!");
                 $("#modalContainer").hide();
-
+                getDataList();
              
              
             }
         });
-        getDataList()
+
     });
 
 
@@ -406,6 +427,7 @@
                     "pum_name": $("#pum_name").val() || "",
                     "surface_spec": $("#surface_spec").val() || "",
                 });
+                getDataList();
             },
             error: function(xhr, status, error) {
                 console.log("삭제 오류 발생:", xhr.responseText);
@@ -417,7 +439,7 @@
     var selectedRow = null;
     function getDataList() {
         dataTable = new Tabulator("#dataList", {
-            height: "560px",
+            height: "830px",
             layout: "fitColumns",
             selectable: true,
             tooltips: true,
@@ -480,7 +502,7 @@
     	  console.log("엑셀 다운로드 버튼 클릭됨"); 
           
         $.ajax({
-            url: "/geomet/condition/divisionWeight/print",
+            url: "/geomet/condition/divisionWeight/excel",
             type: "post",
             dataType: "json",
             success: function (result) {
@@ -492,6 +514,40 @@
                 console.error("Error:", error);
             }
         });
+    });
+
+
+
+    
+    $(".excel-import-button").on("click", function () {
+        $("#fileInput").click(); 
+    });
+
+    // 파일 선택 후 업로드 처리
+    $("#fileInput").on("change", function () {
+        var file = this.files[0];
+        if (!file) return;
+
+        var formData = new FormData();
+        formData.append("file", file);
+
+        $.ajax({
+            url: "/geomet/condition/divisionWeight/excelFileInput",
+            type: "POST",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                alert("엑셀 업로드가 완료되었습니다.");
+                console.log(response);
+                getDataList();
+            },
+            error: function (xhr, status, error) {
+                alert("엑셀 업로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+                console.error("Error:", error);
+            }
+        });
+   
     });
 
 
