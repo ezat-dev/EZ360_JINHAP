@@ -89,7 +89,7 @@
             border-radius: 5px;
         }
         select {
-            width: 100%;
+         
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -123,7 +123,7 @@
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
-        .dayselect {
+        .equipmentName {
             width: 20%;
             text-align: center;
             font-size: 15px;
@@ -169,15 +169,15 @@
   			<div class="box1">
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
            <label class="daylabel">교체일자 :</label>
-			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+			<input type="text" class="daySet" autocomplete="off" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 			
 			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+			<input type="text" class="daySet" autocomplete="off" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
             <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
-             
+            <select class="equipment_name" id="equipment_name">
+              	<option value="ALL">ALL</option>
                 <option value="G800">G800</option>
                 <option value="G600">G600</option>
                 <option value="K-BLACK">K-BLACK</option>
@@ -199,9 +199,10 @@
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+        		<button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
+
             </div>
         </div>
 
@@ -242,7 +243,7 @@
 				<input type="text" class="daySet" name="nextDate" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
 				
 				<label>교체 주기</label>
-				<input type="text" class="daySet" name="replacementCycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
+				<input type="text" class="cycle" name="replacementCycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
 
 	            <label>비고</label>
 	            <textarea name="remarks" rows="3"></textarea>
@@ -255,13 +256,50 @@
 
 
     <script>
-        $(function() {
-            getDataList();
-        });
+    $(document).ready(function () {
+	    getDataList();
+	    // 모달 열기 버튼 이벤트
+	    $(".insert-button").click(function () {
+	        let modal = $("#modalContainer");
+	        modal.show(); 
+	        modal.addClass("show");
+	    });
 
+	    // 모달 닫기 버튼 이벤트
+	    $(".close, #closeModal").click(function () {
+	        let modal = $("#modalContainer");
+	        modal.removeClass("show").hide(); 
+	    });
+
+	    $("#equipment_name").on("change", function () {
+	        console.log("선택된 설비명:", $(this).val());
+	    });
+  
+    });
+
+
+	    $(".select-button").click(function () {
+	        let equipmentName = $("#equipment_name").val() || "";
+	        let startDate = $("#startDate").val() || "";
+	        let endDate = $("#endDate").val() || "";
+	
+	        console.log("검색 요청 값 =>", {
+	            equipment_name: equipmentName,
+	            startDate: startDate,
+	            endDate: endDate
+	        });
+	
+	        dataTable.setData("/geomet/condition/corrStatus/list", {
+	            "equipment_name": equipmentName,
+	            "startDate": startDate,
+	            "endDate": endDate,
+	        });
+	    });
+
+        var selectedRow = null;
         function getDataList() {
             dataTable = new Tabulator("#dataList", {
-                height: "560px",
+                height: "830px",
                 layout: "fitColumns",
                 selectable: true,
                 tooltips: true,
@@ -270,9 +308,13 @@
                 headerHozAlign: "center",
                 ajaxConfig: "POST",
                 ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
+                ajaxURL: "/geomet/condition/corrStatus/list",
                 ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
+                ajaxParams: {
+                    "equipment_name": $("#equipment_name").val() || "",
+                    "startDate": $("#startDate").val() || "",
+                    "endDate": $("#endDate").val() || "",
+                },
                 placeholder: "조회된 데이터가 없습니다.",
                 paginationSize: 20,
                 ajaxResponse: function(url, params, response) {
@@ -280,57 +322,37 @@
                     return response;
                 },
                 columns: [
-                    {title: "NO", field: "1", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "설비명", field: "2", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "위치 구분", field: "3", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-                    {title: "시리얼 번호", field: "4", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "교체일자", field: "5", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "차기 교체일자", field: "6", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "교체주기", field: "7", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "비고", field: "8", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "NO", field: "no", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+                    {title: "설비명", field: "equipment_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "위치 구분", field: "location", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
+                    {title: "시리얼 번호", field: "serial_number", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    {title: "교체일자", field: "replacement_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    {title: "차기 교체일자", field: "next_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    {title: "교체주기", field: "replacement_cycle", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "비고", field: "remarks", sorter: "string", width: 350, hozAlign: "center", headerSort: false},
                 ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
                 rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
+                    $("#dataList .tabulator-row").removeClass("row_select");
+                    row.getElement().classList.add("row_select");
+
+                    selectedRow = row; 
+                    console.log("no:", selectedRow.getData().no);
+                }
+
             });
         }
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
-
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
 
 
         $(document).ready(function () {
             $("#saveCorrStatus").click(function (event) {
                 event.preventDefault();
                 
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+                var corrForm = new FormData($("#corrForm")[0]);
 
-                // FormData의 값을 콘솔에 출력
+          
                 corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
+                    console.log(key + ": " + value);
                 });
 
                 $.ajax({
@@ -338,23 +360,73 @@
                     type: "POST",
                     data: corrForm,
                     dataType: "json",
-                    processData: false,  
-                    contentType: false,  
+                    processData: false,
+                    contentType: false,
                     success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
+                        if (response.result === "success") {
+                            alert("부적합품 관리 성공적으로 저장되었습니다!");
+                            $("#modalContainer").hide();
+                            getDataList(); 
+                        } else {
+                            alert("저장 실패: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("서버 오류 발생!");
                     }
                 });
             });
 
-            // 모달 닫기 버튼 이벤트
+            // 모달 닫기 버튼
             $("#closeModal").click(function () {
                 $("#modalContainer").hide();
             });
         });
 
-        	
 
+
+    	
+        $(".delete-button").click(function(event) {
+            event.preventDefault();
+            
+            console.log("삭제 버튼 클릭됨");
+
+            if (!selectedRow) {
+                alert("삭제할 행을 선택하세요.");
+                return;
+            }
+
+            var no = selectedRow.getData().no;
+            
+            console.log("no", no);
+
+            if (!no) {
+                alert("삭제할 항목이 없습니다.");
+                return;
+            }
+
+            var requestData = JSON.stringify({ "no": no });
+            console.log("전송된 데이터:", requestData);
+
+            $.ajax({
+                url: "/geomet/condition/corrStatus/del",
+                type: "POST",
+                contentType: "application/json",
+                data: requestData,
+                dataType: "json",
+                success: function(response) {
+                    console.log("삭제 성공:", response);
+                    alert("TC/조절계 이력 성공적으로 삭제되었습니다!");
+                    selectedRow.delete();
+                    selectedRow = null;  
+                    getDataList();
+                },
+                error: function(xhr, status, error) {
+                    console.log("삭제 오류 발생:", xhr.responseText);
+                    alert("삭제 중 오류가 발생했습니다: " + error);
+                }
+            });
+        });
 
         
     </script>

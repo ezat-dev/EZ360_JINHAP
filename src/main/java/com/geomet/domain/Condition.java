@@ -20,9 +20,90 @@ public class Condition {
 	    private String common_equip;    // 공용설비(kg)
 	    private String k_black;         // K-BLACK(kg)
 	    
+	    //TC조절
+	    private String tdatetime; 
+	    private String equipment_name;
+	    private String location;
+	    private String serial_number;
+	    private String replacement_date;
+	    private String next_date;
+	    private String replacement_cycle;
+	    private String remarks;
+	    private String startDate;
+	    private String endDate;
+	    private String no;
 	    
 	    
 	    
+	    
+	    
+	    
+		public String getNo() {
+			return no;
+		}
+		public void setNo(String no) {
+			this.no = no;
+		}
+		public String getStartDate() {
+			return startDate;
+		}
+		public void setStartDate(String startDate) {
+			this.startDate = startDate;
+		}
+		public String getEndDate() {
+			return endDate;
+		}
+		public void setEndDate(String endDate) {
+			this.endDate = endDate;
+		}
+		public String getTdatetime() {
+			return tdatetime;
+		}
+		public void setTdatetime(String tdatetime) {
+			this.tdatetime = tdatetime;
+		}
+		public String getEquipment_name() {
+			return equipment_name;
+		}
+		public void setEquipment_name(String equipment_name) {
+			this.equipment_name = equipment_name;
+		}
+		public String getLocation() {
+			return location;
+		}
+		public void setLocation(String location) {
+			this.location = location;
+		}
+		public String getSerial_number() {
+			return serial_number;
+		}
+		public void setSerial_number(String serial_number) {
+			this.serial_number = serial_number;
+		}
+		public String getReplacement_date() {
+			return replacement_date;
+		}
+		public void setReplacement_date(String replacement_date) {
+			this.replacement_date = replacement_date;
+		}
+		public String getNext_date() {
+			return next_date;
+		}
+		public void setNext_date(String next_date) {
+			this.next_date = next_date;
+		}
+		public String getReplacement_cycle() {
+			return replacement_cycle;
+		}
+		public void setReplacement_cycle(String replacement_cycle) {
+			this.replacement_cycle = replacement_cycle;
+		}
+		public String getRemarks() {
+			return remarks;
+		}
+		public void setRemarks(String remarks) {
+			this.remarks = remarks;
+		}
 		public String getPlating_no() {
 			return plating_no;
 		}

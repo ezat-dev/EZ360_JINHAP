@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 권한부여</title>
 <%@include file="../include/pluginpage.jsp" %>
-    <link rel="stylesheet" href="/geomet/css/authority2/authority2.css">
+    <link rel="stylesheet" href="/geomet/css/login/style2.css">
     
     <style>
 	

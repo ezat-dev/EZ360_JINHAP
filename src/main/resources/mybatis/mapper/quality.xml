@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="quality">
+
+    <!--부적합품 리스트-->
+    
+	<select id="getNonProductManageList" parameterType="Quality" resultType="Quality">
+	    SELECT *
+	    FROM tb_non_product_manage
+	    <where>
+	       <if test="equipment_name != 'ALL'">
+	            AND equipment = #{equipment_name}
+	        </if>
+	
+	        <if test="startDate != null and startDate != ''">
+	            AND action_date <![CDATA[>=]]> #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	            AND action_date <![CDATA[<=]]> #{endDate}
+	        </if>
+	    </where>
+	    ORDER BY action_date DESC
+	</select>
+
+
+    <insert id="saveNonProductManage" parameterType="Quality">
+        INSERT INTO tb_non_product_manage (
+            no, defect_date, defect_type, equipment, product_no, product_name,
+            defect_lot, worker, action, selection_method, action_date,
+            defect_quantity, cause, improvement, yn_a, yn_b, start_date
+        )
+        VALUES (
+            #{no}, #{defect_date}, #{defect_type}, #{equipment}, #{product_no}, #{product_name},
+            #{defect_lot}, #{worker}, #{action}, #{selection_method}, #{action_date},
+            #{defect_quantity}, #{cause}, #{improvement}, #{yn_a}, #{yn_b}, #{start_date}  
+        )
+    </insert>
+</mapper>

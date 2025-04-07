@@ -3,26 +3,23 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="condition">
-
-<select id="getStandardInfoList" parameterType="map" resultType="Condition">
-    SELECT *
-    FROM tb_standard_info
-    <where>
-        <if test="plating_no != null and plating_no != ''">
-            AND plating_no = #{plating_no}
-        </if>
-        <if test="pum_name != null and pum_name != ''">
-            AND pum_name = #{pum_name}
-        </if>
-        <if test="surface_spec != null and surface_spec != ''">
-            AND surface_spec LIKE CONCAT('%',#{surface_spec},'%')
-        </if>
-    </where>
-    ORDER BY plating_no
-</select>
-
-    
-    
+	<!--기준정보 -->
+	<select id="getStandardInfoList" parameterType="map" resultType="Condition">
+	    SELECT *
+	    FROM tb_standard_info
+	    <where>
+	        <if test="plating_no != null and plating_no != ''">
+	            AND plating_no = #{plating_no}
+	        </if>
+	        <if test="pum_name != null and pum_name != ''">
+	            AND pum_name = #{pum_name}
+	        </if>
+	        <if test="surface_spec != null and surface_spec != ''">
+	            AND surface_spec LIKE CONCAT('%',#{surface_spec},'%')
+	        </if>
+	    </where>
+	    ORDER BY plating_no
+	</select>
     
 	<insert id="saveDivisionWeight" parameterType="Condition">
     INSERT INTO tb_standard_info (
@@ -54,11 +51,39 @@
         g600 = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(g600) ELSE g600 END,
         common_equip = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(common_equip) ELSE common_equip END,
         k_black = CASE WHEN VALUES(plating_no) IS NOT NULL AND VALUES(plating_no) != '' THEN VALUES(k_black) ELSE k_black END;
-</insert>
+	</insert>
 
     
         <delete id="delDivisionWeight" parameterType="string">
         DELETE FROM tb_standard_info 
         WHERE plating_no = #{plating_no}
-    </delete>
+    	</delete>
+    
+    
+    
+    <!--TC조절  -->
+    
+	<select id="getCorrStatusList" parameterType="map" resultType="Condition">
+	    SELECT *
+	    FROM tb_corr_status
+	    <where>
+	       <if test="equipment_name != 'ALL'">
+	            AND equipment_name = #{equipment_name}
+	        </if>
+	
+	        <if test="startDate != null and startDate != ''">
+	            AND replacement_date <![CDATA[>=]]> #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	            AND replacement_date <![CDATA[<=]]> #{endDate}
+	        </if>
+	    </where>
+	    ORDER BY tdatetime DESC
+	</select>
+
+        <delete id="delCorrStatus" parameterType="string">
+        DELETE FROM tb_corr_status 
+        WHERE no = #{no}
+    	</delete>
+    
 </mapper>

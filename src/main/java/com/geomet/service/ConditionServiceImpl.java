@@ -15,14 +15,12 @@ public class ConditionServiceImpl implements ConditionService {
 
 @Autowired  
 private ConditionDao conditionDao;
+	//기준정보
+	@Override
+	public List<Condition> getStandardInfoList(Condition params) {
+	    return conditionDao.getStandardInfoList(params); 	   
+	}
 
-@Override
-public List<Condition> getStandardInfoList(Condition params) {
-    return conditionDao.getStandardInfoList(params); 
-    
-}
-
-	
 	@Override
     public void saveDivisionWeight(Condition condition) {
 		conditionDao.saveDivisionWeight(condition);
@@ -31,6 +29,16 @@ public List<Condition> getStandardInfoList(Condition params) {
 	@Override
     public void delDivisionWeight(Condition condition) {
 		conditionDao.delDivisionWeight(condition);
+    }
+	
+	//TC조절
+	@Override
+	public List<Condition> getCorrStatusList(Condition params) {
+	    return conditionDao.getCorrStatusList(params); 	   
+	}
+	@Override
+    public void delCorrStatus(Condition condition) {
+		conditionDao.delCorrStatus(condition);
     }
  
 }

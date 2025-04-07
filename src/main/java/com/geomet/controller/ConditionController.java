@@ -58,24 +58,91 @@ public class ConditionController {
     public String corrStatus(Model model) {
         return "/condition/corrStatus.jsp"; // 
     }
+    //TC/조절 리스트
+    @RequestMapping(value = "/condition/corrStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> corrStatusList(
+            @RequestParam String equipment_name,
+            @RequestParam String startDate,
+            @RequestParam String endDate
+    ) {
+        // 요청 파라미터 로그 출력
+        System.out.println("Received request:");
+        System.out.println("equipment_name: " + equipment_name);
+        System.out.println("startDate: " + startDate);
+        System.out.println("endDate: " + endDate);
+
+        // 반환할 Map 생성
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        // 서비스 계층을 통해 데이터를 가져옴
+        try {
+           
+        	Condition condition = new Condition();
+        	condition.setEquipment_name(equipment_name.isEmpty() ? null : equipment_name); 
+        	condition.setStartDate(startDate.isEmpty() ? null : startDate);        
+        	condition.setEndDate(endDate.isEmpty() ? null : endDate); 
+
+            List<Condition> getCorrStatusList = conditionService.getCorrStatusList(condition);
+
+            System.out.println("getStandardInfoList Size: " + getCorrStatusList.size());
+            // 성공 시 데이터 반환
+            rtnMap.put("status", "success");
+            rtnMap.put("last_page", 1);
+            rtnMap.put("data", getCorrStatusList);
+        } catch (Exception e) {
+            // 에러 발생 시 에러 메시지 반환
+            System.out.println("Error occurred: " + e.getMessage());
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
     
-    
+    // T/C추가
     @RequestMapping(value = "/condition/corrStatus/insert", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> saveCorrStatus(@ModelAttribute CorrStatus corrStatus) {
-        
-        Map<String, Object> rtnMap = new HashMap<String, Object>();
-        
-        if(corrStatus.getLocation() == null) {
-        	rtnMap.put("data", "존 구분을 입력하시오!");
-        	return rtnMap;
+
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        try {
+            if (corrStatus.getLocation() == null || corrStatus.getLocation().trim().isEmpty()) {
+                rtnMap.put("result", "fail");
+                rtnMap.put("message", "존 구분을 입력하시오!");
+                return rtnMap;
+            }
+
+            // 실제 저장 로직 실행
+            CorrStatusService.saveCorrStatus(corrStatus);
+
+            rtnMap.put("result", "success");
+        } catch (Exception e) {
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", "저장 중 오류가 발생했습니다: " + e.getMessage());
         }
-        
-        // CorrStatusService의 saveCorrStatus 메서드 호출
-        CorrStatusService.saveCorrStatus(corrStatus); 
-        
+
         return rtnMap;
     }
+
+    // T/C삭제
+    @RequestMapping(value = "/condition/corrStatus/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> delCorrStatus(@RequestBody Condition condition) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        if (condition.getNo() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        conditionService.delCorrStatus(condition);
+
+        rtnMap.put("data", "success"); 
+        return rtnMap;
+    }
+    
 
 
 	
@@ -103,6 +170,7 @@ public class ConditionController {
         return "/condition/divisionWeight.jsp"; // 
     }	
     
+    //기준정보 리스트
     @RequestMapping(value = "/condition/divisionWeight/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> workDetailList(
@@ -144,11 +212,7 @@ public class ConditionController {
         return rtnMap;
     }
     
-    
-    
-    
-    
-
+    //기준정보 추가
     @RequestMapping(value = "/condition/divisionWeight/insert", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> saveDivisionWeight(@ModelAttribute Condition condition) {
@@ -159,10 +223,7 @@ public class ConditionController {
         	rtnMap.put("data", "도금 푼번을 입력하시오!");
         	return rtnMap;
         }
-        
-        
-     
-        conditionService.saveDivisionWeight(condition); 
+       conditionService.saveDivisionWeight(condition); 
         
         return rtnMap;
     }
@@ -288,7 +349,7 @@ public class ConditionController {
         return rtnMap;
     }
 
-
+    //기준정보 엑셀 인풋
     @RequestMapping(value = "/condition/divisionWeight/excelFileInput", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> importExcel(@RequestParam("file") MultipartFile file) {
@@ -314,6 +375,5 @@ public class ConditionController {
 
         return rtnMap;
     }
-
-    
+   
 }

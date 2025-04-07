@@ -13,7 +13,9 @@ public class ConditionDaoImpl implements ConditionDao {
 
     @Autowired 
     private SqlSession sqlSession;
-
+    
+    
+    //기준정보
     @Override
     public List<Condition> getStandardInfoList(Condition params) {
       
@@ -28,5 +30,17 @@ public class ConditionDaoImpl implements ConditionDao {
     @Override
     public void delDivisionWeight(Condition condition) {
     	sqlSession.delete("condition.delDivisionWeight",condition);
+    }
+    
+    //TC조절
+    @Override
+    public List<Condition> getCorrStatusList(Condition params) {
+      
+        return sqlSession.selectList("condition.getCorrStatusList", params);
+    }
+    
+    @Override
+    public void delCorrStatus(Condition condition) {
+    	sqlSession.delete("condition.delCorrStatus",condition);
     }
 }

@@ -1,20 +1,29 @@
 package com.geomet.controller;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.geomet.domain.Users;
+import com.geomet.domain.Condition;
+import com.geomet.domain.Quality;
+
+import com.geomet.service.QualityService;
+
 
 @Controller
 public class QualityController {
+	
+	 @Autowired
+	    private QualityService qualityService; 
 
 	/*-----품질관리-----*/
 	
@@ -59,4 +68,56 @@ public class QualityController {
     public String nonProductManage(Model model) {
         return "/quality/nonProductManage.jsp"; // 
     }	
+    
+    // 부적합품 관리 리스트
+    @RequestMapping(value = "/quality/nonProductManage/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> corrStatusList(
+            @RequestParam String equipment_name,
+            @RequestParam String startDate,
+            @RequestParam String endDate
+    ) {      
+		/*
+		 * System.out.println("Received request:");
+		 * System.out.println("부적합equipment_name: " + equipment_name);
+		 * System.out.println("부적합startDate: " + startDate);
+		 * System.out.println("부적합endDate: " + endDate);
+		 */
+
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+           
+        	Quality quality = new Quality();
+        	quality.setEquipment_name(equipment_name.isEmpty() ? null : equipment_name); 
+        	quality.setStartDate(startDate.isEmpty() ? null : startDate);        
+        	quality.setEndDate(endDate.isEmpty() ? null : endDate); 
+
+            List<Quality> getNonProductManageList = qualityService.getNonProductManageList(quality);
+
+           // System.out.println("getStandardInfoList Size: " + getNonProductManageList.size());     
+            rtnMap.put("status", "success");
+            rtnMap.put("last_page", 1);
+            rtnMap.put("data", getNonProductManageList);
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+    
+    // 부적합품 관리
+    @RequestMapping(value = "/quality/nonProductManage/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> saveNonProductManage(@ModelAttribute Quality quality) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        qualityService.saveNonProductManage(quality);
+
+        rtnMap.put("result", "success");
+        return rtnMap;
+    }
+
+
 }

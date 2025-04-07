@@ -8,9 +8,16 @@ import com.geomet.domain.Condition;
 
 @Repository
 public interface ConditionDao {
-	List<Condition> getStandardInfoList(Condition params); 
+	  
+	  //기준정보
+	  List<Condition> getStandardInfoList(Condition params); 
 	
 	  void saveDivisionWeight(Condition condition);
 	  
 	  void delDivisionWeight(Condition condition);
+	  
+	  //TC조절
+	  List<Condition> getCorrStatusList(Condition params);
+	  
+	  void delCorrStatus(Condition condition);
 }

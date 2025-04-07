@@ -74,95 +74,95 @@
         
         
         /*모달css  */
-   .modal {
-    display: none;
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    transition: opacity 0.3s ease-in-out;
-    overflow: auto;
-}
+		   .modal {
+		    display: none;
+		    position: fixed;
+		    left: 0;
+		    top: 0;
+		    width: 100%;
+		    height: 100%;
+		    background-color: rgba(0, 0, 0, 0.5);
+		    transition: opacity 0.3s ease-in-out;
+		    overflow: auto;
+		}
+		
+		.modal-content {
+		    background: white;
+		    width: 40%; /* 가로 길이를 50%로 설정 */
+		    max-width: 400px; /* 최대 너비를 설정하여 너무 커지지 않도록 */
+		    max-height: 700px; /* 화면 높이에 맞게 제한 */
+		    overflow-y: auto;
+		    margin: 2% auto; /* 수평 중앙 정렬 */
+		    padding: 20px;
+		    border-radius: 10px;
+		    position: relative;
+		    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+		    transform: scale(0.8);
+		    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+		    opacity: 0;
+		}
+		
+		.modal.show {
+		    display: block;
+		    opacity: 1;
+		}
+		
+		.modal.show .modal-content {
+		    transform: scale(1);
+		    opacity: 1;
+		}
+		
+		.close {
+		    background-color: white;
+		    position: absolute;
+		    right: 15px;
+		    top: 10px;
+		    font-size: 24px;
+		    font-weight: bold;
+		    cursor: pointer;
+		}
+		
+		.modal-content form {
+		    display: flex;
+		    flex-direction: column;
+		}
+		
+		.modal-content label {
+		    font-weight: bold;
+		    margin: 10px 0 5px;
+		}
+		
+		.modal-content input, .modal-content textarea {
+		    width: 100%;
+		    padding: 8px;
+		    margin-bottom: 10px;
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+		}
 
-.modal-content {
-    background: white;
-    width: 40%; /* 가로 길이를 50%로 설정 */
-    max-width: 400px; /* 최대 너비를 설정하여 너무 커지지 않도록 */
-    max-height: 700px; /* 화면 높이에 맞게 제한 */
-    overflow-y: auto;
-    margin: 2% auto; /* 수평 중앙 정렬 */
-    padding: 20px;
-    border-radius: 10px;
-    position: relative;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-    transform: scale(0.8);
-    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-    opacity: 0;
-}
+		select {
+		    width: 100%;
+		    padding: 8px;
+		    margin-bottom: 10px;
+		    border: 1px solid #ccc;
+		    border-radius: 5px;
+		}
 
-.modal.show {
-    display: block;
-    opacity: 1;
-}
+		.modal-content button {
+		    background-color: #d3d3d3;
+		    color: black;
+		    padding: 10px;
+		    border: none;
+		    border-radius: 5px;
+		    margin-top: 10px;
+		    cursor: pointer;
+		    transition: background-color 0.3s ease;
+		}
 
-.modal.show .modal-content {
-    transform: scale(1);
-    opacity: 1;
-}
-
-.close {
-    background-color: white;
-    position: absolute;
-    right: 15px;
-    top: 10px;
-    font-size: 24px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.modal-content form {
-    display: flex;
-    flex-direction: column;
-}
-
-.modal-content label {
-    font-weight: bold;
-    margin: 10px 0 5px;
-}
-
-.modal-content input, .modal-content textarea {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-select {
-    width: 100%;
-    padding: 8px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-.modal-content button {
-    background-color: #d3d3d3;
-    color: black;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    margin-top: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.modal-content button:hover {
-    background-color: #a9a9a9;
-}
- .mid{
+		.modal-content button:hover {
+		    background-color: #a9a9a9;
+		}
+		 .mid{
         margin-right: 9px;
 	    font-size: 20px;
 	    font-weight: bold;
@@ -170,6 +170,35 @@ select {
 	    height: 42px;
 	    margin-left: 9px;
         }
+        
+        .radio-group {
+		  display: flex;
+		  gap: 20px;
+		  margin-bottom: 15px;
+		  align-items: center;
+		}
+		
+		.radio-group label {
+		  display: flex;
+		
+		  gap: 5px;
+		  font-size: 18px;
+		  padding: 4px 8px;
+		  border: 1px solid #ccc;
+		  border-radius: 6px;
+		  cursor: pointer;
+		  transition: all 0.2s;
+		}
+		
+		.radio-group input[type="radio"] {
+		  accent-color: #007bff; /* 파란색 포인트 */
+		  cursor: pointer;
+		}
+		
+		.radio-group label:hover {
+		  background-color: #f0f0f0;
+		  border-color: #007bff;
+		}
 
     </style>
 </head>
@@ -184,26 +213,31 @@ select {
             
              <div class="box1">
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">교체일자 :</label>
-			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;"autocomplete="off" placeholder="시작 날짜 선택">
+           <label class="daylabel">발생일자 :</label>
+			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 			
 			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;"autocomplete="off" placeholder="종료 날짜 선택">
+			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
             <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
-                <option value="Q01-HN01">Q01-HN01</option>
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
+            <select class="dayselect" id="equipment_name">
+            	<option value="ALL">전체</option>
+                <option value="탈유탈지 1호기">탈유탈지 1호기</option>
+			    <option value="탈유탈지 2호기">탈유탈지 2호기</option>
+			    <option value="쇼트1호기">쇼트1호기</option>
+			    <option value="쇼트2호기">쇼트2호기</option>
+			    <option value="쇼트3호기">쇼트3호기</option>
+			    <option value="쇼트4호기">쇼트4호기</option>
+			    <option value="쇼트5호기">쇼트5호기</option>
+			    <option value="쇼트6호기">쇼트6호기</option>
+			    <option value="G-600">G-600</option>
+			    <option value="G-800">G-800</option>
+			    <option value="공용설비">공용설비</option>
+			    <option value="K-BLACK">K-BLACK</option>
+			    <option value="E코팅 1호기">E코팅 1호기</option>
+			    <option value="E코팅 2호기">E코팅 2호기</option>
+			    <option value="방청">방청</option>
             </select>
 			</div>
                 <button class="select-button">
@@ -215,9 +249,9 @@ select {
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+                <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
             </div>
         </div>
 
@@ -226,17 +260,16 @@ select {
         </div>
     </main>
 
+
 <div id="modalContainer" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>교체이력 등록</h2>
-        <form>
+        <form  id="corrForm"  autocomplete="off">
             <label>발생일</label>
-            <input type="text" class="daySet" placeholder="날짜 선택" style="text-align: left;">
-
-
+            <input type="text"name="defect_date"  class="daySet" placeholder="날짜 선택" style="text-align: left;">
             <label>불량유형</label>
-			<select>
+			<select name="defect_type">
 			    <option value="액고임">액고임</option>
 			    <option value="이종혼입">이종혼입</option>
 			    <option value="녹 발생">녹 발생</option>
@@ -250,7 +283,7 @@ select {
 
 
             <label>발생설비</label>
-			<select>
+			<select name="equipment" >
 			    <option value="탈유탈지 1호기">탈유탈지 1호기</option>
 			    <option value="탈유탈지 2호기">탈유탈지 2호기</option>
 			    <option value="쇼트1호기">쇼트1호기</option>
@@ -270,119 +303,185 @@ select {
 
 
             <label>품번</label>
-            <input type="text" placeholder="품번 입력">
+            <input type="text"  name="product_no" placeholder="품번 입력">
 
             <label>품명</label>
-            <input type="text" placeholder="품명 입력">
+            <input type="text"  name="product_name" placeholder="품명 입력">
 
             <label>불량로트</label>
-            <input type="text" placeholder="불량로트 입력">
+            <input type="text" name="defect_lot" placeholder="불량로트 입력">
 
             <label>작업자</label>
-            <input type="text" placeholder="작업자 입력">
+            <input type="text"  name="worker" placeholder="작업자 입력">
 
             <label>조치사항</label>
-            <textarea rows="3" placeholder="조치사항 입력"></textarea>
+            <textarea rows="3"  name="action"placeholder="조치사항 입력"></textarea>
 
             <label>선별방법</label>
-            <input type="text" placeholder="선별방법 입력">
+            <input type="text"   name="selection_method" placeholder="선별방법 입력">
 
             <label>조치완료일(일자기록)</label>
-   			<input type="text" class="daySet" placeholder="조치완료일 선택" style="text-align: left;">
+   			<input type="text"  name="action_date" class="daySet" placeholder="조치완료일 선택" style="text-align: left;">
    			
    			
             <label>불량수량(EA)</label>
-            <input type="number" placeholder="불량수량 입력">
+            <input type="number"  name="defect_quantity" placeholder="불량수량 입력">
 
             <label>발생원인</label>
-            <input type="text" placeholder="발생원인 입력">
+            <input type="text"  name="cause" placeholder="발생원인 입력">
 
             <label>개선대책</label>
-            <input type="text" placeholder="개선대책 입력">
+            <input type="text"  name="improvement" placeholder="개선대책 입력">
+            
+			<label>대상유무</label>
+			<div class="radio-group">
+			  <label><input type="radio" name="yn_a" value="Y"> Y</label>
+			  <label><input type="radio" name="yn_a" value="N"> N</label>
+			</div>
+			
+			<label>실시유무</label>
+			<div class="radio-group">
+			  <label><input type="radio" name="yn_b" value="Y"> Y</label>
+			  <label><input type="radio" name="yn_b" value="N"> N</label>
+			</div>
 
 
-            <button type="submit">저장</button>
+             <label>진행일자</label>  
+			<input type="text"  name="start_date" class="daySet" placeholder="진행일자 선택" style="text-align: left;">
+
+            <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
         </form>
     </div>
 </div>
 
-    <script>
-        $(function() {
-            getDataList();
+<script>
+$(document).ready(function () {
+    // 페이지 로딩 시 데이터 불러오기
+    getDataList();
+
+    // 모달 열기
+    $(".insert-button").click(function () {
+        let modal = $("#modalContainer");
+        modal.show();
+        modal.addClass("show");
+    });
+
+    // 모달 닫기
+    $(".close, #closeModal").click(function () {
+        $("#modalContainer").removeClass("show").hide();
+    });
+
+    // 설비명 선택 시 로그
+    $("#equipment_name").on("change", function () {
+        console.log("선택된 설비명:", $(this).val());
+    });
+
+    // 검색 버튼 클릭 시 데이터 다시 불러오기
+    $(".select-button").click(function () {
+        const equipmentName = $("#equipment_name").val() || "";
+        const startDate = $("#startDate").val() || "";
+        const endDate = $("#endDate").val() || "";
+
+        console.log("검색 요청 값 =>", {
+            equipment_name: equipmentName,
+            startDate: startDate,
+            endDate: endDate
         });
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                    {title: "NO", field: "1", sorter: "string", width: 30, hozAlign: "center", headerSort: false},
-                    {title: "발생일", field: "2", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "불량유형", field: "3", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "발생설비", field: "4", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "품번", field: "5", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "품명", field: "6", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "불량로트", field: "7", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "작업자", field: "8", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "조치사항", field: "9", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "선별방법", field: "10", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "조치완료일", field: "11", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "불량수량(EA)", field: "12", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "발생원인", field: "13", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "개선대책", field: "14", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                ],
+        dataTable.setData("/geomet/quality/nonProductManage/list", {
+            equipment_name: equipmentName,
+            startDate: startDate,
+            endDate: endDate,
+        });
+    });
 
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
+    // 저장 버튼 클릭 시
+    $("#saveCorrStatus").click(function (event) {
+        event.preventDefault();
+
+        var corrForm = new FormData($("#corrForm")[0]);
+
+        for (let pair of corrForm.entries()) {
+            console.log(pair[0] + ': ' + pair[1]);
         }
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
+        $.ajax({
+            url: "/geomet/quality/nonProductManage/insert",
+            type: "POST",
+            data: corrForm,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                if (response.result === "success") {
+                    alert("부적합품 관리가 성공적으로 저장되었습니다!");
+                    $("#modalContainer").hide();
+                    getDataList(); // 성공 시 목록 갱신
+                } else {
+                    alert("저장 실패: " + (response.message || "알 수 없는 오류"));
+                }
+            },
+            error: function () {
+                alert("서버 오류 발생!");
+            }
         });
+    });
 
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
+    // 데이터 목록 로딩 함수 정의
+    function getDataList() {
+        dataTable = new Tabulator("#dataList", {
+            height: "560px",
+            layout: "fitColumns",
+            selectable: true,
+            tooltips: true,
+            selectableRangeMode: "click",
+            reactiveData: true,
+            headerHozAlign: "center",
+            ajaxConfig: "POST",
+            ajaxLoader: false,
+            ajaxURL: "/geomet/quality/nonProductManage/list",
+            ajaxProgressiveLoad: "scroll",
+            ajaxParams: {
+                equipment_name: $("#equipment_name").val() || "",
+                startDate: $("#startDate").val() || "",
+                endDate: $("#endDate").val() || "",
+            },
+            placeholder: "조회된 데이터가 없습니다.",
+            paginationSize: 20,
+            ajaxResponse: function (url, params, response) {
+                $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+                return response;
+            },
+            columns: [
+                { title: "NO", field: "no", sorter: "string", width: 30, hozAlign: "center" },
+                { title: "발생일", field: "defect_date", width: 120, hozAlign: "center" },
+                { title: "불량유형", field: "defect_type", width: 120, hozAlign: "center" },
+                { title: "발생설비", field: "equipment", width: 120, hozAlign: "center" },
+                { title: "품번", field: "product_no", width: 120, hozAlign: "center" },
+                { title: "품명", field: "product_name", width: 120, hozAlign: "center" },
+                { title: "불량로트", field: "defect_lot", width: 120, hozAlign: "center" },
+                { title: "작업자", field: "worker", width: 120, hozAlign: "center" },
+                { title: "조치사항", field: "action", width: 120, hozAlign: "center" },
+                { title: "선별방법", field: "selection_method", width: 120, hozAlign: "center" },
+                { title: "조치완료일", field: "action_date", width: 120, hozAlign: "center" },
+                { title: "불량수량(EA)", field: "defect_quantity", width: 120, hozAlign: "center" },
+                { title: "발생원인", field: "cause", width: 120, hozAlign: "center" },
+                { title: "개선대책", field: "improvement", width: 120, hozAlign: "center" },
+                { title: "대상유무", field: "yn_a", width: 90, hozAlign: "center" },
+                { title: "실시유무", field: "yn_b", width: 90, hozAlign: "center" },
+                { title: "진행일자", field: "start_date", width: 120, hozAlign: "center" },
+            ],
+            rowClick: function (e, row) {
+                $("#dataList .tabulator-row").removeClass("row_select");
+                row.getElement().classList.add("row_select");
+                selectedRow = row;
+                console.log("선택된 row no:", selectedRow.getData().no);
+            }
         });
-
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
-
-    </script>
+    }
+});
+</script>
 
 </body>
 </html>
