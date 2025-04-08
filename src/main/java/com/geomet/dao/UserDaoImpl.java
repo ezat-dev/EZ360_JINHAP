@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
@@ -81,4 +82,15 @@ public class UserDaoImpl implements UserDao{
 		}
 	}
 
+
+	@Override
+	public List<Facility> equipment_name_select(Facility facility) {
+		return sqlSession.selectList("users.equipment_name_select",facility);
+	}
+	
+	
+	@Override
+	public void userLoginMenuRemove(UserMenu userMenu) {
+		sqlSession.update("users.userLoginMenuRemove",userMenu);
+	}
 }

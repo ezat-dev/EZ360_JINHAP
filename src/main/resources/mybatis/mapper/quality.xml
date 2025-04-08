@@ -10,7 +10,8 @@
 	    SELECT *
 	    FROM tb_non_product_manage
 	    <where>
-	       <if test="equipment_name != 'ALL'">
+	       <if test="equipment_name != null and equipment_name != 'ALL'">
+
 	            AND equipment = #{equipment_name}
 	        </if>
 	
@@ -37,4 +38,11 @@
             #{defect_quantity}, #{cause}, #{improvement}, #{yn_a}, #{yn_b}, #{start_date}  
         )
     </insert>
+    
+        
+        <delete id="delNonProductManage" parameterType="string">
+        DELETE FROM tb_non_product_manage 
+        WHERE no = #{no}
+    	</delete>
+    
 </mapper>

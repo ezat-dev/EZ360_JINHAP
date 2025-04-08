@@ -157,4 +157,24 @@
 		AND user_code = #{user_code}
 		AND menu_yn = 'Y'
 	</select>	
+	
+	
+	<select id="equipment_name_select" parameterType="facility" resultType="facility">
+    SELECT 
+        facility_code, 
+        facility_name, 
+        facility_comment, 
+        facility_yn
+    FROM tb_facility
+    WHERE facility_yn = 'Y'
+    ORDER BY facility_code
+	</select>
+	
+	
+	<update id="userLoginMenuRemove" parameterType="userMenu">
+		UPDATE tb_usermenu SET menu_yn = 'N'
+		WHERE 1=1
+		AND user_code = #{user_code}
+		AND menu_url = #{menu_url}
+	</update>
 </mapper>

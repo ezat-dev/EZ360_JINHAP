@@ -221,23 +221,8 @@
 			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
             <label class="daylabel">설비명 :</label>
-            <select class="dayselect" id="equipment_name">
-            	<option value="ALL">전체</option>
-                <option value="탈유탈지 1호기">탈유탈지 1호기</option>
-			    <option value="탈유탈지 2호기">탈유탈지 2호기</option>
-			    <option value="쇼트1호기">쇼트1호기</option>
-			    <option value="쇼트2호기">쇼트2호기</option>
-			    <option value="쇼트3호기">쇼트3호기</option>
-			    <option value="쇼트4호기">쇼트4호기</option>
-			    <option value="쇼트5호기">쇼트5호기</option>
-			    <option value="쇼트6호기">쇼트6호기</option>
-			    <option value="G-600">G-600</option>
-			    <option value="G-800">G-800</option>
-			    <option value="공용설비">공용설비</option>
-			    <option value="K-BLACK">K-BLACK</option>
-			    <option value="E코팅 1호기">E코팅 1호기</option>
-			    <option value="E코팅 2호기">E코팅 2호기</option>
-			    <option value="방청">방청</option>
+            <select class="dayselect equipment_name_select " id="equipment_name">
+
             </select>
 			</div>
                 <button class="select-button">
@@ -246,12 +231,14 @@
                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
-                <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
+
                 <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
+				
+				<button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
+                </button>
             </div>
         </div>
 
@@ -480,6 +467,91 @@ $(document).ready(function () {
             }
         });
     }
+
+
+
+
+    $(".delete-button").click(function(event) {
+        event.preventDefault();
+    
+    console.log("삭제 버튼 클릭됨");
+
+    if (!selectedRow) {
+        alert("삭제할 행을 선택하세요.");
+        return;
+    }
+
+    var no = selectedRow.getData().no;
+    
+    console.log("no", no);
+
+    if (!no) {
+        alert("삭제할 항목이 없습니다.");
+        return;
+    }
+
+    var requestData = JSON.stringify({ "no": no });
+    console.log("전송된 데이터:", requestData);
+
+    $.ajax({
+        url: "/geomet/quality/nonProductManage/excel",
+        type: "POST",
+        data: {
+            equipment_name: $("#equipment_name").val() || "",
+            startDate: $("#startDate").val() || "",
+            endDate: $("#endDate").val() || ""
+        },
+        dataType: "json",  
+        success: function(response) {
+            console.log("엑셀 생성 성공:", response);
+            alert("엑셀 파일이 성공적으로 생성되었습니다!");
+     
+            if (response.data) {
+                window.open("/file/download?path=" + encodeURIComponent(response.data));
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error("엑셀 생성 오류:", xhr.responseText);
+            alert("엑셀 생성 중 오류가 발생했습니다: " + error);
+        }
+    });
+
+});
+
+    $(".excel-button").on("click", function () {
+  	  console.log("엑셀 다운로드 버튼 클릭됨"); 
+
+  	  const equipmentName = $("#equipment_name").val() || "";
+      const startDate = $("#startDate").val() || "";
+      const endDate = $("#endDate").val() || "";
+
+      console.log("엑셀 다운로드 요청 값 =>", {
+          equipment_name: equipmentName,
+          startDate: startDate,
+          endDate: endDate
+      });
+    	  
+        
+      $.ajax({
+          url: "/geomet/quality/nonProductManage/excel",
+          type: "post",
+          data: {
+              equipment_name: equipmentName,
+              startDate: startDate,
+              endDate: endDate
+          },
+          dataType: "json",
+          success: function (result) {
+              console.log(result);
+              alert("D:\\GEOMET양식\\부적합품 관리 저장 완료되었습니다.");
+          },
+          error: function (xhr, status, error) {
+              alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+              console.error("Error:", error);
+          }
+      });
+  });
+    
 });
 </script>
 

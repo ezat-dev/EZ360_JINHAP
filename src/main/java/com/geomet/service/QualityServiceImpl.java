@@ -25,5 +25,8 @@ public class QualityServiceImpl implements QualityService {
     public void saveNonProductManage(Quality quality) {
 		qualityDao.saveNonProductManage(quality);
     }
-
+	@Override
+    public void delNonProductManage(Quality quality) {
+		qualityDao.delNonProductManage(quality);
+    }
 }

@@ -11,4 +11,6 @@ public interface QualityDao {
 	  List<Quality> getNonProductManageList(Quality params);
 
 	  void saveNonProductManage(Quality quality);
+	  
+	  void delNonProductManage(Quality quality);
 }

@@ -1,5 +1,7 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<html lang="ko">
 
 <!-- 제이쿼리홈페이지 js -->
 <script type="text/javascript" src="/geomet/js/jquery-3.7.1.min.js"></script>
@@ -253,4 +255,30 @@ function pageObject(paramKey){
 	
 	return obj[paramKey];
 }
+
+$(window).on("load", function () {
+    $.ajax({
+        url: "/geomet/user/equipment_name_select",
+        type: "POST",
+        dataType: "json",
+        success: function (response) {
+            const $select = $(".equipment_name_select");
+            $select.empty();
+            $select.append('<option value="">전체</option>');
+
+            response.data.forEach(function (item) {
+                if (item.facility_name) {
+                    const $option = $('<option>' + item.facility_name + '</option>')
+                        .attr('value', item.facility_name);
+                    $select.append($option);
+                }
+            });
+        },
+        error: function (xhr, status, error) {
+            console.error("장비명 조회 실패:", error);
+        }
+    });
+});
+
+
 </script>

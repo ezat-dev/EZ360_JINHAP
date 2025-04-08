@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.geomet.domain.Condition;
+import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
@@ -122,6 +124,41 @@ public class UserController {
 		 
 		 return rtnMap;
 	 }
+	 
+	 
+	 
+	 
+	 
+	 //로그인한 사용자의 메뉴삭제
+	 @RequestMapping(value = "/user/login/menuRemove", method = RequestMethod.POST) 
+	 @ResponseBody 
+	 public Map<String, Object> userLoginMenuRemove(
+			 @RequestParam int user_code,
+			 @RequestParam String menu_url) {
+		 
+		 
+		 	System.out.println("▶ user_code: " + user_code);
+		    System.out.println("▶ menu_url: " + menu_url);
+		 
+		 Map<String, Object> rtnMap = new HashMap<String, Object>();
+		 
+		 UserMenu userMenu = new UserMenu();
+		 userMenu.setUser_code(user_code);
+		 userMenu.setMenu_url(menu_url);
+		 
+		 userService.userLoginMenuRemove(userMenu);
+		 
+		 rtnMap.put("data","OK");
+		 
+		 return rtnMap;
+	 }
+	 
+	 
+	 
+	 
+	 
+	 
+	 
 	 
 	 
 	 //사용자 등록 조회 
@@ -306,5 +343,30 @@ public class UserController {
     public String checkDocManage(Model model) {
         return "/user/checkDocManage.jsp"; // 
     }	
+    
+    
+    @RequestMapping(value = "/user/equipment_name_select", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> equipment_name_select() {
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            Facility facility = new Facility(); 
+
+            List<Facility> equipment_name_select = userService.equipment_name_select(facility);
+
+            System.out.println("equipment_name_select Size: " + equipment_name_select.size());
+
+            rtnMap.put("status", "success");
+            rtnMap.put("data", equipment_name_select);
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+
+
 }
 

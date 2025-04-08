@@ -25,4 +25,9 @@ public class QualityDaoImpl implements QualityDao {
     public void saveNonProductManage(Quality quality) {
     	sqlSession.insert("quality.saveNonProductManage",quality);
     }
+    
+    @Override
+    public void delNonProductManage(Quality quality) {
+    	sqlSession.delete("quality.delNonProductManage",quality);
+    }
 }

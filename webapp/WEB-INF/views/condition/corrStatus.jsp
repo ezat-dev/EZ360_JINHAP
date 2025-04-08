@@ -155,6 +155,12 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
+        .equipment_name{
+            width: 20%;
+            text-align: center;
+            font-size: 15px;
+        }
+
     </style>
 </head>
 
@@ -176,18 +182,8 @@
 			<input type="text" class="daySet" autocomplete="off" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
             <label class="daylabel">설비명 :</label>
-            <select class="equipment_name" id="equipment_name">
-              	<option value="ALL">ALL</option>
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
+            <select class="equipment_name equipment_name_select" id="equipment_name">
+             
             </select>
 			</div>
                 <button class="select-button">
@@ -428,7 +424,40 @@
             });
         });
 
-        
+        $(".excel-button").on("click", function () {
+        	  console.log("엑셀 다운로드 버튼 클릭됨"); 
+
+        	  const equipmentName = $("#equipment_name").val() || "";
+            const startDate = $("#startDate").val() || "";
+            const endDate = $("#endDate").val() || "";
+
+            console.log("엑셀 다운로드 요청 값 =>", {
+                equipment_name: equipmentName,
+                startDate: startDate,
+                endDate: endDate
+            });
+          	  
+              
+            $.ajax({
+                url: "/geomet/condition/corrStatus/excel",
+                type: "post",
+                data: {
+                    equipment_name: equipmentName,
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    alert("D:\\GEOMET양식\\부적합품 관리 저장 완료되었습니다.");
+                },
+                error: function (xhr, status, error) {
+                    alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+                    console.error("Error:", error);
+                }
+            });
+        });
+          
     </script>
 
 </body>

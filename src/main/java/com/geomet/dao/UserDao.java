@@ -2,6 +2,7 @@ package com.geomet.dao;
 
 import java.util.List;
 
+import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
@@ -25,6 +26,10 @@ public interface UserDao {
 	List<UserMenu> userLoginMenuList(UserMenu userMenu);
 
 	void userLoginMenuSave(UserMenu userMenu);
+	
+	List<Facility> equipment_name_select(Facility facility);
+
+	void userLoginMenuRemove(UserMenu userMenu);
 
 
 }

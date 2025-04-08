@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.geomet.dao.UserDao;
+import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
@@ -60,5 +61,13 @@ public class UserServiceImpl implements UserService{
 	public void userLoginMenuSave(UserMenu userMenu) {
 		userDao.userLoginMenuSave(userMenu);
 	}
-
+	@Override
+	public List<Facility> equipment_name_select(Facility facility) {
+		return userDao.equipment_name_select(facility);
+	}
+	
+	@Override
+	public void userLoginMenuRemove(UserMenu userMenu) {
+		userDao.userLoginMenuRemove(userMenu);
+	}
 }

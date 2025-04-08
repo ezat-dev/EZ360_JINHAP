@@ -442,6 +442,46 @@
         }
     });
 
+
+    //상단 메뉴 삭제
+function removeMenu(button) {
+    var loginCode = "${loginUser.user_code}";
+
+    // 이전 형제 요소인 label에서 onclick 속성 추출
+    var $label = $(button).siblings('.menuName');
+    var onclickAttr = $label.attr('onclick');
+
+    // iframeSrc('/geomet/machine/allMonitoring', ...) 에서 URL만 추출
+    var match = onclickAttr.match(/iframeSrc\('([^']+)'/);
+    var menuUrl = match ? match[1] : null;
+
+    console.log("user_code:", loginCode);
+    console.log("menu_url:", menuUrl);
+
+    if (!menuUrl) {
+        console.error("삭제할 메뉴의 URL이 없습니다.");
+        return;
+    }
+
+    $.ajax({
+        url: "/geomet/user/login/menuRemove",
+        type: "post",
+        dataType: "json",
+        data: {
+            "user_code": loginCode,
+            "menu_url": menuUrl
+        },
+        success: function(result) {
+            menuList();
+        }
+    });
+
+    var menuName = $label.text().trim(); 
+    console.log(menuName + " 메뉴 엑스.");
+
+    $(button).parent().remove();
+}
+
         
     </script>
     
