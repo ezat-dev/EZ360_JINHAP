@@ -254,7 +254,7 @@
 			    <label>첨부(점검완료보고서)</label>
 			
 			  	<input type="text" name="save_url" id="save_url" readonly>
-			    <input type="file" name="files" id="files" multiple>
+			   <input type="file" name="files" id="files" accept="application/pdf">
 			    <label>비고</label>
 			    <textarea name="remark" rows="10"></textarea>
 			
@@ -321,12 +321,21 @@
 
 	    $("#files").on("change", function () {
 	        const files = this.files;
-	        console.log("파일 이름:", files);
+
 	        if (files.length > 0) {
-	            const fileNames = Array.from(files).map(file => file.name);
-	            console.log("파일 이름 배열:", fileNames);
-	            const fileNameStr = fileNames.join(", ");
-	            $("#save_url").val(fileNameStr);
+	            const file = files[0]; 
+	            const ext = file.name.split('.').pop().toLowerCase();
+
+	            if (ext !== 'pdf') {
+	                alert("⚠️ PDF 파일만 업로드할 수 있습니다.");
+	                this.value = ''; 
+	                $("#save_url").val("");
+	                return;
+	            }
+
+	            console.log("파일 이름:", file.name);
+	            $("#save_url").val(file.name);
+
 	        } else {
 	            console.log("⚠️ 파일이 선택되지 않았습니다.");
 	            $("#save_url").val("");
@@ -387,7 +396,7 @@
 	                    title: "첨부 파일",
 	                    field: "save_url",
 	                    hozAlign: "center",
-	                    width: 270,
+	                    width: 250,
 	                    formatter: function(cell, formatterParams, onRendered) {
 	                        const fileName = cell.getValue();
 	                        if (!fileName) return "";
@@ -395,7 +404,7 @@
 	                    }
 
 	                },
-	                { title: "비고", field: "remark", hozAlign: "left", width: 430 },
+	                { title: "비고", field: "remark", hozAlign: "left", width: 330 },
 	            ],
 	            cellClick: function (e, cell) {
 	                const field = cell.getField();

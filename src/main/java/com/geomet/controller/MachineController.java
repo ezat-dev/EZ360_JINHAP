@@ -161,7 +161,7 @@ public class MachineController {
         return rtnMap;
     }
     //파일 다운로드
-    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    @RequestMapping(value = "/download222", method = RequestMethod.GET)
     public void downloadExcel(@RequestParam("filename") String filename,
                               HttpServletResponse response) throws IOException {
 
