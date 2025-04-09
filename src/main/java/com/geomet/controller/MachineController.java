@@ -1,14 +1,21 @@
 package com.geomet.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -25,7 +32,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.multipart.MultipartFile;
 
 import com.geomet.domain.Machine;
 import com.geomet.domain.Quality;
@@ -115,15 +122,90 @@ public class MachineController {
     //정기점검 계획/실적
     @RequestMapping(value = "/machine/checkPlan/update", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> saveNonProductManage(@ModelAttribute Machine machine) {
+    public Map<String, Object> saveNonProductManage(
+            @ModelAttribute Machine machine,
+            @RequestParam(value = "files", required = false) MultipartFile[] files) {
+
         Map<String, Object> rtnMap = new HashMap<>();
 
-        machineService.updatecheckPlan(machine);
+        try {
+  
+            machineService.updatecheckPlan(machine);
 
-        rtnMap.put("result", "success");
+       
+            if (files != null) {
+                String uploadDir = "D:/GEOMET양식/정기점검 파일";
+
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs(); 
+                }
+
+                for (MultipartFile file : files) {
+                    if (!file.isEmpty()) {
+                        String originalFilename = file.getOriginalFilename();
+                        File destination = new File(uploadDir + "/" + originalFilename);
+                        file.transferTo(destination);
+                    }
+                }
+            }
+
+            rtnMap.put("result", "success");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", e.getMessage());
+        }
+
         return rtnMap;
     }
-    
+    //파일 다운로드
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void downloadExcel(@RequestParam("filename") String filename,
+                              HttpServletResponse response) throws IOException {
+
+        String baseDir = "D:/GEOMET양식/정기점검 파일/";
+
+        System.out.println("다운 주소 filename: " + filename);
+
+        if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        File file = new File(baseDir + filename);
+        System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+        if (!file.exists()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        String mimeType = Files.probeContentType(file.toPath());
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setContentType(mimeType);
+        response.setContentLengthLong(file.length());
+
+   
+        String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+        }
+    }
+
     
     
     // 정기점검 계획/실적 엑셀

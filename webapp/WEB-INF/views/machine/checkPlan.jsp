@@ -383,7 +383,18 @@
 	                { title: "10월", field: "m10", hozAlign: "center" },
 	                { title: "11월", field: "m11", hozAlign: "center" },
 	                { title: "12월", field: "m12", hozAlign: "center" },
-	                { title: "첨부 파일", field: "save_url", formatter: "link", hozAlign: "center", width: 270 },
+	                {
+	                    title: "첨부 파일",
+	                    field: "save_url",
+	                    hozAlign: "center",
+	                    width: 270,
+	                    formatter: function(cell, formatterParams, onRendered) {
+	                        const fileName = cell.getValue();
+	                        if (!fileName) return "";
+	                        return '<a href="/geomet/download?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+	                    }
+
+	                },
 	                { title: "비고", field: "remark", hozAlign: "left", width: 430 },
 	            ],
 	            cellClick: function (e, cell) {
