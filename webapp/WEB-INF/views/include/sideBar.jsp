@@ -379,6 +379,7 @@
 			}
 		});
 	}
+	
 	function menuList(){
 	    var loginCode = "${loginUser.user_code}";
 	    
@@ -397,12 +398,13 @@
 	            for(let key in data){
 	                var menuName = data[key].menu_name;
 	                var menuNameIndex = (data[key].menu_name).indexOf("-")+1;
+	                
 	                menuName = menuName.substring(menuNameIndex,menuName.length);                
 	                menuName = menuName.replace("/\s/g","&nbsp;");
 
-	                _div = "<div class='menuDivTab'>";
+	                _div = "<div class='menuDivTab' onClick=iframeSrc('"+data[key].menu_url+"','"+menuName+"')>";
 					_div += "<label class='menuName' onClick=iframeSrc('"+data[key].menu_url+"','"+menuName+"')>" + menuName + "</label>";
-	                _div += "<button class='close-btn' onClick=removeMenu(this)>×</button>";
+	                _div += "<button class='close-btn' onClick=removeMenu('"+data[key].menu_url+"')>×</button>";
 	                _div += "</div>";
 
 	                $(".menuDiv").append(_div);
@@ -412,12 +414,7 @@
 	}
 
 
-	function removeMenu(button) {
-	    var menuName = $(button).siblings('.menuName').text(); 
-	    console.log(menuName + " 메뉴 엑스 .");
-	 
-	    $(button).parent().remove();  
-	}
+
 	
     // DOMContentLoaded 이벤트로 DOM이 준비된 후 스크립트 실행
     document.addEventListener('DOMContentLoaded', function() {
@@ -443,15 +440,18 @@
     });
 
 
+
+
+
+    
+/*
     //상단 메뉴 삭제
-function removeMenu(button) {
+function removeMenu2(button) {
     var loginCode = "${loginUser.user_code}";
 
-    // 이전 형제 요소인 label에서 onclick 속성 추출
-    var $label = $(button).siblings('.menuName');
-    var onclickAttr = $label.attr('onclick');
 
-    // iframeSrc('/geomet/machine/allMonitoring', ...) 에서 URL만 추출
+    var label = $(button).siblings('.menuName');
+    var onclickAttr = label.attr('onclick');
     var match = onclickAttr.match(/iframeSrc\('([^']+)'/);
     var menuUrl = match ? match[1] : null;
 
@@ -476,11 +476,39 @@ function removeMenu(button) {
         }
     });
 
-    var menuName = $label.text().trim(); 
+    var menuName = label.text().trim(); 
     console.log(menuName + " 메뉴 엑스.");
 
     $(button).parent().remove();
-}
+    }
+*/
+
+
+
+function removeMenu(url) {
+	var loginCode = "${loginUser.user_code}";		   
+
+	   
+   $.ajax({
+	  url:"/geomet/user/login/menuRemove",
+	  type:"post",
+	  dataType:"json",
+	  data:{
+		  "user_code":loginCode,
+		  "menu_url":url},
+	  success:function(result){
+		  menuList();
+	  }
+   });
+/*
+   console.log(button);
+   
+   var menuName = $(button).siblings('.menuName').text(); 
+   console.log(menuName + " 메뉴 엑스 .");
+
+   $(button).parent().remove();
+*/
+}	
 
         
     </script>

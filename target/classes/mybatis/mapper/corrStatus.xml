@@ -4,24 +4,5 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="corrStatus">
 
-	 <insert id="saveCorrStatus" parameterType="corrStatus">
-        INSERT INTO tb_corr_status (
-            equipment_name,
-            location,
-            serial_number,
-            replacement_date,
-            next_date,
-            replacement_cycle,
-            remarks
-        )
-        VALUES (
-            #{equipmentName},
-            #{location},
-            #{serialNumber},
-            #{replacementDate},
-            #{nextDate},
-            #{replacementCycle},
-            #{remarks}
-        );
-    </insert>
+	
 </mapper>

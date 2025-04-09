@@ -4,7 +4,7 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.geomet.domain.Condition;
-
+import com.geomet.domain.CorrStatus;
 
 import java.util.List;
 
@@ -43,4 +43,9 @@ public class ConditionDaoImpl implements ConditionDao {
     public void delCorrStatus(Condition condition) {
     	sqlSession.delete("condition.delCorrStatus",condition);
     }
+    
+	@Override
+	public void saveCorrStatus(Condition condition) {
+		sqlSession.update("condition.saveCorrStatus",condition);
+	}
 }

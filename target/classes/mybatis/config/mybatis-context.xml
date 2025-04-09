@@ -11,5 +11,6 @@
   	<mapper resource="mybatis/mapper/corrStatus.xml"/>
   	<mapper resource="mybatis/mapper/condition.xml"/>
   	<mapper resource="mybatis/mapper/quality.xml"/>
+  	<mapper resource="mybatis/mapper/machine.xml"/>
   </mappers>
 </configuration>

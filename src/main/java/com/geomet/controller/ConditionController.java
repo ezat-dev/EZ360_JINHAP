@@ -33,7 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.geomet.domain.CorrStatus;
+
 import com.geomet.domain.Condition;
 import com.geomet.service.ConditionService;
 import com.geomet.service.CorrStatusService;
@@ -103,19 +103,19 @@ public class ConditionController {
     // T/C추가
     @RequestMapping(value = "/condition/corrStatus/insert", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> saveCorrStatus(@ModelAttribute CorrStatus corrStatus) {
+    public Map<String, Object> saveCorrStatus(@ModelAttribute Condition condition) {
 
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            if (corrStatus.getLocation() == null || corrStatus.getLocation().trim().isEmpty()) {
+            if (condition.getNo() == null || condition.getNo().trim().isEmpty()) {
                 rtnMap.put("result", "fail");
                 rtnMap.put("message", "존 구분을 입력하시오!");
                 return rtnMap;
             }
 
             // 실제 저장 로직 실행
-            CorrStatusService.saveCorrStatus(corrStatus);
+            conditionService.saveCorrStatus(condition);
 
             rtnMap.put("result", "success");
         } catch (Exception e) {
@@ -143,6 +143,114 @@ public class ConditionController {
         return rtnMap;
     }
     
+
+    //T/C 엑섹 저장
+    @RequestMapping(value = "/condition/corrStatus/excel", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> corrStatusExcel(
+    		  @RequestParam String equipment_name,
+              @RequestParam String startDate,
+              @RequestParam String endDate
+    		
+    ) {
+    	System.out.println("엑셀 다운로드 요청 params:");
+        System.out.println("equipment_name = " + equipment_name);
+        System.out.println("startDate = " + startDate);
+        System.out.println("endDate = " + endDate);
+        
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        // 날짜 및 파일명 생성
+        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
+        Date time = new Date();
+        String fileName = format.format(time) + ".xlsx";
+
+        FileOutputStream fos = null;
+        FileInputStream fis = null;
+        String openPath = "D:/GEOMET양식/";
+        String savePath = "D:/GEOMET양식/TC교체이력/";
+
+
+        Condition condition = new Condition();
+        condition.setEquipment_name(equipment_name);
+        condition.setStartDate(startDate);
+        condition.setEndDate(endDate);
+
+        // 필터링된 데이터만 조회
+        List<Condition> getCorrStatusList = conditionService.getCorrStatusList(condition);
+
+        System.out.println("TC조회된 건수: " + (getCorrStatusList != null ? getCorrStatusList.size() : 0));
+
+        if (getCorrStatusList == null || getCorrStatusList.isEmpty()) {
+            rtnMap.put("error", "데이터 없음");
+            return rtnMap;
+        }
+
+        try {
+            fis = new FileInputStream(openPath + "03_01.조건관리_TC교체이력.xlsx");
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            XSSFCellStyle styleCenterBorder = workbook.createCellStyle();
+            styleCenterBorder.setAlignment(HorizontalAlignment.CENTER);
+            styleCenterBorder.setBorderTop(BorderStyle.THIN);
+            styleCenterBorder.setBorderBottom(BorderStyle.THIN);
+            styleCenterBorder.setBorderLeft(BorderStyle.THIN);
+            styleCenterBorder.setBorderRight(BorderStyle.THIN);
+
+            String[] fields = {
+                "no", "equipment_name", "location", "serial_number", "replacement_date", "next_date",
+                "replacement_cycle", "remarks"
+            };
+
+            int startRow = 6; // 7
+            int startCol = 0; // A
+
+            for (int i = 0; i < getCorrStatusList.size(); i++) {
+            	Condition item = getCorrStatusList.get(i);
+                XSSFRow row = sheet.createRow(startRow + i);
+
+                for (int j = 0; j < fields.length; j++) {
+                    XSSFCell cell = row.createCell(startCol + j);
+                    String value = "";
+
+                    try {
+                        Field field = Condition.class.getDeclaredField(fields[j]);
+                        field.setAccessible(true);
+                        Object fieldValue = field.get(item);
+                        value = (fieldValue != null) ? fieldValue.toString() : "";
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        value = "";
+                    }
+
+                    cell.setCellValue(value);
+                    cell.setCellStyle(styleCenterBorder);
+                }
+            }
+
+            workbook.setForceFormulaRecalculation(true);
+            fos = new FileOutputStream(savePath + fileName);
+            workbook.write(fos);
+            workbook.close();
+            fos.flush();
+
+            rtnMap.put("data", savePath + fileName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+        } finally {
+            try {
+                if (fis != null) fis.close();
+                if (fos != null) fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rtnMap;
+    }
+
 
 
 	

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.geomet.domain.Condition;
 
+
 @Repository
 public interface ConditionDao {
 	  
@@ -20,4 +21,6 @@ public interface ConditionDao {
 	  List<Condition> getCorrStatusList(Condition params);
 	  
 	  void delCorrStatus(Condition condition);
+	  
+	  void saveCorrStatus(Condition condition);
 }

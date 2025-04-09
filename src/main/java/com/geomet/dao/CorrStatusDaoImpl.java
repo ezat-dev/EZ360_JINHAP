@@ -14,8 +14,5 @@ public class CorrStatusDaoImpl implements CorrStatusDao{
 	@Resource(name="session")
 	private SqlSession sqlSession;
 	
-	@Override
-	public void saveCorrStatus(CorrStatus corrStatus) {
-		sqlSession.insert("corrStatus.saveCorrStatus",corrStatus);
-	}
+
 }

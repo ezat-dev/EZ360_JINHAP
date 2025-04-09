@@ -123,12 +123,12 @@
         margin-right: 20px;
         margin-top: 4px;
     }
-    .dayselect {
+    .yearselect {
         width: 20%;
         text-align: center;
         font-size: 15px;
     }
-    .daySet {
+    .yearSet {
         width: 20%;
         text-align: center;
         height: 16px;
@@ -138,7 +138,7 @@
         border-radius: 5px;
         font-size: 15px;
     }
-    .daylabel {
+    .yearlabel {
         margin-right: 10px;
         margin-bottom: 13px;
         font-size: 18px;
@@ -206,239 +206,340 @@
             
             <div class="box1">
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">교체일자 :</label>
-			<input type="text"autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-			
-			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+           <label class="yearlabel">점검 연도 선택 :</label>
+			<input type="text"autocomplete="off" class="yearSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 
-			<input type="text" autocomplete="off"class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-
-            <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
-             
-               <option value="탈유탈지1호기">탈유탈지 1호기</option>
-			    <option value="탈유탈지2호기">탈유탈지 2호기</option>
-			    <option value="쇼트1호기">쇼트 1호기</option>
-			    <option value="쇼트2호기">쇼트 2호기</option>
-			    <option value="쇼트3호기">쇼트 3호기</option>
-			    <option value="쇼트4호기">쇼트 4호기</option>
-			    <option value="쇼트5호기">쇼트 5호기</option>
-			    <option value="쇼트6호기">쇼트 6호기</option>
-			    <option value="G600">G-600</option>
-			    <option value="G800">G-800</option>
-			    <option value="공용설비">공용설비</option>
-			    <option value="K-BLACK">K-BLACK</option>
-			    <option value="E코팅1호기">E코팅 1호기</option>
-			    <option value="E코팅2호기">E코팅 2호기</option>
-			    <option value="방청">방청</option>
-            </select>
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+
             </div>
         </div>
 
         <div class="view">
-            <div id="dataList"></div>
+		<div id="dataList" style="width: 96%;"></div>
+
         </div>
     </main>
 	
 	   <div id="modalContainer" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	    <form id="corrForm">
-		    <label>설비명</label>
-		    <select name="equipmentName">
-		        <option value="탈유탈지1호기">탈유탈지 1호기</option>
-		        <option value="탈유탈지2호기">탈유탈지 2호기</option>
-		        <option value="쇼트1호기">쇼트 1호기</option>
-		        <option value="쇼트2호기">쇼트 2호기</option>
-		        <option value="쇼트3호기">쇼트 3호기</option>
-		        <option value="쇼트4호기">쇼트 4호기</option>
-		        <option value="쇼트5호기">쇼트 5호기</option>
-		        <option value="쇼트6호기">쇼트 6호기</option>
-		        <option value="G600">G-600</option>
-		        <option value="G800">G-800</option>
-		        <option value="공용설비">공용설비</option>
-		        <option value="K-BLACK">K-BLACK</option>
-		        <option value="E코팅1호기">E코팅 1호기</option>
-		        <option value="E코팅2호기">E코팅 2호기</option>
-		        <option value="방청">방청</option>
-		    </select>
-		
+	        
+	        
+	        
+	        
+	       
+			<form id="corrForm" enctype="multipart/form-data" autocomplete="off">
+			 <h2 class="hName"></h2>	
+			    <label>설비명</label>
+			    <input type="text" name="equipment_name" readonly>
+			
+			    <label>항목</label>
+			    <input type="text" name="item_type" readonly>
+			
+			    <label>최근 점검일</label>
+			    <div class="checkbox-container">
+			        <input type="text" class="daySet" name="updated_at" placeholder="점검일 선택" style="text-align: left;"readonly>
+			    </div>
+			
+			    <label class="hName2">(변수)월 정검일</label>
+			    <input type="text" class="monthDaySet" name="0m"  placeholder="(변수)월 정검일" >
+			
+			    <label>첨부(점검완료보고서)</label>
+			
+			  	<input type="text" name="save_url" id="save_url" readonly>
+			    <input type="file" name="files" id="files" multiple>
+			    <label>비고</label>
+			    <textarea name="remark" rows="10"></textarea>
+			
+			    <button type="submit" id="saveCorrStatus" style="font-weight: bold;">저장</button>
+			    <button type="button" id="closeModal" style="font-weight: bold;">닫기</button>
+			</form>
 
-		    <label>점검날짜</label>
-		    <input type="date" class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;">
-		
-		    <label>항목</label>
-		    <select name="select2">
-		        <option value="1">계획</option>
-		        <option value="2">실적</option>
-		    </select>
-		    
-		    
-			<label>점검 월</label>
-			  <div class="checkbox-container">
-				    <label><input type="checkbox" name="Jan" value="1"><span></span> 1월</label>
-				    <label><input type="checkbox" name="Feb" value="2"><span></span> 2월</label>
-				    <label><input type="checkbox" name="Mar" value="3"><span></span> 3월</label>
-				    <label><input type="checkbox" name="Apr" value="4"><span></span> 4월</label>
-				    <label><input type="checkbox" name="May" value="5"><span></span> 5월</label>
-				    <label><input type="checkbox" name="Jun" value="6"><span></span> 6월</label>
-				    <label><input type="checkbox" name="Jul" value="7"><span></span> 7월</label>
-				    <label><input type="checkbox" name="Aug" value="8"><span></span> 8월</label>
-				    <label><input type="checkbox" name="Sep" value="9"><span></span> 9월</label>
-				    <label><input type="checkbox" name="Oct" value="10"><span></span> 10월</label>
-				    <label><input type="checkbox" name="Nov" value="11"><span></span> 11월</label>
-				    <label><input type="checkbox" name="Dec" value="12"><span></span> 12월</label>
-				</div>
-		
-		
-		
-		    <label>차기 교체일자</label>
-		    <input type="text" name="nextDate">
-		
-		    <label>첨부(점검완료보고서)</label>
-		    <input type="text" name="replacementCycle">
-		
-		    <label>비고</label>
-		    <textarea name="remarks" rows="3"></textarea>
-		
-
-		
-		   <button type="submit" id="saveCorrStatus" style="font-weight: bold;">저장</button>
-			<button type="button" id="closeModal" style="font-weight: bold;">닫기</button>
-
-		</form>
 
 	    </div>
 	</div>
 
 
-    <script>
-        $(function() {
-            getDataList();
-        });
+     <script>
+    $(document).ready(function () {
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "700px",
-     
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                columns: [
-                	 { title: "설비", field: "설비", width: 150, hozAlign: "center" },
-                     { title: "점검날짜", field: "점검 날짜", width: 180, hozAlign: "center" },
-                     { title: "항목", field: "항목", width: 100, hozAlign: "center" },
-                     { title: "1월", field: "1월", width: 70, hozAlign: "center" },
-                     { title: "2월", field: "2월", width: 70, hozAlign: "center" },
-                     { title: "3월", field: "3월", width: 70, hozAlign: "center" },
-                     { title: "4월", field: "4월", width: 70, hozAlign: "center" },
-                     { title: "5월", field: "5월", width: 70, hozAlign: "center" },
-                     { title: "6월", field: "6월", width: 70, hozAlign: "center" },
-                     { title: "7월", field: "7월", width: 70, hozAlign: "center" },
-                     { title: "8월", field: "8월", width: 70, hozAlign: "center" },
-                     { title: "9월", field: "9월", width: 70, hozAlign: "center" },
-                     { title: "10월", field: "10월", width: 70, hozAlign: "center" },
-                     { title: "11월", field: "11월", width: 70, hozAlign: "center" },
-                     { title: "12월", field: "12월", width: 70, hozAlign: "center" },
-                     { title: "첨부 (점검완료보고서)", field: "첨부", width: 200, hozAlign: "center" },
-                     { title: "비고", field: "비고", width: 150, hozAlign: "center" }
-                     ],
-            });
-           
-            dataTable.setData(tableData);
-        }
+    	const currentYear = new Date().getFullYear();
+
+    	
+	    getDataList();
+	    // 모달 열기 버튼 이벤트
+	    $(".insert-button").click(function () {
+	        let modal = $("#modalContainer");
+	        modal.show(); 
+	        modal.addClass("show");
+	    });
+
+	    // 모달 닫기 버튼 이벤트
+	    $(".close, #closeModal").click(function () {
+	        let modal = $("#modalContainer");
+	        modal.removeClass("show").hide(); 
+	    });
+	    $("#startDate")
+        .val(currentYear) 
+        .attr("placeholder", currentYear); 
+	  
+  
+    });
 
 
-        const tableData = [
-            { 설비: "탈유탈지 1호기", 점검 : "2024-02-15", 항목: "계획", "1월": "", "2월": "", "3월": "○", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "탈유탈지 2호기", 점검 : "2024-02-10", 항목: "계획", "1월": "", "2월": "○", "3월": "", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "쇼트 1호기", 점검 : "2024-01-20", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "○", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "쇼트 2호기", 점검 : "2023-12-25", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "", "5월": "○", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "쇼트 3호기", 점검 : "2023-12-10", 항목: "계획", "1월": "○", "2월": "", "3월": "", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "쇼트 4호기", 점검 : "2023-11-30", 항목: "계획", "1월": "", "2월": "", "3월": "○", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "쇼트 5호기", 점검 : "2023-11-15", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "", "5월": "", "6월": "○", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "쇼트 6호기", 점검 : "2023-10-25", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "", "5월": "", "6월": "", "7월": "○", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "G-600", 점검 : "2023-10-05", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "", "5월": "○", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "G-800", 점검 : "2023-09-20", 항목: "계획", "1월": "", "2월": "○", "3월": "", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "공용설비", 점검 : "2023-09-10", 항목: "계획", "1월": "", "2월": "", "3월": "○", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "K-BLACK", 점검 : "2023-08-30", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "○", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "E코팅 1호기", 점검 : "2023-08-10", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "", "5월": "○", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "E코팅 2호기", 점검 : "2023-07-25", 항목: "계획", "1월": "", "2월": "", "3월": "○", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" },
-            { 설비: "방청", 점검 : "2023-07-10", 항목: "계획", "1월": "", "2월": "", "3월": "", "4월": "", "5월": "", "6월": "", "7월": "", "8월": "", "9월": "○", "10월": "", "11월": "", "12월": "", "첨부": "", "비고": "" }
-        ];
+	    $(".select-button").click(function () {
+	       
+	        let startDate = $("#startDate").val() || "";
+
+	
+	        console.log("검색 요청 값 =>", {
+	            startDate: startDate
+	        });
+
+
+	        if (!startDate || startDate.trim() === "") {
+	            const today = new Date();
+	            startDate = today.getFullYear().toString();  
+	        }
+	        
+	        dataTable.setData("/geomet/machine/checkPlan/list", {
+
+	            "startDate": startDate,
+	   
+	        });
+	    });
 
 
 
 
-        
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
+	    $("#files").on("change", function () {
+	        const files = this.files;
+	        console.log("파일 이름:", files);
+	        if (files.length > 0) {
+	            const fileNames = Array.from(files).map(file => file.name);
+	            console.log("파일 이름 배열:", fileNames);
+	            const fileNameStr = fileNames.join(", ");
+	            $("#save_url").val(fileNameStr);
+	        } else {
+	            console.log("⚠️ 파일이 선택되지 않았습니다.");
+	            $("#save_url").val("");
+	        }
+	    });
 
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
+
+
+
+	    
+	    var selectedRow = null;
+
+	    function getDataList() {
+	        dataTable = new Tabulator("#dataList", {
+	            height: "830px",
+	            layout: "fitColumns",
+	            responsiveLayout: "collapse",
+	            selectable: true,
+	            tooltips: true,
+	            selectableRangeMode: "click",
+	            reactiveData: true,
+	            headerHozAlign: "center",
+	            ajaxConfig: "POST",
+	            ajaxLoader: false,
+	            ajaxURL: "/geomet/machine/checkPlan/list",
+	            ajaxProgressiveLoad: "scroll",
+	            ajaxParams: {
+	                "startDate": $("#startDate").val() || "",
+	            },
+	            placeholder: "조회된 데이터가 없습니다.",
+	            paginationSize: 20,
+	            groupBy: "equipment_name",
+	            groupStartOpen: true,
+	            groupHeader: function(value, count, data) {
+	                return `<span style="font-weight:bold; font-size:16px;">${value}</span>`;
+	            },
+	            ajaxResponse: function(url, params, response) {
+	                $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+	                return response;
+	            },
+	            columns: [
+	                { title: "설비", field: "equipment_name", width: 130, hozAlign: "center" },
+	                { title: "점검일", field: "updated_at", width: 100, hozAlign: "center" },
+	                { title: "항목", field: "item_type", hozAlign: "center" },
+	                { title: "1월", field: "m1", hozAlign: "center" },
+	                { title: "2월", field: "m2", hozAlign: "center" },
+	                { title: "3월", field: "m3", hozAlign: "center" },
+	                { title: "4월", field: "m4", hozAlign: "center" },
+	                { title: "5월", field: "m5", hozAlign: "center" },
+	                { title: "6월", field: "m6", hozAlign: "center" },
+	                { title: "7월", field: "m7", hozAlign: "center" },
+	                { title: "8월", field: "m8", hozAlign: "center" },
+	                { title: "9월", field: "m9", hozAlign: "center" },
+	                { title: "10월", field: "m10", hozAlign: "center" },
+	                { title: "11월", field: "m11", hozAlign: "center" },
+	                { title: "12월", field: "m12", hozAlign: "center" },
+	                { title: "첨부 파일", field: "save_url", formatter: "link", hozAlign: "center", width: 270 },
+	                { title: "비고", field: "remark", hozAlign: "left", width: 430 },
+	            ],
+	            cellClick: function (e, cell) {
+	                const field = cell.getField();
+	                const value = cell.getValue();
+	                const rowData = cell.getRow().getData();
+
+	                console.log("✅ 클릭한 필드명:", field);
+	                console.log("✅ 클릭한 값:", value);
+	                console.table(rowData);
+	            },
+	            cellDblClick: function(e, cell) {
+	                const field = cell.getField();
+	                const value = cell.getValue();
+	                const rowData = cell.getRow().getData();
+	                const monthNumber = field.replace("m", "");
+
+	                if (monthNumber >= 1 && monthNumber <= 12) {
+	                    const modal = $("#modalContainer");
+	                    modal.show().addClass("show");
+
+	                    $(".hName").text(monthNumber + "월 점검일 입력");
+	                    $(".hName2").text(monthNumber + "월 정검일");
+
+	                    const $monthInput = $(".monthDaySet");
+	                    const newName = "m" + monthNumber;
+
+	                    $monthInput.attr("name", newName);
+	                    $monthInput.attr("placeholder", `${monthNumber}월 정검일`);
+	                    $monthInput.val(value);
+
+	                    $("input[name='equipment_name']").val(rowData.equipment_name);
+	                    $("input[name='item_type']").val(rowData.item_type);
+	                    $("input[name='updated_at']").val(rowData.updated_at);
+	                    $("input[name='save_url']").val(rowData.save_url);
+	                    $("textarea[name='remark']").val(rowData.remark);
+	                }
+	            }
+	        });
+	    }
 
 
         $(document).ready(function () {
             $("#saveCorrStatus").click(function (event) {
                 event.preventDefault();
                 
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+                var corrForm = new FormData($("#corrForm")[0]);
 
-                // FormData의 값을 콘솔에 출력
+          
                 corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
+                    console.log(key + ": " + value);
                 });
 
                 $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
+                    url: "/geomet/machine/checkPlan/update",
                     type: "POST",
                     data: corrForm,
                     dataType: "json",
-                    processData: false,  
-                    contentType: false,  
+                    processData: false,
+                    contentType: false,
                     success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
+                        if (response.result === "success") {
+                            alert("정기점검 계획 성공적으로 저장되었습니다!");
+                            $("#modalContainer").hide();
+                            getDataList(); 
+                        } else {
+                            alert("저장 실패: " + response.message);
+                        }
+                    },
+                    error: function () {
+                        alert("서버 오류 발생!");
                     }
                 });
             });
 
-            // 모달 닫기 버튼 이벤트
+            // 모달 닫기 버튼
             $("#closeModal").click(function () {
                 $("#modalContainer").hide();
             });
         });
 
-        	
 
 
-        
+    	
+        $(".delete-button").click(function(event) {
+            event.preventDefault();
+            
+            console.log("삭제 버튼 클릭됨");
+
+            if (!selectedRow) {
+                alert("삭제할 행을 선택하세요.");
+                return;
+            }
+
+            var no = selectedRow.getData().no;
+            
+            console.log("no", no);
+
+            if (!no) {
+                alert("삭제할 항목이 없습니다.");
+                return;
+            }
+
+            var requestData = JSON.stringify({ "no": no });
+            console.log("전송된 데이터:", requestData);
+
+            $.ajax({
+                url: "/geomet/machine/checkPlan/del",
+                type: "POST",
+                contentType: "application/json",
+                data: requestData,
+                dataType: "json",
+                success: function(response) {
+                    console.log("삭제 성공:", response);
+                    alert("TC/조절계 이력 성공적으로 삭제되었습니다!");
+                    selectedRow.delete();
+                    selectedRow = null;  
+                    getDataList();
+                },
+                error: function(xhr, status, error) {
+                    console.log("삭제 오류 발생:", xhr.responseText);
+                    alert("삭제 중 오류가 발생했습니다: " + error);
+                }
+            });
+        });
+
+   
+
+        $(".excel-button").on("click", function () {
+        	  console.log("엑셀 다운로드 버튼 클릭됨");  	
+            const startDate = $("#startDate").val() || "";
+  
+            console.log("엑셀 다운로드 요청 값 =>", {
+                startDate: startDate
+            });
+          	  
+              
+            $.ajax({
+                url: "/geomet/machine/checkPlan/excel",
+                type: "post",
+                data: {
+                    startDate: startDate
+                },
+                dataType: "json",
+                success: function (result) {
+                    console.log(result);
+                    alert("D:\\GEOMET양식\\정기점검 계획 저장 완료되었습니다.");
+                },
+                error: function (xhr, status, error) {
+                    alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+                    console.error("Error:", error);
+                }
+            });
+        });
+
+                
     </script>
 
 </body>

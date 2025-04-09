@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="machine">
+
+    <!-- //정기점검 계획/실적  -->   
+<select id="getMachineList" parameterType="machine" resultType="machine">
+    SELECT 
+        equipment_name,
+        DATE_FORMAT(updated_at, '%Y-%m-%d') AS updated_at,
+        item_type,
+        m1, m2, m3, m4, m5, m6,
+        m7, m8, m9, m10, m11, m12,
+        save_url,
+        remark
+    FROM tb_check_plan
+    <where>
+        <if test="startDate != null and startDate != ''">
+            AND YEAR(created_at) = #{startDate}
+        </if>
+    </where>
+    ORDER BY equipment_name DESC
+</select>
+
+
+<update id="updatecheckPlan" parameterType="machine">
+    UPDATE tb_check_plan
+    SET 
+        equipment_name = #{equipment_name},
+        inspection_date = #{updated_at},
+        item_type = #{item_type},
+        save_url = #{save_url},
+        remark = #{remark},
+        <if test="m1 != null">m1 = #{m1},</if>
+        <if test="m2 != null">m2 = #{m2},</if>
+        <if test="m3 != null">m3 = #{m3},</if>
+        <if test="m4 != null">m4 = #{m4},</if>
+        <if test="m5 != null">m5 = #{m5},</if>
+        <if test="m6 != null">m6 = #{m6},</if>
+        <if test="m7 != null">m7 = #{m7},</if>
+        <if test="m8 != null">m8 = #{m8},</if>
+        <if test="m9 != null">m9 = #{m9},</if>
+        <if test="m10 != null">m10 = #{m10},</if>
+        <if test="m11 != null">m11 = #{m11},</if>
+        <if test="m12 != null">m12 = #{m12},</if>
+        updated_at = NOW()
+    WHERE equipment_name = #{equipment_name}
+      AND item_type = #{item_type}
+</update>
+
+</mapper>

@@ -4,6 +4,7 @@ import java.util.List;
 
 
 import com.geomet.domain.Condition;
+import com.geomet.domain.CorrStatus;
 
 public interface ConditionService {
     
@@ -19,4 +20,5 @@ public interface ConditionService {
     
     void delCorrStatus(Condition params); 
    
+    void saveCorrStatus(Condition condition);
 }

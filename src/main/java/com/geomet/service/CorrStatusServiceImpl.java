@@ -12,8 +12,5 @@ public class CorrStatusServiceImpl implements CorrStatusService {
 	   @Autowired
 	    private CorrStatusDao corrStatusDao;
 
-	    @Override
-	    public void saveCorrStatus(CorrStatus corrStatus) {
-	        corrStatusDao.saveCorrStatus(corrStatus);
-	    }
+	   
 	}

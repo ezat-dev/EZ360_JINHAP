@@ -32,12 +32,17 @@ public class Condition {
 	    private String startDate;
 	    private String endDate;
 	    private String no;
+	    private String equipmentName;
+
 	    
 	    
 	    
-	    
-	    
-	    
+		public String getEquipmentName() {
+			return equipmentName;
+		}
+		public void setEquipmentName(String equipmentName) {
+			this.equipmentName = equipmentName;
+		}
 		public String getNo() {
 			return no;
 		}

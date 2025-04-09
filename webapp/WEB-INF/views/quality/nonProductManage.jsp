@@ -441,7 +441,7 @@ $(document).ready(function () {
                 return response;
             },
             columns: [
-                { title: "NO", field: "no", sorter: "string", width: 30, hozAlign: "center" },
+                { title: "NO", field: "no", sorter: "string", width: 70, hozAlign: "center" },
                 { title: "발생일", field: "defect_date", width: 120, hozAlign: "center" },
                 { title: "불량유형", field: "defect_type", width: 120, hozAlign: "center" },
                 { title: "발생설비", field: "equipment", width: 120, hozAlign: "center" },

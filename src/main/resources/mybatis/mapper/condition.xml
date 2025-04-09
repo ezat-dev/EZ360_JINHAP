@@ -67,7 +67,7 @@
 	    SELECT *
 	    FROM tb_corr_status
 	    <where>
-	       <if test="equipment_name != 'ALL'">
+	       <if test="equipment_name != null and equipment_name != ''">
 	            AND equipment_name = #{equipment_name}
 	        </if>
 	
@@ -85,5 +85,19 @@
         DELETE FROM tb_corr_status 
         WHERE no = #{no}
     	</delete>
-    
+    	
+    	
+	<update id="saveCorrStatus" parameterType="corrStatus">
+	    UPDATE tb_corr_status
+	    SET
+	        equipment_name = #{equipment_name},
+	        location = #{location},
+	        serial_number = #{serial_number},
+	        replacement_date = #{replacement_date},
+	        next_date = #{next_date},
+	        replacement_cycle = #{replacement_cycle},
+	        remarks = #{remarks}
+	    WHERE no = #{no}
+	</update>
+
 </mapper>

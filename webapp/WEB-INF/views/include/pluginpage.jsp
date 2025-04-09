@@ -66,6 +66,17 @@ $(function(){
       language: 'ko'          // 한국어 설정
   });
 
+	 $(".monthDaySet").datepicker({
+		    language: 'ko',
+		    autoClose: true,
+		    dateFormat: 'mm-dd',     // 📌 "월-일" 형식만 표시
+		    view: 'days',            // 기본 day 뷰 사용
+		    minView: 'days',         // day까지만 표시
+		    onShow: function(inst, animationCompleted){
+		        // 연도, 월 선택 영역 숨김 (디자인적으로)
+		        $('.datepicker--nav-title i, .datepicker--nav-title span').hide();
+		    }
+		});
 
 /*
    // AirDatepicker 초기화

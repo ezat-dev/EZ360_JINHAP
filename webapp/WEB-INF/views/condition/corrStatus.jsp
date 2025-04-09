@@ -160,7 +160,9 @@
             text-align: center;
             font-size: 15px;
         }
-
+	.excel-button {
+	    margin-right: 30px;
+	}
     </style>
 </head>
 
@@ -189,15 +191,15 @@
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
+<!--                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+                </button> -->
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-        		<button class="delete-button">
+<!--         		<button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
-				</button>
+				</button> -->
 
             </div>
         </div>
@@ -211,9 +213,9 @@
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
 	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
+	        <form id="corrForm" autocomplete="off">
 	            <label>설비명</label>
-	            <select name="equipmentName">
+	            <select name="equipment_name">
 	                <option value="G800">G800</option>
 	                <option value="G600">G600</option>
 	                <option value="K-BLACK">K-BLACK</option>
@@ -230,19 +232,20 @@
 	            <input type="text" name="location" value="소입1존">
 	
 	            <label>시리얼 번호</label>
-	            <input type="text" name="serialNumber" placeholder="시리얼 번호">
+	            <input type="text" name="serial_number" placeholder="시리얼 번호">
 	
 				<label>교체일자</label>
-				<input type="text" class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;" autocomplete="off">
+				<input type="text" class="daySet" name="replacement_date" placeholder="조치완료일 선택" style="text-align: left;" autocomplete="off">
 				
 				<label>차기 교체일자</label>
-				<input type="text" class="daySet" name="nextDate" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
+				<input type="text" class="daySet" name="next_date" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
 				
 				<label>교체 주기</label>
-				<input type="text" class="cycle" name="replacementCycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
+				<input type="text" class="cycle" name="replacement_cycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
 
 	            <label>비고</label>
 	            <textarea name="remarks" rows="3"></textarea>
+				<input type="hidden" name="no">
 	
 	            <button type="submit" id="saveCorrStatus">저장</button>
 	            <button type="button" id="closeModal">닫기</button>
@@ -291,51 +294,78 @@
 	            "endDate": endDate,
 	        });
 	    });
+	    
 
         var selectedRow = null;
         function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "830px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/condition/corrStatus/list",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {
-                    "equipment_name": $("#equipment_name").val() || "",
-                    "startDate": $("#startDate").val() || "",
-                    "endDate": $("#endDate").val() || "",
-                },
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                    {title: "NO", field: "no", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "설비명", field: "equipment_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "위치 구분", field: "location", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-                    {title: "시리얼 번호", field: "serial_number", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "교체일자", field: "replacement_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "차기 교체일자", field: "next_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "교체주기", field: "replacement_cycle", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "비고", field: "remarks", sorter: "string", width: 350, hozAlign: "center", headerSort: false},
-                ],
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-row").removeClass("row_select");
-                    row.getElement().classList.add("row_select");
+        	dataTable = new Tabulator("#dataList", {
+        	    height: "830px",
+        	    layout: "fitColumns",
+        	    selectable: true,
+        	    tooltips: true,
+        	    selectableRangeMode: "click",
+        	    reactiveData: true,
+        	    headerHozAlign: "center",
+        	    ajaxConfig: "POST",
+        	    ajaxLoader: false,
+        	    ajaxURL: "/geomet/condition/corrStatus/list",
+        	    ajaxProgressiveLoad: "scroll",
+        	    ajaxParams: {
+        	        "equipment_name": $("#equipment_name").val() || "",
+        	        "startDate": $("#startDate").val() || "",
+        	        "endDate": $("#endDate").val() || "",
+        	    },
+        	    placeholder: "조회된 데이터가 없습니다.",
+        	    paginationSize: 20,
+        	    groupBy: "equipment_name",  
+        	    groupStartOpen: true,  
+        	    groupHeader: function(value, count, data) {
+        	    	
+        	        return `<span style="font-weight:bold; font-size:16px;">${value}</span>`;
+        	    },
 
-                    selectedRow = row; 
-                    console.log("no:", selectedRow.getData().no);
+        	    ajaxResponse: function(url, params, response) {
+        	        $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+        	        return response;
+        	    },
+        	    columns: [
+        	        {title: "NO", field: "no", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+        	        {title: "설비명", field: "equipment_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+        	        {title: "위치 구분", field: "location", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
+        	        {title: "시리얼 번호", field: "serial_number", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+        	        {title: "교체일자", field: "replacement_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+        	        {title: "차기 교체일자", field: "next_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+        	        {title: "교체주기", field: "replacement_cycle", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+        	        {title: "비고", field: "remarks", sorter: "string", width: 350, hozAlign: "center", headerSort: false},
+        	    ],
+        	    rowClick: function(e, row) {
+        	        $("#dataList .tabulator-row").removeClass("row_select");
+        	        row.getElement().classList.add("row_select");
+
+        	        selectedRow = row; 
+        	        console.log("no:", selectedRow.getData().no);
+        	    },
+                rowDblClick: function (e, row) {
+                    const rowData = row.getData();
+                    
+                    // 모달 열기
+                    let modal = $("#modalContainer");
+                    modal.show(); 
+                    modal.addClass("show");
+
+                    // 값 세팅
+                    $("#modalContainer input[name='no']").val(rowData.no);
+                    $("#modalContainer select[name='equipment_name']").val(rowData.equipment_name);
+                    $("#modalContainer input[name='location']").val(rowData.location);
+                    $("#modalContainer input[name='serial_number']").val(rowData.serial_number);
+                    $("#modalContainer input[name='replacement_date']").val(rowData.replacement_date);
+                    $("#modalContainer input[name='next_date']").val(rowData.next_date);
+                    $("#modalContainer input[name='replacement_cycle']").val(rowData.replacement_cycle);
+                    $("#modalContainer textarea[name='remarks']").val(rowData.remarks);
+
                 }
+        	});
 
-            });
         }
 
 
@@ -424,6 +454,8 @@
             });
         });
 
+   
+
         $(".excel-button").on("click", function () {
         	  console.log("엑셀 다운로드 버튼 클릭됨"); 
 
@@ -449,7 +481,7 @@
                 dataType: "json",
                 success: function (result) {
                     console.log(result);
-                    alert("D:\\GEOMET양식\\부적합품 관리 저장 완료되었습니다.");
+                    alert("D:\\GEOMET양식\\T/C조절 저장 완료되었습니다.");
                 },
                 error: function (xhr, status, error) {
                     alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
@@ -457,7 +489,8 @@
                 }
             });
         });
-          
+
+                
     </script>
 
 </body>
