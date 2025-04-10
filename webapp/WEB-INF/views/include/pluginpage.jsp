@@ -45,6 +45,15 @@ $(function(){
     	language: 'ko',
     	autoClose: true,
     }); 
+
+
+	 $(".datetimeSet").datepicker({
+		    language: 'ko',
+		    timepicker: true,            // 시분 선택 가능
+		    dateFormat: 'yyyy-mm-dd',
+		    timeFormat: 'hh:ii',         // 시:분 형식
+		    autoClose: true
+		});
 	    
 	//날짜 : 월
    $(".monthSet").datepicker({

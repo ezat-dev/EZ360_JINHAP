@@ -2,6 +2,7 @@ package com.geomet.service;
 
 import java.util.List;
 import com.geomet.domain.Machine;
+import com.geomet.domain.Temp_data;
 
 	
 
@@ -13,4 +14,6 @@ public interface MachineService {
 	
 
 	void updatecheckPlan(Machine machine);
+	
+	List<Temp_data> getTempDataList(Temp_data temp);
 }

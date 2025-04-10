@@ -49,4 +49,23 @@
       AND item_type = #{item_type}
 </update>
 
+
+
+
+
+<select id="getTempDataList" parameterType="temp_data" resultType="temp_data">
+    SELECT * 
+    FROM tb_temp_data
+    <where>
+        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+            temp_time BETWEEN #{startDate} AND #{endDate}
+        </if>
+    </where>
+    ORDER BY temp_time
+</select>
+
+
+
+
+
 </mapper>

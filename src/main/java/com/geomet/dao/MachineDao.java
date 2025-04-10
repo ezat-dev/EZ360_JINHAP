@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.geomet.domain.Machine;
+import com.geomet.domain.Temp_data;
 
 
 
@@ -15,5 +16,7 @@ public interface MachineDao {
 	  List<Machine> getMachineList(Machine machine); 
 	  
 	  void updatecheckPlan(Machine machine);
+	  
+	  List<Temp_data> getTempDataList(Temp_data temp);
 	
 }

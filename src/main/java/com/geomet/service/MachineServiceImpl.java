@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.geomet.dao.MachineDao;
 import com.geomet.domain.Machine;
+import com.geomet.domain.Temp_data;
 
 
 
@@ -25,4 +26,9 @@ public class MachineServiceImpl implements MachineService {
     public void updatecheckPlan(Machine machine) {
 		machineDao.updatecheckPlan(machine);
     }
+	
+	 @Override
+	    public List<Temp_data> getTempDataList(Temp_data temp) {
+	        return machineDao.getTempDataList(temp);
+	    }
 }

@@ -36,6 +36,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.geomet.domain.Machine;
 import com.geomet.domain.Quality;
+import com.geomet.domain.Temp_data;
 import com.geomet.service.MachineService;
 
 
@@ -76,6 +77,43 @@ public class MachineController {
         return "/machine/tempMonitoring.jsp"; // 
     }
 	
+    
+    
+ // 온도 모니터링 데이터 리스트
+    @RequestMapping(value = "/machine/tempMonitoring/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getTempMonitoringList(@RequestParam(required = false) String startDate,
+                                                     @RequestParam(required = false) String endDate) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        try {
+            System.out.println("startDate = " + startDate);
+            System.out.println("endDate = " + endDate);
+
+            Temp_data temp = new Temp_data();
+            if (startDate != null && !startDate.isEmpty()) temp.setStartDate(startDate);
+            if (endDate != null && !endDate.isEmpty()) temp.setEndDate(endDate);
+
+            List<Temp_data> tempList = machineService.getTempDataList(temp);
+
+            rtnMap.put("status", "success");
+            rtnMap.put("data", tempList);
+            rtnMap.put("count", tempList.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+
+
+    
+    
+    
+    
 	/*-----설비관리-----*/
 	
 	//정기점검 계획/실적
