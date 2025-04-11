@@ -15,6 +15,7 @@ public class Temp_data {
     
     private String startDate;
     private String endDate;
+    private String timestamp;
     
     
     
@@ -22,7 +23,12 @@ public class Temp_data {
     
     
     
-    
+	public String getTimestamp() {
+		return timestamp;
+	}
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
+	}
 	public String getStartDate() {
 		return startDate;
 	}

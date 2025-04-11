@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="temp">
+
+	<select id="getMachineList" resultType="map" parameterType="temp_data">
+	    SELECT tagname, timestamp, temp
+	    FROM tb_temp_sample
+	</select>
+
+
+	<insert id="insertTempData" parameterType="temp_data">
+	  INSERT IGNORE INTO tb_temp_data (
+	        T_600_D12000, T_600_D12001,
+	        T_800_D12000, T_800_D12001,
+	        BLK_D12000, BLK_D12001,
+	        MLPL_D12000, MLPL_D12001
+	    )
+	    VALUES (
+	        #{T_600_D12000}, #{T_600_D12001},
+	        #{T_800_D12000}, #{T_800_D12001},
+	        #{BLK_D12000}, #{BLK_D12001},
+	        #{MLPL_D12000}, #{MLPL_D12001}
+	    )
+	</insert>
+
+
+</mapper>

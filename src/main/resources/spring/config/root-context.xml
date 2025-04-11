@@ -18,6 +18,7 @@
 		
 	<task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="false"/>
 <!-- 	<bean id="commProcessor" class="com.geomet.async.CommProcessor" /> -->
+	<bean id="startService" class="com.geomet.async.StartProcessor"></bean>
 	<task:scheduler id="scheduler" pool-size="4" />
 	<task:executor id="executor" keep-alive="10" pool-size="10-20"
 		queue-capacity="10" rejection-policy="ABORT" />
@@ -39,6 +40,18 @@
 	 <bean id="session" class="org.mybatis.spring.SqlSessionTemplate">
 	        <constructor-arg ref="sqlSessionFactory" />
 	 </bean>
+	 
+	 
+	 
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver" /> 
+		<property name="url" value="jdbc:sqlserver://10.10.10.127\capstone,8092;DataBaseName=ctc_config_7;" /> 
+		<property name="username" value="It" /> 
+		<property name="password" value="wlsgkqqhdks1!"/>
+	</bean>
+	 
+	 
+	 
 		 
 	 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 	       <property name="dataSource" ref="dataSource"/>
