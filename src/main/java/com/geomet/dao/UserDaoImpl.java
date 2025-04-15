@@ -15,8 +15,8 @@ import com.geomet.domain.Users;
 @Repository
 public class UserDaoImpl implements UserDao{
 
-	@Resource(name="session")
-	private SqlSession sqlSession;
+	 @Resource(name="session")
+	    private SqlSession sqlSession;
 	
 	@Override
 	public Users userLoginCheck(Users users) {

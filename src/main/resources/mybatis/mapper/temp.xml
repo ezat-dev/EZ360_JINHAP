@@ -5,8 +5,18 @@
 <mapper namespace="temp">
 
 	<select id="getMachineList" resultType="map" parameterType="temp_data">
-	    SELECT tagname, timestamp, temp
-	    FROM tb_temp_sample
+	   select tagname, timestamp, value as temp
+    from ctc_fn_PARCdata_ReadRawTags('JH.LSE.GEOMET_600T_DRY_D12000, 
+								  JH.LSE.GEOMET_600T_DRY_D12001,
+								  JH.LSE.GEOMET_800T_DRY_D12000,
+								  JH.LSE.GEOMET_800T_DRY_D12001,
+								  JH.LSE.GEOMET_BLK_DRY_D12000,
+								  JH.LSE.GEOMET_BLK_DRY_D12001,
+								  JH.LSE.GEOMET_MLPL_DRY_D12000,
+								  JH.LSE.GEOMET_MLPL_DRY_D12001',
+    getdate(), getdate(), 1, ',')
+    where sQuality = 'good'	
+
 	</select>
 
 
@@ -18,10 +28,10 @@
 	        MLPL_D12000, MLPL_D12001
 	    )
 	    VALUES (
-	        #{T_600_D12000}, #{T_600_D12001},
-	        #{T_800_D12000}, #{T_800_D12001},
-	        #{BLK_D12000}, #{BLK_D12001},
-	        #{MLPL_D12000}, #{MLPL_D12001}
+	        #{t_600_d12000}, #{t_600_d12001},
+	        #{t_800_d12000}, #{t_800_d12001},
+	        #{blk_d12000}, #{blk_d12001},
+	        #{mlpl_d12000}, #{mlpl_d12001}
 	    )
 	</insert>
 

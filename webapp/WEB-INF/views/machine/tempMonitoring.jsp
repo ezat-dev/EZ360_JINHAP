@@ -139,10 +139,10 @@
                     const categories = raw.map(item => item.temp_time);
 
                     const seriesNames = [
-                        "t_600_D12000", "t_600_D12001",
-                        "t_800_D12000", "t_800_D12001",
-                        "blk_D12000", "blk_D12001",
-                        "mlpl_D12000", "mlpl_D12001"
+                        "t_600_d12000", "t_600_d12001",
+                        "t_800_d12000", "t_800_d12001",
+                        "blk_d12000", "blk_d12001",
+                        "mlpl_d12000", "mlpl_d12001"
                     ];
 
                     const series = seriesNames.map(name => ({
@@ -195,7 +195,7 @@
             return date.toISOString().slice(0, 16).replace('T', ' ');
         }
 
-        const endDate = getFormattedDate();
+        const endDate = getFormattedDate(+1);
         const startDate = getFormattedDate(-5);
 
         $("#startDate").val(startDate);

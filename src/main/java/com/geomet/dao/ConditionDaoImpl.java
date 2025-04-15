@@ -8,11 +8,13 @@ import com.geomet.domain.CorrStatus;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 @Repository 
 public class ConditionDaoImpl implements ConditionDao {
 
-    @Autowired 
-    private SqlSession sqlSession;
+	 @Resource(name="session")
+	    private SqlSession sqlSession;
     
     
     //기준정보

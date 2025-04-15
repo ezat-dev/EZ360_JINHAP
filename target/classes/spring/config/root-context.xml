@@ -25,9 +25,9 @@
 
 	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"> 
 		<property name="driverClassName" value="org.mariadb.jdbc.Driver" /> 
-		<property name="url" value="jdbc:mariadb://192.168.1.59:3306/geomet" /> 
+		<property name="url" value="jdbc:mariadb://10.10.225.100:3306/geomet" /> 
 		<property name="username" value="root" /> 
-		<property name="password" value="ezat6695"/>
+		<property name="password" value="jinhap2023"/>
 	</bean>
 
 	<tx:annotation-driven/>
@@ -40,6 +40,29 @@
 	 <bean id="session" class="org.mybatis.spring.SqlSessionTemplate">
 	        <constructor-arg ref="sqlSessionFactory" />
 	 </bean>
+	 
+	 
+	 
+  <!-- MSSQL DataSource -->
+    <bean id="dataSourceMssql" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+        <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
+
+        <property name="url" value="jdbc:sqlserver://10.10.10.127\\capstone:8092;DataBaseName=ctc_config_7;"/>
+        <property name="username" value="It"/>
+        <property name="password" value="wlsgkqqhdks1!"/>
+    </bean>
+
+    <!-- MyBatis 설정: MSSQL -->
+    <bean id="sqlSessionFactoryMssql" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSourceMssql"/>
+        <property name="configLocation" value="classpath:mybatis/config/mybatis-context.xml"/>
+    </bean>
+    <bean id="sessionMssql" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg ref="sqlSessionFactoryMssql"/>
+    </bean>
+	 
+	 
+	 
 		 
 	 <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
 	       <property name="dataSource" ref="dataSource"/>

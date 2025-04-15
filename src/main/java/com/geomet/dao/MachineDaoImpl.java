@@ -2,6 +2,8 @@ package com.geomet.dao;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -11,8 +13,8 @@ import com.geomet.domain.Temp_data;
 @Repository
 public class MachineDaoImpl implements MachineDao{
 
-    @Autowired 
-    private SqlSession sqlSession;
+	 @Resource(name="session")
+	    private SqlSession sqlSession;
 	
 	//정기점검 계획/실적
     @Override
