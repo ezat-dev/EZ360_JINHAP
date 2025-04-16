@@ -35,10 +35,30 @@ public class MachineDaoImpl implements MachineDao{
         return sqlSession.selectList("machine.getAllDataList", machine);
     }
     
+	//비가동현황
+    @Override
+    public List<Machine> getNonTimeDataList(Machine machine) {
+      
+        return sqlSession.selectList("machine.getNonTimeDataList", machine);
+    }
+    
+    @Override
+    public void saveNonTime(Machine machine) {
+           sqlSession.insert("machine.saveNonTime", machine);
+    }
+    @Override
+    public List<Machine> getNonTimeDataView(Machine machine) {
+      
+        return sqlSession.selectList("machine.getNonTimeDataView", machine);
+    }
+    
+    
     // 온도 데이터 조회
     @Override
     public List<Temp_data> getTempDataList(Temp_data temp) {
         return sqlSession.selectList("machine.getTempDataList", temp);
     }
+    
+  
     
 }

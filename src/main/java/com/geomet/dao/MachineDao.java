@@ -20,5 +20,11 @@ public interface MachineDao {
 	  List<Temp_data> getTempDataList(Temp_data temp);
 	
 	  //통합모니터링
-	  List<Machine> getAllDataList(Machine machine); 
+	  List<Machine> getAllDataList(Machine machine);
+	  
+	//비가동현황
+	  List<Machine> getNonTimeDataList(Machine machine);
+	  void saveNonTime(Machine machine);
+	  List<Machine> getNonTimeDataView(Machine machine);
+	 
 }

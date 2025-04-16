@@ -17,16 +17,19 @@ public class StartProcessorServiceImpl implements StartProcessorService {
 
     @Override
     public void insertTempDataEvery() {
-        System.out.println("===> StartProcessorService: insertTempDataEvery() 실행 시작");
+        //System.out.println("===> StartProcessorService: insertTempDataEvery() 실행 시작");
 
         try {
             Temp_data filter = new Temp_data();
             List<Map<String, Object>> samples = startProcessorDao.getLatestTempSamples(filter);
 
-            System.out.println("===> 가져온 샘플 개수: " + (samples != null ? samples.size() : "null"));
+			/*
+			 * System.out.println("===> 가져온 샘플 개수: " + (samples != null ? samples.size() :
+			 * "null"));
+			 */
 
             if (samples == null || samples.isEmpty()) {
-                System.out.println("===> 샘플 데이터 없음. 저장 안함.");
+//                System.out.println("===> 샘플 데이터 없음. 저장 안함.");
                 return;
             }
 
@@ -54,7 +57,7 @@ public class StartProcessorServiceImpl implements StartProcessorService {
                     }
                 }
                 
-                System.out.println("===> 태그: " + tagname + ", 온도값: " + tempStr);
+               // System.out.println("===> 태그: " + tagname + ", 온도값: " + tempStr);
                 
                 Timestamp timestamp = (Timestamp) sample.get("timestamp");
                 if (latestTimestampStr == null && timestamp != null) {
@@ -95,15 +98,15 @@ public class StartProcessorServiceImpl implements StartProcessorService {
 
             if (latestTimestampStr != null) {
                 startProcessorDao.insertTempData(tempData);
-                System.out.println("===> 데이터 저장 완료: " + latestTimestampStr);
+//                System.out.println("===> 데이터 저장 완료: " + latestTimestampStr);
             } else {
-                System.out.println("===> 유효한 timestamp 없음, 저장 안함");
+//                System.out.println("===> 유효한 timestamp 없음, 저장 안함");
             }
         } catch (Exception e) {
-            System.out.println("===> insertTempDataEvery() 에러 발생: " + e.getMessage());
+//            System.out.println("===> insertTempDataEvery() 에러 발생: " + e.getMessage());
             e.printStackTrace();
         }
 
-        System.out.println("===> insertTempDataEvery() 실행 완료\n");
+//        System.out.println("===> insertTempDataEvery() 실행 완료\n");
     }
 }

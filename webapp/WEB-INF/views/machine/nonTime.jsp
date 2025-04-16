@@ -8,7 +8,7 @@
     <title>비가동현황</title>
  <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
-    <style>
+  <style>
         .container {
             display: flex;
             justify-content: space-between;
@@ -45,7 +45,7 @@
 	        background: white;
 	        width: 24%;
 	        max-width: 500px;
-	      
+	        height: 80vh; 
 	        overflow-y: auto; 
 	        margin: 6% auto 0;
 	        padding: 20px;
@@ -89,7 +89,7 @@
             border-radius: 5px;
         }
         select {
-            width: 100%;
+         
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -119,11 +119,11 @@
 		    display: flex;
 		    justify-content: right;
 		    align-items: center;
-		    width: 800px;
+		    width: 900px;
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
-        .dayselect {
+        .equipmentName {
             width: 20%;
             text-align: center;
             font-size: 15px;
@@ -147,7 +147,7 @@
         button-container.button{
         height: 16px;
         }
-         .mid{
+        .mid{
         margin-right: 9px;
 	    font-size: 20px;
 	    font-weight: bold;
@@ -155,6 +155,14 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
+        .equipment_name{
+            width: 20%;
+            text-align: center;
+            font-size: 15px;
+        }
+	.excel-button {
+	    margin-right: 30px;
+	}
     </style>
 </head>
 
@@ -168,7 +176,7 @@
             
               <div class="box1">
 	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-	           <label class="daylabel">교체일자 :</label>
+	           <label class="daylabel">비가동 날짜 :</label>
 				<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 				
 				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
@@ -176,19 +184,11 @@
 				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 	
 	            <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
              
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
+               	<select class="equipment_name_select" id="equipment_name">
+             
+           	 	</select>
+
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
@@ -199,14 +199,13 @@
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+
             </div>
         </div>
 
         <div class="view">
             <div id="dataList"></div>
+            <div id="dataView"></div>
         </div>
     </main>
 	
@@ -216,29 +215,12 @@
 	        <h2>교체이력 등록</h2>
 	        <form id="corrForm">
 	            <label>설비명</label>
-				<select name="equipmentName">
-				   <option value="기타">기타(입력)</option>
-				    <option value="탈유탈지1">탈유탈지1</option>
-				    <option value="탈유탈지2">탈유탈지2</option>
-				    <option value="쇼트1">쇼트1</option>
-				    <option value="쇼트2">쇼트2</option>
-				    <option value="쇼트3">쇼트3</option>
-				    <option value="쇼트4">쇼트4</option>
-				    <option value="쇼트5">쇼트5</option>
-				    <option value="쇼트6">쇼트6</option>
-				    <option value="쇼트7">쇼트7</option>
-				    <option value="G-800">G-800</option>
-				    <option value="G-600">G-600</option>
-				    <option value="K-Black">K-Black</option>
-				    <option value="공용설비">공용설비</option>
-				    <option value="방청">방청</option>
-				    <option value="이코팅1">이코팅1</option>
-				    <option value="이코팅2">이코팅2</option>
-				</select>
-
+            <select class="equipment_name_select" name="equipment_name">
+             
+            </select>
 
 	            <label>정보LIST</label>
-			<select name="select2">
+			<select name="info_list">
 				<option value="기타">기타(입력)</option>
 			    <option value="사각통 대기">사각통 대기</option>
 			    <option value="물량 부족">물량 부족</option>
@@ -266,17 +248,14 @@
 
 	
 	            <label>발생시간</label>
-	            <input type="text"class="timeSet" name="1" value="">
+	            <input type="text"class="timeSet" name="start_time" value="">
 	
 	            <label>조치시간</label>
-	            <input type="text" class="timeSet" name="2" placeholder="">
+	            <input type="text" class="timeSet" name="end_time" placeholder="">
 	
-	            <label>일/발생 건수</label>
-	            <input type="text" name="replacementDate"  style="text-align: left;">
-
-	
-	            <label>월/발생 건수</label>
-	            <input type="text" name="4">
+	          	<label>비고</label>
+	            <textarea name="non_time_memo" rows="3"></textarea>
+				
 	            
 	       
 	            <button type="submit" id="saveCorrStatus">저장</button>
@@ -287,8 +266,13 @@
 
 
     <script>
+
+    var dataTable;
+
+    
         $(function() {
             getDataList();
+            getDataList2();
         });
 
         function getDataList() {
@@ -302,42 +286,37 @@
                 headerHozAlign: "center",
                 ajaxConfig: "POST",
                 ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
+                ajaxURL: "/geomet/machine/nonTime/list",
                 ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
+                ajaxParams: {
+                    equipment_name: $("#equipment_name").val() || "",
+                    startDate: $("#startDate").val() || "",
+                    endDate: $("#endDate").val() || "",
+                },
+                
                 placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
                 ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
+                    // 객체로 받은 data와 count를 사용하여 Tabulator가 처리할 수 있도록 변환
+                    if (response.status === "success") {
+                        return {
+                            last_page: Math.ceil(response.count / params.pageSize),  // 전체 페이지 수
+                            data: response.data  // 데이터를 직접 전달
+                        };
+                    }
+                    return [];  // 실패 시 빈 배열 반환
                 },
                 columns: [
-                   
-                    {title: "설비", field: "2", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "정보LIST", field: "3", sorter: "string", width: 300, hozAlign: "center", headerSort: false},
-                    {title: "발생시간", field: "4", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "일/발생 건수", field: "5", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "월/발생 건수", field: "6", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                  
+                    {title: "설비", field: "equipment_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "정보LIST", field: "info_list", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "발생시간", field: "start_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "조치시간", field: "end_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "비고", field: "non_time_memo", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    
+                    {title: "machine_code", field: "machine_code", sorter: "string", width: 250, hozAlign: "center", headerSort: false, visible: false },
                 ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
             });
         }
+
 
         document.querySelector(".insert-button").addEventListener("click", function() {
             let modal = document.getElementById("modalContainer");
@@ -352,11 +331,82 @@
             document.getElementById("modalContainer").classList.remove("show");
         });
 
+        $(".select-button").click(function () {
+            var equipment_name = $("#equipment_name").val();
+            var startDate = $("#startDate").val();
+            var endDate = $("#endDate").val();
 
+         
+            console.log("보내는 값:");
+            console.log("equipment_name:", equipment_name);
+            console.log("startDate:", startDate);
+            console.log("endDate:", endDate);
+
+            dataTable.setData("/geomet/machine/nonTime/list", {
+                equipment_name: equipment_name,
+                startDate: startDate,
+                endDate: endDate
+            }).then(function(responseData) {
+               
+            }).catch(function(error) {
+                console.error("❌ 데이터 로드 중 오류 발생:", error);
+            });
+
+        });
+
+
+
+        function getDataList2() {
+            dataTable = new Tabulator("#dataView", {
+                height: "560px",
+                layout: "fitColumns",
+                selectable: true,
+                tooltips: true,
+                selectableRangeMode: "click",
+                reactiveData: true,
+                headerHozAlign: "center",
+                ajaxConfig: "POST",
+                ajaxLoader: false,
+                ajaxURL: "/geomet/machine/nonTime/view",
+                ajaxProgressiveLoad: "scroll",
+                ajaxParams: {
+                    equipment_name: $("#equipment_name").val() || "",
+                   
+                },
+                
+                placeholder: "조회된 데이터가 없습니다.",
+                ajaxResponse: function(url, params, response) {
+                    // 객체로 받은 data와 count를 사용하여 Tabulator가 처리할 수 있도록 변환
+                    if (response.status === "success") {
+                        return {
+                            last_page: Math.ceil(response.count / params.pageSize),  // 전체 페이지 수
+                            data: response.data  // 데이터를 직접 전달
+                        };
+                    }
+                    return [];  // 실패 시 빈 배열 반환
+                },
+                columns: [
+                    {title: "순위", field: "sum_time", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
+                    {title: "비가동 내역", field: "info_list_v", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+                    {title: "설비", field: "equipment_name", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+                    {title: "비가동 시간", field: "sum_time_ch", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+                    {title: "일/발생 건수", field: "day_count", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+                    {title: "월/발생 건수", field: "month_count", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+                    
+                  
+                ],
+            });
+        }
+
+
+
+
+
+        
         $(document).ready(function () {
             $("#saveCorrStatus").click(function (event) {
                 event.preventDefault();
-                
+
                 var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
 
                 // FormData의 값을 콘솔에 출력
@@ -365,15 +415,39 @@
                 });
 
                 $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
+                    url: "/geomet/machine/nonTime/insert",
                     type: "POST",
                     data: corrForm,
                     dataType: "json",
                     processData: false,  
                     contentType: false,  
                     success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
+                        if (response.result === "success") {
+                            alert("비가동 내역이 성공적으로 저장되었습니다!");
+                            $("#modalContainer").hide();
+
+                          
+                            var equipment_name = $("#equipment_name").val();
+                            var startDate = $("#startDate").val();
+                            var endDate = $("#endDate").val();
+
+                           
+                            dataTable.setData("/geomet/machine/nonTime/list", {
+                                equipment_name: equipment_name,
+                                startDate: startDate,
+                                endDate: endDate
+                            });
+                            dataTable.setData("/geomet/machine/nonTime/view", {
+                                equipment_name: equipment_name
+        
+                            });
+                        } else {
+                            alert("저장 실패: " + response.message);
+                        }
+                    }
+,
+                    error: function (xhr, status, error) {
+                        alert("서버 오류: " + error);
                     }
                 });
             });
@@ -381,6 +455,7 @@
             // 모달 닫기 버튼 이벤트
             $("#closeModal").click(function () {
                 $("#modalContainer").hide();
+                
             });
         });
 

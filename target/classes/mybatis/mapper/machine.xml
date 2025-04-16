@@ -93,6 +93,58 @@
     ORDER BY machine_code
 </select>
 
+<select id="getNonTimeDataList" parameterType="machine" resultType="machine">
+    SELECT 
+        equipment_name,
+        machine_code,
+        info_list,
+        start_time,
+      	end_time,
+      	non_time_memo
+    FROM tb_non_time
+    <where>
+        <if test="startDate != null and startDate != ''">
+            AND start_time &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND start_time &lt;= #{endDate}
+        </if>
+        <if test="equipment_name != null and equipment_name != ''">
+            AND equipment_name = #{equipment_name}
+        </if>
+    </where>
+    ORDER BY start_time DESC
+</select>
+
+<select id="getNonTimeDataView" parameterType="machine" resultType="machine">
+    SELECT *
+    FROM v_non_time
+    <where>
+        <if test="equipment_name != null and equipment_name != ''">
+            equipment_name = #{equipment_name}
+        </if>
+    </where>
+    ORDER BY month_count DESC
+</select>
 
 
+
+<insert id="saveNonTime" parameterType="machine">
+    INSERT INTO tb_non_time (
+        equipment_name,
+        machine_code,
+        info_list,
+        start_time,
+        end_time,
+        non_time_memo
+    )
+    VALUES (
+        #{equipment_name},
+        #{machine_code},
+        #{info_list},
+        #{start_time},
+        #{end_time},
+        #{non_time_memo}
+    )
+</insert>
 </mapper>

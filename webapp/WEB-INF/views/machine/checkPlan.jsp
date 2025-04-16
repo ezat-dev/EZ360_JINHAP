@@ -404,7 +404,7 @@
 	                    }
 
 	                },
-	                { title: "비고", field: "remark", hozAlign: "left", width: 330 },
+	                { title: "비고", field: "remark", hozAlign: "left", width: 320 },
 	            ],
 	            cellClick: function (e, cell) {
 	                const field = cell.getField();

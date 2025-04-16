@@ -25,7 +25,7 @@
         .tab {
             width: 95%;
             margin-bottom: 37px;
-            margin-top: 5px;
+            margin-top: 35px;
             height: 45px;
             border-radius: 6px 6px 0px 0px;
             display: flex;
@@ -197,7 +197,22 @@
 	    padding: 11px;
 
 	}
+	#dataList{
+	marign-top:50px;
+	}
+    .tabulator .tabulator-header .tabulator-col {
+        font-size: 16pt;
+        font-weight: bold;
+        height: 38px;
+    }
 
+ 
+    .tabulator .tabulator-cell {
+        font-size: 16pt;
+        font-weight: bold;
+        height: 38px;
+        vertical-align: middle;
+    }
     </style>
 </head>
 
@@ -255,49 +270,7 @@
         </div>
     </main>
 	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
-	            <label>설비명</label>
-	            <select name="equipmentName">
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
-	            </select>
-	
-	            <label>존 구분</label>
-	            <input type="text" name="location" value="소입1존">
-	
-	            <label>시리얼 번호</label>
-	            <input type="text" name="serialNumber" placeholder="시리얼 번호">
-	
-	            <label>교체일자</label>
-	            <input type="date"class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;">
-
-	
-	            <label>차기 교체일자</label>
-	            <input type="text" name="nextDate">
-	            
-	            <label>교체 주기</label>
-	            <input type="text" name="replacementCycle">
-	
-	            <label>비고</label>
-	            <textarea name="remarks" rows="3"></textarea>
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
+	 
 
 
     <script>
@@ -308,18 +281,17 @@
 
         function getDataList() {
             dataTable = new Tabulator("#dataList", {
-                height: "760px",
-                layout: "fitColumns",
+                height: "660px",
+                layout: "fitDataFill", // 여유 공간을 균등 분배
+                columnMinWidth: 170, 
                 selectable: true,
                 tooltips: true,
                 selectableRangeMode: "click",
                 reactiveData: true,
                 headerHozAlign: "center",
-                rowHeight: 39,
-                paginationSize: 20,
+                paginationSize: 7,
 
-        
-                ajaxURL: "/geomet/machine/allMonitoring/list", // 컨트롤러 URL
+                ajaxURL: "/geomet/machine/allMonitoring/list",
                 ajaxConfig: {
                     method: "POST",
                     headers: {
@@ -328,7 +300,7 @@
                 },
 
                 ajaxResponse: function (url, params, response) {
-                	console.log("받아온 데이터:", response.data); 
+                    console.log("받아온 데이터:", response.data);
                     const cleanData = response.data.map(item => {
                         const newItem = {};
                         for (let key in item) {
@@ -340,29 +312,35 @@
                     return cleanData;
                 },
 
+                rowFormatter: function(row) {
+                    row.getElement().style.height = "42px";
+                    row.getElement().style.fontWeight = "bold";
+                    row.getElement().style.fontSize = "15pt";
+                },
 
                 columns: [
-                    { title: "설비", field: "machine_code_ch", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "설비상태", field: "machine_code", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "관리기준 C/T", field: "facility_ct", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "실제생산 C/T", field: "now_ct", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "CAPA", field: "facility_capa", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "현 생산목표<br/>(통수)", field: "now_target", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "현 생산실적<br/>(통수)", field: "now_count", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "가동시간", field: "operating_hr", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "생산 LOSS 시간", field: "loss_hr", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "실적-생산(ton)", field: "result_prod_ton", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "실적-과부족(ton)", field: "result_little_ton", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "실적-달성률(%)", field: "result_rate", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "누적-중량", field: "m_result_weight_ton", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "누적-통수", field: "m_result_count", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "과부족량-중량", field: "little_weight_ton", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "과부족량-통수", field: "little_count_ea", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "달성률-중량", field: "rate_weight", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                    { title: "달성률-통수", field: "rate_count", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+                    { title: "설비", field: "machine_code_ch", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "설비상태", field: "machine_code", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "관리기준 C/T", field: "facility_ct", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실제생산 C/T", field: "now_ct", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "CAPA", field: "facility_capa", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "현 생산목표", field: "now_target", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "현 생산실적", field: "now_count", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "가동시간", field: "operating_hr", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "생산 LOSS 시간", field: "loss_hr", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실적-생산(ton)", field: "result_prod_ton", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실적-과부족(ton)", field: "result_little_ton", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실적-달성률(%)", field: "result_rate", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "누적-중량", field: "m_result_weight_ton", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "누적-통수", field: "m_result_count", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "과부족량-중량", field: "little_weight_ton", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "과부족량-통수", field: "little_count_ea", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "달성률-중량", field: "rate_weight", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "달성률-통수", field: "rate_count", sorter: "string", hozAlign: "center", headerSort: false },
                 ],
             });
         }
+
 
         
     </script>

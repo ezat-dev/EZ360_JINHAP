@@ -36,5 +36,18 @@ public class MachineServiceImpl implements MachineService {
 	    public List<Machine> getAllDataList(Machine machine) {
 	        return machineDao.getAllDataList(machine); 	   
 	    }
+	    
+	    @Override
+	    public List<Machine> getNonTimeDataList(Machine machine) {
+	        return machineDao.getNonTimeDataList(machine); 	   
+	    }
+	    @Override
+	    public void  saveNonTime(Machine machine) {
+	         machineDao.saveNonTime(machine); 	   
+	    }
+	    @Override
+	    public List<Machine> getNonTimeDataView(Machine machine) {
+	         return machineDao.getNonTimeDataView(machine); 	   
+	    }
 	
 }

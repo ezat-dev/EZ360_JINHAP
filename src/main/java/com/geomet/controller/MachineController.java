@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.geomet.domain.Condition;
 import com.geomet.domain.Machine;
 import com.geomet.domain.Quality;
 import com.geomet.domain.Temp_data;
@@ -366,6 +367,114 @@ public class MachineController {
     public String nonTime(Model model) {
         return "/machine/nonTime.jsp"; // 
     }
+    
+    
+    
+    
+    //비가동현황
+    @RequestMapping(value = "/machine/nonTime/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getnonTimeList(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String equipment_name) {
+        
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            Machine machine = new Machine();
+            machine.setStartDate(startDate);
+            machine.setEndDate(endDate);
+            machine.setEquipment_name(equipment_name);
+
+            List<Machine> allList = machineService.getNonTimeDataList(machine);
+
+            rtnMap.put("status", "success");
+            rtnMap.put("data", allList);
+            rtnMap.put("count", allList.size());
+
+			
+			  System.out.println("받은 equipment_name: " + equipment_name);
+			  System.out.println("받은 startDate: " + startDate);
+			  System.out.println("받은 endDate: " + endDate);
+			  System.out.println("조회된 데이터 수: " + allList.size());
+			 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+    
+    //비가동현황
+    @RequestMapping(value = "/machine/nonTime/view", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getnonTimeView(
+            @RequestParam(required = false) String equipment_name) {
+        
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            Machine machine = new Machine();
+
+            machine.setEquipment_name(equipment_name);
+
+            List<Machine> allListView = machineService.getNonTimeDataView(machine);
+
+            rtnMap.put("status", "success");
+            rtnMap.put("data", allListView);
+            rtnMap.put("count", allListView.size());
+
+			
+			  System.out.println("받은 equipment_name: " + equipment_name);
+			 
+			  System.out.println("allListView조회된 데이터 수: " + allListView.size());
+			 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+
+
+    // 비가동
+    @RequestMapping(value = "/machine/nonTime/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> saveNonTime(@ModelAttribute Machine machine) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        
+        try {
+            // 서버에서 받아온 객체의 값을 출력
+            System.out.println("Received Machine object: " + machine);
+
+            if (machine.getEquipment_name() == null || machine.getEquipment_name().trim().isEmpty()) {
+                rtnMap.put("result", "fail");
+                rtnMap.put("message", "설비명을 입력하시오!");
+                return rtnMap;
+            }
+
+            // 실제 저장 로직 실행
+            machineService.saveNonTime(machine);
+
+            rtnMap.put("result", "success");
+        } catch (Exception e) {
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", "저장 중 오류가 발생했습니다: " + e.getMessage());
+        }
+
+        return rtnMap;
+    }
+
+    
+    
+    
+    
+    
 	
 	//설비이력카드(돌발고장, 정기점검, 정기교체), 부품교체 이력관리, 스페어부품(안전보호구 포함)
     @RequestMapping(value= "/machine/repairStatus", method = RequestMethod.GET)

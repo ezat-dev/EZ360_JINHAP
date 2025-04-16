@@ -215,17 +215,8 @@
 	        <h2>교체이력 등록</h2>
 	        <form id="corrForm" autocomplete="off">
 	            <label>설비명</label>
-	            <select name="equipment_name">
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
+	            
+	            <select class="equipment_name equipment_name_select" id="equipment_name">
 	            </select>
 	
 	            <label>존 구분</label>

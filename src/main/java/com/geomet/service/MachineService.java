@@ -21,4 +21,10 @@ public interface MachineService {
 	//통합 모니터링
 	List<Machine> getAllDataList(Machine machine); 
 	
+	
+	//비가동 현황
+	List<Machine> getNonTimeDataList(Machine machine);
+	void saveNonTime(Machine machine); 
+	//비가동 뷰
+	List<Machine> getNonTimeDataView(Machine machine);
 }
