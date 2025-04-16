@@ -28,7 +28,12 @@ public class MachineDaoImpl implements MachineDao{
     	sqlSession.update("machine.updatecheckPlan",machine);
     }
     
-    
+	//통합모니터링
+    @Override
+    public List<Machine> getAllDataList(Machine machine) {
+      
+        return sqlSession.selectList("machine.getAllDataList", machine);
+    }
     
     // 온도 데이터 조회
     @Override

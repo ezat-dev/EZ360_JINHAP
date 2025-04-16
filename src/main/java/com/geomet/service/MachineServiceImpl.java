@@ -31,4 +31,10 @@ public class MachineServiceImpl implements MachineService {
 	    public List<Temp_data> getTempDataList(Temp_data temp) {
 	        return machineDao.getTempDataList(temp);
 	    }
+	    
+	    @Override
+	    public List<Machine> getAllDataList(Machine machine) {
+	        return machineDao.getAllDataList(machine); 	   
+	    }
+	
 }

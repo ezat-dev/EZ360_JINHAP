@@ -6,7 +6,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.lang.reflect.Field;
-import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
@@ -52,6 +51,32 @@ public class MachineController {
     public String allMonitoring(Model model) {
         return "/machine/allMonitoring.jsp"; // 
     }
+    
+    //통합 모니터링
+    @RequestMapping(value = "/machine/allMonitoring/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getTempMonitoringList() {
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+          
+            Machine machine = new Machine();
+            List<Machine> allList = machineService.getAllDataList(machine);
+
+            rtnMap.put("status", "success");
+            rtnMap.put("data", allList);
+            rtnMap.put("count", allList.size());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+
+
+    
     
 	//설비별 모니터링
     @RequestMapping(value= "/machine/detailMonitoring", method = RequestMethod.GET)

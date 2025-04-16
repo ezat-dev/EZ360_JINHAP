@@ -65,6 +65,33 @@
 </select>
 
 
+<select id="getAllDataList" parameterType="machine" resultType="machine">
+    SELECT 
+        machine_code,
+        machine_code_ch,
+        now_count,
+        now_prod_ton,
+        m_result_count,
+        m_result_weight_ton,
+        little_weight_ton,
+        little_count_ea,
+        rate_weight,
+        rate_count,
+        start_time,
+        end_time,
+        operating_hr,
+        now_ct,
+        loss_hr,
+        now_target,
+        result_prod_ton,
+        result_little_ton,
+        result_rate,
+        facility_ct,
+        facility_capa,
+        snapshot_time
+    FROM tb_monitoring
+    ORDER BY machine_code
+</select>
 
 
 
