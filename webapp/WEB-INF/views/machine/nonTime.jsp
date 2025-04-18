@@ -20,6 +20,7 @@
             display: flex;
             justify-content: center;
             margin-top: 1%;
+             gap: 60px;
         }
         .tab {
             width: 95%;
@@ -196,6 +197,9 @@
                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
+                <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
@@ -204,8 +208,11 @@
         </div>
 
         <div class="view">
-            <div id="dataList"></div>
-            <div id="dataView"></div>
+          <div id="dataView"></div>
+          <div id="dataList"></div>
+        
+          
+      
         </div>
     </main>
 	
@@ -213,7 +220,7 @@
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
 	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
+	        <form id="corrForm"autocomplete="off">
 	            <label>설비명</label>
             <select class="equipment_name_select" name="equipment_name">
              
@@ -248,15 +255,16 @@
 
 	
 	            <label>발생시간</label>
-	            <input type="text"class="timeSet" name="start_time" value="">
+	            <input type="text"class="datetimeSet" name="start_time" value="">
 	
 	            <label>조치시간</label>
-	            <input type="text" class="timeSet" name="end_time" placeholder="">
+	            <input type="text" class="datetimeSet" name="end_time" placeholder="">
 	
 	          	<label>비고</label>
-	            <textarea name="non_time_memo" rows="3"></textarea>
-				
+	            <textarea name="non_time_memo" rows="12"></textarea>
 	            
+				<input type="hidden" class="non_time_idx" name="non_time_idx" value="">
+
 	       
 	            <button type="submit" id="saveCorrStatus">저장</button>
 	            <button type="button" id="closeModal">닫기</button>
@@ -265,205 +273,271 @@
 	</div>
 
 
-    <script>
+<script>
+$(document).ready(function() {
+    getDataList();
+    getDataList2();
 
-    var dataTable;
+    $(".select-button").click(function() {
+        var equipment_name = $("#equipment_name").val();
+        var startDate = $("#startDate").val();
+        var endDate = $("#endDate").val();
 
-    
-        $(function() {
-            getDataList();
-            getDataList2();
+        dataListTable.setData("/geomet/machine/nonTime/list", {
+            equipment_name: equipment_name,
+            startDate: startDate,
+            endDate: endDate
         });
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/machine/nonTime/list",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {
-                    equipment_name: $("#equipment_name").val() || "",
-                    startDate: $("#startDate").val() || "",
-                    endDate: $("#endDate").val() || "",
-                },
-                
-                placeholder: "조회된 데이터가 없습니다.",
-                ajaxResponse: function(url, params, response) {
-                    // 객체로 받은 data와 count를 사용하여 Tabulator가 처리할 수 있도록 변환
-                    if (response.status === "success") {
-                        return {
-                            last_page: Math.ceil(response.count / params.pageSize),  // 전체 페이지 수
-                            data: response.data  // 데이터를 직접 전달
-                        };
-                    }
-                    return [];  // 실패 시 빈 배열 반환
-                },
-                columns: [
-                    {title: "설비", field: "equipment_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "정보LIST", field: "info_list", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "발생시간", field: "start_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "조치시간", field: "end_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "비고", field: "non_time_memo", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    
-                    {title: "machine_code", field: "machine_code", sorter: "string", width: 250, hozAlign: "center", headerSort: false, visible: false },
-                ],
-            });
+        dataViewTable.setData("/geomet/machine/nonTime/view", {
+            equipment_name: equipment_name,
+            startDate: startDate,
+            endDate: endDate
+        });
+    });
+
+    $(".insert-button").click(function() {
+        openModal("add");
+    });
+
+    $(".delete-button").click(function() {
+        deleteCorrStatus();
+    });
+
+    $(".close, #closeModal").click(function() {
+        closeModal();
+    });
+});
+
+function openModal(mode, rowData) {
+    var $modal = $("#modalContainer");
+    var $btn = $("#saveCorrStatus");
+    var $form = $("#corrForm");
+
+    $form[0].reset();
+
+    if (mode === "edit") {
+        $form.find("select[name='equipment_name']").val(rowData.equipment_name);
+        $form.find("select[name='info_list']").val(rowData.info_list);
+        $form.find("input[name='start_time']").val(rowData.start_time);
+        $form.find("input[name='end_time']").val(rowData.end_time);
+        $form.find("textarea[name='non_time_memo']").val(rowData.non_time_memo);
+        $form.find("input[name='non_time_idx']").val(rowData.non_time_idx);
+
+        if ($form.find("input[name='machine_code']").length === 0) {
+            $form.append("<input type='hidden' name='machine_code' value='" + rowData.machine_code + "'>");
+        } else {
+            $form.find("input[name='machine_code']").val(rowData.machine_code);
         }
 
+        $btn.text("수정");
+    } else {
+        $btn.text("추가");
+    }
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
-
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
-
-        $(".select-button").click(function () {
-            var equipment_name = $("#equipment_name").val();
-            var startDate = $("#startDate").val();
-            var endDate = $("#endDate").val();
-
-         
-            console.log("보내는 값:");
-            console.log("equipment_name:", equipment_name);
-            console.log("startDate:", startDate);
-            console.log("endDate:", endDate);
-
-            dataTable.setData("/geomet/machine/nonTime/list", {
-                equipment_name: equipment_name,
-                startDate: startDate,
-                endDate: endDate
-            }).then(function(responseData) {
-               
-            }).catch(function(error) {
-                console.error("❌ 데이터 로드 중 오류 발생:", error);
-            });
-
-        });
-
-
-
-        function getDataList2() {
-            dataTable = new Tabulator("#dataView", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/machine/nonTime/view",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {
-                    equipment_name: $("#equipment_name").val() || "",
-                   
-                },
-                
-                placeholder: "조회된 데이터가 없습니다.",
-                ajaxResponse: function(url, params, response) {
-                    // 객체로 받은 data와 count를 사용하여 Tabulator가 처리할 수 있도록 변환
-                    if (response.status === "success") {
-                        return {
-                            last_page: Math.ceil(response.count / params.pageSize),  // 전체 페이지 수
-                            data: response.data  // 데이터를 직접 전달
-                        };
-                    }
-                    return [];  // 실패 시 빈 배열 반환
-                },
-                columns: [
-                    {title: "순위", field: "sum_time", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "비가동 내역", field: "info_list_v", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "설비", field: "equipment_name", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "비가동 시간", field: "sum_time_ch", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "일/발생 건수", field: "day_count", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "월/발생 건수", field: "month_count", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    
-                  
-                ],
-            });
+    $btn.off("click").on("click", function(event) {
+        event.preventDefault();
+        if (mode === "edit") {
+            updateCorrStatus();
+        } else {
+            saveCorrStatus();
         }
+    });
 
+    $modal.addClass("show");
+}
 
+function closeModal() {
+    $("#modalContainer").removeClass("show");
+}
 
+function getDataList() {
+    dataListTable = new Tabulator("#dataList", {
+        height: "720px",
+        layout: "fitColumns",
+        selectable: true,
+        tooltips: true,
+        selectableRangeMode: "click",
+        reactiveData: true,
+        headerHozAlign: "center",
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        ajaxURL: "/geomet/machine/nonTime/list",
+        ajaxProgressiveLoad: "scroll",
+        ajaxParams: {
+            equipment_name: $("#equipment_name").val() || "",
+            startDate: $("#startDate").val() || "",
+            endDate: $("#endDate").val() || "",
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function(url, params, response) {
+            if (response.status === "success") {
+                return {
+                    last_page: Math.ceil(response.count / params.pageSize),
+                    data: response.data
+                };
+            }
+            return [];
+        },
+        columns: [
+            {title: "설비", field: "equipment_name", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
+            {title: "정보LIST", field: "info_list", sorter: "string", width: 170, hozAlign: "center", headerSort: false},
+            {title: "발생시간", field: "start_time", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
+            {title: "조치시간", field: "end_time", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
+            {title: "비고", field: "non_time_memo", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
+            {title: "non_time_idx", field: "non_time_idx", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+            {title: "machine_code", field: "machine_code", sorter: "string", width: 250, hozAlign: "center", headerSort: false, visible: false},
+        ],
+        rowDblClick: function(e, row) {
+            openModal("edit", row.getData());
+        }
+    });
+}
 
+function getDataList2() {
+    dataViewTable = new Tabulator("#dataView", {
+        height: "720px",
+        layout: "fitColumns",
+        selectable: true,
+        tooltips: true,
+        selectableRangeMode: "click",
+        reactiveData: true,
+        headerHozAlign: "center",
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        ajaxURL: "/geomet/machine/nonTime/view",
+        ajaxProgressiveLoad: "scroll",
+        ajaxParams: {},
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function(url, params, response) {
+            if (response.status === "success") {
+                return {
+                    last_page: Math.ceil(response.count / params.pageSize),
+                    data: response.data
+                };
+            }
+            return [];
+        },
+        columns: [
+            {
+                title: "순위",
+                field: "rank",
+                hozAlign: "center",
+                width: 70,
+                headerSort: false,
+                formatter: function(cell) {
+                    return cell.getRow().getPosition(true) + 1;
+                }
+            },
+            {title: "설비", field: "v_equipment_name", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+            {title: "비가동 내역", field: "info_list_v", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+            {title: "비가동 시간", field: "sum_time_ch", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+            {title: "일/발생 건수", field: "day_count", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+            {title: "월/발생 건수", field: "month_count", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+        ],
+        rowClick: function(e, row) {
+            console.log("클릭한 설비:", row.getData().equipment_name);
+        }
+    });
+}
 
+function saveCorrStatus() {
+    var corrForm = new FormData($("#corrForm")[0]);
+
+    $.ajax({
+        url: "/geomet/machine/nonTime/insert",
+        type: "POST",
+        data: corrForm,
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.result === "success") {
+                alert("비가동 내역이 성공적으로 저장되었습니다!");
+                closeModal();
+                refreshData();
+            } else {
+                alert("저장 실패: " + response.message);
+            }
+        }
+    });
+}
+
+function updateCorrStatus() {
+    var corrForm = new FormData($("#corrForm")[0]);
+
+    $.ajax({
+        url: "/geomet/machine/nonTime/update",
+        type: "POST",
+        data: corrForm,
+        dataType: "json",
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.result === "success") {
+                alert("비가동 내역이 성공적으로 수정되었습니다!");
+                closeModal();
+                refreshData();
+            } else {
+                alert("수정 실패: " + response.message);
+            }
+        }
+    });
+}
+
+function deleteCorrStatus() {
+    var selectedRows = dataListTable.getSelectedData();
+    if (selectedRows.length === 0) {
+        alert("삭제할 행을 선택하세요.");
+        return;
+    }
+
+    if (!confirm("선택한 비가동 내역을 삭제하시겠습니까?")) {
+        return;
+    }
+
+    var nonTimeIdxList = selectedRows.map(function(row) {
+        return row.non_time_idx;
+    });
+
+    $.ajax({
+        url: "/geomet/machine/nonTime/delete",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ non_time_idx: nonTimeIdxList[0] }), // ← 여기 쉼표 추가!
         
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
+        success: function(response) {
+            if (response.result === "success") {
+                alert("비가동 내역이 삭제되었습니다.");
+                refreshData();
+            } else {
+                alert("삭제 실패: " + response.message);
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("서버 오류: " + error);
+        }
+    });
 
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+}
 
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
+function refreshData() {
+    var equipment_name = $("#equipment_name").val();
+    var startDate = $("#startDate").val();
+    var endDate = $("#endDate").val();
 
-                $.ajax({
-                    url: "/geomet/machine/nonTime/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        if (response.result === "success") {
-                            alert("비가동 내역이 성공적으로 저장되었습니다!");
-                            $("#modalContainer").hide();
+    dataListTable.setData("/geomet/machine/nonTime/list", {
+        equipment_name: equipment_name,
+        startDate: startDate,
+        endDate: endDate
+    });
 
-                          
-                            var equipment_name = $("#equipment_name").val();
-                            var startDate = $("#startDate").val();
-                            var endDate = $("#endDate").val();
+    dataViewTable.setData("/geomet/machine/nonTime/view", {
+        equipment_name: equipment_name
+    });
+}
+</script>
 
-                           
-                            dataTable.setData("/geomet/machine/nonTime/list", {
-                                equipment_name: equipment_name,
-                                startDate: startDate,
-                                endDate: endDate
-                            });
-                            dataTable.setData("/geomet/machine/nonTime/view", {
-                                equipment_name: equipment_name
-        
-                            });
-                        } else {
-                            alert("저장 실패: " + response.message);
-                        }
-                    }
-,
-                    error: function (xhr, status, error) {
-                        alert("서버 오류: " + error);
-                    }
-                });
-            });
-
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-                
-            });
-        });
-
-        	
-
-
-        
-    </script>
 
 </body>
 </html>

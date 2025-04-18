@@ -94,7 +94,8 @@
 </select>
 
 <select id="getNonTimeDataList" parameterType="machine" resultType="machine">
-    SELECT 
+    SELECT
+    	non_time_idx,
         equipment_name,
         machine_code,
         info_list,
@@ -116,16 +117,7 @@
     ORDER BY start_time DESC
 </select>
 
-<select id="getNonTimeDataView" parameterType="machine" resultType="machine">
-    SELECT *
-    FROM v_non_time
-    <where>
-        <if test="equipment_name != null and equipment_name != ''">
-            equipment_name = #{equipment_name}
-        </if>
-    </where>
-    ORDER BY month_count DESC
-</select>
+
 
 
 
@@ -147,4 +139,115 @@
         #{non_time_memo}
     )
 </insert>
+
+
+
+
+<update id="updateNonTime" parameterType="machine">
+    UPDATE tb_non_time
+    SET
+        equipment_name = #{equipment_name},
+        machine_code = #{machine_code},
+        info_list = #{info_list},
+        start_time = #{start_time},
+        end_time = #{end_time},
+        non_time_memo = #{non_time_memo}
+    WHERE non_time_idx = #{non_time_idx}
+</update>
+
+<delete id="deleteNonTime" parameterType="string">
+    DELETE FROM tb_non_time
+    WHERE non_time_idx = #{non_time_idx}
+</delete>
+
+
+
+
+<select id="getNonTimeDataView" resultType="map">
+    SELECT
+        main.equipment_name AS v_equipment_name,
+        main.info_list AS info_list_v,
+
+        -- 비가동 시간 계산
+        SUM(
+            TIMESTAMPDIFF(
+                MINUTE,
+                STR_TO_DATE(main.start_time, '%Y-%m-%d %H:%i'),
+                STR_TO_DATE(main.end_time, '%Y-%m-%d %H:%i')
+            )
+        ) AS sum_time,
+
+        -- 시간:분 형식으로 변환
+        CONCAT(
+            FLOOR(SUM(
+                TIMESTAMPDIFF(
+                    MINUTE,
+                    STR_TO_DATE(main.start_time, '%Y-%m-%d %H:%i'),
+                    STR_TO_DATE(main.end_time, '%Y-%m-%d %H:%i')
+                )
+            ) / 60), '시간 ',
+            SUM(
+                TIMESTAMPDIFF(
+                    MINUTE,
+                    STR_TO_DATE(main.start_time, '%Y-%m-%d %H:%i'),
+                    STR_TO_DATE(main.end_time, '%Y-%m-%d %H:%i')
+                )
+            ) % 60, '분'
+        ) AS sum_time_ch,
+
+        -- 하루 기준 최대 발생 건수
+        IFNULL(day_counts.max_day_count, 0) AS day_count,
+
+        -- 전체 발생 건수
+        COUNT(*) AS month_count
+
+    FROM tb_non_time main
+
+    LEFT JOIN (
+        SELECT
+            equipment_name,
+            info_list,
+            MAX(day_count) AS max_day_count
+        FROM (
+            SELECT
+                equipment_name,
+                info_list,
+                DATE(STR_TO_DATE(start_time, '%Y-%m-%d %H:%i')) AS event_day,
+                COUNT(*) AS day_count
+            FROM tb_non_time
+            WHERE 1 = 1
+                <if test="startDate != null and startDate != ''">
+                    AND STR_TO_DATE(start_time, '%Y-%m-%d %H:%i') &gt;= #{startDate}
+                </if>
+                <if test="endDate != null and endDate != ''">
+                    AND STR_TO_DATE(end_time, '%Y-%m-%d %H:%i') &lt;= #{endDate}
+                </if>
+                <if test="equipment_name != null and equipment_name != ''">
+                    AND equipment_name = #{equipment_name}
+                </if>
+            GROUP BY equipment_name, info_list, event_day
+        ) AS daily_counts
+        GROUP BY equipment_name, info_list
+    ) AS day_counts
+    ON main.equipment_name = day_counts.equipment_name
+    AND main.info_list = day_counts.info_list
+
+    WHERE 1 = 1
+        <if test="startDate != null and startDate != ''">
+            AND STR_TO_DATE(main.start_time, '%Y-%m-%d %H:%i') &gt;= #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND STR_TO_DATE(main.end_time, '%Y-%m-%d %H:%i') &lt;= #{endDate}
+        </if>
+        <if test="equipment_name != null and equipment_name != ''">
+            AND main.equipment_name = #{equipment_name}
+        </if>
+
+    GROUP BY
+        main.equipment_name, main.info_list
+
+    ORDER BY month_count DESC
+</select>
+
+
 </mapper>

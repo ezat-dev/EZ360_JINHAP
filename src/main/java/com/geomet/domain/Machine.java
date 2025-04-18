@@ -55,13 +55,14 @@ public class Machine {
     
     
     //no_time
+    private String non_time_idx;
     private String info_list;
     private String start_time;
     private String day_count;
     private String month_count;
     private String endDate;
     private String non_time_memo;
-    
+    private String v_equipment_name;
     //non_time_view
     
     private String sum_time;
@@ -71,6 +72,22 @@ public class Machine {
 
 	public String getId() {
 		return id;
+	}
+
+	public String getNon_time_idx() {
+		return non_time_idx;
+	}
+
+	public void setNon_time_idx(String non_time_idx) {
+		this.non_time_idx = non_time_idx;
+	}
+
+	public String getV_equipment_name() {
+		return v_equipment_name;
+	}
+
+	public void setV_equipment_name(String v_equipment_name) {
+		this.v_equipment_name = v_equipment_name;
 	}
 
 	public void setId(String id) {

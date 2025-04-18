@@ -164,7 +164,8 @@
         facility_code, 
         facility_name, 
         facility_comment, 
-        facility_yn
+        facility_yn,
+        facility_mach_code
     FROM tb_facility
     WHERE facility_yn = 'Y'
     ORDER BY facility_code

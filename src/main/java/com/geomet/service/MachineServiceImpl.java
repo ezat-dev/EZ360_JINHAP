@@ -42,12 +42,22 @@ public class MachineServiceImpl implements MachineService {
 	        return machineDao.getNonTimeDataList(machine); 	   
 	    }
 	    @Override
-	    public void  saveNonTime(Machine machine) {
+	    public void saveNonTime(Machine machine) {
 	         machineDao.saveNonTime(machine); 	   
+	    }
+	    @Override
+	    public void updateNonTime(Machine machine) {
+	         machineDao.updateNonTime(machine); 	   
+	    }
+	    
+	    @Override
+	    public void deleteNonTime(String non_time_idx) {
+	         machineDao.deleteNonTime(non_time_idx); 	   
 	    }
 	    @Override
 	    public List<Machine> getNonTimeDataView(Machine machine) {
 	         return machineDao.getNonTimeDataView(machine); 	   
 	    }
+	    
 	
 }

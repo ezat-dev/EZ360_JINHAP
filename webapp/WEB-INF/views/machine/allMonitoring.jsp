@@ -228,13 +228,13 @@
            
            
              <div class="status">
-		        <span class="running"></span> 운전중
+		        <span class="running"></span> 가동
 		    </div>
-		    <div class="status">
+<!-- 		    <div class="status">
 		        <span class="changing"></span> 변경
-		    </div>
+		    </div> -->
 		    <div class="status">
-		        <span class="stopped"></span> 정지
+		        <span class="stopped"></span> 비가동
 		    </div>
 		    <div class="unit">단위: ton, %</div>
            

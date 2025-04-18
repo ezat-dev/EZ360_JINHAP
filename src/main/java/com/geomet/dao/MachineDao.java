@@ -25,6 +25,8 @@ public interface MachineDao {
 	//비가동현황
 	  List<Machine> getNonTimeDataList(Machine machine);
 	  void saveNonTime(Machine machine);
+	  void updateNonTime(Machine machine);
+	  void deleteNonTime(String non_time_idx);
 	  List<Machine> getNonTimeDataView(Machine machine);
 	 
 }

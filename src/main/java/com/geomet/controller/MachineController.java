@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -113,8 +114,8 @@ public class MachineController {
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            System.out.println("startDate = " + startDate);
-            System.out.println("endDate = " + endDate);
+            //System.out.println("startDate = " + startDate);
+            //System.out.println("endDate = " + endDate);
 
             Temp_data temp = new Temp_data();
             if (startDate != null && !startDate.isEmpty()) temp.setStartDate(startDate);
@@ -155,8 +156,8 @@ public class MachineController {
             @RequestParam String startDate
             
     ) {
-        System.out.println("Received request:");
-        System.out.println("startDate: " + startDate);
+        //System.out.println("Received request:");
+        //System.out.println("startDate: " + startDate);
   
         Map<String, Object> rtnMap = new HashMap<>();
 
@@ -169,12 +170,12 @@ public class MachineController {
 
             List<Machine> getMachineList = machineService.getMachineList(machine);
 
-            System.out.println("getMachineList Size: " + getMachineList.size());
+            //System.out.println("getMachineList Size: " + getMachineList.size());
             rtnMap.put("status", "success");
             rtnMap.put("last_page", 1);
             rtnMap.put("data", getMachineList);
         } catch (Exception e) {
-            System.out.println("Error occurred: " + e.getMessage());
+            //System.out.println("Error occurred: " + e.getMessage());
             rtnMap.put("status", "error");
             rtnMap.put("message", e.getMessage());
         }
@@ -231,7 +232,7 @@ public class MachineController {
 
         String baseDir = "D:/GEOMET양식/정기점검 파일/";
 
-        System.out.println("다운 주소 filename: " + filename);
+        //System.out.println("다운 주소 filename: " + filename);
 
         if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -239,7 +240,7 @@ public class MachineController {
         }
 
         File file = new File(baseDir + filename);
-        System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+        //System.out.println("파일 전체 경로: " + file.getAbsolutePath());
 
         if (!file.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
@@ -276,8 +277,8 @@ public class MachineController {
     @RequestMapping(value = "/machine/checkPlan/excel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> nonProductManageExcel(@RequestParam(required = false) String startDate) {
-        System.out.println("정기점검 엑셀 다운로드 요청 params:");
-        System.out.println("startDate = " + startDate);
+        //System.out.println("정기점검 엑셀 다운로드 요청 params:");
+        //System.out.println("startDate = " + startDate);
 
         Map<String, Object> rtnMap = new HashMap<>();
 
@@ -297,7 +298,7 @@ public class MachineController {
 
         // 필터링된 데이터만 조회
         List<Machine> getMachineList = machineService.getMachineList(machine);
-        System.out.println("조회된 건수: " + (getMachineList != null ? getMachineList.size() : 0));
+        //System.out.println("조회된 건수: " + (getMachineList != null ? getMachineList.size() : 0));
 
         if (getMachineList == null || getMachineList.isEmpty()) {
             rtnMap.put("error", "데이터 없음");
@@ -393,10 +394,10 @@ public class MachineController {
             rtnMap.put("count", allList.size());
 
 			
-			  System.out.println("받은 equipment_name: " + equipment_name);
-			  System.out.println("받은 startDate: " + startDate);
-			  System.out.println("받은 endDate: " + endDate);
-			  System.out.println("조회된 데이터 수: " + allList.size());
+			  //System.out.println("받은 equipment_name: " + equipment_name);
+			  //System.out.println("받은 startDate: " + startDate);
+			  //System.out.println("받은 endDate: " + endDate);
+			  //System.out.println("조회된 데이터 수: " + allList.size());
 			 
 
         } catch (Exception e) {
@@ -412,12 +413,15 @@ public class MachineController {
     @RequestMapping(value = "/machine/nonTime/view", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getnonTimeView(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
             @RequestParam(required = false) String equipment_name) {
         
         Map<String, Object> rtnMap = new HashMap<>();
         try {
             Machine machine = new Machine();
-
+            machine.setStartDate(startDate);
+            machine.setEndDate(endDate);
             machine.setEquipment_name(equipment_name);
 
             List<Machine> allListView = machineService.getNonTimeDataView(machine);
@@ -427,9 +431,9 @@ public class MachineController {
             rtnMap.put("count", allListView.size());
 
 			
-			  System.out.println("받은 equipment_name: " + equipment_name);
+			  //System.out.println("받qbqbqbqbq: " + equipment_name);
 			 
-			  System.out.println("allListView조회된 데이터 수: " + allListView.size());
+			  //System.out.println("allListView조회된 데이터 수: " + allListView.size());
 			 
 
         } catch (Exception e) {
@@ -450,7 +454,7 @@ public class MachineController {
         
         try {
             // 서버에서 받아온 객체의 값을 출력
-            System.out.println("Received Machine object: " + machine);
+            //System.out.println("Received Machine object: " + machine);
 
             if (machine.getEquipment_name() == null || machine.getEquipment_name().trim().isEmpty()) {
                 rtnMap.put("result", "fail");
@@ -471,7 +475,67 @@ public class MachineController {
     }
 
     
+    // 비가동
+    @RequestMapping(value = "/machine/nonTime/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> updateNonTime(@ModelAttribute Machine machine) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        
+        
+        System.out.println("=== Received Machine object (updateNonTime) ===");
+        System.out.println("equipment_name: " + machine.getEquipment_name());
+        System.out.println("info_list: " + machine.getInfo_list());
+        System.out.println("start_time: " + machine.getStart_time());
+        System.out.println("end_time: " + machine.getEnd_time());
+        System.out.println("non_time_memo: " + machine.getNon_time_memo());
+        System.out.println("non_time_idx: " + machine.getNon_time_idx());
+        System.out.println("machine_code: " + machine.getMachine_code());
+        System.out.println("===============================================");
+        
+        
+        try {
+            // 서버에서 받아온 객체의 값을 출력
+            //System.out.println("Received Machine object updateNonTime: " + machine);
+
+            if (machine.getEquipment_name() == null || machine.getEquipment_name().trim().isEmpty()) {
+                rtnMap.put("result", "fail");
+                rtnMap.put("message", "설비명을 입력하시오!");
+                return rtnMap;
+            }
+
+            // 실제 저장 로직 실행
+            machineService.updateNonTime(machine);
+
+            rtnMap.put("result", "success");
+        } catch (Exception e) {
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", "저장 중 오류가 발생했습니다: " + e.getMessage());
+        }
+
+        return rtnMap;
+    }
+
     
+    
+    // 비가동 삭제
+    @RequestMapping(value = "/machine/nonTime/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteNonTime(@RequestBody Map<String, String> requestData) {
+        String non_time_idx = requestData.get("non_time_idx");
+        System.out.println("받은 non_time_idx: " + non_time_idx);
+
+        Map<String, Object> result = new HashMap<>();
+        try {
+            machineService.deleteNonTime(non_time_idx);
+            result.put("result", "success");
+        } catch (Exception e) {
+            result.put("result", "fail");
+            result.put("message", e.getMessage());
+        }
+        return result;
+    }
+
+
     
     
     

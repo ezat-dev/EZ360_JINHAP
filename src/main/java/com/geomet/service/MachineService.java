@@ -25,6 +25,8 @@ public interface MachineService {
 	//비가동 현황
 	List<Machine> getNonTimeDataList(Machine machine);
 	void saveNonTime(Machine machine); 
+	void updateNonTime(Machine machine); 
+	void deleteNonTime(String non_time_idx); 
 	//비가동 뷰
 	List<Machine> getNonTimeDataView(Machine machine);
 }

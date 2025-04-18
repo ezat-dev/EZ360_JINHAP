@@ -47,6 +47,14 @@ public class MachineDaoImpl implements MachineDao{
            sqlSession.insert("machine.saveNonTime", machine);
     }
     @Override
+    public void updateNonTime(Machine machine) {
+           sqlSession.insert("machine.updateNonTime", machine);
+    }
+    @Override
+    public void deleteNonTime(String non_time_idx) {
+           sqlSession.delete("machine.deleteNonTime", non_time_idx);
+    }
+    @Override
     public List<Machine> getNonTimeDataView(Machine machine) {
       
         return sqlSession.selectList("machine.getNonTimeDataView", machine);
