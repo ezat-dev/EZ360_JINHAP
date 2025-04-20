@@ -7,9 +7,16 @@ public class Facility {
 	private String facility_name;
 	private String facility_comment;
 	private String facility_yn;
+	private String facility_mach_code;
 	
 	
 	
+	public String getFacility_mach_code() {
+		return facility_mach_code;
+	}
+	public void setFacility_mach_code(String facility_mach_code) {
+		this.facility_mach_code = facility_mach_code;
+	}
 	public String getFacility_code() {
 		return facility_code;
 	}

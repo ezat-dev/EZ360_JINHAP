@@ -222,9 +222,10 @@
 	        <h2>교체이력 등록</h2>
 	        <form id="corrForm"autocomplete="off">
 	            <label>설비명</label>
-            <select class="equipment_name_select" name="equipment_name">
+            <select id="popup_equip" class="equipment_name_select" name="equipment_name" >
              
             </select>
+
 
 	            <label>정보LIST</label>
 			<select name="info_list">
@@ -263,8 +264,9 @@
 	          	<label>비고</label>
 	            <textarea name="non_time_memo" rows="12"></textarea>
 	            
-				<input type="hidden" class="non_time_idx" name="non_time_idx" value="">
-
+		<!-- 		<input type="hidden" class="facility_equipment_name" name="equipment_name" value=""> -->
+				<input type="hidden" class="facility_machine_code" name="machine_code" value="">
+				<input type="hidden" name="non_time_idx" />
 	       
 	            <button type="submit" id="saveCorrStatus">저장</button>
 	            <button type="button" id="closeModal">닫기</button>
@@ -274,15 +276,36 @@
 
 
 <script>
+
 $(document).ready(function() {
+    // 화면 로드 시 어제 날짜와 오늘 날짜 자동 설정
+    var today = new Date();
+    var yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1); // 어제 날짜
+
+    // 날짜를 yyyy-MM-dd 형식으로 변환하는 함수
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        return year + "-" + month + "-" + day;
+    }
+
+    // 어제 날짜와 오늘 날짜를 각각 입력 필드에 설정
+    $("#startDate").val(formatDate(yesterday));
+    $("#endDate").val(formatDate(today));
+
+    // 화면 로드 시 데이터 가져오기
     getDataList();
     getDataList2();
 
+    // 조회 버튼 클릭 시 데이터 조회
     $(".select-button").click(function() {
         var equipment_name = $("#equipment_name").val();
         var startDate = $("#startDate").val();
         var endDate = $("#endDate").val();
 
+        // 두 개의 Tabulator 테이블에 데이터 로드
         dataListTable.setData("/geomet/machine/nonTime/list", {
             equipment_name: equipment_name,
             startDate: startDate,
@@ -308,7 +331,6 @@ $(document).ready(function() {
         closeModal();
     });
 });
-
 function openModal(mode, rowData) {
     var $modal = $("#modalContainer");
     var $btn = $("#saveCorrStatus");
@@ -317,13 +339,15 @@ function openModal(mode, rowData) {
     $form[0].reset();
 
     if (mode === "edit") {
-        $form.find("select[name='equipment_name']").val(rowData.equipment_name);
+
+        $form.find("select[name='equipment_name']").val(rowData.machine_code);
         $form.find("select[name='info_list']").val(rowData.info_list);
         $form.find("input[name='start_time']").val(rowData.start_time);
         $form.find("input[name='end_time']").val(rowData.end_time);
         $form.find("textarea[name='non_time_memo']").val(rowData.non_time_memo);
         $form.find("input[name='non_time_idx']").val(rowData.non_time_idx);
 
+       
         if ($form.find("input[name='machine_code']").length === 0) {
             $form.append("<input type='hidden' name='machine_code' value='" + rowData.machine_code + "'>");
         } else {
@@ -331,9 +355,21 @@ function openModal(mode, rowData) {
         }
 
         $btn.text("수정");
+
     } else {
+      
+        const selectedOption = $form.find("select[name='equipment_name'] option:selected");
+        const machineCode = selectedOption.data("machine_code");
+
+        if ($form.find("input[name='machine_code']").length === 0) {
+            $form.append("<input type='hidden' name='machine_code' value='" + machineCode + "'>");
+        } else {
+            $form.find("input[name='machine_code']").val(machineCode);
+        }
+
         $btn.text("추가");
     }
+
 
     $btn.off("click").on("click", function(event) {
         event.preventDefault();
@@ -385,14 +421,17 @@ function getDataList() {
             {title: "발생시간", field: "start_time", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
             {title: "조치시간", field: "end_time", sorter: "string", width: 180, hozAlign: "center", headerSort: false},
             {title: "비고", field: "non_time_memo", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-            {title: "non_time_idx", field: "non_time_idx", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+            {title: "non_time_idx", field: "non_time_idx", sorter: "string", width: 250, hozAlign: "center", headerSort: false, visible: false},
             {title: "machine_code", field: "machine_code", sorter: "string", width: 250, hozAlign: "center", headerSort: false, visible: false},
-        ],
-        rowDblClick: function(e, row) {
-            openModal("edit", row.getData());
-        }
-    });
-}
+            ],
+            rowDblClick: function(e, row) {
+            	 const data = row.getData();
+            	 console.log("더블클릭한 rowData:", data);
+                 console.log("JSON 문자열:", JSON.stringify(data, null, 2));  // 보기 편하게 포맷팅
+                openModal("edit", row.getData());
+            }
+        });
+    }
 
 function getDataList2() {
     dataViewTable = new Tabulator("#dataView", {
@@ -407,7 +446,12 @@ function getDataList2() {
         ajaxLoader: false,
         ajaxURL: "/geomet/machine/nonTime/view",
         ajaxProgressiveLoad: "scroll",
-        ajaxParams: {},
+        // 여기에 startDate, endDate, equipment_name 추가
+        ajaxParams: {
+            equipment_name: $("#equipment_name").val() || "",
+            startDate: $("#startDate").val() || "",
+            endDate: $("#endDate").val() || ""
+        },
         placeholder: "조회된 데이터가 없습니다.",
         ajaxResponse: function(url, params, response) {
             if (response.status === "success") {
@@ -436,14 +480,24 @@ function getDataList2() {
             {title: "월/발생 건수", field: "month_count", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
         ],
         rowClick: function(e, row) {
-            console.log("클릭한 설비:", row.getData().equipment_name);
+            console.log("클릭한 설비:", row.getData().v_equipment_name);
         }
     });
 }
-
 function saveCorrStatus() {
-    var corrForm = new FormData($("#corrForm")[0]);
+    
 
+	var value = $("#popup_equip :selected").val();
+	var text = $("#popup_equip :selected").text();
+
+	console.log("save : "+value, text);
+
+
+	$(".facility_machine_code").val(value);
+//	$(".facility_equipment_name").val(text);
+
+	var corrForm = new FormData($("#corrForm")[0]);
+    
     $.ajax({
         url: "/geomet/machine/nonTime/insert",
         type: "POST",
@@ -484,7 +538,6 @@ function updateCorrStatus() {
         }
     });
 }
-
 function deleteCorrStatus() {
     var selectedRows = dataListTable.getSelectedData();
     if (selectedRows.length === 0) {
@@ -532,8 +585,11 @@ function refreshData() {
         endDate: endDate
     });
 
+
     dataViewTable.setData("/geomet/machine/nonTime/view", {
-        equipment_name: equipment_name
+        equipment_name: equipment_name,
+        startDate: startDate,
+        endDate: endDate
     });
 }
 </script>

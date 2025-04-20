@@ -239,13 +239,13 @@
 		    <div class="unit">단위: ton, %</div>
            
         
-           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+<!--            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
            <label class="daylabel">교체일자 :</label>
 			<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 			
 			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-			<input type="text" autocomplete="off"class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+			<input type="text" autocomplete="off"class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
 
            
 			</div>
@@ -319,24 +319,24 @@
                 },
 
                 columns: [
-                    { title: "설비", field: "machine_code_ch", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "설비상태", field: "machine_code", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "관리기준 C/T", field: "facility_ct", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실제생산 C/T", field: "now_ct", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "CAPA", field: "facility_capa", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "현 생산목표", field: "now_target", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "현 생산실적", field: "now_count", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "가동시간", field: "operating_hr", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "생산 LOSS 시간", field: "loss_hr", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실적-생산(ton)", field: "result_prod_ton", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실적-과부족(ton)", field: "result_little_ton", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실적-달성률(%)", field: "result_rate", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "누적-중량", field: "m_result_weight_ton", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "누적-통수", field: "m_result_count", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "과부족량-중량", field: "little_weight_ton", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "과부족량-통수", field: "little_count_ea", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "달성률-중량", field: "rate_weight", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "달성률-통수", field: "rate_count", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "설비상태", field: "machine_status", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "관리기준 C/T", field: "c_t", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실제생산 C/T", field: "work_ct", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "CAPA", field: "capa", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "현 생산목표", field: "capa_quality", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "현 생산실적", field: "tong_day", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "가동시간", field: "work_time", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "생산 LOSS 시간", field: "work_loss", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실적-생산(ton)", field: "work_ton", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실적-과부족(ton)", field: "work_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "실적-달성률(%)", field: "work_percent", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "누적-중량", field: "weight_sum", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "누적-통수", field: "tong_sum", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "과부족량-중량", field: "work_sum_weight_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "과부족량-통수", field: "work_sum_ton_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "달성률-중량", field: "work_sum_weight_percent", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "달성률-통수", field: "work_sum_tong_percent", sorter: "string", hozAlign: "center", headerSort: false },
                 ],
             });
         }

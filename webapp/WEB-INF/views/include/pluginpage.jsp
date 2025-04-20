@@ -282,6 +282,9 @@ $(window).on("load", function () {
         type: "POST",
         dataType: "json",
         success: function (response) {
+            console.log("서버에서 받은 전체 데이터:", response); // 전체 응답 확인
+            console.log("데이터 목록:", response.data); // data 배열만 확인
+            
             const $select = $(".equipment_name_select");
             $select.empty();
             $select.append('<option value="">전체</option>');
@@ -289,8 +292,9 @@ $(window).on("load", function () {
             response.data.forEach(function (item) {
                 if (item.facility_name) {
                     const $option = $('<option>' + item.facility_name + '</option>')
-                        .attr('value', item.facility_name);
-                    $select.append($option);
+                        .attr('value', item.facility_mach_code);
+                   
+                     $select.append($option);
                 }
             });
         },

@@ -49,9 +49,34 @@ public class Machine {
     private String loss_hr;
     private String little_weight_ton;
     private String result_little_ton;
+    private String machine_status;
+
+    //모니터링 뷰
+    private String facility_name;              // 설비명
+               // 기계 상태 (가동 / 비가동)
+    private Double c_t;                        // Cycle Time
+    private Double work_ct;                    // 실 작업 CT
+    private Double capa;                       // 기준 능력 (Capacity)
+    private Double capa_quality;              // 품질 기준 능력
+    private Integer tong_day;                 // 일일 통 수
+    private Integer work_time;                // 가동 시간 (시간 단위)
+    private Double work_loss;                 // 손실 시간 (초 단위)
+    private Double work_ton;                  // 생산 톤수
+    private Double work_bujok;                // 부족 톤수
+    private Double work_percent;              // 달성률 (%)
+    private Integer tong_sum;                 // 누적 통 수
+    private Double weight_sum;                // 누적 중량 (kg)
+    private Double work_sum_ton_bujok;        // 누적 부족 톤수
+    private Double work_sum_weight_bujok;     // 누적 부족 통 수
+    private Double work_sum_weight_percent;   // 누적 중량 달성률 (%)
+    private Double work_sum_tong_percent;     // 누적 통 수 달성률 (%)
     
-
-
+    
+    
+    
+    
+    
+    
     
     
     //no_time
@@ -69,9 +94,156 @@ public class Machine {
     private String info_list_v;
 
     private String sum_time_ch;
+    
+    
+    
+
+	public String getFacility_name() {
+		return facility_name;
+	}
+
+	public void setFacility_name(String facility_name) {
+		this.facility_name = facility_name;
+	}
+
+	public Double getC_t() {
+		return c_t;
+	}
+
+	public void setC_t(Double c_t) {
+		this.c_t = c_t;
+	}
+
+	public Double getWork_ct() {
+		return work_ct;
+	}
+
+	public void setWork_ct(Double work_ct) {
+		this.work_ct = work_ct;
+	}
+
+	public Double getCapa() {
+		return capa;
+	}
+
+	public void setCapa(Double capa) {
+		this.capa = capa;
+	}
+
+	public Double getCapa_quality() {
+		return capa_quality;
+	}
+
+	public void setCapa_quality(Double capa_quality) {
+		this.capa_quality = capa_quality;
+	}
+
+	public Integer getTong_day() {
+		return tong_day;
+	}
+
+	public void setTong_day(Integer tong_day) {
+		this.tong_day = tong_day;
+	}
+
+	public Integer getWork_time() {
+		return work_time;
+	}
+
+	public void setWork_time(Integer work_time) {
+		this.work_time = work_time;
+	}
+
+	public Double getWork_loss() {
+		return work_loss;
+	}
+
+	public void setWork_loss(Double work_loss) {
+		this.work_loss = work_loss;
+	}
+
+	public Double getWork_ton() {
+		return work_ton;
+	}
+
+	public void setWork_ton(Double work_ton) {
+		this.work_ton = work_ton;
+	}
+
+	public Double getWork_bujok() {
+		return work_bujok;
+	}
+
+	public void setWork_bujok(Double work_bujok) {
+		this.work_bujok = work_bujok;
+	}
+
+	public Double getWork_percent() {
+		return work_percent;
+	}
+
+	public void setWork_percent(Double work_percent) {
+		this.work_percent = work_percent;
+	}
+
+	public Integer getTong_sum() {
+		return tong_sum;
+	}
+
+	public void setTong_sum(Integer tong_sum) {
+		this.tong_sum = tong_sum;
+	}
+
+	public Double getWeight_sum() {
+		return weight_sum;
+	}
+
+	public void setWeight_sum(Double weight_sum) {
+		this.weight_sum = weight_sum;
+	}
+
+	public Double getWork_sum_ton_bujok() {
+		return work_sum_ton_bujok;
+	}
+
+	public void setWork_sum_ton_bujok(Double work_sum_ton_bujok) {
+		this.work_sum_ton_bujok = work_sum_ton_bujok;
+	}
+
+	public Double getWork_sum_weight_bujok() {
+		return work_sum_weight_bujok;
+	}
+
+	public void setWork_sum_weight_bujok(Double work_sum_weight_bujok) {
+		this.work_sum_weight_bujok = work_sum_weight_bujok;
+	}
+
+	public Double getWork_sum_weight_percent() {
+		return work_sum_weight_percent;
+	}
+
+	public void setWork_sum_weight_percent(Double work_sum_weight_percent) {
+		this.work_sum_weight_percent = work_sum_weight_percent;
+	}
+
+	public Double getWork_sum_tong_percent() {
+		return work_sum_tong_percent;
+	}
+
+	public void setWork_sum_tong_percent(Double work_sum_tong_percent) {
+		this.work_sum_tong_percent = work_sum_tong_percent;
+	}
 
 	public String getId() {
 		return id;
+	}
+
+	public String getMachine_status() {
+		return machine_status;
+	}
+
+	public void setMachine_status(String machine_status) {
+		this.machine_status = machine_status;
 	}
 
 	public String getNon_time_idx() {
