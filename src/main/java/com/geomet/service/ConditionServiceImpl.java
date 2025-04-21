@@ -55,5 +55,10 @@ private ConditionDao conditionDao;
 		public List<Condition> getconditionList(Condition condition){
 			return conditionDao.getconditionList(condition);
 		}
+		
+		 @Override
+		    public void machinePartTempUpdate(Condition condition) {
+			 	conditionDao.machinePartTempUpdate(condition);
+		    }
  
 }

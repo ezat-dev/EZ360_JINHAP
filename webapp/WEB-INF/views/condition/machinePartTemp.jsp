@@ -45,7 +45,7 @@
 	        background: white;
 	        width: 24%;
 	        max-width: 500px;
-	        height: 80vh; 
+	        height: 47vh; 
 	        overflow-y: auto; 
 	        margin: 6% auto 0;
 	        padding: 20px;
@@ -124,7 +124,7 @@
 		    margin-top:4px;
 		}
         .mch_code {
-            width: 20%;
+            width: 30%;
             text-align: center;
             font-size: 15px;
         }
@@ -203,9 +203,10 @@
 
             </select>
 			</div>
-                <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-                </button>
+				<button type="button" class="select-button">
+				    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+				</button>
+
                 
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
@@ -223,32 +224,20 @@
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
 	        <h2>조건관리 일지</h2>
-	        <form id="corrForm">
-	            <label>설비명</label>
-	            <select name="equipmentName2">
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>	
-	                <option value="PLUS">PLUS</option>	
-	                <option value="ML">ML</option>	
-	                <option value="K_BLACK">K_BLACK</option>		               
-	            </select>
+	        <form id="corrForm"autocomplete="off">
 	
-				<label>정검 일자</label>
-				<input type="text" class="daySet" name="replacementCycle" placeholder="정검 일자 선택" style="text-align: left;" autocomplete="off">
+				<label>일자</label>
+				<input type="text" name="date" placeholder="일자 선택" style="text-align: left;" autocomplete="off"readonly>
 				
 				
-	            <label>점검 항목</label>
-	              <select name="select1">
-	                <option value="1">액탱크 온도(38°C이하)</option>
-	                <option value="2">점도(40±10초)</option>
-	                <option value="3">점도비중(1.43±0.05)</option>
-	                <option value="4">칠러(냉각기)온도(10±2 ℃)</option>
-	            </select>
-	
-	          
-	
-	            <label>내용</label>
-	            <textarea name="remarks" rows="17"></textarea>
+	             <label>점검 항목</label>
+	             <input type="text" name="filed" placeholder="filed" style="text-align: left; display: none;" autocomplete="off" readonly>
+
+	             <input type="text"name="title" placeholder="title" style="text-align: left;" autocomplete="off"readonly>
+	       
+				<label>내용</label>
+			    <input type="text" name="value" >
+ 				<input type="text" name="id"readonly style="display: none;">
 	
 	            <button type="submit" id="saveCorrStatus">저장</button>
 	            <button type="button" id="closeModal">닫기</button>
@@ -257,140 +246,372 @@
 	</div>
 
 
-    <script>
-        $(function() {
-            getDataList();
-        });
+<script>
+  $(function () {
+    var now    = new Date();
+    var year   = now.getFullYear();
+    var month  = String(now.getMonth() + 1).padStart(2, '0');
+    var yearMonth = year + '-' + month;
 
-    	
-        function getDataList() {
-            // startDate와 mch_code 값을 변수로 저장
-            const startDate = (() => {
-                const v = $("#startDate").val();
-                return v ? v + "-01" : "";
-            })();
+    $('#startDate').val(yearMonth).attr('placeholder', yearMonth);
 
-            const mch_code = $(".mch_code").val(); // class로 선택
+    $('.insert-button').click(function(){ toggleModal(true); });
+    $('.close, #closeModal').click(function(){ toggleModal(false); });
 
-            // 콘솔에 출력
-            console.log("📌 startDate:", startDate);
-            console.log("📌 mch_code:", mch_code);
+    $('#saveCorrStatus').click(handleFormSubmit);
 
-            dataTable = new Tabulator("#dataTable", {
-                height: "830px",
-                layout: "fitDataFill",
-                layoutColumnsOnNewData: true,
-                headerSort: false,
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
+    $('.select-button').click(handleSelectButtonClick);
 
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/condition/machinePartTemp/list",
-                ajaxProgressiveLoad: false,
-                ajaxParams: {
-                    startDate: startDate,
-                    mch_code: mch_code
-                },
+    getDataList(yearMonth);
+  });
 
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: false,
+  var defaultColumns = [
 
-                groupBy: "date",
-                groupStartOpen: true,
-                groupHeader: function (value, count) {
-                    return `<strong>${value}</strong>`;
-                },
+/* 	  tank_temp: 38°C 초과 시 빨간색
 
-                ajaxResponse: function (url, params, response) {
-                    return response;
-                },
+	  visocosity: 30초 미만 또는 50초 초과 시 빨간색 (기준: 40±10초)
 
-                dataLoaded: function (data) {
-                    $("#dataTable .tabulator-col.tabulator-sortable").css("height", "29px");
-                },
+	  specific_gravity: 1.38 미만 또는 1.48 초과 시 빨간색 (기준: 1.43±0.05)
 
-                columns: [
-                    { title: "일자", field: "date ", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
-                    { title: "액탱크 온도(38°C이하)", field: "tank_temp", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
-                    { title: "점도(40±10초)", field: "visocosity", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
-                    { title: "비중(1.43±0.05)", field: "specific_gravity", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
-                    { title: "칠러(냉각기)온도(10±2 ℃)", field: "chiller_temp", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
-                    { title: "id", field: "id", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "mch_code", field: "mch_code", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "mch_name", field: "mch_name", sorter: "string", hozAlign: "center", headerSort: false },
-                ],
+	  chiller_temp: 8 미만 또는 12 초과 시 빨간색 (기준: 10±2℃)
+ */
+	  
+	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
 
-                cellClick: function (e, cell) {
-      		      // 클릭 이벤트
-      		    },
+	  { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value > 38) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
 
-      		    cellDblClick: function (e, cell) {
-      		    	  const rowData = cell.getRow().getData(); // 해당 row의 전체 데이터
-      		    	  const modal = $("#modalContainer");
+	  { title: '점도(40±10초)', field: 'visocosity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 30 || value > 50) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
 
-      		    	  modal.show().addClass("show");
+	  { title: '비중(1.43±0.05)', field: 'specific_gravity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 1.38 || value > 1.48) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
 
-      		    	  
-      		    	  const form = $("#corrForm");
-      		    	 
-      		    	}
-      		  }); 
-      		}
+	  { title: '칠러 온도(10±2℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 8 || value > 12) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
-
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
+	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+	];
 
 
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
-                
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+  var plColumns = [
+	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
 
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
+	  { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 10 || value > 30) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      }
+	      return value;
+	    }
+	  },
 
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
+	  { title: '점도(25±5초)', field: 'visocosity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 20 || value > 30) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      }
+	      return value;
+	    }
+	  },
 
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
-        });
+	  { title: '비중(1.075~0.075)', field: 'specific_gravity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 1.000 || value > 1.150) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      }
+	      return value;
+	    }
+	  },
 
-        	
+	  { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 13.5 || value > 16.5) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      }
+	      return value;
+	    }
+	  },
+
+	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+	];
 
 
-        
-    </script>
+  var mlColumns = [
+
+	/*   tank_temp: 10℃ 미만 또는 30℃ 초과일 때 빨간색 (기준: 20±10℃)
+	
+	  visocosity: 30초 미만 또는 40초 초과일 때 빨간색 (기준: 35±5초)
+	
+	  specific_gravity: 1.0 미만 또는 1.15 초과일 때 빨간색 (기준: 1.075±0.075)
+	
+	  chiller_temp: 13.5℃ 미만 또는 16.5℃ 초과일 때 빨간색 (기준: 15±1.5℃) */
+
+	  
+	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+
+	  { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 10 || value > 30) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: '점도(35±5초)', field: 'visocosity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 30 || value > 40) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: '비중(1.075±0.075)', field: 'specific_gravity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 1.0 || value > 1.15) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 13.5 || value > 16.5) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+	];
+
+
+  var g04Columns = [
+
+/* 	  tank_temp: 10℃ 미만 또는 30℃ 초과 시 빨간색 (20±10℃)
+
+	  visocosity: 43초 미만 또는 53초 초과 시 빨간색 (48±5초)
+	
+	  specific_gravity: 1.050 미만 또는 1.150 초과 시 빨간색 (1.050~1.150)
+	
+	  chiller_temp: 20℃ 초과 시 빨간색 (최대 20℃) */
+	  
+	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+
+	  { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 10 || value > 30) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: '점도(48±5초)', field: 'visocosity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 43 || value > 53) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: '비중(1.050~1.150)', field: 'specific_gravity', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value < 1.050 || value > 1.150) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: '칠러 온도(Max 20℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
+	    formatter: function(cell) {
+	      var value = parseFloat(cell.getValue());
+	      if (value > 20) {
+	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+	      } else {
+	        return value;
+	      }
+	    }
+	  },
+
+	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+	];
+
+
+  var dataTable;
+
+  function getDataList(initialMonth) {
+    var startDate = initialMonth || $('#startDate').val() || '';
+    if (startDate.length >= 7) { startDate = startDate.substring(0, 7); }
+    var mch_code = $('.mch_code').val() || '';
+
+    var cols = defaultColumns;
+    if (mch_code === 'PL')           cols = plColumns;
+    else if (mch_code === 'ML')      cols = mlColumns;
+    else if (mch_code === 'G04-GG05') cols = g04Columns;
+
+    if (!dataTable) {
+      dataTable = new Tabulator('#dataTable', {
+        height: '790px',
+        layout: 'fitDataFill',
+        layoutColumnsOnNewData: true,
+        headerSort: false,
+        selectableRangeMode: 'click',
+        reactiveData: true,
+        headerHozAlign: 'center',
+        ajaxConfig: { method: 'POST' },
+        ajaxURL: '/geomet/condition/machinePartTemp/list',
+        ajaxParams: { startDate: startDate, mch_code: mch_code },
+        placeholder: '조회된 데이터가 없습니다.',
+        paginationSize: false,
+        ajaxResponse: function(url, params, response){ return response; },
+        dataLoaded: function(){ $('#dataTable .tabulator-col.tabulator-sortable').css('height','29px'); },
+        columns: cols,
+        cellClick: function(e, cell){ },
+        cellDblClick: function(e, cell){
+            var field   = cell.getField();
+            var rowData = cell.getRow().getData();
+
+            if (field !== 'date') {
+              var title  = cell.getColumn().getDefinition().title;
+              var value  = cell.getValue();
+              var rowId  = rowData.id;
+              var date   = rowData.date;
+
+              console.log(
+                '필드: '  + field  + ', ' +
+                title     + ': '    + value + ', ' +
+                'id: '    + rowId  + ', ' +
+                '일자: '  + date
+              );
+
+  
+              $('#modalContainer').show().addClass('show');
+              $('#corrForm input[name="date"]').val(date);
+              $('#corrForm input[name="filed"]').val(field);
+              $('#corrForm input[name="title"]').val(title);
+              $('#corrForm input[name="value"]').val(value);
+              $('#corrForm input[name="id"]').val(rowId);
+            }
+          }
+      });
+    } else {
+      dataTable.setColumns(cols);
+      dataTable.setData('/geomet/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
+    }
+  }
+
+  function handleSelectButtonClick() {
+    var startDate = $('#startDate').val() || '';
+    if (startDate.length >= 7) { startDate = startDate.substring(0, 7); }
+    var mch_code = $('.mch_code').val() || '';
+
+    // 컬럼 선택
+    var cols = defaultColumns;
+    if (mch_code === 'PL')           cols = plColumns;
+    else if (mch_code === 'ML')      cols = mlColumns;
+    else if (mch_code === 'G04-GG05') cols = g04Columns;
+
+    dataTable.setColumns(cols);
+    dataTable.setData('/geomet/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
+  }
+
+  function toggleModal(show) {
+    $('#modalContainer').toggleClass('show', show).toggle(show);
+  }
+
+  function handleFormSubmit(event) {
+	    event.preventDefault();
+	    
+	    var corrForm = new FormData($('#corrForm')[0]);
+	    corrForm.forEach(function(v, k){ 
+	        console.log(k + ' = ' + v); 
+	    });
+
+	    $.ajax({
+	        url: '/geomet/condition/machinePartTemp/update', 
+	        type: 'POST',
+	        data: corrForm,
+	        dataType: 'json',
+	        processData: false,
+	        contentType: false,
+	        success: function(response) {
+	            alert(response.data);
+	            toggleModal(false);
+	            handleSelectButtonClick();
+	        },
+	        error: function() {
+	            alert('오류가 발생했습니다. 다시 시도해주세요.');
+	        }
+	    });
+	}
+
+</script>
+
 
 </body>
 </html>

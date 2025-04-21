@@ -56,4 +56,8 @@ public class ConditionDaoImpl implements ConditionDao {
 	public List<Condition> getconditionList(Condition condition) {
 		return sqlSession.selectList("condition.getconditionList",condition);
 	}
+	@Override
+	public void machinePartTempUpdate(Condition condition) {
+		sqlSession.update("condition.machinePartTempUpdate",condition);
+	}
 }

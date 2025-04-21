@@ -7,89 +7,177 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>경보 모니터링</title>
 <%@include file="../include/pluginpage.jsp" %>    
-<style>
-.selectMch {
-    border: 2px solid #ccc;
-    background-color: #fff;
-    border-radius: 8px;
-    padding: 10px;
-    width: 310px;
-    position: absolute;
-    top: 55px;
-    left: 75px;
-    display: flex;
-    align-items: center;
-}
+    <jsp:include page="../include/tabBar.jsp"/>
+ <style>
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-left: 1008px;
+            margin-top: 200px;
+        }
+        .view {
+            display: flex;
+            justify-content: center;
+            margin-top: 1%;
+        }
+        .tab {
+            width: 95%;
+            margin-bottom: 37px;
+            margin-top: 5px;
+            height: 45px;
+            border-radius: 6px 6px 0px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease-in-out;
+        }
+	    .modal-content {
+	        background: white;
+	        width: 24%;
+	        max-width: 500px;
+	      
+	        overflow-y: auto; 
+	        margin: 6% auto 0;
+	        padding: 20px;
+	        border-radius: 10px;
+	        position: relative;
+	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+	        transform: scale(0.8);
+	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	        opacity: 0;
+	    }
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .close {
+            background-color:white;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        .modal-content input, .modal-content textarea {
+            width: 97%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal-content button {
+            background-color: #d3d3d3;
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .modal-content button:hover {
+            background-color: #a9a9a9;
+        }
+        .button-container {
+    		display: flex;
+		    gap: 10px;
+		    margin-left: auto;
+		    margin-right: 10px;
+		    margin-top: 40px;
+		}
+		.box1 {
+		    display: flex;
+		    justify-content: right;
+		    align-items: center;
+		    width: 800px;
+		    margin-right: 20px;
+		    margin-top:4px;
+		}
+        .dayselect {
+            width: 20%;
+            text-align: center;
+            font-size: 15px;
+        }
+        .daySet {
+        	width: 20%;
+      		text-align: center;
+            height: 16px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        .daylabel {
+            margin-right: 10px;
+            margin-bottom: 13px;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+        button-container.button{
+        height: 16px;
+        }
+         .mid{
+        margin-right: 9px;
+	    font-size: 20px;
+	    font-weight: bold;
+	
+	    height: 42px;
+	    margin-left: 9px;
+        }
+    </style>
+</head>
 
-.selectMch label {
-    font-size: 14pt;
-    font-weight: 700;
-    margin-right: 10px;
-}
-
-.selectMch select {
-    font-size: 13pt;
-    font-weight: 700;
-    width: 120px;
-    text-align: center;
-    margin-right: 10px; /* 버튼과 간격을 줌 */
-}
-
-.select-button {
-    background-color: #f0f0f0; /* 회색 배경 */
-    color: #333; /* 텍스트 색상 */
-    font-weight: bold;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 8px 15px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-}
-
-.select-button img {
-    width: 16px;
-    height: 16px;
-    margin-right: 5px;
-}
-
-.select-button:hover {
-    background-color: #dcdcdc; /* 마우스 오버 시 색상 */
-}
-
-.view {
-    display: flex; 
-    flex-wrap: wrap;
-    justify-content: flex-start; 
-    gap: 10px;
-    max-width: 90%; 
-    margin: 0 auto;
-    padding: 20px;
-    border: 2px solid #ccc; 
-    background-color: #fff;
-    margin-top: 120px;
-}
-
-.box {
-    width: 180px;
-    height: 70px;
-    border: 1px solid #ccc;  
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 14pt;
-    font-weight: bold;
-    background-color: #f5f5f5;  
-    border-radius: 8px; 
-}
-</style>
-    
 <body>
 
     <main class="main">
-        <div class="selectMch">
-            <label class="daylabel">설비명 :</label>
+        <div class="tab">
+        
+
+            <div class="button-container">
+            
+              <div class="box1">
+	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+	           <label class="daylabel">검색일자 :</label>
+				<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+				
+				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+	
+				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+	
+	            <label class="daylabel">설비명 :</label>
             <select class="dayselect">
+             
                 <option value="G800">G800</option>
                 <option value="G600">G600</option>
                 <option value="K-BLACK">K-BLACK</option>
@@ -101,79 +189,207 @@
                 <option value="세척 1호기">세척 1호기</option>
                 <option value="세척 2호기">세척 2호기</option>
             </select>
-            <button class="select-button">
-                <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-            </button>
+			</div>
+                <button class="select-button">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                </button>
+                <button class="insert-button">
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                </button>
+                <button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                </button>
+                <button class="printer-button">
+                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
+                </button>
+            </div>
         </div>
-       
+
         <div class="view">
-            <div class="box box1">예시1</div>
-            <div class="box box2">예시2</div>
-            <div class="box box3">예시3</div>
-            <div class="box box4">예시4</div>
-            <div class="box box5">예시5</div>
-            <div class="box box6">예시6</div>
-            <div class="box box7">예시7</div>
-            <div class="box box8">예시8</div>
-            <div class="box box9">예시9</div>
-            <div class="box box10">예시10</div>
-            <div class="box box11">예시11</div>
-            <div class="box box12">예시12</div>
-            <div class="box box13">예시13</div>
-            <div class="box box14">예시14</div>
-            <div class="box box15">예시15</div>
-            <div class="box box16">예시16</div>
-            <div class="box box17">예시17</div>
-            <div class="box box18">예시18</div>
-            <div class="box box19">예시19</div>
-            <div class="box box20">예시20</div>
-            <div class="box box21">예시21</div>
-            <div class="box box22">예시22</div>
-            <div class="box box23">예시23</div>
-            <div class="box box24">예시24</div>
-            <div class="box box25">예시25</div>
-            <div class="box box26">예시26</div>
-            <div class="box box27">예시27</div>
-            <div class="box box28">예시28</div>
-            <div class="box box29">예시29</div>
-            <div class="box box30">예시30</div>
-            <div class="box box31">예시31</div>
-            <div class="box box32">예시32</div>
-            <div class="box box33">예시33</div>
-            <div class="box box34">예시34</div>
-            <div class="box box35">예시35</div>
-            <div class="box box36">예시36</div>
-            <div class="box box37">예시37</div>
-            <div class="box box38">예시38</div>
-            <div class="box box39">예시39</div>
-            <div class="box box40">예시40</div>
-            <div class="box box41">예시41</div>
-            <div class="box box42">예시42</div>
-            <div class="box box43">예시43</div>
-            <div class="box box44">예시44</div>
-            <div class="box box45">예시45</div>
-            <div class="box box46">예시46</div>
-            <div class="box box47">예시47</div>
-            <div class="box box48">예시48</div>
-            <div class="box box49">예시49</div>
-            <div class="box box50">예시50</div>
-            <div class="box box51">예시51</div>
-            <div class="box box52">예시52</div>
-            <div class="box box53">예시53</div>
-            <div class="box box54">예시54</div>
-            <div class="box box55">예시55</div>
-            <div class="box box56">예시56</div>
+            <div id="dataList"></div>
         </div>
     </main>
-    
-<script>
-    $(function(){
-        $(".headerP").text("모니터링 - 경보모니터링");
-        insertButtonNone();
-        excelButtonNone();
-        printButtonNone();        
-    });
-</script>
+	
+	   <div id="modalContainer" class="modal">
+	    <div class="modal-content">
+	        <span class="close">&times;</span>
+	        <h2>교체이력 등록</h2>
+	        <form id="corrForm">
+	            <label>설비명</label>
+				<select name="equipmentName">
+				   <option value="기타">기타(입력)</option>
+				    <option value="탈유탈지1">탈유탈지1</option>
+				    <option value="탈유탈지2">탈유탈지2</option>
+				    <option value="쇼트1">쇼트1</option>
+				    <option value="쇼트2">쇼트2</option>
+				    <option value="쇼트3">쇼트3</option>
+				    <option value="쇼트4">쇼트4</option>
+				    <option value="쇼트5">쇼트5</option>
+				    <option value="쇼트6">쇼트6</option>
+				    <option value="쇼트7">쇼트7</option>
+				    <option value="G-800">G-800</option>
+				    <option value="G-600">G-600</option>
+				    <option value="K-Black">K-Black</option>
+				    <option value="공용설비">공용설비</option>
+				    <option value="방청">방청</option>
+				    <option value="이코팅1">이코팅1</option>
+				    <option value="이코팅2">이코팅2</option>
+				</select>
+
+
+	            <label>정보LIST</label>
+			<select name="select2">
+				<option value="기타">기타(입력)</option>
+			    <option value="사각통 대기">사각통 대기</option>
+			    <option value="물량 부족">물량 부족</option>
+			    <option value="설비 고장">설비 고장</option>
+			    <option value="정기보수">정기보수</option>
+			    <option value="자동화 테스트">자동화 테스트</option>
+			    <option value="3정5행">3정5행</option>
+			    <option value="공정창고 고장">공정창고 고장</option>
+			    <option value="인력부족">인력부족</option>
+			    <option value="탱크 교환">탱크 교환</option>
+			    <option value="설비보전(청소)">설비보전(청소)</option>
+			    <option value="액탱크청소">액탱크청소</option>
+			    <option value="바스켓 청소">바스켓 청소</option>
+			    <option value="바스켓교체">바스켓교체</option>
+			    <option value="건욕">건욕</option>
+			    <option value="조회, 교육">조회, 교육</option>
+			    <option value="AGV에러">AGV에러</option>
+			    <option value="통신이상">통신이상</option>
+			    <option value="생산계획없음">생산계획없음</option>
+			    <option value="기타">기타</option>
+			    <option value="재고과잉">재고과잉</option>
+			    <option value="바코드에러">바코드에러</option>
+			</select>
+
+
+	
+	            <label>발생시간</label>
+	            <input type="text"class="timeSet" name="1" value="">
+	
+	            <label>조치시간</label>
+	            <input type="text" class="timeSet" name="2" placeholder="">
+	
+	            <label>일/발생 건수</label>
+	            <input type="text" name="replacementDate"  style="text-align: left;">
+
+	
+	            <label>월/발생 건수</label>
+	            <input type="text" name="4">
+	            
+	       
+	            <button type="submit" id="saveCorrStatus">저장</button>
+	            <button type="button" id="closeModal">닫기</button>
+	        </form>
+	    </div>
+	</div>
+
+
+    <script>
+        $(function() {
+            getDataList();
+        });
+
+        function getDataList() {
+            dataTable = new Tabulator("#dataList", {
+                height: "560px",
+                layout: "fitColumns",
+                selectable: true,
+                tooltips: true,
+                selectableRangeMode: "click",
+                reactiveData: true,
+                headerHozAlign: "center",
+                ajaxConfig: "POST",
+                ajaxLoader: false,
+                ajaxURL: "/geomet/quality/tustest/selectList",
+                ajaxProgressiveLoad: "scroll",
+                ajaxParams: {},
+                placeholder: "조회된 데이터가 없습니다.",
+                paginationSize: 20,
+                ajaxResponse: function(url, params, response) {
+                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+                    return response;
+                },
+                columns: [
+                   
+                    {title: "NO.", field: "2", sorter: "string", width: 80, hozAlign: "center", headerSort: false},
+                    {title: "설비명", field: "3", sorter: "string", width: 300, hozAlign: "center", headerSort: false},
+                    {title: "알람내용", field: "4", sorter: "string", width: 700, hozAlign: "center", headerSort: false},
+                    {title: "발생시간", field: "5", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "조치시간", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                 
+                  
+                ],
+                rowFormatter: function(row) {
+                    var data = row.getData();
+                    row.getElement().style.fontWeight = "700";
+                    row.getElement().style.backgroundColor = "#FFFFFF";
+                },
+                rowClick: function(e, row) {
+                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
+                        if ($(this).hasClass("row_select")) {
+                            $(this).removeClass('row_select');
+                            row.getElement().className += " row_select";
+                        } else {
+                            $("#dataList div.row_select").removeClass("row_select");
+                            row.getElement().className += " row_select";
+                        }
+                    });
+                },
+            });
+        }
+
+        document.querySelector(".insert-button").addEventListener("click", function() {
+            let modal = document.getElementById("modalContainer");
+            modal.classList.add("show");
+        });
+
+        document.querySelector(".close").addEventListener("click", function() {
+            let modal = document.getElementById("modalContainer");
+            modal.classList.remove("show");
+        });
+        document.getElementById("closeModal").addEventListener("click", function() {
+            document.getElementById("modalContainer").classList.remove("show");
+        });
+
+
+        $(document).ready(function () {
+            $("#saveCorrStatus").click(function (event) {
+                event.preventDefault();
+                
+                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+
+                // FormData의 값을 콘솔에 출력
+                corrForm.forEach(function(value, key){
+                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
+                });
+
+                $.ajax({
+                    url: "/geomet/condition/corrStatus/insert",
+                    type: "POST",
+                    data: corrForm,
+                    dataType: "json",
+                    processData: false,  
+                    contentType: false,  
+                    success: function (response) {
+                        alert("교체 이력이 성공적으로 저장되었습니다!");
+                        $("#modalContainer").hide(); 
+                    }
+                });
+            });
+
+            // 모달 닫기 버튼 이벤트
+            $("#closeModal").click(function () {
+                $("#modalContainer").hide();
+            });
+        });
+
+        	
+
+
+        
+    </script>
 
 </body>
 </html>

@@ -261,6 +261,45 @@ public class ConditionController {
     }
     
     
+    @RequestMapping(value = "/condition/machinePartTemp/update", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> machinePartTempUpdate(@RequestParam Map<String, String> params) {
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+
+        System.out.println("넘어온 파라미터:");
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+        String id = params.get("id");
+        String date = params.get("date");
+        String filed = params.get("filed");
+        String value = params.get("value");
+
+        if(id == null || date == null || filed == null || value == null) {
+            rtnMap.put("data", "모든 필드를 입력하세요!");
+            return rtnMap;
+        }
+
+        
+        Condition condition = new Condition();
+        condition.setId(id);
+        condition.setDate(date);
+        condition.setFiled(filed);
+        condition.setValue(value);
+
+       
+        conditionService.machinePartTempUpdate(condition);
+
+        rtnMap.put("data", "성공적으로 업데이트되었습니다!");
+        return rtnMap;
+    }
+
+    
+    
+    
+    
+    
+    
     // 재고관리(약품) 조절 리스트
     @RequestMapping(value = "/condition/machinePartTemp/list", method = RequestMethod.POST)
     @ResponseBody

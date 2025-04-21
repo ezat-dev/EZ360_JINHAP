@@ -42,10 +42,40 @@ public class Condition {
 	    private String visocosity;
 	    private String specific_gravity;
 	    private String chiller_temp;
+	    private String filed;
+	    private String title;
+	    private String value;
+	    private String field;
 
 	    
 	    
 	    
+
+
+		public String getField() {
+			return field;
+		}
+		public void setField(String field) {
+			this.field = field;
+		}
+		public String getFiled() {
+			return filed;
+		}
+		public void setFiled(String filed) {
+			this.filed = filed;
+		}
+		public String getTitle() {
+			return title;
+		}
+		public void setTitle(String title) {
+			this.title = title;
+		}
+		public String getValue() {
+			return value;
+		}
+		public void setValue(String value) {
+			this.value = value;
+		}
 		public String getMch_nname() {
 			return mch_nname;
 		}

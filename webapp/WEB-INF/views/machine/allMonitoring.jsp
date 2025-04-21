@@ -249,15 +249,15 @@
 
            
 			</div>
-                <button class="select-button">
+<!--                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-<!--                 <button class="insert-button">
+                <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button> -->
-                <button class="excel-button">
+<!--                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
+                </button> -->
                 <button class="printer-button">
                     <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
                 </button>
@@ -267,6 +267,7 @@
         <div class="view">
             <div id="dataList"></div>
             <div id="dataList2"></div>
+            
         </div>
     </main>
 	
@@ -319,25 +320,38 @@
                 },
 
                 columns: [
-                    { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "설비상태", field: "machine_status", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "관리기준 C/T", field: "c_t", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실제생산 C/T", field: "work_ct", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "CAPA", field: "capa", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "현 생산목표", field: "capa_quality", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "현 생산실적", field: "tong_day", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "가동시간", field: "work_time", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "생산 LOSS 시간", field: "work_loss", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실적-생산(ton)", field: "work_ton", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실적-과부족(ton)", field: "work_bujok", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "실적-달성률(%)", field: "work_percent", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "누적-중량", field: "weight_sum", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "누적-통수", field: "tong_sum", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "과부족량-중량", field: "work_sum_weight_bujok", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "과부족량-통수", field: "work_sum_ton_bujok", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "달성률-중량", field: "work_sum_weight_percent", sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "달성률-통수", field: "work_sum_tong_percent", sorter: "string", hozAlign: "center", headerSort: false },
-                ],
+                	  { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false },
+
+                	  { title: "설비상태", field: "machine_status", sorter: "string", hozAlign: "center", headerSort: false,
+                	    formatter: function(cell) {
+                	      const value = cell.getValue();
+                	      if (value === "가동") {
+                	        return "<span style='color:green; font-weight:bold;'>" + value + "</span>";
+                	      } else if (value === "비가동") {
+                	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+                	      }
+                	      return value;
+                	    }
+                	  },
+
+                	  { title: "관리기준 C/T", field: "c_t", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "실제생산 C/T", field: "work_ct", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "CAPA", field: "capa", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "현 생산목표", field: "capa_quality", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "현 생산실적", field: "tong_day", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "가동시간", field: "work_time", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "생산 LOSS 시간", field: "work_loss", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "실적-생산(ton)", field: "work_ton", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "실적-과부족(ton)", field: "work_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "실적-달성률(%)", field: "work_percent", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "누적-중량", field: "weight_sum", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "누적-통수", field: "tong_sum", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "과부족량-중량", field: "work_sum_weight_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "과부족량-통수", field: "work_sum_ton_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "달성률-중량", field: "work_sum_weight_percent", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "달성률-통수", field: "work_sum_tong_percent", sorter: "string", hozAlign: "center", headerSort: false }
+                	],
+
             });
         }
 

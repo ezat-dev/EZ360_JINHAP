@@ -99,5 +99,31 @@
 	        remarks = #{remarks}
 	    WHERE no = #{no}
 	</update>
+	
+	<!--조건관리  -->
+	<select id="getconditionList" parameterType="Condition" resultType="Condition">
+    SELECT *
+    FROM tb_part_temp
+    WHERE 1 = 1
+    <if test="startDate != null and startDate != ''">
+        AND `date` LIKE CONCAT(#{startDate}, '%')
+    </if>
+    <if test="mch_code != null and mch_code != ''">
+        AND mch_code = #{mch_code}
+    </if>
+	</select>
+	
+	
+<update id="machinePartTempUpdate" parameterType="Condition">
+    UPDATE tb_part_temp 
+    <set>
+        <if test="filed == 'specific_gravity'">specific_gravity = #{value},</if>
+        <if test="filed == 'visocosity'">visocosity = #{value},</if>
+        <if test="filed == 'tank_temp'">tank_temp = #{value},</if>
+        <if test="filed == 'chiller_temp'">chiller_temp = #{value},</if>
+    </set>
+    WHERE id = #{id}
+</update>
 
+	
 </mapper>

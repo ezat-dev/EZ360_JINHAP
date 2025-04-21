@@ -85,7 +85,7 @@
                 <div class="box1">
                     <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
                     
-                    <label class="daylabel">발생일자 :</label>
+                    <label class="daylabel">검색일자 :</label>
                     <input type="text" class="datetimeSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
                     
                     <span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>

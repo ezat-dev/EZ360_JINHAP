@@ -27,4 +27,6 @@ public interface ConditionDao {
 	  //조건관리
 	  
 	  List<Condition> getconditionList(Condition condition);
+	  void machinePartTempUpdate(Condition condition);
+	  
 }
