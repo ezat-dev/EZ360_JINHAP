@@ -354,7 +354,10 @@ public class UserController {
 
             List<Facility> equipment_name_select = userService.equipment_name_select(facility);
 
-            System.out.println("equipment_name_select Size: " + equipment_name_select.size());
+			/*
+			 * System.out.println("equipment_name_select Size: " +
+			 * equipment_name_select.size());
+			 */
 
             rtnMap.put("status", "success");
             rtnMap.put("data", equipment_name_select);

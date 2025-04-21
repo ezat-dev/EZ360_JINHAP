@@ -33,10 +33,67 @@ public class Condition {
 	    private String endDate;
 	    private String no;
 	    private String equipmentName;
+	    
+	    private String id;
+	    private String date;
+	    private String mch_code;
+	    private String mch_nname;
+	    private String tank_temp;
+	    private String visocosity;
+	    private String specific_gravity;
+	    private String chiller_temp;
 
 	    
 	    
 	    
+		public String getMch_nname() {
+			return mch_nname;
+		}
+		public void setMch_nname(String mch_nname) {
+			this.mch_nname = mch_nname;
+		}
+		public String getId() {
+			return id;
+		}
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String getDate() {
+			return date;
+		}
+		public void setDate(String date) {
+			this.date = date;
+		}
+		public String getMch_code() {
+			return mch_code;
+		}
+		public void setMch_code(String mch_code) {
+			this.mch_code = mch_code;
+		}
+		public String getTank_temp() {
+			return tank_temp;
+		}
+		public void setTank_temp(String tank_temp) {
+			this.tank_temp = tank_temp;
+		}
+		public String getVisocosity() {
+			return visocosity;
+		}
+		public void setVisocosity(String visocosity) {
+			this.visocosity = visocosity;
+		}
+		public String getSpecific_gravity() {
+			return specific_gravity;
+		}
+		public void setSpecific_gravity(String specific_gravity) {
+			this.specific_gravity = specific_gravity;
+		}
+		public String getChiller_temp() {
+			return chiller_temp;
+		}
+		public void setChiller_temp(String chiller_temp) {
+			this.chiller_temp = chiller_temp;
+		}
 		public String getEquipmentName() {
 			return equipmentName;
 		}

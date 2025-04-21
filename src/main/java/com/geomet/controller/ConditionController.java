@@ -35,15 +35,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import com.geomet.domain.Condition;
+import com.geomet.domain.Work;
 import com.geomet.service.ConditionService;
-import com.geomet.service.CorrStatusService;
+
 import com.geomet.service.ExcelService;
 
 @Controller
 public class ConditionController {
 
-    @Autowired
-    private CorrStatusService CorrStatusService;
+
 	
     @Autowired
     private ExcelService excelService; 
@@ -254,11 +254,26 @@ public class ConditionController {
 
 
 	
-	//설비별 액 온도, 점도, 비중 관리, 칠러온도
+	//조건관리
     @RequestMapping(value= "/condition/machinePartTemp", method = RequestMethod.GET)
     public String machinePartTemp(Model model) {
         return "/condition/machinePartTemp.jsp"; // 
-    }		
+    }
+    
+    
+    // 재고관리(약품) 조절 리스트
+    @RequestMapping(value = "/condition/machinePartTemp/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Condition> getconditionList(Condition condition) {
+        System.out.println(">>> startDate: " + condition.getStartDate());
+        System.out.println(">>> mch_code: " + condition.getMch_code());
+        return conditionService.getconditionList(condition);
+    }
+
+    
+    
+    
+    
 	
 	//신액 교반일지, 탱크액 관리일지 - 설비별 구분
     @RequestMapping(value= "/condition/machineLiquidManage", method = RequestMethod.GET)

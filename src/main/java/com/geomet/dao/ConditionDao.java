@@ -23,4 +23,8 @@ public interface ConditionDao {
 	  void delCorrStatus(Condition condition);
 	  
 	  void saveCorrStatus(Condition condition);
+	  
+	  //조건관리
+	  
+	  List<Condition> getconditionList(Condition condition);
 }

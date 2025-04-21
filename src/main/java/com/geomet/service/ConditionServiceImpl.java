@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.geomet.dao.ConditionDao;
 import com.geomet.domain.Condition;
 import com.geomet.domain.CorrStatus;
+import com.geomet.domain.Work;
 
 
 
@@ -46,5 +47,13 @@ private ConditionDao conditionDao;
 	    public void saveCorrStatus(Condition condition) {
 		 	conditionDao.saveCorrStatus(condition);
 	    }
+	 
+	 
+	 //조건관리
+	 
+		@Override
+		public List<Condition> getconditionList(Condition condition){
+			return conditionDao.getconditionList(condition);
+		}
  
 }

@@ -21,4 +21,6 @@ public interface ConditionService {
     void delCorrStatus(Condition params); 
    
     void saveCorrStatus(Condition condition);
+    
+    List<Condition> getconditionList(Condition condition);
 }

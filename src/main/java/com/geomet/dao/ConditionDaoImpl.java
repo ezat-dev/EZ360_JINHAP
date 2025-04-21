@@ -50,4 +50,10 @@ public class ConditionDaoImpl implements ConditionDao {
 	public void saveCorrStatus(Condition condition) {
 		sqlSession.update("condition.saveCorrStatus",condition);
 	}
+	
+	//조건관리
+	@Override
+	public List<Condition> getconditionList(Condition condition) {
+		return sqlSession.selectList("condition.getconditionList",condition);
+	}
 }

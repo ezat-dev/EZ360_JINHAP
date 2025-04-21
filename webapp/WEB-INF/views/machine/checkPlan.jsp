@@ -360,6 +360,7 @@
 	            headerHozAlign: "center",
 	            ajaxConfig: "POST",
 	            ajaxLoader: false,
+	            headerSort:false,
 	            ajaxURL: "/geomet/machine/checkPlan/list",
 	            ajaxProgressiveLoad: "scroll",
 	            ajaxParams: {

@@ -186,7 +186,7 @@ function rpImagePopup() {
 
 
 function pageObject(paramKey){
-//	console.log("받은 키값 : "+paramKey);
+	//console.log("받은 키값 : "+paramKey);
 	var obj = {
 			"a01":["/geomet/machine/allMonitoring","통합 모니터링"],
 			"a02":["/geomet/machine/detailMonitoring","설비별 모니터링"],
@@ -282,8 +282,8 @@ $(window).on("load", function () {
         type: "POST",
         dataType: "json",
         success: function (response) {
-            console.log("서버에서 받은 전체 데이터:", response); // 전체 응답 확인
-            console.log("데이터 목록:", response.data); // data 배열만 확인
+      //      console.log("서버에서 받은 전체 데이터:", response); // 전체 응답 확인
+      //      console.log("데이터 목록:", response.data); // data 배열만 확인
             
             const $select = $(".equipment_name_select");
             $select.empty();

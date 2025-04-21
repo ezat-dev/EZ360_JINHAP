@@ -123,7 +123,7 @@
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
-        .dayselect {
+        .mch_code {
             width: 20%;
             text-align: center;
             font-size: 15px;
@@ -155,6 +155,27 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
+           .monthselect {
+        width: 20%;
+        text-align: center;
+        font-size: 15px;
+    }
+    .monthSet {
+        width: 20%;
+        text-align: center;
+        height: 16px;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 15px;
+    }
+    .monthlabel {
+        margin-right: 10px;
+        margin-bottom: 13px;
+        font-size: 18px;
+        margin-left: 20px;
+    }
     </style>
 </head>
 
@@ -168,52 +189,48 @@
             
                <div class="box1">
 	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-	           <label class="daylabel">교체일자 :</label>
-				<input type="text" autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-				
-				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
-	
-				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-	
+	           <label class="monthlabel">조건관리 :</label>
+				<input type="text"autocomplete="off" class="monthSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+
 	            <label class="daylabel">설비명 :</label>
-	            <select class="dayselect">
+	        <select id="mch_code" class="mch_code">
              
-                <option value="1">G800조건관리</option>
-                <option value="2">G600조건관리</option>
-                <option value="3">PLUS조건관리</option>
-                <option value="4">ML조건관리</option>
-                <option value="5">K-BLACK조건관리</option>
+                <option value="G03-GG01">G800조건관리</option>
+                <option value="G03-GG03">G600조건관리</option>
+                <option value="PL">PLUS조건관리</option>
+                <option value="ML">ML조건관리</option>
+                <option value="G04-GG05">K-BLACK조건관리</option>
 
             </select>
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+                
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+             
             </div>
         </div>
 
         <div class="view">
-            <div id="dataList"></div>
+            <div id="dataTable"></div>
         </div>
     </main>
 	
 	   <div id="modalContainer" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
+	        <h2>조건관리 일지</h2>
 	        <form id="corrForm">
 	            <label>설비명</label>
-	            <select name="equipmentName">
-	                <option value="G800">G800</option>	               
+	            <select name="equipmentName2">
+	                <option value="G800">G800</option>
+	                <option value="G600">G600</option>	
+	                <option value="PLUS">PLUS</option>	
+	                <option value="ML">ML</option>	
+	                <option value="K_BLACK">K_BLACK</option>		               
 	            </select>
 	
 				<label>정검 일자</label>
@@ -245,52 +262,84 @@
             getDataList();
         });
 
+    	
         function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
+            // startDate와 mch_code 값을 변수로 저장
+            const startDate = (() => {
+                const v = $("#startDate").val();
+                return v ? v + "-01" : "";
+            })();
+
+            const mch_code = $(".mch_code").val(); // class로 선택
+
+            // 콘솔에 출력
+            console.log("📌 startDate:", startDate);
+            console.log("📌 mch_code:", mch_code);
+
+            dataTable = new Tabulator("#dataTable", {
+                height: "830px",
+                layout: "fitDataFill",
+                layoutColumnsOnNewData: true,
+                headerSort: false,
                 selectable: true,
                 tooltips: true,
                 selectableRangeMode: "click",
                 reactiveData: true,
                 headerHozAlign: "center",
+
                 ajaxConfig: "POST",
                 ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
+                ajaxURL: "/geomet/condition/machinePartTemp/list",
+                ajaxProgressiveLoad: false,
+                ajaxParams: {
+                    startDate: startDate,
+                    mch_code: mch_code
+                },
+
                 placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+                paginationSize: false,
+
+                groupBy: "date",
+                groupStartOpen: true,
+                groupHeader: function (value, count) {
+                    return `<strong>${value}</strong>`;
+                },
+
+                ajaxResponse: function (url, params, response) {
                     return response;
                 },
-                columns: [
-                    {title: "일자", field: "1", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "액탱크 온도(38°C이하)", field: "2", sorter: "string", width: 340, hozAlign: "center", headerSort: false},
-                    {title: "점도(40±10초)", field: "3", sorter: "string", width: 340, hozAlign: "center", headerSort: false},
-                    {title: "비중(1.43±0.05)", field: "4", sorter: "string", width: 340, hozAlign: "center", headerSort: false},
-                    {title: "칠러(냉각기)온도(10±2 ℃)", field: "5", sorter: "string", width: 340, hozAlign: "center", headerSort: false},
 
+                dataLoaded: function (data) {
+                    $("#dataTable .tabulator-col.tabulator-sortable").css("height", "29px");
+                },
+
+                columns: [
+                    { title: "일자", field: "date ", sorter: "string", width: 200, hozAlign: "center", headerSort: false },
+                    { title: "액탱크 온도(38°C이하)", field: "tank_temp", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
+                    { title: "점도(40±10초)", field: "visocosity", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
+                    { title: "비중(1.43±0.05)", field: "specific_gravity", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
+                    { title: "칠러(냉각기)온도(10±2 ℃)", field: "chiller_temp", sorter: "string", width: 340, hozAlign: "center", headerSort: false },
+                    { title: "id", field: "id", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "mch_code", field: "mch_code", sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "mch_name", field: "mch_name", sorter: "string", hozAlign: "center", headerSort: false },
                 ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
-        }
+
+                cellClick: function (e, cell) {
+      		      // 클릭 이벤트
+      		    },
+
+      		    cellDblClick: function (e, cell) {
+      		    	  const rowData = cell.getRow().getData(); // 해당 row의 전체 데이터
+      		    	  const modal = $("#modalContainer");
+
+      		    	  modal.show().addClass("show");
+
+      		    	  
+      		    	  const form = $("#corrForm");
+      		    	 
+      		    	}
+      		  }); 
+      		}
 
         document.querySelector(".insert-button").addEventListener("click", function() {
             let modal = document.getElementById("modalContainer");
