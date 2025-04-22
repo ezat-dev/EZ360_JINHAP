@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>설비이력카드</title>
+    <title>부품교체 이력관리</title>
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
     <style>
@@ -217,58 +217,58 @@
         </div>
     </main>
 	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>부품교체 이력 등록</h2>
-	        <form id="corrForm"autocomplete="off">
-	            <label>설비명</label>
-	            <select name="mch_name">
-	            	
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
-	            </select>
-	
-	            <label>점검</label>
-	              <select name="check">
-	                <option value="일상">일상</option>
-	                <option value="정기">정기</option>
-	            </select>
-	
-	            <label>정비</label>
-	           	<select name="maintenance">
-	                <option value="예방">예방</option>
-	            	<option value="돌발">돌발</option>
-	            </select>
-	
-	            <label>점검 및 정비 내용</label>
-	           <input type="text" name="content">
+	  <div id="modalContainer" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>부품교체 이력 등록</h2>
+    <form id="corrForm" autocomplete="off">
+      <label>설비명</label>
+      <select name="mch_name">
+        <option value="G800">G800</option>
+        <option value="G600">G600</option>
+        <option value="K-BLACK">K-BLACK</option>
+        <option value="공용설비">공용설비</option>
+        <option value="방청">방청</option>
+        <option value="이코팅1호기">이코팅1호기</option>
+        <option value="이코팅2호기">이코팅2호기</option>
+        <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
+        <option value="세척 1호기">세척 1호기</option>
+        <option value="세척 2호기">세척 2호기</option>
+      </select>
 
-	
-	            <label>점검 결과</label>
-	            <select name="result">
-	                <option value="양호">예방</option>
-	            	<option value="추가보안 필요">돌발</option>
-	            </select>
-	            
-	         
-	
-	            <label>비고</label>
-	            <textarea name="remarks" rows="4"></textarea>
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
+      <label>교체 항목</label>
+      <input type="text" name="chg_item">
+
+      <label>교체일자</label>
+      <input type="text" class="daySet" name="chg_date" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
+
+      <label>교체사유(문제점)</label>
+      <input type="text" name="reason">
+
+      <label>보완필요사항</label>
+      <input type="text" name="required_info">
+
+      <label>차기교체 예정일자</label>
+      <input type="text" class="daySet" name="target_date" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
+
+      <label>교체 주관()</label>
+      <select name="change_by">
+        <option value="외주">외주</option>
+        <option value="자체">자체</option>
+      </select>
+
+      <label>업체명</label>
+      <input type="text" name="company_name" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
+
+      <label>비고</label>
+      <textarea name="remark" rows="4"></textarea>
+
+      <button type="submit" id="saveCorrStatus">저장</button>
+      <button type="button" id="closeModal">닫기</button>
+    </form>
+  </div>
+</div>
+
 
 
 <script>
@@ -283,49 +283,60 @@
       reactiveData: true,
       headerHozAlign: 'center',
       ajaxConfig: { method: 'POST' },
-      ajaxURL: "/geomet/machine/repairStatus/list",
+      ajaxURL: "/geomet/machine/partStatus/list",
       ajaxParams: { mch_name: "ALL" },
       placeholder: "조회된 데이터가 없습니다.",
       columns: [
-        { title:"NO",        field:"no",         width:100, hozAlign:"center" },
-        { title:"설비",      field:"mch_name",   width:250, hozAlign:"center" },
-        { title:"점검",      field:"check",      width:140, hozAlign:"center" },
-        { title:"정비",      field:"maintenance",width:140, hozAlign:"center" },
-        { title:"내용",      field:"content",    width:390, hozAlign:"center" },
-        { title:"결과",      field:"result",     width:140, hozAlign:"center" },
-        { title:"비고",      field:"remarks",    width:390, hozAlign:"center" }
+        { title: "NO",                     field: "no",             width: 100, hozAlign: "center" },
+        { title: "대상 설비",              field: "mch_name",       width: 150, hozAlign: "center" },
+        { title: "교체항목",               field: "chg_item",    width: 140, hozAlign: "center" },
+        { title: "교체일자",               field: "chg_date",       width: 140, hozAlign: "center" },
+        { title: "교체사유<br>(문제점)",    field: "reason",         width: 250, hozAlign: "center" },
+        { title: "보완필요사항",           field: "required_info",  width: 150, hozAlign: "center" },
+        { title: "차기교체<br>예정일자",    field: "target_date",    width: 150, hozAlign: "center" },
+        { title: "교체주관<br>(외주/자체)", field: "change_by",      width: 150, hozAlign: "center" },
+        { title: "업체명",                field: "company_name",   width: 150, hozAlign: "center" },
+        { title: "비고",                  field: "remark",         width: 250, hozAlign: "center" }
       ],
+
       rowClick: function(e, row) {
         $('#dataTable .tabulator-row').removeClass('row_select');
         row.getElement().classList.add('row_select');
         selectedRowData = row.getData();
       },
+
       rowDblClick: function(e, row) {
         var d = row.getData();
         selectedRowData = d;
         $('#corrForm')[0].reset();
+
+        $('input[name="no"]').val(d.no);
         $('select[name="mch_name"]').val(d.mch_name);
-        $('select[name="check"]').val(d.check);
-        $('select[name="maintenance"]').val(d.maintenance);
-        $('input[name="content"]').val(d.content);
-        $('select[name="result"]').val(d.result);
-        $('textarea[name="remarks"]').val(d.remarks);
+        $('input[name="chg_item"]').val(d.chg_item);
+        $('input[name="chg_date"]').val(d.chg_date);
+        $('input[name="reason"]').val(d.reason);
+        $('input[name="required_info"]').val(d.required_info);
+        $('input[name="target_date"]').val(d.target_date);
+        $('select[name="change_by"]').val(d.change_by);
+        $('input[name="company_name"]').val(d.company_name);
+        $('textarea[name="remark"]').val(d.remark);
+
         $('#modalContainer').show().addClass('show');
       }
     });
 
-    $('.select-button').click(function(){
+    $('.select-button').click(function() {
       var sel = $('.dayselect').val();
-      dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: sel });
+      dataTable.setData("/geomet/machine/partStatus/list", { mch_name: sel });
     });
 
-    $('.insert-button').click(function(){
+    $('.insert-button').click(function() {
       selectedRowData = null;
       $('#corrForm')[0].reset();
       $('#modalContainer').show().addClass('show');
     });
 
-    $('.delete-button').click(function(){
+    $('.delete-button').click(function() {
       if (!selectedRowData) {
         alert('삭제할 행을 먼저 클릭해 주세요.');
         return;
@@ -333,53 +344,53 @@
       if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
 
       $.ajax({
-        url: "/geomet/machine/repairStatus/delete",
+        url: "/geomet/machine/partStatus/delete",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify({ no: selectedRowData.no }),
-        success: function(res){
+        success: function(res) {
           alert('삭제되었습니다.');
           var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: currentFilter });
+          dataTable.setData("/geomet/machine/partStatus/list", { mch_name: currentFilter });
           selectedRowData = null;
         },
-        error: function(){
+        error: function() {
           alert('삭제 중 오류가 발생했습니다.');
         }
       });
     });
 
-    $('.close, #closeModal').click(function(){
+    $('.close, #closeModal').click(function() {
       $('#modalContainer').removeClass('show').hide();
     });
 
-    $('#saveCorrStatus').click(function(event){
+    $('#saveCorrStatus').click(function(event) {
       event.preventDefault();
       var formData = new FormData($('#corrForm')[0]);
       if (selectedRowData && selectedRowData.no) {
         formData.append('no', selectedRowData.no);
       }
       $.ajax({
-        url: "/geomet/machine/repairStatus/insert",
+        url: "/geomet/machine/partStatus/insert",
         type: "POST",
         data: formData,
         processData: false,
         contentType: false,
-        success: function(){
+        success: function() {
           alert("저장되었습니다!");
           $('#modalContainer').hide();
           var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: currentFilter });
+          dataTable.setData("/geomet/machine/partStatus/list", { mch_name: currentFilter });
           selectedRowData = null;
         },
-        error: function(){
+        error: function() {
           alert('저장 중 오류가 발생했습니다.');
         }
       });
     });
   });
 </script>
-ss
+
 
 </body>
 </html>

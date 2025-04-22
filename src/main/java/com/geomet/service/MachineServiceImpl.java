@@ -66,5 +66,22 @@ public class MachineServiceImpl implements MachineService {
 	    public void insertRepairStatus(Machine machine) {
 	         machineDao.insertRepairStatus(machine); 	   
 	    }
+	    @Override
+	    public void delRepairStatus(Machine machine) {
+	         machineDao.delRepairStatus(machine); 	   
+	    }
 	    
+	    
+	    @Override
+	    public List<Machine> getPartStatusList(Machine machine) {
+	         return machineDao.getPartStatusList(machine); 	   
+	    }
+	    @Override
+	    public void insertPartStatus(Machine machine) {
+	         machineDao.insertPartStatus(machine); 	   
+	    }
+	    @Override
+	    public void delPartStatus(Machine machine) {
+	         machineDao.delPartStatus(machine); 	   
+	    }
 }

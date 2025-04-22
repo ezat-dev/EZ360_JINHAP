@@ -34,4 +34,10 @@ public interface MachineService {
 	//설비카드
 	List<Machine> getRepairStatusList(Machine machine);
 	void insertRepairStatus(Machine machine); 
+	void delRepairStatus(Machine machine); 
+	
+	//부품 교체이력
+	List<Machine> getPartStatusList(Machine machine);
+	void insertPartStatus(Machine machine); 
+	void delPartStatus(Machine machine); 
 }

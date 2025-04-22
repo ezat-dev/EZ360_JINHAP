@@ -573,6 +573,7 @@ public class MachineController {
     @ResponseBody
     public Map<String, Object> delRepairStatus(@RequestBody Machine machine) {
         Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("삭제 요청 받은 데이터: " + machine);
 
         if (machine.getNo() == null) {
             rtnMap.put("data", "행 선택하세요");
@@ -581,8 +582,54 @@ public class MachineController {
 
         machineService.delRepairStatus(machine);
 
-        rtnMap.put("data", "success"); // 응답도 명확히
+        rtnMap.put("data", "success");
         return rtnMap;
     }
+    
+    //부품교체 이력
+    @RequestMapping(value= "/machine/partStatus", method = RequestMethod.GET)
+    public String partStatus(Model model) {
+        return "/machine/partStatus.jsp"; 
+    }
+    
+    //부품교체 이력
+    @RequestMapping(value = "/machine/partStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Machine> getPartStatusList(Machine machine) {
+        System.out.println(">>> mch_name: " + machine.getMch_name());
+        System.out.println(">>> change_item: " + machine.getContent());
+        return machineService.getPartStatusList(machine);
+    }
+
+    //부품교체 이력
+    @RequestMapping(value = "/machine/partStatus/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertPartStatus(@ModelAttribute Machine machine) {
+
+
+        machineService.insertPartStatus(machine); 
+
+        return "success";
+    }
+    @RequestMapping(value = "/machine/partStatus/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> delPartStatus(@RequestBody Machine machine) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("삭제 요청 받은 데이터: " + machine);
+
+        if (machine.getNo() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        machineService.delPartStatus(machine);
+
+        rtnMap.put("data", "success");
+        return rtnMap;
+    }
+    
+    
+    
+    
     
 }

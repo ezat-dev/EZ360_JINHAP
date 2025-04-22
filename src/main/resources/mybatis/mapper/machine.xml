@@ -270,17 +270,80 @@ SELECT * FROM v_moniteolingling
         NOW()
     )
     ON DUPLICATE KEY UPDATE
-        `check` = VALUES(`check`),
+        check = VALUES(check),
         maintenance = VALUES(maintenance),
         result = VALUES(result),
         remarks = VALUES(remarks),
         insert_date = CURRENT_TIMESTAMP
 </insert>
 
-  <delete id="deleteRepairStatus" parameterType="int">
+  <delete id="delRepairStatus" parameterType="Machine">
     DELETE FROM tb_repair_status WHERE no = #{no}
   </delete>
 
 
 
+
+ 
+  <select id="getPartStatusList" parameterType="Machine" resultType="Machine">
+    SELECT *
+    FROM (
+      SELECT * 
+      FROM tb_part_status 
+      WHERE mch_name = #{mch_name}
+
+      UNION ALL
+
+      SELECT * 
+      FROM tb_part_status 
+      WHERE NOT EXISTS (
+        SELECT 1 FROM tb_part_status WHERE mch_name = #{mch_name}
+      )
+    ) AS sub
+    ORDER BY no DESC
+  </select>
+
+	<insert id="insertPartStatus" parameterType="Machine">
+	  INSERT INTO tb_part_status
+	    (no,
+	     mch_name,
+	     chg_item,
+	     chg_date,
+	     reason,
+	     required_info,
+	     target_date,
+	     change_by,
+	     company_name,
+	     remark)
+	  VALUES
+	    (#{no},
+	     #{mch_name},
+	     #{chg_item},
+	     #{chg_date},
+	     #{reason},
+	     #{required_info},
+	     #{target_date},
+	     #{change_by},
+	     #{company_name},
+	     #{remark})
+	  ON DUPLICATE KEY UPDATE
+	    mch_name       = VALUES(mch_name),
+	    chg_item       = VALUES(chg_item),
+	    chg_date       = VALUES(chg_date),
+	    reason         = VALUES(reason),
+	    required_info  = VALUES(required_info),
+	    target_date    = VALUES(target_date),
+	    change_by      = VALUES(change_by),
+	    company_name   = VALUES(company_name),
+	    remark         = VALUES(remark)
+	</insert>
+
+
+  
+  <delete id="delPartStatus" parameterType="Machine">
+    DELETE FROM tb_part_status 
+    WHERE no = #{no}
+  </delete>
+
 </mapper>
+

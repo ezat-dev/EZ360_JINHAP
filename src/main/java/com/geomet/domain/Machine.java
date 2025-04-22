@@ -107,10 +107,85 @@ public class Machine {
     private String remarks;
     private String result;
     
+    //부품교체 이력
+    private String day_update;
+ //   private String mch_name;
+    private String chg_item;
+    private String chg_date;
+    private String reason;
+    private String required_info;
+    private String change_by;
+    private String company_name;
+    private String target_date;
+ //   private String remark;
     
 
 	public String getResult() {
 		return result;
+	}
+
+	public String getDay_update() {
+		return day_update;
+	}
+
+	public void setDay_update(String day_update) {
+		this.day_update = day_update;
+	}
+
+	public String getChg_item() {
+		return chg_item;
+	}
+
+	public void setChg_item(String chg_item) {
+		this.chg_item = chg_item;
+	}
+
+	public String getChg_date() {
+		return chg_date;
+	}
+
+	public void setChg_date(String chg_date) {
+		this.chg_date = chg_date;
+	}
+
+	public String getReason() {
+		return reason;
+	}
+
+	public void setReason(String reason) {
+		this.reason = reason;
+	}
+
+	public String getRequired_info() {
+		return required_info;
+	}
+
+	public void setRequired_info(String required_info) {
+		this.required_info = required_info;
+	}
+
+	public String getChange_by() {
+		return change_by;
+	}
+
+	public void setChange_by(String change_by) {
+		this.change_by = change_by;
+	}
+
+	public String getCompany_name() {
+		return company_name;
+	}
+
+	public void setCompany_name(String company_name) {
+		this.company_name = company_name;
+	}
+
+	public String getTarget_date() {
+		return target_date;
+	}
+
+	public void setTarget_date(String target_date) {
+		this.target_date = target_date;
 	}
 
 	public void setResult(String result) {
