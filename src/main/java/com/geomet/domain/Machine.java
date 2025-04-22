@@ -96,7 +96,90 @@ public class Machine {
     private String sum_time_ch;
     
     
+    //설비이력카드
+    private String no;
+    private String mch_name;
+    private String mch_code;
+    private String insert_date;
+    private String check;
+    private String maintenance;
+    private String content;
+    private String remarks;
+    private String result;
     
+    
+
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
+	public String getNo() {
+		return no;
+	}
+
+	public void setNo(String no) {
+		this.no = no;
+	}
+
+	public String getMch_name() {
+		return mch_name;
+	}
+
+	public void setMch_name(String mch_name) {
+		this.mch_name = mch_name;
+	}
+
+	public String getMch_code() {
+		return mch_code;
+	}
+
+	public void setMch_code(String mch_code) {
+		this.mch_code = mch_code;
+	}
+
+	public String getInsert_date() {
+		return insert_date;
+	}
+
+	public void setInsert_date(String insert_date) {
+		this.insert_date = insert_date;
+	}
+
+	public String getCheck() {
+		return check;
+	}
+
+	public void setCheck(String check) {
+		this.check = check;
+	}
+
+	public String getMaintenance() {
+		return maintenance;
+	}
+
+	public void setMaintenance(String maintenance) {
+		this.maintenance = maintenance;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 
 	public String getFacility_name() {
 		return facility_name;

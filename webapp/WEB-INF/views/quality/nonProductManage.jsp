@@ -494,7 +494,7 @@ $(document).ready(function () {
     console.log("전송된 데이터:", requestData);
 
     $.ajax({
-        url: "/geomet/quality/nonProductManage/excel",
+        url: "/geomet/quality/nonProductManage/del",
         type: "POST",
         data: {
             equipment_name: $("#equipment_name").val() || "",

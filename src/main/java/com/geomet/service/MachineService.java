@@ -29,4 +29,9 @@ public interface MachineService {
 	void deleteNonTime(String non_time_idx); 
 	//비가동 뷰
 	List<Machine> getNonTimeDataView(Machine machine);
+	
+	
+	//설비카드
+	List<Machine> getRepairStatusList(Machine machine);
+	void insertRepairStatus(Machine machine); 
 }

@@ -167,25 +167,26 @@
             <div class="button-container">
             
                <div class="box1">
-	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+	          <!--  <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
 	           <label class="daylabel">검색일자 :</label>
 				<input type="text" autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 				
 				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 	
-				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
 	
 	            <label class="daylabel">설비명 :</label>
 	            <select class="dayselect">
-             
+	            <option value="ALL">전체</option>
+           
                 <option value="G800">G800</option>
                 <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
+                <option value="k_balck">K-BLACK</option>
                 <option value="공용설비">공용설비</option>
                 <option value="방청">방청</option>
                 <option value="이코팅1호기">이코팅1호기</option>
                 <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
+                <option value="세척 공통">세척 공통 (열병합)</option>
                 <option value="세척 1호기">세척 1호기</option>
                 <option value="세척 2호기">세척 2호기</option>
             </select>
@@ -196,27 +197,31 @@
                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
+                <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
+                
+                
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+                
             </div>
         </div>
 
         <div class="view">
-            <div id="dataList"></div>
+            <div id="dataTable"></div>
         </div>
     </main>
 	
 	   <div id="modalContainer" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
+	        <h2>부품교체 이력 등록</h2>
 	        <form id="corrForm">
 	            <label>설비명</label>
-	            <select name="equipmentName">
+	            <select name="mch_name">
+	            	
 	                <option value="G800">G800</option>
 	                <option value="G600">G600</option>
 	                <option value="K-BLACK">K-BLACK</option>
@@ -230,23 +235,23 @@
 	            </select>
 	
 	            <label>점검</label>
-	              <select name="select1">
+	              <select name="check">
 	                <option value="일상">일상</option>
 	                <option value="정기">정기</option>
 	            </select>
 	
 	            <label>정비</label>
-	           	<select name="select2">
+	           	<select name="maintenance">
 	                <option value="예방">예방</option>
 	            	<option value="돌발">돌발</option>
 	            </select>
 	
 	            <label>점검 및 정비 내용</label>
-	           <input type="text" name="nextDate">
+	           <input type="text" name="content">
 
 	
 	            <label>점검 결과</label>
-	            <select name="select3">
+	            <select name="result">
 	                <option value="양호">예방</option>
 	            	<option value="추가보안 필요">돌발</option>
 	            </select>
@@ -263,111 +268,114 @@
 	</div>
 
 
-    <script>
-        $(function() {
-            getDataList();
-        });
+<script>
+  var dataTable;
+  var selectedRowData = null;
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                    {title: "NO", field: "1", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "설비", field: "2", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "점검", field: "3", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-                    {title: "정비", field: "4", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-                    {title: "점검 및 정비 내용", field: "5", sorter: "string", width: 390, hozAlign: "center", headerSort: false},
-                    {title: "점검결과", field: "6", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-                  
-                   
-                    {title: "비고", field: "8", sorter: "string", width: 390, hozAlign: "center", headerSort: false},
-                ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
+  $(function() {
+    dataTable = new Tabulator('#dataTable', {
+      height: '790px',
+      layout: 'fitDataFill',
+      headerSort: false,
+      reactiveData: true,
+      headerHozAlign: 'center',
+      ajaxConfig: { method: 'POST' },
+      ajaxURL: "/geomet/machine/repairStatus/list",
+      ajaxParams: { mch_name: "ALL" },
+      placeholder: "조회된 데이터가 없습니다.",
+      columns: [
+        { title:"NO",        field:"no",         width:100, hozAlign:"center" },
+        { title:"설비",      field:"mch_name",   width:250, hozAlign:"center" },
+        { title:"점검",      field:"check",      width:140, hozAlign:"center" },
+        { title:"정비",      field:"maintenance",width:140, hozAlign:"center" },
+        { title:"내용",      field:"content",    width:390, hozAlign:"center" },
+        { title:"결과",      field:"result",     width:140, hozAlign:"center" },
+        { title:"비고",      field:"remarks",    width:390, hozAlign:"center" }
+      ],
+      rowClick: function(e, row) {
+        $('#dataTable .tabulator-row').removeClass('row_select');
+        row.getElement().classList.add('row_select');
+        selectedRowData = row.getData();
+      },
+      rowDblClick: function(e, row) {
+        var d = row.getData();
+        selectedRowData = d;
+        $('#corrForm')[0].reset();
+        $('select[name="mch_name"]').val(d.mch_name);
+        $('select[name="check"]').val(d.check);
+        $('select[name="maintenance"]').val(d.maintenance);
+        $('input[name="content"]').val(d.content);
+        $('select[name="result"]').val(d.result);
+        $('textarea[name="remarks"]').val(d.remarks);
+        $('#modalContainer').show().addClass('show');
+      }
+    });
+
+    $('.select-button').click(function(){
+      var sel = $('.dayselect').val();
+      dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: sel });
+    });
+
+    $('.insert-button').click(function(){
+      selectedRowData = null;
+      $('#corrForm')[0].reset();
+      $('#modalContainer').show().addClass('show');
+    });
+
+    $('.delete-button').click(function(){
+      if(!selectedRowData){
+        alert('삭제할 행을 먼저 클릭해 주세요.');
+        return;
+      }
+      if(!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
+
+      $.ajax({
+        url: "/geomet/machine/repairStatus/delete",
+        type: "POST",
+        data: { no: selectedRowData.no },
+        success: function(res){
+          alert('삭제되었습니다.');
+          var currentFilter = $('.dayselect').val() || 'ALL';
+          dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: currentFilter });
+          selectedRowData = null;
+        },
+        error: function(){
+          alert('삭제 중 오류가 발생했습니다.');
         }
+      });
+    });
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
+    $('.close, #closeModal').click(function(){
+      $('#modalContainer').removeClass('show').hide();
+    });
 
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
+    $('#saveCorrStatus').click(function(event){
+      event.preventDefault();
+      var formData = new FormData($('#corrForm')[0]);
+      if(selectedRowData && selectedRowData.no){
+        formData.append('no', selectedRowData.no);
+      }
+      $.ajax({
+        url: "/geomet/machine/repairStatus/insert",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(){
+          alert("저장되었습니다!");
+          $('#modalContainer').hide();
+          var currentFilter = $('.dayselect').val() || 'ALL';
+          dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: currentFilter });
+          selectedRowData = null;
+        },
+        error: function(){
+          alert('저장 중 오류가 발생했습니다.');
+        }
+      });
+    });
+  });
+</script>
 
-
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
-                
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
-
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
-
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
-
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
-        });
-
-        	
-
-
-        
-    </script>
 
 </body>
 </html>

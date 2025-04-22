@@ -28,5 +28,9 @@ public interface MachineDao {
 	  void updateNonTime(Machine machine);
 	  void deleteNonTime(String non_time_idx);
 	  List<Machine> getNonTimeDataView(Machine machine);
-	 
+	  
+	  
+		//설비카드
+		List<Machine> getRepairStatusList(Machine machine);
+		void insertRepairStatus(Machine machine); 
 }

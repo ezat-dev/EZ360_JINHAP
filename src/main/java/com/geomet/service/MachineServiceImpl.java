@@ -58,6 +58,13 @@ public class MachineServiceImpl implements MachineService {
 	    public List<Machine> getNonTimeDataView(Machine machine) {
 	         return machineDao.getNonTimeDataView(machine); 	   
 	    }
+	    @Override
+	    public List<Machine> getRepairStatusList(Machine machine) {
+	         return machineDao.getRepairStatusList(machine); 	   
+	    }
+	    @Override
+	    public void insertRepairStatus(Machine machine) {
+	         machineDao.insertRepairStatus(machine); 	   
+	    }
 	    
-	
 }

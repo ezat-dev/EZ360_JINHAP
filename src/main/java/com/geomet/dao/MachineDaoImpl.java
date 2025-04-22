@@ -67,6 +67,16 @@ public class MachineDaoImpl implements MachineDao{
         return sqlSession.selectList("machine.getTempDataList", temp);
     }
     
-  
     
+    
+    //설비카드
+    @Override
+    public List<Machine> getRepairStatusList(Machine machine) {
+      
+        return sqlSession.selectList("machine.getRepairStatusList", machine);
+    }
+    @Override
+    public void insertRepairStatus(Machine machine) {
+           sqlSession.insert("machine.insertRepairStatus", machine);
+    }
 }

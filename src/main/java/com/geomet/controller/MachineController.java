@@ -545,5 +545,44 @@ public class MachineController {
     public String repairStatus(Model model) {
         return "/machine/repairStatus.jsp"; // 
     }
+    
+    // 설비이력카드
+    @RequestMapping(value = "/machine/repairStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Machine> getRepairStatusList(Machine machine) {
+        System.out.println(">>> mch_name: " + machine.getMch_name());
+        System.out.println(">>> content: " + machine.getContent());
+        return machineService.getRepairStatusList(machine);
+    }
 
+
+    @RequestMapping(value = "/machine/repairStatus/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertRepairStatus(@ModelAttribute Machine machine) {
+        System.out.println(">>> 설비명: " + machine.getMch_name());
+        System.out.println(">>> 내용: " + machine.getContent());
+        System.out.println(">>> 점검유형: " + machine.getCheck());
+        System.out.println(">>> 결과: " + machine.getResult());
+        System.out.println(">>> 비고: " + machine.getRemarks());
+
+        machineService.insertRepairStatus(machine); 
+
+        return "success";
+    }
+    @RequestMapping(value = "/machine/repairStatus/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> delRepairStatus(@RequestBody Machine machine) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        if (machine.getNo() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        machineService.delRepairStatus(machine);
+
+        rtnMap.put("data", "success"); // 응답도 명확히
+        return rtnMap;
+    }
+    
 }

@@ -226,4 +226,61 @@ SELECT * FROM v_moniteolingling
 </select>
 
 
+
+
+
+
+<select id="getRepairStatusList" parameterType="Machine" resultType="machine">
+    SELECT * FROM (
+        SELECT *
+        FROM tb_repair_status
+        WHERE mch_name = #{mch_name}
+
+        UNION ALL
+
+        SELECT *
+        FROM tb_repair_status
+        WHERE NOT EXISTS (
+            SELECT 1 FROM tb_repair_status WHERE mch_name = #{mch_name}
+        )
+        LIMIT 100
+    ) AS sub
+    ORDER BY insert_date DESC
+</select>
+
+<insert id="insertRepairStatus" parameterType="Machine">
+    INSERT INTO tb_repair_status (
+        mch_name,
+        mch_code,
+        `check`,
+        maintenance,
+        content,
+        result,
+        remarks,
+        insert_date
+    )
+    VALUES (
+        #{mch_name},
+        #{mch_code},
+        #{check},
+        #{maintenance},
+        #{content},
+        #{result},
+        #{remarks},
+        NOW()
+    )
+    ON DUPLICATE KEY UPDATE
+        `check` = VALUES(`check`),
+        maintenance = VALUES(maintenance),
+        result = VALUES(result),
+        remarks = VALUES(remarks),
+        insert_date = CURRENT_TIMESTAMP
+</insert>
+
+  <delete id="deleteRepairStatus" parameterType="int">
+    DELETE FROM tb_repair_status WHERE no = #{no}
+  </delete>
+
+
+
 </mapper>
