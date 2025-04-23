@@ -230,29 +230,11 @@ SELECT * FROM v_moniteolingling
 
 
 
-<select id="getRepairStatusList" parameterType="Machine" resultType="machine">
-    SELECT * FROM (
-        SELECT *
-        FROM tb_repair_status
-        WHERE mch_name = #{mch_name}
-
-        UNION ALL
-
-        SELECT *
-        FROM tb_repair_status
-        WHERE NOT EXISTS (
-            SELECT 1 FROM tb_repair_status WHERE mch_name = #{mch_name}
-        )
-        LIMIT 100
-    ) AS sub
-    ORDER BY insert_date DESC
-</select>
-
 <insert id="insertRepairStatus" parameterType="Machine">
     INSERT INTO tb_repair_status (
         mch_name,
         mch_code,
-        `check`,
+        a_check,
         maintenance,
         content,
         result,
@@ -262,7 +244,7 @@ SELECT * FROM v_moniteolingling
     VALUES (
         #{mch_name},
         #{mch_code},
-        #{check},
+        #{a_check},
         #{maintenance},
         #{content},
         #{result},
@@ -270,7 +252,7 @@ SELECT * FROM v_moniteolingling
         NOW()
     )
     ON DUPLICATE KEY UPDATE
-        check = VALUES(check),
+        a_check = VALUES(a_check),
         maintenance = VALUES(maintenance),
         result = VALUES(result),
         remarks = VALUES(remarks),
@@ -282,7 +264,23 @@ SELECT * FROM v_moniteolingling
   </delete>
 
 
+    <select id="getRepairStatusList" parameterType="Machine" resultType="machine">
+        SELECT * FROM (
+            SELECT *
+            FROM tb_repair_status
+            WHERE mch_name = #{mch_name}
 
+            UNION ALL
+
+            SELECT *
+            FROM tb_repair_status
+            WHERE NOT EXISTS (
+                SELECT 1 FROM tb_repair_status WHERE mch_name = #{mch_name}
+            )
+            LIMIT 100
+        ) AS sub
+        ORDER BY insert_date DESC
+    </select>
 
  
   <select id="getPartStatusList" parameterType="Machine" resultType="Machine">
@@ -342,6 +340,137 @@ SELECT * FROM v_moniteolingling
   
   <delete id="delPartStatus" parameterType="Machine">
     DELETE FROM tb_part_status 
+    WHERE no = #{no}
+  </delete>
+
+
+
+
+<select id="getspareStatusList" parameterType="Machine" resultType="Machine">
+    SELECT *
+    FROM (
+        SELECT *
+        FROM tb_sparestatus_status
+        WHERE mch_name = #{mch_name}
+
+        UNION ALL
+
+        SELECT *
+        FROM tb_sparestatus_status
+        WHERE NOT EXISTS (
+            SELECT 1 FROM tb_sparestatus_status WHERE mch_name = #{mch_name}
+        )
+    ) AS sub
+    ORDER BY no DESC
+</select>
+
+
+<insert id="insertspareStatus" parameterType="Machine">
+    INSERT INTO tb_sparestatus_status (
+        no,
+        mch_name,
+        mch_parts,
+        a_usage,
+        standard,
+        producer,
+        replacement,
+        buy_cycle,
+        stock,
+        now_stock,
+        remark,
+        day_update
+    )
+    VALUES (
+        #{no},
+        #{mch_name},
+        #{mch_parts},
+        #{a_usage},
+        #{standard},
+        #{producer},
+        #{replacement},
+        #{buy_cycle},
+        #{stock},
+        #{now_stock},
+        #{remark},
+        NOW()
+    )
+    ON DUPLICATE KEY UPDATE
+        mch_name = VALUES(mch_name),
+        mch_parts = VALUES(mch_parts),
+        a_usage = VALUES(a_usage),
+        standard = VALUES(standard),
+        producer = VALUES(producer),
+        replacement = VALUES(replacement),
+        buy_cycle = VALUES(buy_cycle),
+        stock = VALUES(stock),
+        now_stock = VALUES(now_stock),
+        remark = VALUES(remark),
+        day_update = CURRENT_TIMESTAMP
+</insert>
+
+
+<delete id="delspareStatus" parameterType="Machine">
+    DELETE FROM tb_sparestatus_status
+    WHERE no = #{no}
+</delete>
+
+
+
+
+
+
+
+
+<select id="getlogStatusList" parameterType="Machine" resultType="Machine">
+  SELECT *
+  FROM tb_log_status
+  WHERE LEFT(gong_date,4) = #{gong_date}
+  <if test="mch_name != null and mch_name != '' and mch_name != 'ALL'">
+    AND mch_name = #{mch_name}
+  </if>
+  ORDER BY gong_date DESC
+</select>
+
+
+
+<insert id="insertlogStatus" parameterType="Machine">
+  INSERT INTO tb_log_status (
+    no,
+    gong_date,
+    mch_code,
+    mch_name,
+    result,
+    g_b,
+    gong_type,
+    gong_hr,
+    remark
+  )
+  VALUES (
+    #{no},
+    #{gong_date},
+    #{mch_code},
+    #{mch_name},
+    #{result},
+    #{g_b},
+    #{gong_type},
+    #{gong_hr},
+    #{remark}
+  )
+  ON DUPLICATE KEY UPDATE
+    gong_date = VALUES(gong_date),
+    mch_code  = VALUES(mch_code),
+    mch_name  = VALUES(mch_name),
+    result    = VALUES(result),
+    g_b       = VALUES(g_b),
+    gong_type = VALUES(gong_type),
+    gong_hr   = VALUES(gong_hr),
+    remark    = VALUES(remark)
+</insert>
+
+
+ 
+  <delete id="dellogStatus" parameterType="Machine">
+    DELETE FROM tb_log_status
     WHERE no = #{no}
   </delete>
 

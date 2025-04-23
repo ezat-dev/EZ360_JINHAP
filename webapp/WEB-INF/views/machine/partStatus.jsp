@@ -287,7 +287,14 @@
       ajaxParams: { mch_name: "ALL" },
       placeholder: "조회된 데이터가 없습니다.",
       columns: [
-        { title: "NO",                     field: "no",             width: 100, hozAlign: "center" },
+          { title: "no", field: "no", visible: false }, 
+          { 
+            title: "NO", 
+            formatter: "rownum", 
+            width: 70, 
+            hozAlign: "center" 
+          },
+        { title: "db_NO",                     field: "no",             width: 100, hozAlign: "center",visible: false },
         { title: "대상 설비",              field: "mch_name",       width: 150, hozAlign: "center" },
         { title: "교체항목",               field: "chg_item",    width: 140, hozAlign: "center" },
         { title: "교체일자",               field: "chg_date",       width: 140, hozAlign: "center" },

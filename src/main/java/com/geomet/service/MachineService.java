@@ -40,4 +40,17 @@ public interface MachineService {
 	List<Machine> getPartStatusList(Machine machine);
 	void insertPartStatus(Machine machine); 
 	void delPartStatus(Machine machine); 
+	
+	
+	//스페어 부품	
+	List<Machine> getspareStatusList(Machine machine);
+	void insertspareStatus(Machine machine); 
+	void delspareStatus(Machine machine); 
+	
+	
+	//공무일지
+	List<Machine> getlogStatusList(Machine machine);
+	void insertlogStatus(Machine machine); 
+	void dellogStatus(Machine machine);
+
 }

@@ -101,7 +101,7 @@ public class Machine {
     private String mch_name;
     private String mch_code;
     private String insert_date;
-    private String check;
+    private String a_check;
     private String maintenance;
     private String content;
     private String remarks;
@@ -119,6 +119,131 @@ public class Machine {
     private String target_date;
  //   private String remark;
     
+    
+    //부품 스페어 
+    
+    private String a_usage;
+    private String standard;
+    private String producer;
+    private String replacement;
+    private String buy_cycle;
+    private String stock;
+    private String now_stock;
+    private String mch_parts;
+    //공무일지
+
+    private String gong_date;
+    private String g_b;
+    private String gong_type;
+    private String gong_hr;
+
+    
+    
+    
+    
+    
+    
+    
+
+	public String getGong_date() {
+		return gong_date;
+	}
+
+	public void setGong_date(String gong_date) {
+		this.gong_date = gong_date;
+	}
+
+	public String getG_b() {
+		return g_b;
+	}
+
+	public void setG_b(String g_b) {
+		this.g_b = g_b;
+	}
+
+	public String getGong_type() {
+		return gong_type;
+	}
+
+	public void setGong_type(String gong_type) {
+		this.gong_type = gong_type;
+	}
+
+	public String getGong_hr() {
+		return gong_hr;
+	}
+
+	public void setGong_hr(String gong_hr) {
+		this.gong_hr = gong_hr;
+	}
+
+	public String getA_usage() {
+		return a_usage;
+	}
+
+	public void setA_usage(String a_usage) {
+		this.a_usage = a_usage;
+	}
+
+	public String getNow_stock() {
+		return now_stock;
+	}
+
+	public void setNow_stock(String now_stock) {
+		this.now_stock = now_stock;
+	}
+
+	public String getMch_parts() {
+		return mch_parts;
+	}
+
+	public void setMch_parts(String mch_parts) {
+		this.mch_parts = mch_parts;
+	}
+
+
+
+	public String getStandard() {
+		return standard;
+	}
+
+	public void setStandard(String standard) {
+		this.standard = standard;
+	}
+
+	public String getProducer() {
+		return producer;
+	}
+
+	public void setProducer(String producer) {
+		this.producer = producer;
+	}
+
+	public String getReplacement() {
+		return replacement;
+	}
+
+	public void setReplacement(String replacement) {
+		this.replacement = replacement;
+	}
+
+	public String getBuy_cycle() {
+		return buy_cycle;
+	}
+
+	public void setBuy_cycle(String buy_cycle) {
+		this.buy_cycle = buy_cycle;
+	}
+
+	public String getStock() {
+		return stock;
+	}
+
+	public void setStock(String stock) {
+		this.stock = stock;
+	}
+
+
 
 	public String getResult() {
 		return result;
@@ -224,12 +349,13 @@ public class Machine {
 		this.insert_date = insert_date;
 	}
 
-	public String getCheck() {
-		return check;
+
+	public String getA_check() {
+		return a_check;
 	}
 
-	public void setCheck(String check) {
-		this.check = check;
+	public void setA_check(String a_check) {
+		this.a_check = a_check;
 	}
 
 	public String getMaintenance() {

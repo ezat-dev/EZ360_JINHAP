@@ -105,4 +105,37 @@ public class MachineDaoImpl implements MachineDao{
     public void delPartStatus(Machine machine) {
            sqlSession.insert("machine.delPartStatus", machine);
     }
+    
+    //스페어 부품
+    @Override
+    public List<Machine> getspareStatusList(Machine machine) {
+      
+        return sqlSession.selectList("machine.getspareStatusList", machine);
+    }
+    @Override
+    public void insertspareStatus(Machine machine) {
+           sqlSession.insert("machine.insertspareStatus", machine);
+    }
+    
+    @Override
+    public void delspareStatus(Machine machine) {
+           sqlSession.insert("machine.delspareStatus", machine);
+    }
+    
+    
+    //공무일지
+    @Override
+    public List<Machine> getlogStatusList(Machine machine) {
+      
+        return sqlSession.selectList("machine.getlogStatusList", machine);
+    }
+    @Override
+    public void insertlogStatus(Machine machine) {
+           sqlSession.insert("machine.insertlogStatus", machine);
+    }
+    
+    @Override
+    public void dellogStatus(Machine machine) {
+           sqlSession.insert("machine.dellogStatus", machine);
+    }
 }

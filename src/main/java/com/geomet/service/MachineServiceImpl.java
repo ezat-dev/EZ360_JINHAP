@@ -58,6 +58,9 @@ public class MachineServiceImpl implements MachineService {
 	    public List<Machine> getNonTimeDataView(Machine machine) {
 	         return machineDao.getNonTimeDataView(machine); 	   
 	    }
+	    
+	    
+	    //설비 이력
 	    @Override
 	    public List<Machine> getRepairStatusList(Machine machine) {
 	         return machineDao.getRepairStatusList(machine); 	   
@@ -71,7 +74,7 @@ public class MachineServiceImpl implements MachineService {
 	         machineDao.delRepairStatus(machine); 	   
 	    }
 	    
-	    
+	  //부품 교체이력
 	    @Override
 	    public List<Machine> getPartStatusList(Machine machine) {
 	         return machineDao.getPartStatusList(machine); 	   
@@ -84,4 +87,37 @@ public class MachineServiceImpl implements MachineService {
 	    public void delPartStatus(Machine machine) {
 	         machineDao.delPartStatus(machine); 	   
 	    }
+	    
+	    
+
+	  //스페어 부품
+	    @Override
+	    public List<Machine> getspareStatusList(Machine machine) {
+	         return machineDao.getspareStatusList(machine); 	   
+	    }
+	    @Override
+	    public void insertspareStatus(Machine machine) {
+	         machineDao.insertspareStatus(machine); 	   
+	    }
+	    @Override
+	    public void delspareStatus(Machine machine) {
+	         machineDao.delspareStatus(machine); 	   
+	    }
+	    
+	    
+	    
+	    
+		  //공무일지
+	      @Override
+	      public List<Machine> getlogStatusList(Machine machine) {
+	           return machineDao.getlogStatusList(machine); 	   
+	      }
+	      @Override
+	      public void insertlogStatus(Machine machine) {
+	           machineDao.insertlogStatus(machine); 	   
+	      }
+	      @Override
+	      public void dellogStatus(Machine machine) {
+	           machineDao.dellogStatus(machine); 	   
+	      }
 }

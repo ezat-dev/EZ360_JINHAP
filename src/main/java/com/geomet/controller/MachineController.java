@@ -561,7 +561,7 @@ public class MachineController {
     public String insertRepairStatus(@ModelAttribute Machine machine) {
         System.out.println(">>> 설비명: " + machine.getMch_name());
         System.out.println(">>> 내용: " + machine.getContent());
-        System.out.println(">>> 점검유형: " + machine.getCheck());
+        //System.out.println(">>> 점검유형: " + machine.getCheck());
         System.out.println(">>> 결과: " + machine.getResult());
         System.out.println(">>> 비고: " + machine.getRemarks());
 
@@ -629,7 +629,88 @@ public class MachineController {
     }
     
     
+    //스페어부품 관리대장
+   
+    @RequestMapping(value= "/machine/spareStatus", method = RequestMethod.GET)
+    public String spareStatus(Model model) {
+        return "/machine/spareStatus.jsp"; 
+    }
     
+    @RequestMapping(value = "/machine/spareStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Machine> getspareStatusList(Machine machine) {
+        System.out.println(">>> mch_name: " + machine.getMch_name());
+        System.out.println(">>> change_item: " + machine.getContent());
+        return machineService.getspareStatusList(machine);
+    }
+
+    @RequestMapping(value = "/machine/spareStatus/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertspareStatus(@ModelAttribute Machine machine) {
+
+
+        machineService.insertspareStatus(machine); 
+
+        return "success";
+    }
+    @RequestMapping(value = "/machine/spareStatus/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> delspareStatus(@RequestBody Machine machine) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("삭제 요청 받은 데이터: " + machine);
+
+        if (machine.getNo() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        machineService.delspareStatus(machine);
+
+        rtnMap.put("data", "success");
+        return rtnMap;
+    }
+    
+    
+    //공무일지 관리
+    
+    @RequestMapping(value= "/machine/logStatus", method = RequestMethod.GET)
+    public String logStatus(Model model) {
+        return "/machine/logStatus.jsp"; 
+    }
+    
+    @RequestMapping(value = "/machine/logStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Machine> getlogStatusList(Machine machine) {
+        System.out.println(">>> mch_name: " + machine.getMch_name());
+        System.out.println(">>> change_item: " + machine.getContent());
+        return machineService.getlogStatusList(machine);
+    }
+
+    @RequestMapping(value = "/machine/logStatus/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertlogStatus(@ModelAttribute Machine machine) {
+
+
+        machineService.insertlogStatus(machine); 
+
+        return "success";
+    }
+    @RequestMapping(value = "/machine/logStatus/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> dellogStatus(@RequestBody Machine machine) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("삭제 요청 받은 데이터: " + machine);
+
+        if (machine.getNo() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        machineService.dellogStatus(machine);
+
+        rtnMap.put("data", "success");
+        return rtnMap;
+    }
     
     
 }

@@ -238,7 +238,7 @@
 	            </select>
 	
 	            <label>점검</label>
-	              <select name="check">
+	              <select name="a_check">
 	                <option value="일상">일상</option>
 	                <option value="정기">정기</option>
 	            </select>
@@ -287,9 +287,16 @@
       ajaxParams: { mch_name: "ALL" },
       placeholder: "조회된 데이터가 없습니다.",
       columns: [
-        { title:"NO",        field:"no",         width:100, hozAlign:"center" },
+         
+          { 
+            title: "NO", 
+            formatter: "rownum", 
+            width: 70, 
+            hozAlign: "center" 
+          },
+        { title: "db_NO",                     field: "no",             width: 100, hozAlign: "center",visible: false },
         { title:"설비",      field:"mch_name",   width:250, hozAlign:"center" },
-        { title:"점검",      field:"check",      width:140, hozAlign:"center" },
+        { title:"점검",      field:"a_check",      width:140, hozAlign:"center" },
         { title:"정비",      field:"maintenance",width:140, hozAlign:"center" },
         { title:"내용",      field:"content",    width:390, hozAlign:"center" },
         { title:"결과",      field:"result",     width:140, hozAlign:"center" },
@@ -305,7 +312,7 @@
         selectedRowData = d;
         $('#corrForm')[0].reset();
         $('select[name="mch_name"]').val(d.mch_name);
-        $('select[name="check"]').val(d.check);
+        $('select[name="a_check"]').val(d.a_check);
         $('select[name="maintenance"]').val(d.maintenance);
         $('input[name="content"]').val(d.content);
         $('select[name="result"]').val(d.result);
@@ -313,6 +320,7 @@
         $('#modalContainer').show().addClass('show');
       }
     });
+
 
     $('.select-button').click(function(){
       var sel = $('.dayselect').val();

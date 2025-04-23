@@ -417,28 +417,22 @@
 
 	
     // DOMContentLoaded 이벤트로 DOM이 준비된 후 스크립트 실행
-    document.addEventListener('DOMContentLoaded', function() {
-        const linkColor = document.querySelectorAll('.nav__link');
+  document.addEventListener('DOMContentLoaded', function () {
+  const collapseItems = document.querySelectorAll('.nav__link.collapse');
 
-        // 메뉴 클릭 시 활성화
-        function colorLink() {
-            linkColor.forEach(l => l.classList.remove('active'));
-            this.classList.add('active');
-        }
-        linkColor.forEach(l => l.addEventListener('click', colorLink));
+  collapseItems.forEach(item => {
+    item.addEventListener('click', function () {
+      const collapseMenu = this.querySelector('.collapse__menu');
+      const icon = this.querySelector('.collapse__link');
 
-        const linkCollapse = document.getElementsByClassName('collapse__link');
-        let i;
-        for(i = 0; i < linkCollapse.length; i++) {
-            linkCollapse[i].addEventListener('click', function() {
-                const collapseMenu = this.nextElementSibling;
-                collapseMenu.classList.toggle('showCollapse');
-                const rotate = collapseMenu.previousElementSibling;
-                rotate.classList.toggle('rotate');
-            });
-        }
+      // 펼침 상태 토글
+      collapseMenu.classList.toggle('showCollapse');
+
+      // 아이콘 회전
+      icon.classList.toggle('rotate');
     });
-
+  });
+});
 
 
 
