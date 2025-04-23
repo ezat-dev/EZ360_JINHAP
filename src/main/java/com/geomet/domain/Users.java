@@ -3,7 +3,7 @@ package com.geomet.domain;
 public class Users {
 
 	//tb_user테이블(작업자 등록)
-	private int user_code;
+	private String user_code;
 	private String user_id;
 	private String user_pw;
 	private int user_level;
@@ -13,10 +13,11 @@ public class Users {
 	private String user_phone;
 	private String user_yn;
 	
-	public int getUser_code() {
+
+	public String getUser_code() {
 		return user_code;
 	}
-	public void setUser_code(int user_code) {
+	public void setUser_code(String user_code) {
 		this.user_code = user_code;
 	}
 	public String getUser_id() {

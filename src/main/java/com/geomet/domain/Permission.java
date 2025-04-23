@@ -182,6 +182,7 @@ public class Permission {
 	public void setPerm_code(int perm_code) {
 		this.perm_code = perm_code;
 	}
+
 	public int getUser_code() {
 		return user_code;
 	}

@@ -240,7 +240,7 @@ public class UserController {
 	 @RequestMapping(value = "/user/userPermission/userSelectPermission", method = RequestMethod.POST)
 	 @ResponseBody
 	 public Map<String, Object> userPermissionUserSelectPerm(
-			 @RequestParam(required = false) int user_code){
+			 @RequestParam(required = false) String  user_code){
 		 Map<String, Object> rtnMap = new HashMap<String, Object>();
 		 
 		 Users users = new Users();
@@ -258,9 +258,9 @@ public class UserController {
 	 @ResponseBody
 	 public Map<String, Object> userPermissionUpdate(@ModelAttribute Permission permission){
 		 Map<String, Object> rtnMap = new HashMap<String, Object>();
-/*
+
 		 System.out.println(permission.getUser_code());
-		 System.out.println(permission.getA01());
+		 /*		 System.out.println(permission.getA01());
 		 System.out.println(permission.getB01());
 */
 		 userService.userPermissionUpdate(permission);
