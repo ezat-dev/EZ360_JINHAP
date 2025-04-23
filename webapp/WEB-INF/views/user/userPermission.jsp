@@ -12,7 +12,7 @@
     <style>
 	
     body { font-family: Arial, sans-serif; margin: 20px; }
-    .permission-container { display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
+    .permission-container { margin-top: 20px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
     .section { background: #f9f9f9; padding: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .section h3 { margin: 0 0 8px; font-size: 16px; color: #333; }
     .section .control { display: flex; align-items: center; margin-bottom: 6px; }
@@ -95,58 +95,54 @@
     </div>
     
     
-    <div class="section">
-      <h3>투입 운전관리</h3>
-      <div class="control"><label for="f01">LOT 보고서</label><select id="e01" name="e01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="f02">생산조건 모니터링</label><select id="e02" name="e02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+  	<div class="section">
+	  <h3>투입 운전관리</h3>
+	  <div class="control"><label for="f01">LOT 보고서</label><select id="f01" name="f01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="f02">생산조건 모니터링</label><select id="f02" name="f02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	</div>
+	
+	<div class="section">
+	  <h3>취출 운전관리</h3>
+	  <div class="control"><label for="g01">LOT 보고서</label><select id="g01" name="g01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="g02">생산조건 모니터링</label><select id="g02" name="g02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	</div>
+	
+	<div class="section">
+	  <h3>설비관리</h3>
+	  <div class="control"><label for="h01">정기점검 계획</label><select id="h01" name="h01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="h02">설비 비가동 현황</label><select id="h02" name="h02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="h03">설비이력 관리</label><select id="h03" name="h03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="h04">부품교체 이력관리</label><select id="h04" name="h04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="h05">스페어부품 관리</label><select id="h05" name="h05"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="h06">공무 일지</label><select id="h06" name="h06"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option></select></div>
+	</div>
+	
+	<div class="section">
+	  <h3>문서관리</h3>
+	  <div class="control"><label for="i01">온도 균일성</label><select id="i01" name="i01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="i02">사양별 대기통수</label><select id="i02" name="i02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="i03">점검일정 체크</label><select id="i03" name="i03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	</div>
+	
+	<div class="section">
+	  <h3>AGV 관리</h3>
+	  <div class="control"><label for="j01">AGV 미션수행횟수</label><select id="j01" name="j01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="j02">AGV 오류발생 횟수</label><select id="j02" name="j02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="j03">AGV 배터리 소모이력</label><select id="j03" name="j03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="j04">AGV 작업지시 조회</label><select id="j04" name="j04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	</div>
+	
+	<div class="section">
+	  <h3>세척 관리</h3>
+	  <div class="control"><label for="k01">세척투입리스트</label><select id="k01" name="k01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="k02">세척투입</label><select id="k02" name="k02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="k03">세척,쇼트 일 생산량</label><select id="k03" name="k03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="k04">세척,쇼트 예약상태</label><select id="k04" name="k04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="k05">작업지시 조회</label><select id="k05" name="k05"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="k06">라인별 입출고이력</label><select id="k06" name="k06"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="k07">설비별 작업실적</label><select id="k07" name="k07"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	</div>
 
-    </div>
-    <div class="section">
-      <h3>취출 운전관리</h3>
-      <div class="control"><label for="g01">LOT 보고서</label><select id="e01" name="e01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="g02">생산조건 모니터링</label><select id="e02" name="e02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-     
-    </div>
-    
-     <div class="section">
-      <h3>설비관리</h3>
-      <div class="control"><label for="h01">정기점검 계획</label><select id="e01" name="e01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="h02">설비 비가동 현황</label><select id="e02" name="e02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="h03">설비이력 관리</label><select id="e03" name="e03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="h04">부품교체 이력관리</label><select id="e04" name="e04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="h05">스페어부품 관리</label><select id="e05" name="e05"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="h06">공무 일지</label><select id="e06" name="e06"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option></select></div>
-    </div>
-    
-    <div class="section">
-      <h3>문서관리</h3>
-      <div class="control"><label for="i01">온도 균일성</label><select id="e01" name="e01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="i02">사양별 대기통수</label><select id="e02" name="e02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="i03">점검일정 체크</label><select id="e03" name="e03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      
-    </div>
-    
-    <div class="section">
-      <h3>AGV 관리</h3>
-      <div class="control"><label for="j01">AGV 미션수행횟수</label><select id="e01" name="e01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="j02">AGV 오류발생 횟수</label><select id="e02" name="e02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="j03">AGV 배터리 소모이력</label><select id="e03" name="e03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="j04">AGV 작업지시 조회</label><select id="e04" name="e04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      
-    </div>
-    
-    <div class="section">
-      <h3>세척 관리</h3>
-      <div class="control"><label for="k01">세척투입리스트</label><select id="e01" name="e01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="k02">세척투입</label><select id="e02" name="e02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="k03">세척,쇼트 일 생산량</label><select id="e03" name="e03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="k04">세척,쇼트 예약상태</label><select id="e04" name="e04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="k05">작업지시 조회</label><select id="e05" name="e05"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="k06">라인별 입출고이력</label><select id="e06" name="e06"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="k06">설비별 작업실적</label><select id="e06" name="e06"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="k06">라인별 사용유무관리</label><select id="e06" name="e06"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-   
-    </div>
 
   </form>
 	    
