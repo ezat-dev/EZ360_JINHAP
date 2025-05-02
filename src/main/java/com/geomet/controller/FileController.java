@@ -23,7 +23,7 @@ public class FileController {
     public void downloadExcel(@RequestParam("filename") String filename,
                               HttpServletResponse response) throws IOException {
 
-        String baseDir = "D:/GEOMET양식/정기점검 파일/";
+		/* String baseDir = "D:/GEOMET양식/정기점검 파일/"; */
 
         System.out.println("다운 주소 filename: " + filename);
 
@@ -32,8 +32,8 @@ public class FileController {
             return;
         }
 
-        File file = new File(baseDir + filename);
-        System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+		File file = new File(/* baseDir + */filename);
+        System.out.println("파일 전체 경로: " +file.getAbsolutePath());
 
         if (!file.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);

@@ -1,5 +1,6 @@
 package com.geomet.controller;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.geomet.domain.Condition;
 import com.geomet.domain.Facility;
@@ -305,6 +307,85 @@ public class UserController {
     public String planManage(Model model) {
         return "/user/planManage.jsp"; // 
     }
+    
+    
+    
+    @RequestMapping(value = "/user/planManage/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Users> getplanManageList(Users users) {
+
+        return userService.getplanManageList(users);
+    }
+
+	
+    @RequestMapping(value = "/user/planManage/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertplanManage(
+            @ModelAttribute Users users,
+            @RequestParam(value = "file_url", required = false) MultipartFile[] files) {
+
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        try {
+  
+            userService.insertplanManage(users);
+
+       
+            if (files != null) {
+                String uploadDir = "D:/GEOMET양식/자격인증관리";
+
+                File directory = new File(uploadDir);
+                if (!directory.exists()) {
+                    directory.mkdirs(); 
+                }
+
+                for (MultipartFile file : files) {
+                    if (!file.isEmpty()) {
+                        String originalFilename = file.getOriginalFilename();
+                        File destination = new File(uploadDir + "/" + originalFilename);
+                        file.transferTo(destination);
+                    }
+                }
+            }
+
+            rtnMap.put("result", "success");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+    
+    
+    
+    @RequestMapping(value = "/user/planManage/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> delplanManage(@RequestBody Users users) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("삭제 요청 받은 데이터: " + users);
+
+        if (users.getNo() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        userService.delplanManage(users);
+
+        rtnMap.put("data", "success");
+        return rtnMap;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
 	
 	//작업자 근무현황 및 인수인계 포함
     @RequestMapping(value= "/user/workerManage", method = RequestMethod.GET)

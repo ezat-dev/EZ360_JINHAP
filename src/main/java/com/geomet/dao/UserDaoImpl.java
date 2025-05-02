@@ -93,4 +93,28 @@ public class UserDaoImpl implements UserDao{
 	public void userLoginMenuRemove(UserMenu userMenu) {
 		sqlSession.update("users.userLoginMenuRemove",userMenu);
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	  //공무일지
+	  @Override
+	  public List<Users> getplanManageList(Users users) {
+	    
+	      return sqlSession.selectList("users.getplanManageList", users);
+	  }
+	  @Override
+	  public void insertplanManage(Users users) {
+	         sqlSession.insert("users.insertplanManage", users);
+	  }
+	  
+	  @Override
+	  public void delplanManage(Users users) {
+	         sqlSession.insert("users.delplanManage", users);
+	  }
 }

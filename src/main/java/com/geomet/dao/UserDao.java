@@ -30,6 +30,9 @@ public interface UserDao {
 	List<Facility> equipment_name_select(Facility facility);
 
 	void userLoginMenuRemove(UserMenu userMenu);
-
+	//자격인증관리
+	List<Users> getplanManageList(Users users);
+	void insertplanManage(Users users); 
+	void delplanManage(Users users);
 
 }

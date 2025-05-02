@@ -189,20 +189,26 @@
             loadChart(startDate, endDate);
         });
 
-        function getFormattedDate(offsetDays = 0) {
-            const date = new Date();
-            date.setDate(date.getDate() + offsetDays);
+        function formatDate(date) {
+            // "YYYY-MM-DD hh:mm" 형태로
             return date.toISOString().slice(0, 16).replace('T', ' ');
-        }
+          }
 
-        const endDate = getFormattedDate(+1);
-        const startDate = getFormattedDate(-5);
+          // 현재 시간
+          const now = new Date();
+          // 오늘 00:00 시각
+          const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0);
 
-        $("#startDate").val(startDate);
-        $("#endDate").val(endDate);
+          const startDate = formatDate(todayStart);
+          const endDate   = formatDate(now);
 
-        loadChart(startDate, endDate);
-    });
+          // input에 값 세팅
+          $("#startDate").val(startDate);
+          $("#endDate").val(endDate);
+
+          // 하루치 차트 로드
+          loadChart(startDate, endDate);
+        });
 </script>
 
 </body>

@@ -194,4 +194,103 @@
 		AND user_code = #{user_code}
 		AND menu_url = #{menu_url}
 	</update>
+	
+	
+	
+	
+	
+	
+
+ <select id="getplanManageList"
+          parameterType="Users"
+          resultType="Users">
+    SELECT
+      no,
+      u_code,
+      duty,
+      employee_no,
+      name,
+      education,
+      career,
+      training,
+      cert_name,
+      acquisition_date,
+      next_date,
+      file_name,
+      start_day,
+      note
+    FROM tb_plan_manage
+    <where>
+      <if test="name != null and name != ''">
+        AND name LIKE CONCAT('%', #{name}, '%')
+      </if>
+      <if test="startDate != null and startDate != ''">
+        AND start_day &gt;= #{startDate}
+      </if>
+      <if test="endDate != null and endDate != ''">
+        AND start_day &lt;= #{endDate}
+      </if>
+    </where>
+    ORDER BY acquisition_date DESC
+  </select>
+  
+  
+  
+  
+  
+  
+	<insert id="insertplanManage" parameterType="Users" useGeneratedKeys="true" keyProperty="no">
+	  INSERT INTO tb_plan_manage (
+	    no,
+	    u_code,
+	    duty,
+	    employee_no,
+	    name,
+	    education,
+	    start_day,
+	    career,
+	    training,
+	    cert_name,
+	    acquisition_date,
+	    next_date,
+	    file_name,
+	    note
+	  ) VALUES (
+	    #{no},      
+	    #{u_code},
+	    #{duty},
+	    #{employee_no},
+	    #{name},
+	    #{education},
+	    #{start_day},
+	    #{career},
+	    #{training},
+	    #{cert_name},
+	    #{acquisition_date},
+	    #{next_date},
+	    #{file_name},
+	    #{note}
+	  )
+	  ON DUPLICATE KEY UPDATE
+	    u_code           = VALUES(u_code),
+	    duty             = VALUES(duty),
+	    employee_no      = VALUES(employee_no),
+	    name             = VALUES(name),
+	    education        = VALUES(education),
+	    start_day        = VALUES(start_day),
+	    career           = VALUES(career),
+	    training         = VALUES(training),
+	    cert_name        = VALUES(cert_name),
+	    acquisition_date = VALUES(acquisition_date),
+	    next_date        = VALUES(next_date),
+	    file_name        = VALUES(file_name),
+	    note             = VALUES(note)
+	</insert>
+
+
+
+    <delete id="delplanManage" parameterType="Users">
+        DELETE FROM tb_plan_manage
+        WHERE no = #{no}
+    </delete>
 </mapper>

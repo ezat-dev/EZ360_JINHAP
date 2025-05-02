@@ -40,10 +40,18 @@
 }
 
 
-.view{
-	display: flex; 
-	justify-content: center;
-}
+  .view {
+    display: flex; 
+    justify-content: center;
+    align-items: center;      /* 세로 중앙 정렬 추가 */
+    height: calc(100vh - 100px); /* 차트 높이와 비슷하게 전체 화면 중앙에 */
+  }
+  .placeholder {
+    font-size: 25px;
+    font-weight: 700;
+    color: #cccccc;           /* 연한 회색 */
+    text-align: center;
+  }
 </style>
     
     
@@ -51,25 +59,16 @@
 
 	<main class="main">
     	<!-- 조회조건 표시 -->
-    	<div class="search">
-    		<label for="selectHogi">설비명:</label>
-			<select id="selectHogi" style="margin-right:1%;">
-				<option value="">600T</option>
-				<option value="">800T</option>
-				<option value="">이코팅 1호기</option>
-				<option value="">세척 1호기</option>
-			</select>    		
-    	</div>
+
     	
     	
 		<jsp:include page="../include/tabBar.jsp"/>
 	   
 	    
-	    <!-- 화면표시 -->
+
 	    <div class="view">
-	    	<img src="/geomet/css/img/detailMonitoring.png" alt="" />
-	    </div>
-	    
+      <p class="placeholder">요청내용 확인 부탁드립니다</p>
+   		 </div>
 
 	</main>
 <script>

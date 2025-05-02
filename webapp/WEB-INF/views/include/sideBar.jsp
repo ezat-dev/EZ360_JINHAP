@@ -83,10 +83,10 @@
 	}
 	
 	.menuDivTab.active {
-	    background: #007aff;
-	    color: white;
-	    border: 1px solid #0062cc;
-	    box-shadow: 0 3px 8px rgba(0, 122, 255, 0.3);
+	     background: #dfe6ed; /* 연한 회색 배경 */
+	    color: #333; /* 글자색은 기본 유지 */
+	    border: 1px solid #ccc;
+	    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
 	    transform: translateY(-2px);
 	}
 	
@@ -242,6 +242,15 @@
     </div>
      <script>
      //로드
+     
+     
+      $(document).on('click', '.menuDivTab', function () {
+        // 기존 active 클래스 제거
+        $('.menuDivTab').removeClass('active');
+
+        // 현재 클릭된 탭에 active 클래스 추가
+        $(this).addClass('active');
+    });
      $(function(){
  		var loginInfo = "${loginUser.user_name}";
 

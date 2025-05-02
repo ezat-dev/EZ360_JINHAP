@@ -70,4 +70,21 @@ public class UserServiceImpl implements UserService{
 	public void userLoginMenuRemove(UserMenu userMenu) {
 		userDao.userLoginMenuRemove(userMenu);
 	}
+	
+	
+	
+	
+	
+	@Override
+	public List<Users> getplanManageList(Users users) {
+	     return userDao.getplanManageList(users); 	   
+	}
+	@Override
+	public void insertplanManage(Users users) {
+		userDao.insertplanManage(users); 	   
+	}
+	@Override
+	public void delplanManage(Users users) {
+		userDao.delplanManage(users); 	   
+	}
 }

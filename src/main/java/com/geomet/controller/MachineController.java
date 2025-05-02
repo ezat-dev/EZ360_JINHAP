@@ -34,9 +34,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.geomet.domain.Condition;
+
 import com.geomet.domain.Machine;
-import com.geomet.domain.Quality;
+
 import com.geomet.domain.Temp_data;
 import com.geomet.service.MachineService;
 
