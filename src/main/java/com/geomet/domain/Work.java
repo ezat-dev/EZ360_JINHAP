@@ -29,9 +29,21 @@ public class Work {
     private String geomet_sq_70;
     private String created_at;
     private String status;
-    
+    private String nextMonth;
+    private String filed_name;
 
-
+	public String getFiled_name() {
+		return filed_name;
+	}
+	public void setFiled_name(String filed_name) {
+		this.filed_name = filed_name;
+	}
+	public String getNextMonth() {
+		return nextMonth;
+	}
+	public void setNextMonth(String nextMonth) {
+		this.nextMonth = nextMonth;
+	}
 	public String getStatus() {
 		return status;
 	}

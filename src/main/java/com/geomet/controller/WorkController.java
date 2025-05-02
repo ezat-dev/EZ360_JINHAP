@@ -9,13 +9,14 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
+import com.geomet.domain.Machine;
 import com.geomet.domain.Work;
 import com.geomet.service.WorkService;
 
@@ -68,6 +69,17 @@ public class WorkController {
         work.setStartDate(startDate == null || startDate.isEmpty() ? null : startDate);
         return workService.getInventoryStatusList(work);
     }
+    
+    
+    
+    
+    @RequestMapping(value = "/work/inventoryStatus/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertinventoryStatus(@RequestBody Work work) {
+        System.out.println("Received Work object: " + work);
+        workService.insertinventoryStatus(work);
+        return "success";
+    }
 
 
 	/*-----투입 운전관리-----*/
@@ -97,4 +109,76 @@ public class WorkController {
     public String workConditionStatus(Model model) {
         return "/work/workConditionStatus.jsp"; // 
     }	
+    
+    
+	/*
+	 * //작업일보
+	 * 
+	 * @RequestMapping(value= "/work/report_g800", method = RequestMethod.GET)
+	 * public String report_g800(Model model) { return "/work/report_g800.jsp"; // }
+	 */
+    
+	//작업일보함
+    @RequestMapping(value = "/work/report_g800", method = RequestMethod.GET)
+    public String reportG800(Model model) {
+        return "/work/report_g800.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_g600", method = RequestMethod.GET)
+    public String reportG600(Model model) {
+        return "/work/report_g600.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_common", method = RequestMethod.GET)
+    public String reportCommon(Model model) {
+        return "/work/report_common.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_kblack", method = RequestMethod.GET)
+    public String reportKBlack(Model model) {
+        return "/work/report_kblack.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_oil1", method = RequestMethod.GET)
+    public String reportOil1(Model model) {
+        return "/work/report_oil1.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_oil2", method = RequestMethod.GET)
+    public String reportOil2(Model model) {
+        return "/work/report_oil2.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_shot1", method = RequestMethod.GET)
+    public String reportShot1(Model model) {
+        return "/work/report_shot1.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_shot2", method = RequestMethod.GET)
+    public String reportShot2(Model model) {
+        return "/work/report_shot2.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_shot3", method = RequestMethod.GET)
+    public String reportShot3(Model model) {
+        return "/work/report_shot3.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_shot4", method = RequestMethod.GET)
+    public String reportShot4(Model model) {
+        return "/work/report_shot4.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_shot5", method = RequestMethod.GET)
+    public String reportShot5(Model model) {
+        return "/work/report_shot5.jsp";
+    }
+
+    @RequestMapping(value = "/work/report_shot6", method = RequestMethod.GET)
+    public String reportShot6(Model model) {
+        return "/work/report_shot6.jsp";
+    }
+
+
+    
 }

@@ -245,20 +245,21 @@
 			    </div>
 			
 			    <label class="hName2">-상태-</label>
-			    <input type="text"  name="status"  placeholder="(변수)월 정검일" >
+			    <input type="text"  name="status" readonly placeholder="(변수)월 정검일" >
 				
 				<label>이월 수량</label>
-			    <input type="text" name="next_month" readonly>
+			    <input type="text" name="next_month" >
 			
 				<label>입고량</label>
-			    <input type="text" name="stock_cnt" readonly>
+			    <input type="text" name="stock_cnt" >
 			
 				
 				<label>내용</label>
-			    <input type="text" name="filed_name" readonly>
+			    <input type="text" name="filed_name">
 			
-			 	<label>숨길 id</label>
-			    <input type="text" name="id" readonly>
+			 	<label style="display: none;">숨길 id</label>
+				<input type="text" name="id" readonly style="display: none;">
+
 			
 			
 			    <button type="submit" id="saveCorrStatus" style="font-weight: bold;">저장</button>
@@ -399,26 +400,63 @@
 		    },
 
 		    cellDblClick: function (e, cell) {
-		    	  const rowData = cell.getRow().getData(); // 해당 row의 전체 데이터
-		    	  const modal = $("#modalContainer");
+		        const rowData = cell.getRow().getData();
+		        const modal = $("#modalContainer");
+		        const form = $("#corrForm");
 
-		    	  // 모달 열기
-		    	  modal.show().addClass("show");
+		     
+		        const columnTitle = cell.getColumn().getDefinition().title;
+		        const fieldName = cell.getField();
 
-		    	  
-		    	  const form = $("#corrForm");
-		    	  form.find("input[name='date']").val(rowData.date);
-		    	  form.find("input[name='status']").val(rowData.status);
-		    	  form.find("input[name='next_month']").val(rowData.next_month);
-		    	  form.find("input[name='stock_cnt']").val(rowData.stock_cnt);
-		    	  form.find("input[name='id']").val(rowData.id);
+		  
+		        modal.show().addClass("show");
 
-		    	  // 약품명이나 filed_name 같은 필드는 필요시 rowData에서 가져오세요.
-		    	  form.find("input[name='drug_name']").val(rowData.drug_name || "");
-		    	  form.find("input[name='filed_name']").val(rowData.filed_name || "");
-		    	}
+		 
+		        form.find("input[name='drug_name']").val(columnTitle);
+
+		        form.find("input[name='date']").val(rowData.date);
+		        form.find("input[name='status']").val(rowData.status);
+		        form.find("input[name='next_month']").val(rowData.next_month);
+		        form.find("input[name='stock_cnt']").val(rowData.stock_cnt);
+		        form.find("input[name='id']").val(rowData.id);
+		        const cellValue = cell.getValue();
+		        form.find("input[name='filed_name']").val(cellValue);
+
+		    }
+
 		  }); 
 		}
+
+	$('#saveCorrStatus').click(function(event){
+		  event.preventDefault();
+
+		  // 폼 데이터를 직접 객체로 구성해서 쉼표 제거 부분 삭제
+		  var data = {};
+		  $('#corrForm').serializeArray().forEach(function(field){
+		    // stock_cnt의 쉼표 제거 없이 그대로 전송
+		    data[field.name] = field.value;
+		  });
+
+		  console.log("전송 데이터:", data);
+
+		  $.ajax({
+			  url: "/geomet/work/inventoryStatus/insert",
+			  type: "POST",
+			  contentType: "application/json",
+			  data: JSON.stringify(data),
+			  success: function(){
+			    alert("저장되었습니다!");
+			    $('#modalContainer').hide();
+			    // 요청이 완료된 후에 테이블 데이터 갱신
+			    var currentFilter = $('.dayselect').val() || 'ALL';
+			    dataTable.setData("/geomet/work/inventoryStatus/list", { startDate: currentFilter });
+			  },
+			  error: function(){
+			    alert('저장 중 오류가 발생했습니다.');
+			  }
+			});
+
+		});
 
 </script>
 

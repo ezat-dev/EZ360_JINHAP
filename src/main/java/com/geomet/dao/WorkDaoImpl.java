@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Repository;
 
+import com.geomet.domain.Machine;
 import com.geomet.domain.Work;
 
 @Repository
@@ -18,5 +19,9 @@ public class WorkDaoImpl implements WorkDao {
     @Override
     public List<Work> getInventoryStatusList(Work work) {
         return sqlSession.selectList("work.getInventoryStatusList", work);
+    }
+    @Override
+    public void insertinventoryStatus(Work work) {
+           sqlSession.insert("work.insertinventoryStatus", work);
     }
 }

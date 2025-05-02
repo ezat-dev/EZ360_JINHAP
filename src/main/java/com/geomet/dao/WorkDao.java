@@ -9,4 +9,5 @@ import com.geomet.domain.Work;
 @Repository
 public interface WorkDao {
 	List<Work> getInventoryStatusList(Work work);
+	void insertinventoryStatus(Work work);
 }
