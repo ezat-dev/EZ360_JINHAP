@@ -205,6 +205,49 @@
 	    display: flex;
 	    align-items: center;
 	}
+	/* CSS */
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;           /* 레이블–인풋 간격 */
+  flex-wrap: wrap;     /* 화면 좁아지면 줄 바꿈 */
+  margin-bottom: 12px; /* 각 행 간 간격 */
+}
+
+.form-label {
+  white-space: nowrap;
+  font-weight: 600;
+  font-size: 14px;
+  color: #333;
+  margin-right: 4px;
+}
+
+	.form-input {
+	  flex: 1;
+	  min-width: 180px;
+	  padding: 8px 12px;
+	  font-size: 14px;
+	  border: 1px solid #ccc;
+	  border-radius: 4px;
+	  transition: border-color 0.2s, box-shadow 0.2s;
+	}
+	
+	.form-input:focus {
+	  outline: none;
+	  border-color: #409eff;    /* 블루 톤 */
+	  box-shadow: 0 0 0 2px rgba(64, 158, 255, 0.2);
+	}
+	
+	
+	@media (max-width: 600px) {
+	  .form-row {
+	    flex-direction: column;
+	    align-items: stretch;
+	  }
+	  .form-label {
+	    margin-bottom: 4px;
+	  }
+	}
 	
 	.excel-import-button:hover {
 	    background-color: #f0f0f0;
@@ -225,16 +268,18 @@
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
         
         
-			<label class="daylabel">도금품번 :</label>
-			<input type="text" class="plating_no_in" id="plating_no" style="font-size: 16px; margin-bottom:10px;" placeholder="도금품번 선택" autocomplete="off">
+				
+			<div class="form-row">
+			  <label for="plating_no" class="form-label">도금품번 :</label>
+			  <input type="text" id="plating_no" class="form-input" placeholder="도금품번 선택" autocomplete="off">
 			
-			<label class="daylabel">품명 :</label>
-			<input type="text" class="pum_name" id="pum_name" style="font-size: 16px; margin-bottom:10px;" placeholder="품명 선택" autocomplete="off">
+			  <label for="pum_name" class="form-label">품명 :</label>
+			  <input type="text" id="pum_name" class="form-input" placeholder="품명 선택" autocomplete="off">
 			
-			<label class="daylabel">표면처리사양 :</label>
-			<input type="text" class="surface_spec_ins" id="surface_spec" style="font-size: 16px; margin-bottom:10px;" placeholder="표면처리사양" autocomplete="off">
-			
-			
+			  <label for="surface_spec" class="form-label">표면처리사양 :</label>
+			  <input type="text" id="surface_spec" class="form-input" placeholder="표면처리사양" autocomplete="off">
+			</div>
+
 			
 			</div>
 			

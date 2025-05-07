@@ -162,107 +162,24 @@
 <body>
 
     <main class="main">
-        <div class="tab">
-        
-
-            <div class="button-container">
-            
-  			<div class="box1">
-           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">검색일자 :</label>
-			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-			
-			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
-
-			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-
-            <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
-             
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
-			</div>
-                <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-                </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
-                <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
-            </div>
-        </div>
+       
 
         <div class="view">
             <div id="dataList"></div>
         </div>
     </main>
 	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
-	            <label>설비명</label>
-	            <select name="equipmentName">
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
-	            </select>
-	
-	            <label>존 구분</label>
-	            <input type="text" name="location" value="소입1존">
-	
-	            <label>시리얼 번호</label>
-	            <input type="text" name="serialNumber" placeholder="시리얼 번호">
-	
-				<label>교체일자</label>
-				<input type="text" class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;" autocomplete="off">
-				
-				<label>차기 교체일자</label>
-				<input type="text" class="daySet" name="nextDate" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
-				
-				<label>교체 주기</label>
-				<input type="text" class="daySet" name="replacementCycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
-
-	            <label>비고</label>
-	            <textarea name="remarks" rows="3"></textarea>
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
-
+	   
 
     <script>
         $(function() {
             getDataList();
+
         });
 
         function getDataList() {
             dataTable = new Tabulator("#dataList", {
-                height: "560px",
+                height: "760px",
                 layout: "fitColumns",
                 selectable: true,
                 tooltips: true,
@@ -271,9 +188,9 @@
                 headerHozAlign: "center",
                 ajaxConfig: "POST",
                 ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
+                ajaxURL: "/geomet/work/machineEfficStatus/selectList",
                 ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
+           
                 placeholder: "조회된 데이터가 없습니다.",
                 paginationSize: 20,
                 ajaxResponse: function(url, params, response) {
@@ -281,78 +198,18 @@
                     return response;
                 },
                 columns: [
-                    {title: "설비명", field: "1", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "생산효율", field: "2", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "가동효율", field: "3", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "양품율", field: "4", sorter: "string", width: 550, hozAlign: "center", headerSort: false},
-                    {title: "종합효율", field: "5", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "등급", field: "6", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    {title: "설비명", field: "facility_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "생산효율", field: "a", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    {title: "가동효율", field: "b", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    {title: "양품율", field: "c", sorter: "string", width: 550, hozAlign: "center", headerSort: false},
+                    {title: "종합효율", field: "d", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+                    {title: "등급", field: "d", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
                   
                 ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
             });
         }
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
-
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
-
-
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
-                
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
-
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
-
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
-
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
-        });
-
+     
         	
 
 

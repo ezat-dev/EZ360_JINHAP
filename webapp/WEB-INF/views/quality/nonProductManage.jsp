@@ -345,8 +345,14 @@
 <script>
 $(document).ready(function () {
     // 페이지 로딩 시 데이터 불러오기
-    getDataList();
+ 
 
+    const today = new Date().toISOString().split('T')[0];
+    $('#startDate').val(today);
+    $('#endDate').val(today);
+
+
+    getDataList();
     // 모달 열기
     $(".insert-button").click(function () {
         let modal = $("#modalContainer");
@@ -418,7 +424,7 @@ $(document).ready(function () {
     // 데이터 목록 로딩 함수 정의
     function getDataList() {
         dataTable = new Tabulator("#dataList", {
-            height: "560px",
+            height: "760px",
             layout: "fitColumns",
             selectable: true,
             tooltips: true,

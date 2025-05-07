@@ -287,10 +287,14 @@
 
 
     <script>
-        $(function() {
-            getDataList();
-        });
+    $(function() {
+        getDataList();
 
+        const today = new Date().toISOString().split('T')[0];
+        $('#startDate').val(today);
+        $('#endDate').val(today);
+
+      });
         function getDataList() {
             dataTable = new Tabulator("#dataList", {
                 height: "560px",
@@ -386,7 +390,6 @@
         });
 
         	
-
 
         
     </script>

@@ -302,6 +302,23 @@
         $(function() {
             getDataList();
            /*  getDataList2(); */
+
+            
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth(); // 0부터 시작 (0=1월)
+
+    // 해당 월의 1일
+    const firstDay = new Date(year, month, 1);
+    // 다음 달 0일 = 이번 달 말일
+    const lastDay = new Date(year, month + 1, 0);
+
+    // yyyy-MM-dd 형식으로 변환
+    const formatDate = (date) => date.toISOString().split('T')[0];
+
+    $('#startDate').val(formatDate(firstDay));
+    $('#endDate').val(formatDate(lastDay));
+
         });
 
         function getDataList2() {

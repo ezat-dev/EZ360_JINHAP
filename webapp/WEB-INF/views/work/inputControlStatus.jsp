@@ -258,6 +258,10 @@
 
     <script>
         $(function() {
+
+            const today = new Date().toISOString().split('T')[0];
+            $('#startDate').val(today);
+            $('#endDate').val(today);
             getDataList();
         });
 

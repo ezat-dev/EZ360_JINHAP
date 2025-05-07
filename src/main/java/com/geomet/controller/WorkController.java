@@ -47,6 +47,12 @@ public class WorkController {
         return "/work/monitoringStatus.jsp"; // 
     }	
     
+	//MTTR
+    @RequestMapping(value= "/work/mttr", method = RequestMethod.GET)
+    public String mttr(Model model) {
+        return "/work/mttr.jsp"; // 
+    }	
+    
     
 	//작업일보함
     @RequestMapping(value= "/work/workDailyReport", method = RequestMethod.GET)
