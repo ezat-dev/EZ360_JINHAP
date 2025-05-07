@@ -158,7 +158,7 @@
                     Highcharts.chart('chartContainer', {
                         chart: { type: 'line' },
                         title: {
-                            text: '온도 경향'
+                            text: '온도 경향 모니터링'
                         },
                         xAxis: {
                             categories: categories,
