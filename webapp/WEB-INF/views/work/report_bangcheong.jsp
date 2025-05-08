@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>K-BLACK</title>
+    <title>방청</title>
 <style>
     .tab {
         width: 99%;
@@ -70,7 +70,7 @@
 <body>
   <main>
      <div class="tab">
-	     <h2>K-BLACK</h2>
+	     <h2>쇼트(6호기)</h2>
 	    <div class="tab-controls">
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
@@ -78,11 +78,11 @@
 	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 	        </button>
 	    </div>
-	    <div id="m_code">G04-GG07</div>
+	    <div id="m_code">방청없어</div>
 	</div>
 
         <div class="view">
-            <div id="table1"></div>
+           <!--  <div id="table1"></div> -->
             <div id="table2"></div>
             <div id="table3"></div>
         </div>
@@ -104,9 +104,7 @@
         contentType: "application/json",
         data: JSON.stringify({ s_time, e_time, m_code }),
         success: function(response) {
-//        	console.log(response);
-        	console.log(response.table1);
-          table1.setData(response.table1);
+
           table2.setData(response.table2);
           table3.setData(response.table3);
         },
@@ -131,9 +129,13 @@
         height: "115px",
         layout: "fitColumns",
         columns: [
-        	  { title: "점도</br>PLUS : 48±5초</br>ML : 35±5초",       value: "gb" },
-              { title: "예열존온도</br>(설정값±10°C)", field: "pre_temp" },
-              { title: "가열존온도</br>(설정값±10°C)", field: "heat_temp" }
+          { title: "주간/야간", field: "gb" },
+          { title: "점도", field: "visc" },
+          { title: "점도", field: "visc" },
+          { title: "예열존온도", field: "pre_temp" },
+          { title: "가열존온도", field: "heat_temp" },
+          { title: "액온도", field: "liq_temp" },
+          { title: "비중", field: "sg" }
         ]
       });
 
@@ -168,16 +170,10 @@
           { title: "완료시간", field: "end_time" },
           { title: "투입통수", field: "tong_day" },
           { title: "작업중량(kg)", field: "weight_day" },
-          { title: "분할횟수", field: "a" },
+      
           { title: "품명", field: "item_nm" },
           { title: "품번", field: "item_cd" },
-          { title: "후처리 사양", field: "next_facility" },
-          { title: "검사항목", columns: [
-              { title: "외관", field: "b" },
-              { title: "밀착성 테스트", field: "c" },
-              { title: "합부판정", field: "d" }
-            ]
-          },
+       
           { title: "구분</br>(신규/재작업)", field: "e" },
           { title: "비고", field: "f" }
         ]

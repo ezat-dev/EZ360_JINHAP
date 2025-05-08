@@ -1,5 +1,7 @@
 package com.geomet.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +42,30 @@ public class WorkController {
     public String machineEfficStatus(Model model) {
         return "/work/machineEfficStatus.jsp"; // 
     }	
+    
+ // 설비효율 관리 리스트
+
+    @RequestMapping(value = "/work/machineEfficStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> getMachineEfficStatusList() {
+        Work work = new Work(); 
+        List<Work> list = workService.getMachineEfficStatusList(work);
+
+       // System.out.println("=== 설비효율 리스트 출력 ===");
+        if (list != null && !list.isEmpty()) {
+            for (Work item : list) {
+        //        System.out.println(item);
+            }
+        } else {
+            System.out.println("데이터 없음.");
+        }
+
+        return list;
+    }
+
+    
+    
+    
 	
 	//생산 모니터링 현황, 투입시간 준수율 포함
     @RequestMapping(value= "/work/monitoringStatus", method = RequestMethod.GET)
@@ -59,6 +85,40 @@ public class WorkController {
     public String workDailyReport(Model model) {
         return "/work/workDailyReport.jsp"; // 
     }
+    
+    
+    @RequestMapping(value = "/work/workDailyReport/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getworkDailyReportList(@RequestBody Work work) {
+        System.out.println("==[ 원본 Work 객체 정보 ]==");
+        System.out.println("raw s_time: " + work.getS_time());
+        System.out.println("raw e_time: " + work.getE_time());
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+         String sTimeWithOffset = work.getS_time() + "0800";
+
+        LocalDate eDate = LocalDate.parse(work.getE_time(), fmt).plusDays(1);
+        String eTimeWithOffset = eDate.format(fmt) + "0800";
+
+
+        work.setS_time(sTimeWithOffset);
+        work.setE_time(eTimeWithOffset);
+
+        System.out.println("==[ 변환된 Work 객체 정보 ]==");
+        System.out.println("s_time: " + work.getS_time());
+        System.out.println("e_time: " + work.getE_time());
+        System.out.println("m_code: "  + work.getM_code());
+
+      
+        Map<String, Object> result = new HashMap<>();
+        result.put("table1", workService.getReportInputLIst(work));
+        result.put("table2", workService.getWorkDailySum(work));
+        result.put("table3", workService.getWorkDailyList(work));
+        return result;
+    }
+
+
 	
 	//재고관리(약품) - 발주현황 반영
     @RequestMapping(value= "/work/inventoryStatus", method = RequestMethod.GET)

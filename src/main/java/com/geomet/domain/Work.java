@@ -31,7 +31,317 @@ public class Work {
     private String status;
     private String nextMonth;
     private String filed_name;
-
+    
+    
+    //설비효율 관리
+    private String facility_name;
+    private String a;
+    private String b;
+    private String c;
+    private String d;
+    private String weight;
+    private String weight_wr;
+    
+    
+    //작업일보
+    private String r_num;
+    private String start_time;
+    private String end_time;
+    private String tong_day;
+    private String weight_day;
+    private String item_nm;
+    private String item_cd;
+    private String next_facility;
+    private String e;
+    private String f;
+    private String s_time;
+    private String e_time;
+    private String m_code;
+    //작업일보 합계
+    private String mach_code;
+	/*
+	 * private String tong_day; private String weight_day;
+	 */
+    private String tong_sum;
+    private String weight_sum;
+    private String work_time;
+    private String work_percent;
+    private String sum_time;
+    private String sum_percent;
+    private String avg_day;
+    private String avg_sum;
+    private String uph;
+    private String uph_sum;
+    
+    //작업일보 인풋
+    private String idx;
+    private String mch_code;
+    private String mch_name;
+    private String gb;
+    private String visc;
+    private String pre_temp;
+    private String heat_temp;
+    private String liq_temp;
+    private String sg;
+    private String input_date;
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	public String getR_num() {
+		return r_num;
+	}
+	public void setR_num(String r_num) {
+		this.r_num = r_num;
+	}
+	public String getStart_time() {
+		return start_time;
+	}
+	public void setStart_time(String start_time) {
+		this.start_time = start_time;
+	}
+	public String getEnd_time() {
+		return end_time;
+	}
+	public void setEnd_time(String end_time) {
+		this.end_time = end_time;
+	}
+	public String getTong_day() {
+		return tong_day;
+	}
+	public void setTong_day(String tong_day) {
+		this.tong_day = tong_day;
+	}
+	public String getWeight_day() {
+		return weight_day;
+	}
+	public void setWeight_day(String weight_day) {
+		this.weight_day = weight_day;
+	}
+	public String getItem_nm() {
+		return item_nm;
+	}
+	public void setItem_nm(String item_nm) {
+		this.item_nm = item_nm;
+	}
+	public String getItem_cd() {
+		return item_cd;
+	}
+	public void setItem_cd(String item_cd) {
+		this.item_cd = item_cd;
+	}
+	public String getNext_facility() {
+		return next_facility;
+	}
+	public void setNext_facility(String next_facility) {
+		this.next_facility = next_facility;
+	}
+	public String getE() {
+		return e;
+	}
+	public void setE(String e) {
+		this.e = e;
+	}
+	public String getF() {
+		return f;
+	}
+	public void setF(String f) {
+		this.f = f;
+	}
+	public String getS_time() {
+		return s_time;
+	}
+	public void setS_time(String s_time) {
+		this.s_time = s_time;
+	}
+	public String getE_time() {
+		return e_time;
+	}
+	public void setE_time(String e_time) {
+		this.e_time = e_time;
+	}
+	public String getM_code() {
+		return m_code;
+	}
+	public void setM_code(String m_code) {
+		this.m_code = m_code;
+	}
+	public String getMach_code() {
+		return mach_code;
+	}
+	public void setMach_code(String mach_code) {
+		this.mach_code = mach_code;
+	}
+	public String getTong_sum() {
+		return tong_sum;
+	}
+	public void setTong_sum(String tong_sum) {
+		this.tong_sum = tong_sum;
+	}
+	public String getWeight_sum() {
+		return weight_sum;
+	}
+	public void setWeight_sum(String weight_sum) {
+		this.weight_sum = weight_sum;
+	}
+	public String getWork_time() {
+		return work_time;
+	}
+	public void setWork_time(String work_time) {
+		this.work_time = work_time;
+	}
+	public String getWork_percent() {
+		return work_percent;
+	}
+	public void setWork_percent(String work_percent) {
+		this.work_percent = work_percent;
+	}
+	public String getSum_time() {
+		return sum_time;
+	}
+	public void setSum_time(String sum_time) {
+		this.sum_time = sum_time;
+	}
+	public String getSum_percent() {
+		return sum_percent;
+	}
+	public void setSum_percent(String sum_percent) {
+		this.sum_percent = sum_percent;
+	}
+	public String getAvg_day() {
+		return avg_day;
+	}
+	public void setAvg_day(String avg_day) {
+		this.avg_day = avg_day;
+	}
+	public String getAvg_sum() {
+		return avg_sum;
+	}
+	public void setAvg_sum(String avg_sum) {
+		this.avg_sum = avg_sum;
+	}
+	public String getUph() {
+		return uph;
+	}
+	public void setUph(String uph) {
+		this.uph = uph;
+	}
+	public String getUph_sum() {
+		return uph_sum;
+	}
+	public void setUph_sum(String uph_sum) {
+		this.uph_sum = uph_sum;
+	}
+	public String getIdx() {
+		return idx;
+	}
+	public void setIdx(String idx) {
+		this.idx = idx;
+	}
+	public String getMch_code() {
+		return mch_code;
+	}
+	public void setMch_code(String mch_code) {
+		this.mch_code = mch_code;
+	}
+	public String getMch_name() {
+		return mch_name;
+	}
+	public void setMch_name(String mch_name) {
+		this.mch_name = mch_name;
+	}
+	public String getGb() {
+		return gb;
+	}
+	public void setGb(String gb) {
+		this.gb = gb;
+	}
+	public String getVisc() {
+		return visc;
+	}
+	public void setVisc(String visc) {
+		this.visc = visc;
+	}
+	public String getPre_temp() {
+		return pre_temp;
+	}
+	public void setPre_temp(String pre_temp) {
+		this.pre_temp = pre_temp;
+	}
+	public String getHeat_temp() {
+		return heat_temp;
+	}
+	public void setHeat_temp(String heat_temp) {
+		this.heat_temp = heat_temp;
+	}
+	public String getLiq_temp() {
+		return liq_temp;
+	}
+	public void setLiq_temp(String liq_temp) {
+		this.liq_temp = liq_temp;
+	}
+	public String getSg() {
+		return sg;
+	}
+	public void setSg(String sg) {
+		this.sg = sg;
+	}
+	public String getInput_date() {
+		return input_date;
+	}
+	public void setInput_date(String input_date) {
+		this.input_date = input_date;
+	}
+	public String getFacility_name() {
+		return facility_name;
+	}
+	public void setFacility_name(String facility_name) {
+		this.facility_name = facility_name;
+	}
+	public String getA() {
+		return a;
+	}
+	public void setA(String a) {
+		this.a = a;
+	}
+	public String getB() {
+		return b;
+	}
+	public void setB(String b) {
+		this.b = b;
+	}
+	public String getC() {
+		return c;
+	}
+	public void setC(String c) {
+		this.c = c;
+	}
+	public String getD() {
+		return d;
+	}
+	public void setD(String d) {
+		this.d = d;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
+	}
+	public String getWeight_wr() {
+		return weight_wr;
+	}
+	public void setWeight_wr(String weight_wr) {
+		this.weight_wr = weight_wr;
+	}
 	public String getFiled_name() {
 		return filed_name;
 	}

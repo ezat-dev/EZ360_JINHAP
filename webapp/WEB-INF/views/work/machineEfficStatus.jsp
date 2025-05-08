@@ -3,218 +3,87 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>설비효율관리</title>
-<link rel="stylesheet" href="/geomet/css/searchBar/searchBar.css">
     <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
-    <style>
-        .container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            margin-left: 1008px;
-            margin-top: 200px;
-        }
-        .view {
-            display: flex;
-            justify-content: center;
-            margin-top: 1%;
-        }
-        .tab {
-            width: 95%;
-            margin-bottom: 37px;
-            margin-top: 5px;
-            height: 45px;
-            border-radius: 6px 6px 0px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .modal {
-            display: none;
-            position: fixed;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            transition: opacity 0.3s ease-in-out;
-        }
-	    .modal-content {
-	        background: white;
-	        width: 24%;
-	        max-width: 500px;
-	        height: 80vh; 
-	        overflow-y: auto; 
-	        margin: 6% auto 0;
-	        padding: 20px;
-	        border-radius: 10px;
-	        position: relative;
-	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-	        transform: scale(0.8);
-	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-	        opacity: 0;
-	    }
-        .modal.show {
-            display: block;
-            opacity: 1;
-        }
-        .modal.show .modal-content {
-            transform: scale(1);
-            opacity: 1;
-        }
-        .close {
-            background-color:white;
-            position: absolute;
-            right: 15px;
-            top: 10px;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .modal-content form {
-            display: flex;
-            flex-direction: column;
-        }
-        .modal-content label {
-            font-weight: bold;
-            margin: 10px 0 5px;
-        }
-        .modal-content input, .modal-content textarea {
-            width: 97%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        select {
-            width: 100%;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .modal-content button {
-            background-color: #d3d3d3;
-            color: black;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            margin-top: 10px;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        .modal-content button:hover {
-            background-color: #a9a9a9;
-        }
-        .button-container {
-    		display: flex;
-		    gap: 10px;
-		    margin-left: auto;
-		    margin-right: 10px;
-		    margin-top: 40px;
-		}
-		.box1 {
-		    display: flex;
-		    justify-content: right;
-		    align-items: center;
-		    width: 800px;
-		    margin-right: 20px;
-		    margin-top:4px;
-		}
-        .dayselect {
-            width: 20%;
-            text-align: center;
-            font-size: 15px;
-        }
-        .daySet {
-        	width: 20%;
-      		text-align: center;
-            height: 16px;
-            padding: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            font-size: 15px;
-        }
-        .daylabel {
-            margin-right: 10px;
-            margin-bottom: 13px;
-            font-size: 18px;
-            margin-left: 20px;
-        }
-        button-container.button{
-        height: 16px;
-        }
-        .mid{
-        margin-right: 9px;
-	    font-size: 20px;
-	    font-weight: bold;
-	
-	    height: 42px;
-	    margin-left: 9px;
-        }
+   <style>
+        #legend { position:absolute; top:20px; right:100px; background:#fff; border:1px solid #ccc; border-radius:6px; padding:8px 12px; font-family:Arial,sans-serif; font-size:14px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
+        #legend span { margin-right:16px; vertical-align:middle; }
+        #dataList { margin:80px auto 0; width:90%; }
+        .tabulator .tabulator-row.tabulator-selected { background-color: inherit !important; }
+   
+    .tabulator-cell.grade-S-cell { color: #2ca02c !important; }
+    .tabulator-cell.grade-A-cell { color: #1f77b4 !important; }
+    .tabulator-cell.grade-B-cell { color: #ff7f0e !important; }
+    .tabulator-cell.grade-C-cell { color: #d62728 !important; }
+    .tabulator-cell.grade-D-cell { color: #7f7f7f !important; }
     </style>
 </head>
-
 <body>
-
+    <div id="legend">
+        <span style="display:inline-block;width:12px;height:12px;background:#2ca02c;border-radius:2px;margin-right:4px;"></span>85% 이상 S
+        <span style="display:inline-block;width:12px;height:12px;background:#1f77b4;border-radius:2px;margin:0 4px 0 16px;"></span>80%~84.9% A
+        <span style="display:inline-block;width:12px;height:12px;background:#ff7f0e;border-radius:2px;margin:0 4px 0 16px;"></span>75%~79.9% B
+        <span style="display:inline-block;width:12px;height:12px;background:#d62728;border-radius:2px;margin:0 4px 0 16px;"></span>70%~74.9% C
+        <span style="display:inline-block;width:12px;height:12px;background:#7f7f7f;border-radius:2px;margin:0 4px 0 16px;"></span>70% 이하 D
+    </div>
     <main class="main">
-       
-
         <div class="view">
             <div id="dataList"></div>
         </div>
     </main>
-	
-	   
-
     <script>
-        $(function() {
-            getDataList();
-
-        });
-
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
+        $(document).ready(function() {
+            new Tabulator("#dataList", {
                 height: "760px",
-                layout: "fitColumns",
+                layout: "fitDataFill",
+                columnMinWidth: 170,
                 selectable: true,
                 tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
                 headerHozAlign: "center",
                 ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/work/machineEfficStatus/selectList",
-                ajaxProgressiveLoad: "scroll",
-           
+                ajaxURL: "/geomet/work/machineEfficStatus/list",
                 placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
                 ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
                     return response;
                 },
                 columns: [
-                    {title: "설비명", field: "facility_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "생산효율", field: "a", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "가동효율", field: "b", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "양품율", field: "c", sorter: "string", width: 550, hozAlign: "center", headerSort: false},
-                    {title: "종합효율", field: "d", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                    {title: "등급", field: "d", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-                  
-                ],
-            });
-        }
+                    { title: "설비명",      field: "facility_name", width: 260, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "생산효율(%)",    field: "a",              width: 260, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "가동효율(%)",    field: "b",              width: 260, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "양품율(%)",      field: "c",              width: 260, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "종합효율(%)",    field: "d",              width: 270, sorter: "string", hozAlign: "center", headerSort: false },
+                    {
+                        title: "등급", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
+                        formatter: function(cell) {
+                          var v = cell.getValue() * 100,
+                              grade,
+                              el = cell.getElement();
 
-     
-        	
+                         
+                          el.classList.remove("grade-S-cell","grade-A-cell","grade-B-cell","grade-C-cell","grade-D-cell");
 
+                          if (v >= 85) { grade = "S"; el.classList.add("grade-S-cell"); }
+                          else if (v >= 80) { grade = "A"; el.classList.add("grade-A-cell"); }
+                          else if (v >= 75) { grade = "B"; el.classList.add("grade-B-cell"); }
+                          else if (v >= 70) { grade = "C"; el.classList.add("grade-C-cell"); }
+                          else              { grade = "D"; el.classList.add("grade-D-cell"); }
 
-        
+                          return grade;
+                        }
+                    }
+                  ]
+                });
+              });
     </script>
-
 </body>
 </html>
+
+
+
+
+
+
+

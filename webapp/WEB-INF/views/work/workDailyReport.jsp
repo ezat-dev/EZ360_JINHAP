@@ -37,7 +37,7 @@
         }
         iframe {
             width: 100%;
-            height: 500px; /* 원하는 높이 설정 */
+            height: 750px; /* 원하는 높이 설정 */
             border: none;
         }
     </style>

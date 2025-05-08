@@ -24,5 +24,29 @@ public class WorkServiceImpl implements WorkService {
     public void insertinventoryStatus(Work work) {
 		workDao.insertinventoryStatus(work); 	   
     }
+	
+	
+	//생산관리
+	@Override
+	public List<Work> getMachineEfficStatusList(Work work){
+		return workDao.getMachineEfficStatusList(work);
+	}
+	
+	
+	
+	 	@Override
+	    public List<Work> getWorkDailyList(Work work) {
+	        return workDao.getWorkDailyList(work);
+	    }
+
+	    @Override
+	    public List<Work> getWorkDailySum(Work work) {
+	        return workDao.getWorkDailySum(work);
+	    }
+
+	    @Override
+	    public List<Work> getReportInputLIst(Work work) {
+	        return workDao.getReportInputLIst(work);
+	    }
 
 }

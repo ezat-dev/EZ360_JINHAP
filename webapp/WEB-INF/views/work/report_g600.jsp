@@ -8,34 +8,80 @@
     <meta charset="UTF-8">
     <title>1호기(G-600)</title>
 <style>
-    .view {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
-        padding: 20px;
-        box-sizing: border-box;
-        width: 100%;
-    }
-    .view > div {
-        width: 100%;
-    }
-h2 {
-    margin-left: 20px;
-}
-  
-    .tabulator .tabulator-cell,
-    .tabulator .tabulator-header .tabulator-col .tabulator-col-title {
-        text-align: center !important;
-        justify-content: center !important;
+    .tab {
+        width: 99%;
+        margin-bottom: 37px;
+        margin-top: 5px;
+        height: 55px;
+        border-radius: 6px 6px 0px 0px;
         display: flex;
         align-items: center;
+        justify-content: space-between;
     }
+
+    .tab-header {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .tab-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+    }
+
+	.tab-controls label {
+	    margin-right: 5px;
+	    font-weight: 500;
+	   	font-size: 19px;
+	}
+	
+	.tab-controls input.daySet {
+	    padding: 6px 12px;
+	    font-size: 19px;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    width: 150px;
+	    text-align: center;
+	}
+
+
+
+    .button-image {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+    }
+
+    #m_code {
+        display: none;
+    }
+    h2 {
+    margin-left: 20px;
+	}
+
 </style>
+
+
 
 </head>
 <body>
-    <main>
-        <h2>1호기(G-600)</h2>
+  <main>
+     <div class="tab">
+	     <h2>1호기(G-600)</h2>
+	    <div class="tab-controls">
+	        <label for="s_time">검색일자 :</label>
+	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
+	        <button class="select-button" onclick="loadWorkDailyData()">
+	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+	        </button>
+	    </div>
+	    <div id="m_code">G03-GG03</div>
+	</div>
+
         <div class="view">
             <div id="table1"></div>
             <div id="table2"></div>
@@ -44,72 +90,105 @@ h2 {
     </main>
 
 <script>
-    $(function(){
+    let table1, table2, table3;
+
+    function loadWorkDailyData() {
+      let s_time = $("#s_time").val().replaceAll("-", "");
+      let e_time = s_time;
+      let m_code = $("#m_code").text().trim();
+
+      console.log("보내는 값:", { s_time, e_time, m_code });
+
+      $.ajax({
+        type: "POST",
+        url: "/geomet/work/workDailyReport/list",
+        contentType: "application/json",
+        data: JSON.stringify({ s_time, e_time, m_code }),
+        success: function(response) {
+//        	console.log(response);
+        	console.log(response.table1);
+          table1.setData(response.table1);
+          table2.setData(response.table2);
+          table3.setData(response.table3);
+        },
+        error: function(xhr, status, error) {
+          console.error("에러 응답:", xhr.responseText);
+          alert("조회에 실패했습니다.");
+        }
+      });
+    }
+
+    $(function() {
+        const today = new Date().toISOString().split('T')[0];
+        $('#s_time').val(today);
         initTables();
+        loadWorkDailyData();
     });
 
-    function initTables(){
-        new Tabulator("#table1", {
-            height: "115px",
-            layout: "fitColumns",
-            ajaxURL: "",
-            columns: [
-                { title: "점도",        field: "1" },
-                { title: "예열존온도", field: "2" },
-                { title: "가열존온도", field: "3" },
-                { title: "액온도",     field: "4" },
-                { title: "비중",       field: "5" }
-            ],
 
-        });
+    function initTables() {
+    	 
+    	table1 = new Tabulator("#table1", {
+    	    height: "115px",
+    	    layout: "fitColumns",
+    	    columns: [
+    	        { title: "주간/야간", field: "gb", hozAlign: "center" },
+    	        { title: "점도", field: "visc", hozAlign: "center" },
+    	        { title: "예열존온도", field: "pre_temp", hozAlign: "center" },
+    	        { title: "가열존온도", field: "heat_temp", hozAlign: "center" },
+    	        { title: "액온도", field: "liq_temp", hozAlign: "center" },
+    	        { title: "비중", field: "sg", hozAlign: "center" }
+    	    ]
+    	});
 
-        new Tabulator("#table2", {
-            height: "115px",
-            layout: "fitColumns",
-            ajaxURL: "",
-            columns: [
-                {title:"일 작업통수",    field:"6"},
-                {title:"생산량",        field:"7"},
-                {title:"평균생산중량",  field:"8"},
-                {title:"누적 생산통수", field:"9"},
-                {title:"누적 생산량",   field:"10"},
-                {title:"평균중량",      field:"11"},
-                {title:"가동시간",      field:"12"},
-                {title:"가동률",        field:"13"},
-                {title:"월누적", columns:[
-                    {title:"가동시간",      field:"14"},
-                    {title:"가동율",        field:"15"},
-                    {title:"UPH",           field:"16"},
-                    {title:"UPH(월누적)",   field:"17"},
-                ]},
-            ],
-        });
+    	table2 = new Tabulator("#table2", {
+    	    height: "115px",
+    	    layout: "fitColumns",
+    	    columns: [
+    	        { title: "일 작업통수", field: "tong_day", hozAlign: "center" },
+    	        { title: "생산량", field: "weight_day", hozAlign: "center" },
+    	        { title: "평균생산중량", field: "avg_day", hozAlign: "center" },
+    	        { title: "누적 생산통수", field: "tong_sum", hozAlign: "center" },
+    	        { title: "누적 생산량", field: "weight_sum", hozAlign: "center" },
+    	        { title: "평균중량", field: "avg_sum", hozAlign: "center" },
+    	        { title: "가동시간", field: "work_time", hozAlign: "center" },
+    	        { title: "가동률", field: "work_percent", hozAlign: "center" },
+    	        { title: "월누적", columns: [
+    	            { title: "가동시간", field: "sum_time", hozAlign: "center" },
+    	            { title: "가동율", field: "sum_percent", hozAlign: "center" },
+    	            { title: "UPH", field: "uph", hozAlign: "center" },
+    	            { title: "UPH(월누적)", field: "uph_sum", hozAlign: "center" }
+    	        ]}
+    	    ]
+    	});
 
-        new Tabulator("#table3", {
-            height: "400px",
-            layout: "fitColumns",
-            ajaxURL: "",
-            columns: [
-                {title:"순서",             field:"18"},
-                {title:"투입시간",         field:"19"},
-                {title:"완료시간",         field:"20"},
-                {title:"투입통수",         field:"21"},
-                {title:"작업중량(kg)",     field:"22"},
-                {title:"분할횟수",         field:"23"},
-                {title:"품명",             field:"24"},
-                {title:"품번",             field:"25"},
-                {title:"후처리 사양",      field:"26"},
-                {title:"검사항목", columns:[
-                    {title:"외관",          field:"27"},
-                    {title:"밀착성 테스트", field:"28"},
-                    {title:"합부판정",     field:"29"},
-                ]},
-                
-                {title:"구분</br>(신규/재작업)", field:"30"},
-                {title:"비고",             field:"31"},
-            ],
-        });
+    	table3 = new Tabulator("#table3", {
+    	    height: "400px",
+    	    layout: "fitColumns",
+    	    columns: [
+    	        { title: "순서", field: "r_num", hozAlign: "center" },
+    	        { title: "투입시간", field: "start_time", hozAlign: "center" },
+    	        { title: "완료시간", field: "end_time", hozAlign: "center" },
+    	        { title: "투입통수", field: "tong_day", hozAlign: "center" },
+    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center" },
+    	        { title: "분할횟수", field: "a", hozAlign: "center" },
+    	        { title: "품명", field: "item_nm", hozAlign: "center" },
+    	        { title: "품번", field: "item_cd", hozAlign: "center" },
+    	        { title: "후처리 사양", field: "next_facility", hozAlign: "center" },
+    	        { title: "검사항목", columns: [
+    	            { title: "외관", field: "b", hozAlign: "center" },
+    	            { title: "밀착성 테스트", field: "c", hozAlign: "center" },
+    	            { title: "합부판정", field: "d", hozAlign: "center" }
+    	        ]},
+    	        { title: "구분</br>(신규/재작업)", field: "e", hozAlign: "center" },
+    	        { title: "비고", field: "f", hozAlign: "center" }
+    	    ]
+    	});
+
     }
+
+    
 </script>
+
 </body>
 </html>

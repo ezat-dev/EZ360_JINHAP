@@ -24,4 +24,29 @@ public class WorkDaoImpl implements WorkDao {
     public void insertinventoryStatus(Work work) {
            sqlSession.insert("work.insertinventoryStatus", work);
     }
+    
+    
+    @Override
+    public List<Work> getMachineEfficStatusList(Work work) {
+        return sqlSession.selectList("work.getMachineEfficStatusList", work);
+    }
+    
+    
+    // 작업일보
+    @Override
+    public List<Work> getWorkDailyList(Work work) {
+        return sqlSession.selectList("work.getWorkDailyList", work);
+    }
+
+    // 작업일보 
+    @Override
+    public List<Work> getWorkDailySum(Work work) {
+        return sqlSession.selectList("work.getWorkDailySum", work);
+    }
+
+    // 작업일보 
+    @Override
+    public List<Work> getReportInputLIst(Work work) {
+        return sqlSession.selectList("work.getReportInputLIst", work);
+    }
 }

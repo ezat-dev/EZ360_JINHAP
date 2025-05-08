@@ -78,4 +78,208 @@
   WHERE id = #{id}
 </update>
 
+
+
+
+
+
+
+ <select id="getMachineEfficStatusList" resultType="Work">
+    SELECT facility_name, a, b, c, d
+    FROM v_machineefficstatus
+</select>
+
+
+
+
+
+
+  <select id="getWorkDailyList" parameterType="Work" resultType="Work">
+    SELECT
+      ROW_NUMBER() OVER(ORDER BY end_time) AS r_num,
+      start_time,
+      end_time,
+      tong_day,
+      weight_day,
+      item_nm,
+      item_cd,
+      next_facility,
+      '' AS a,
+      '' AS b,
+      '' AS c,
+      '' AS d,
+      '' AS e,
+      '' AS f
+    FROM (
+      SELECT
+        *,
+        LEAD(facility_name) OVER(PARTITION BY barcode_no ORDER BY start_time) AS next_facility
+      FROM (
+        SELECT
+          mach_code,
+          barcode_no,
+          weight AS weight_day,
+          1 AS tong_day,
+          fac.facility_name,
+          start_time,
+          end_time,
+          item_cd,
+          item_nm,
+          LEAD(start_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time
+        FROM tb_lowdata_save AS lows
+        INNER JOIN tb_facility AS fac
+          ON lows.mach_code = fac.facility_mach_code
+        WHERE 1=1
+          <if test="s_time != null">
+            AND end_time &gt;= #{s_time}
+          </if>
+          <if test="e_time != null">
+            AND end_time &lt;= #{e_time}
+          </if>
+          <if test="m_code != null">
+            AND mach_code = #{m_code}
+          </if>
+          AND weight IS NOT NULL
+          AND start_time IS NOT NULL
+          AND end_time IS NOT NULL
+      ) AS aa
+    ) AS bb
+    <where>
+      <if test="m_code != null">
+        mach_code = #{m_code}
+      </if>
+    </where>
+    ORDER BY end_time
+  </select>
+  
+  
+  
+  <select id="getWorkDailySum" parameterType="com.geomet.domain.Work" resultType="com.geomet.domain.Work">
+    SELECT
+      mach_code,
+      tong_day,
+      (tong_day * std_weight)   AS weight_day,
+      tong_sum,
+      (tong_sum * std_weight)   AS weight_sum,
+      work_time,
+      work_time / 24            AS work_percent,
+      (diff_day * 24)           AS sum_time,
+      (diff_day * 20) / (diff_day * 24) AS sum_percent,
+      (tong_day * std_weight) / tong_day AS avg_day,
+      (tong_sum * std_weight) / tong_sum AS avg_sum,
+      work_time / tong_day      AS uph,
+      (diff_day * 24) / tong_sum AS uph_sum
+    FROM (
+      SELECT
+        mach_code,
+        SUM(CASE
+              WHEN end_time &gt;= #{s_time}
+               AND end_time &lt;= #{e_time}
+              THEN 1
+              ELSE 0
+            END)                       AS tong_day,
+        SUM(CASE
+              WHEN end_time &gt;= #{s_time}
+               AND end_time &lt;= #{e_time}
+              THEN weight
+              ELSE 0
+            END)                       AS weight_day,
+        SUM(1)                        AS tong_sum,
+        SUM(weight)                   AS weight_sum,
+        MAX(CASE
+              WHEN #{s_time} &lt;= end_time
+               AND end_time &lt;= #{e_time}
+              THEN
+                CASE
+                  WHEN TIMESTAMPDIFF(
+                         HOUR,
+                         STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
+                         NOW()
+                       ) = 0
+                   THEN 1
+                   ELSE TIMESTAMPDIFF(
+                          HOUR,
+                          STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
+                          NOW()
+                        )
+                END
+              ELSE 0
+            END)                       AS work_time,
+        TIMESTAMPDIFF(
+          DAY,
+          MIN(end_time),
+          MAX(end_time)
+        )                            AS diff_day,
+        MAX(std_weight)               AS std_weight
+      FROM tb_lowdata_save lows
+      INNER JOIN tb_facility fac
+        ON lows.mach_code = fac.facility_mach_code
+      WHERE 1=1
+        <if test="m_code != null">
+          AND mach_code = #{m_code}
+        </if>
+        <if test="s_time != null">
+          AND end_time &gt;= #{s_time}
+        </if>
+        <if test="e_time != null">
+          AND end_time &lt;= #{e_time}
+        </if>
+        AND weight IS NOT NULL
+        AND start_time IS NOT NULL
+        AND end_time IS NOT NULL
+      GROUP BY mach_code
+    ) AS agg
+  </select>
+  
+<select id="getReportInputLIst" parameterType="Work" resultType="Work">
+  SELECT
+    idx,
+    input_date,
+    mch_code,
+    mch_name,
+    gb,
+    visc,
+    pre_temp,
+    heat_temp,
+    liq_temp,
+    sg
+  FROM tb_report_input
+  WHERE 1=1
+    <if test="s_time != null and e_time != null">
+      AND input_date BETWEEN #{s_time} AND #{e_time}
+    </if>
+    <if test="m_code != null">
+      AND mch_code = #{m_code}
+    </if>
+</select>
+
+  
+  
+  <insert id="getReportInput" parameterType="Work">
+  INSERT INTO tb_report_input (
+    input_date,
+    mch_code,
+    mch_name,
+    gb,
+    visc,
+    pre_temp,
+    heat_temp,
+    liq_temp,
+    sg
+  ) VALUES (
+    #{s_time},
+    #{m_code},
+    #{mch_name},
+    #{gb},
+    #{visc},
+    #{pre_temp},
+    #{heat_temp},
+    #{liq_temp},
+    #{sg}
+  )
+</insert>
+  
+  
 </mapper>
+
+
