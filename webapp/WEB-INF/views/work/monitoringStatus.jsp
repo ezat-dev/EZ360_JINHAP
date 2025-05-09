@@ -1,44 +1,77 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="../include/pluginpage.jsp" %>
+<jsp:include page="../include/tabBar.jsp"/>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>생산모니터링</title>
-<%@include file="../include/pluginpage.jsp" %>    
-    <jsp:include page="../include/tabBar.jsp"/>
-    <style>
-        .container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            margin-left: 1008px;
-            margin-top: 200px;
-        }
-        .view {
-            display: flex;
-            justify-content: center;
-            margin-top: 1%;
-        }
-        .tab {
-            width: 95%;
-            margin-bottom: 37px;
-            margin-top: 5px;
-            height: 45px;
-            border-radius: 6px 6px 0px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .modal {
+    <title>1호기(G-600)</title>
+<style>
+    .tab {
+        width: 99%;
+        margin-bottom: 37px;
+        margin-top: 5px;
+        height: 55px;
+        border-radius: 6px 6px 0px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .tab-header {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .tab-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+    }
+
+	.tab-controls label {
+	    margin-right: 5px;
+	    font-weight: 500;
+	   	font-size: 19px;
+	}
+	
+.tab-controls input.daySet {
+    margin-top: 10px;
+    padding: 6px 12px;
+    font-size: 19px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 150px;
+    text-align: center;
+    height: 25px;
+}
+
+
+
+    .button-image {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+    }
+
+    #m_code {
+        display: none;
+    }
+    h2 {
+    margin-left: 20px;
+	}
+   .modal {
             display: none;
             position: fixed;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+        
             transition: opacity 0.3s ease-in-out;
         }
 	    .modal-content {
@@ -96,17 +129,17 @@
             border-radius: 5px;
         }
         .modal-content button {
-            background-color: #d3d3d3;
+       
             color: black;
             padding: 10px;
             border: none;
             border-radius: 5px;
             margin-top: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+          
         }
         .modal-content button:hover {
-            background-color: #a9a9a9;
+  
         }
         .button-container {
     		display: flex;
@@ -155,224 +188,238 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
-    </style>
+        .row_select {
+	    background-color: #ffeeba !important;
+	    }
+</style>
+
+
+
 </head>
-
 <body>
-
-    <main class="main">
-        <div class="tab">
-        
-
-            <div class="button-container">
-            
-               <div class="box1">
-	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-	           <label class="daylabel">검색일자 :</label>
-				<input type="text" autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-				
-				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
-	
-				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-	
-	            <label class="daylabel">설비명 :</label>
-	            <select class="dayselect">
-             
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
-			</div>
-                <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-                </button>
-                <button class="insert-button">
+  <main>
+     <div class="tab">
+	     <h2>1호기(G-600)</h2>
+	    <div class="tab-controls">
+	        <label for="s_time">검색일자 :</label>
+	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
+	        <button class="select-button" onclick="loadWorkDailyData()">
+	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+	        </button>
+	          <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button>
-                <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
-            </div>
-        </div>
-
-        <div class="view">
-            <div id="dataList"></div>
-        </div>
-    </main>
-	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
-	            <label>설비명</label>
-	            <select name="equipmentName">
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
-	            </select>
-	
-	            <label>점검</label>
-	              <select name="select1">
-	                <option value="일상">일상</option>
-	                <option value="정기">정기</option>
-	            </select>
-	
-	            <label>정비</label>
-	           	<select name="select2">
-	                <option value="예방">예방</option>
-	            	<option value="돌발">돌발</option>
-	            </select>
-	
-	            <label>점검 및 정비 내용</label>
-	           <input type="text" name="nextDate">
-
-	
-	            <label>점검 결과</label>
-	            <select name="select3">
-	                <option value="양호">예방</option>
-	            	<option value="추가보안 필요">돌발</option>
-	            </select>
-	            
-	         
-	
-	            <label>비고</label>
-	            <textarea name="remarks" rows="4"></textarea>
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
+                      <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
+                
 	    </div>
+	    <div id="m_code">G03-GG03</div>
 	</div>
 
+        <div class="view">
+            <div id="table1"></div>
+            <div id="table2"></div>
+            <div id="table3"></div>
+        </div>
+    </main>
+    
+<div id="modalContainer" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>작업일보</h2>
+    <form id="corrForm" autocomplete="off">
+      <label>설비</label>
+      <input type="text" name="mch_name" value="G-600">
+      <input type="text" name="mch_code" value="G03-GG03"style="display:none;">
+ 	  
+ 	  <label>날짜</label>
+      <input type="text" name="input_date">
 
-    <script>
-        $(function() {
-            getDataList();
+      <label>주간 / 야간</label>
+      <select name="gb">
+        <option value="주간">주간</option>
+        <option value="야간">야간</option>
+      </select>
 
-            const today = new Date().toISOString().split('T')[0];
-            $('#startDate').val(today);
-            $('#endDate').val(today);
-        });
+      <label>점도(45±10초)</label>
+      <input type="text" name="visc">
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                    {title: "설비", field: "1", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "일 목표 생산량", field: "2", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "현 생산량(kg)", field: "3", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "시간당 생산량(kg)", field: "4", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "누적 진도율(%)", field: "5", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "장입량 준수율(%)", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "로트수", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "비가동 현황(시간)", field: "6", sorter: "string", width: 280, hozAlign: "center", headerSort: false},
-                    ],
-                   
-              
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
+      <label>예열존온도(설정값±10℃)</label>
+      <input type="text" name="pre_temp">
+
+      <label>가열존온도(설정값±10℃)</label>
+      <input type="text" name="heat_temp">
+
+      <label>액온도(38℃ 이하)</label>
+      <input type="text" name="liq_temp">
+
+      <label>비중(1.43±0.05)</label>
+      <input type="text" name="sg">
+
+      <button type="submit" id="saveCorrStatus">저장</button>
+      <button type="button" id="closeModal">닫기</button>
+    </form>
+  </div>
+</div>
+
+
+<script>
+
+
+
+  function loadWorkDailyData() {
+      let s_time = $("#s_time").val().replaceAll("-", "");
+      let e_time = s_time;
+      let m_code = $("#m_code").text().trim();
+
+      console.log("보내는 값:", { s_time, e_time, m_code });
+
+      $.ajax({
+        type: "POST",
+        url: "/geomet/work/monitoringStatus/list",
+        contentType: "application/json",
+        data: JSON.stringify({ s_time, e_time, m_code }),
+        success: function(response) {
+//        	console.log(response);
+
+          table2.setData(response.table2);
+          table3.setData(response.table3);
+        },
+        error: function(xhr, status, error) {
+          console.error("에러 응답:", xhr.responseText);
+          alert("조회에 실패했습니다.");
         }
+      });
+    }
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
-
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
+    $(function() {
+        const today = new Date().toISOString().split('T')[0];
+        $('#s_time').val(today);
+        initTables();
+        loadWorkDailyData();
+    });
 
 
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
-                
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
-
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
-
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
-
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
-        });
-
-        	
+    function initTables() {
+    	 
 
 
-        
-    </script>
+    	table2 = new Tabulator("#table2", {
+    	    height: "420px",
+    	    layout: "fitColumns",
+    	    headerHozAlign: "center",
+    	    columnDefaults: {
+    	        hozAlign: "center",
+    	        headerTooltip: false
+    	    },
+    	    columns: [
+    	        { title: "설비", field: "tong_day", hozAlign: "center", headerSort: false },
+    	        { title: "설비코드", field: "weight_day", hozAlign: "center", headerSort: false },
+    	        { title: "투입중량", field: "avg_day", hozAlign: "center", headerSort: false },
+    	        { title: "C/T", field: "tong_sum", hozAlign: "center", headerSort: false },
+    	        { title: "분할<br>횟수", field: "weight_sum", hozAlign: "center", headerSort: false },
+    	        { title: "작업횟수<br>(코팅)", field: "avg_sum", hozAlign: "center", headerSort: false },
+    	        { title: "가동일수", field: "work_time", hozAlign: "center", headerSort: false },
+    	        { title: "부여시간<br>(hr)", field: "work_percent", hozAlign: "center", headerSort: false },
+    	        { title: "목표 가동시간", field: "sum_time", hozAlign: "center", headerSort: false },
+    	        {
+    	            title: "일 생산실적 현황<br>(ton)",
+    	            columns: [
+    	                { title: "CAPA_일", field: "sum_percent", hozAlign: "center", headerSort: false },
+    	                { title: "생산실적", field: "uph", hozAlign: "center", headerSort: false },
+    	                { title: "달성율", field: "uph_day_rate", hozAlign: "center", headerSort: false },
+    	                { title: "과부족량", field: "uph_day_gap", hozAlign: "center", headerSort: false }
+    	            ]
+    	        },
+    	        {
+    	            title: "진도일(율) 대비 생산실적<br>(ton)",
+    	            columns: [
+    	                { title: "CAPA_월", field: "month_capa", hozAlign: "center", headerSort: false },
+    	                { title: "누적<br>capa", field: "capa_acc", hozAlign: "center", headerSort: false },
+    	                { title: "누적<br>생산실적", field: "prod_acc", hozAlign: "center", headerSort: false },
+    	                { title: "달성율", field: "prod_rate", hozAlign: "center", headerSort: false },
+    	                { title: "누적<br>과부족량", field: "prod_gap", hozAlign: "center", headerSort: false }
+    	            ]
+    	        }
+    	    ]
+    	});
+
+
+
+    	
+    	table3 = new Tabulator("#table3", {
+    	    height: "400px",
+    	    layout: "fitColumns",
+    	    headerHozAlign: "center",
+    	    columnDefaults: {
+    	        hozAlign: "center",
+    	        headerTooltip: false
+    	    },
+    	    columns: [
+    	        {
+    	            title: "목표",
+    	            columns: [
+    	                { title: "가동시간", field: "b", headerSort: false },
+    	                { title: "통/HR", field: "c", headerSort: false },
+    	                { title: "통/Shift", field: "d", headerSort: false },
+    	                { title: "계획량/일", field: "e", headerSort: false }
+    	            ]
+    	        },
+    	        {
+    	            title: "운영계획</br>(실제 가동시간 기준)",
+    	            columns: [
+    	                { title: "비가동시간", field: "f", headerSort: false },
+    	                { title: "실 가동시간", field: "g", headerSort: false },
+    	                { title: "목표", field: "h", headerSort: false }
+    	            ]
+    	        },
+    	        {
+    	            title: "실적(통)",
+    	            columns: [
+    	                { title: "주간", field: "i", headerSort: false },
+    	                { title: "야간", field: "j", headerSort: false },
+    	                { title: "합계", field: "k", headerSort: false },
+    	                {
+    	                    title: "달성율",
+    	                    columns: [
+    	                        { title: "목표", field: "l", headerSort: false },
+    	                        { title: "운영계획", field: "m", headerSort: false }
+    	                    ]
+    	                },
+    	                {
+    	                    title: "과부족",
+    	                    columns: [
+    	                        { title: "목표", field: "n", headerSort: false },
+    	                        { title: "운영계획", field: "o", headerSort: false }
+    	                    ]
+    	                }
+    	            ]
+    	        },
+    	        {
+    	            title: "손실(운영계획 대비)",
+    	            columns: [
+    	                { title: "통", field: "p", headerSort: false },
+    	                { title: "중량(톤)", field: "q", headerSort: false },
+    	                {
+    	                    title: "손실시간",
+    	                    columns: [
+    	                        { title: "시간", field: "r", headerSort: false },
+    	                        { title: "분", field: "s", headerSort: false }
+    	                    ]
+    	                }
+    	            ]
+    	        }
+    	    ]
+    	});
+    } 
+
+  $(function() {
+    $('#s_time').val(new Date().toISOString().split('T')[0]);
+    initTables();
+    loadWorkDailyData();
+  });
+</script>
 
 </body>
 </html>

@@ -49,4 +49,14 @@ public class WorkDaoImpl implements WorkDao {
     public List<Work> getReportInputLIst(Work work) {
         return sqlSession.selectList("work.getReportInputLIst", work);
     }
+    
+    @Override
+    public void insertReportInput(Work work) {
+           sqlSession.insert("work.insertReportInput", work);
+    }
+    
+    @Override
+    public void deleteReportInput(Work work) {
+           sqlSession.insert("work.deleteReportInput", work);
+    }
 }

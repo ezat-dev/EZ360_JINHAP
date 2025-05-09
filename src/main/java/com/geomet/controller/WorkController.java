@@ -245,6 +245,44 @@ public class WorkController {
         return "/work/report_shot6.jsp";
     }
 
+    //작업일보 수정삭제추가
+    @RequestMapping(value = "/work/workDailyReport/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertReportInput(@ModelAttribute Work work) {
 
+        System.out.println("===== 저장 요청 받은 데이터 =====");
+        System.out.println("mch_name: " + work.getMch_name());
+        System.out.println("mch_code: " + work.getMch_code());
+        System.out.println("input_date: " + work.getInput_date());
+        System.out.println("gb: " + work.getGb());
+        System.out.println("visc: " + work.getVisc());
+        System.out.println("pre_temp: " + work.getPre_temp());
+        System.out.println("heat_temp: " + work.getHeat_temp());
+        System.out.println("liq_temp: " + work.getLiq_temp());
+        System.out.println("sg: " + work.getSg());
+        System.out.println("idx: " + work.getIdx());
+
+        workService.insertReportInput(work);
+
+        return "success";
+    }
+
+    @RequestMapping(value = "/work/workDailyReport/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteReportInput(@RequestBody Work work) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("삭제 요청 받은 데이터: " + work);
+
+        if (work.getIdx() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        workService.deleteReportInput(work);
+
+        rtnMap.put("data", "success");
+        return rtnMap;
+    }
+    
     
 }

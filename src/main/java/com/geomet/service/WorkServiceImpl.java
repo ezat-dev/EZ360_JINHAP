@@ -48,5 +48,15 @@ public class WorkServiceImpl implements WorkService {
 	    public List<Work> getReportInputLIst(Work work) {
 	        return workDao.getReportInputLIst(work);
 	    }
+	    
+	    
+	    @Override
+	    public void insertReportInput(Work work) {
+	    	workDao.insertReportInput(work); 	   
+	    }
+	    @Override
+	    public void deleteReportInput(Work work) {
+	    	workDao.deleteReportInput(work); 	   
+	    }
 
 }

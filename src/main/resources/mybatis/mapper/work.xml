@@ -278,8 +278,221 @@
     #{sg}
   )
 </insert>
+  <insert id="insertReportInput" parameterType="Work">
+  INSERT INTO tb_report_input (
+    idx,
+    input_date,
+    mch_code,
+    mch_name,
+    gb,
+    visc,
+    pre_temp,
+    heat_temp,
+    liq_temp,
+    sg
+  ) VALUES (
+    #{idx},
+    #{input_date},
+    #{mch_code},
+    #{mch_name},
+    #{gb},
+    #{visc},
+    #{pre_temp},
+    #{heat_temp},
+    #{liq_temp},
+    #{sg}
+  )
+  ON DUPLICATE KEY UPDATE
+    input_date = VALUES(input_date),
+    mch_code = VALUES(mch_code),
+    mch_name = VALUES(mch_name),
+    gb = VALUES(gb),
+    visc = VALUES(visc),
+    pre_temp = VALUES(pre_temp),
+    heat_temp = VALUES(heat_temp),
+    liq_temp = VALUES(liq_temp),
+    sg = VALUES(sg)
+</insert>
   
   
+  <delete id="deleteReportInput" parameterType="Work">
+  DELETE FROM tb_report_input
+  WHERE idx = #{idx}
+  </delete>
+  
+  
+  
+  
+  <select id="MonitoringStatusList" resultType="Work">
+  SELECT 
+    facility_name,
+    mach_code,
+    std_weight,
+    c_t,
+    aa,
+    bb,
+    work_day,
+    set_hr,
+    mok_hr,
+    capa_day,
+    '1' AS day_ton,
+    1 / capa_day AS percent_day,
+    1 - capa_day AS bujok_day,
+    work_month / capa_day AS capa_month,
+    work_day / capa_day AS capa_sum,
+    '1' AS cc,
+    '1' AS dd,
+    '1' AS ee
+  FROM (
+    SELECT 
+      mach_code,
+      facility_name,
+      std_weight,
+      (3600 / (c_t / work_time)) AS c_t, 
+      1 AS aa,
+      1 AS bb,
+      work_day,
+      work_month,
+      work_day * 24 AS set_hr,
+      work_day * 24 AS mok_hr,
+      ((work_day * 24) * 3600) / c_t * std_weight / work_day / 1000 AS capa_day
+    FROM (
+      SELECT 
+        mach_code, 
+        MAX(facility_name) AS facility_name,
+        SUM(tong) AS tong,
+        ROUND(SUM(weight), 0) AS weight,
+        SUM(tong_day) AS tong_day,
+        MAX(work_day) AS work_day,
+        MAX(work_month) AS work_month,
+        ROUND(SUM(weight_day), 0) AS weight_day,
+        MAX(work_time) AS work_time,
+        MAX(c_t) AS c_t,
+        MAX(capa) AS capa,
+        MAX(std_weight) AS std_weight
+      FROM (
+        SELECT *
+        FROM (
+          SELECT 
+            mach_code,
+            weight,
+            1 AS tong,
+            CASE 
+              WHEN 1=1 
+              AND end_time <![CDATA[>=]]> #{s_time}
+              AND end_time <![CDATA[<=]]> #{e_time}
+              THEN 1 ELSE 0 
+            END AS tong_day,
+            CASE 
+              WHEN 1=1 
+              AND end_time <![CDATA[>=]]> #{s_time}
+              AND end_time <![CDATA[<=]]> #{e_time}
+              THEN weight ELSE 0 
+            END AS weight_day,
+            CASE 
+              WHEN CAST(TIMESTAMPDIFF(HOUR, 
+                   STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
+                   NOW()) AS SIGNED) = 0 
+              THEN 1 
+              ELSE CAST(TIMESTAMPDIFF(HOUR, 
+                   STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
+                   NOW()) AS SIGNED) 
+            END AS work_time,
+            CAST(TIMESTAMPDIFF(DAY, 
+                STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m01080000'), '%Y%m%d%H%i%s'),
+                NOW()) AS SIGNED) AS work_day,
+            DAY(LAST_DAY(NOW())) AS work_month,
+            fac.c_t, fac.capa, fac.std_weight, fac.facility_name,
+            LEAD(start_time) OVER (PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time
+          FROM tb_lowdata_save AS lows
+          INNER JOIN tb_facility AS fac
+            ON lows.mach_code = fac.facility_mach_code
+          WHERE 1=1
+          AND end_time <![CDATA[>=]]> #{s_time}
+          AND end_time <![CDATA[<=]]> #{e_time}
+          AND weight IS NOT NULL
+          AND start_time IS NOT NULL
+          AND end_time IS NOT NULL
+        ) AS A
+        WHERE next_start_time IS NULL
+      ) AS low
+      GROUP BY mach_code
+    ) AS AA
+  ) AS BB
+</select>
+  
+<select id="MonitoringStatusList2" resultType="Work">
+    <![CDATA[
+    SELECT work_time,
+           tong,
+           (work_time * tong) / 2 AS a1,
+           (work_time * tong) AS a2,
+           non_time AS a3,
+           (work_time - non_time) AS a4,
+           (tong * (work_time - non_time)) AS a5,
+           tong_day,
+           tong_night,
+           (tong_day + tong_night) AS tong_sum,
+           ((tong_day + tong_night) / (work_time * tong)) AS a6,
+           ((tong_day + tong_night) / (tong * (work_time - non_time))) AS a7,
+           ((tong_day + tong_night) - (work_time * tong)) AS a8,
+           ((tong_day + tong_night) - (tong * (work_time - non_time))) AS a9,
+           ((tong_day + tong_night) - (tong * (work_time - non_time))) AS a10,
+           (((tong_day + tong_night) - (tong * (work_time - non_time))) * std_weight / 1000) AS a10,
+           (((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) AS a11,
+           (((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) / 60 AS a12,
+           ((((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) / 60) / ((work_time - non_time) * 60) AS a13,
+           MAX(facility_name) AS facility_name
+    FROM (
+        SELECT mach_code, MAX(facility_name) AS facility_name,
+               SUM(tong) AS tong,
+               ROUND(SUM(weight), 0) AS weight,
+               SUM(tong_day) AS tong_day, SUM(tong_night) AS tong_night, MAX(work_day) AS work_day,
+               ROUND(SUM(weight_day), 0) AS weight_day, MAX(work_time) AS work_time,
+               MAX(c_t) AS c_t, MAX(capa) AS capa, MAX(std_weight) AS std_weight,
+               1 AS non_time
+        FROM (
+            SELECT *
+            FROM (
+                SELECT mach_code, weight, 1 AS tong,
+                       (CASE WHEN 1 = 1
+                            AND end_time >= #{s_time}
+                            AND end_time <= #{e_time} THEN 1 ELSE 0 END) AS tong_day,
+                       (CASE WHEN 1 = 1
+                            AND end_time >= #{s_time}
+                            AND end_time <= #{e_time} THEN 1 ELSE 0 END) AS tong_night,
+                       (CASE WHEN 1 = 1
+                            AND end_time >= #{s_time}
+                            AND end_time <= #{e_time} THEN weight ELSE 0 END) AS weight_day,
+                       CASE WHEN CAST(TIMESTAMPDIFF(HOUR,
+                            STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
+                            NOW()) AS INTEGER) = 0 THEN 1
+                            ELSE CAST(TIMESTAMPDIFF(HOUR,
+                            STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
+                            NOW()) AS INTEGER) END AS work_time,
+                       CAST(TIMESTAMPDIFF(DAY,
+                            STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m01080000'), '%Y%m%d%H%i%s'),
+                            NOW()) AS INTEGER) AS work_day,
+                       fac.c_t, fac.capa, fac.std_weight, fac.facility_name,
+                       LEAD(start_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time
+                FROM tb_lowdata_save AS lows
+                INNER JOIN
+                    tb_facility AS fac
+                ON lows.mach_code = fac.facility_mach_code
+                WHERE 1 = 1
+                AND end_time >= #{s_time}
+                AND end_time <= #{e_time}
+                AND weight IS NOT NULL
+                AND start_time IS NOT NULL
+                AND end_time IS NOT NULL
+            ) AS A
+            WHERE next_start_time IS NULL
+        ) AS low
+        GROUP BY mach_code
+    ) AS B;
+    ]]>
+</select>
+
 </mapper>
 
 

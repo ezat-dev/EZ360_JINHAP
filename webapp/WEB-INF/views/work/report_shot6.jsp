@@ -128,6 +128,7 @@
       table1 = new Tabulator("#table1", {
         height: "115px",
         layout: "fitColumns",
+        headerHozAlign: "center",
         columns: [
           { title: "주간/야간", field: "gb" },
           { title: "점도", field: "visc" },
@@ -142,6 +143,7 @@
       table2 = new Tabulator("#table2", {
         height: "115px",
         layout: "fitColumns",
+        headerHozAlign: "center",
         columns: [
           { title: "일 작업통수", field: "tong_day" },
           { title: "생산량", field: "weight_day" },
@@ -162,8 +164,9 @@
       });
 
       table3 = new Tabulator("#table3", {
-        height: "400px",
+        height: "522px",
         layout: "fitColumns",
+        headerHozAlign: "center",
         columns: [
           { title: "순서", field: "r_num" },
           { title: "투입시간", field: "start_time" },

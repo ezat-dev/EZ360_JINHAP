@@ -129,55 +129,70 @@
     	 
       table1 = new Tabulator("#table1", {
         height: "115px",
-        layout: "fitColumns",
+	    layout: "fitColumns",
+	    headerHozAlign: "center",
+	    columnDefaults: {
+	        hozAlign: "center",
+	        headerTooltip: false
+	    },
         columns: [
-          { title: "주간/야간", field: "gb" },
-          { title: "점도", field: "visc" },
-          { title: "점도", field: "visc" },
-          { title: "예열존온도", field: "pre_temp" },
-          { title: "가열존온도", field: "heat_temp" },
-          { title: "액온도", field: "liq_temp" },
-          { title: "비중", field: "sg" }
+          { title: "주간/야간", field: "gb" ,headerSort: false},
+          { title: "점도", field: "visc",headerSort: false },
+          { title: "점도", field: "visc",headerSort: false },
+          { title: "예열존온도", field: "pre_temp",headerSort: false },
+          { title: "가열존온도", field: "heat_temp" ,headerSort: false},
+          { title: "액온도", field: "liq_temp" ,headerSort: false},
+          { title: "비중", field: "sg",headerSort: false }
         ]
       });
 
       table2 = new Tabulator("#table2", {
-        height: "115px",
-        layout: "fitColumns",
+        height: "150px",
+	    layout: "fitColumns",
+	    headerHozAlign: "center",
+	    columnDefaults: {
+	        hozAlign: "center",
+	        headerTooltip: false
+	    },
         columns: [
-          { title: "일 작업통수", field: "tong_day" },
-          { title: "생산량", field: "weight_day" },
-          { title: "평균생산중량", field: "avg_day" },
-          { title: "누적 생산통수", field: "tong_sum" },
-          { title: "누적 생산량", field: "weight_sum" },
-          { title: "평균중량", field: "avg_sum" },
-          { title: "가동시간", field: "work_time" },
-          { title: "가동률", field: "work_percent" },
+          { title: "일 작업통수", field: "tong_day",headerSort: false },
+          { title: "생산량", field: "weight_day",headerSort: false },
+          { title: "평균생산중량", field: "avg_day" ,headerSort: false},
+          { title: "누적 생산통수", field: "tong_sum" ,headerSort: false},
+          { title: "누적 생산량", field: "weight_sum" ,headerSort: false},
+          { title: "평균중량", field: "avg_sum" ,headerSort: false},
+          { title: "가동시간", field: "work_time" ,headerSort: false},
+          { title: "가동률", field: "work_percent" ,headerSort: false},
           { title: "월누적", columns: [
-              { title: "가동시간", field: "sum_time" },
-              { title: "가동율", field: "sum_percent" },
+              { title: "가동시간", field: "sum_time" ,headerSort: false},
+              { title: "가동율", field: "sum_percent" ,headerSort: false},
               { title: "UPH", field: "uph" },
-              { title: "UPH(월누적)", field: "uph_sum" }
+              { title: "UPH(월누적)", field: "uph_sum" ,headerSort: false}
             ]
           }
         ]
       });
 
       table3 = new Tabulator("#table3", {
-        height: "400px",
-        layout: "fitColumns",
+        height: "460px",
+	    layout: "fitColumns",
+	    headerHozAlign: "center",
+	    columnDefaults: {
+	        hozAlign: "center",
+	        headerTooltip: false
+	    },
         columns: [
-          { title: "순서", field: "r_num" },
-          { title: "투입시간", field: "start_time" },
-          { title: "완료시간", field: "end_time" },
-          { title: "투입통수", field: "tong_day" },
-          { title: "작업중량(kg)", field: "weight_day" },
+          { title: "순서", field: "r_num" ,headerSort: false},
+          { title: "투입시간", field: "start_time" ,headerSort: false},
+          { title: "완료시간", field: "end_time" ,headerSort: false},
+          { title: "투입통수", field: "tong_day" ,headerSort: false},
+          { title: "작업중량(kg)", field: "weight_day" ,headerSort: false},
      
-          { title: "품명", field: "item_nm" },
-          { title: "품번", field: "item_cd" },
-          { title: "바코드 번호", field: "barcode_no" },
+          { title: "품명", field: "item_nm" ,headerSort: false},
+          { title: "품번", field: "item_cd" ,headerSort: false},
+          { title: "바코드 번호", field: "barcode_no" ,headerSort: false},
 
-          { title: "구분</br>(신규/재작업)", field: "e" },
+          { title: "구분</br>(신규/재작업)", field: "e",headerSort: false },
           { title: "비고", field: "f" }
         ]
       });

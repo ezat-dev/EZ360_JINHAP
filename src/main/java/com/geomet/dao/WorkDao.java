@@ -23,4 +23,8 @@ public interface WorkDao {
 
     // 작업일보 투입 정보 (테이블 1)
     List<Work> getReportInputLIst(Work work);
+    
+	//작업일보
+	void insertReportInput(Work work); 
+	void deleteReportInput(Work work); 
 }

@@ -86,16 +86,138 @@ public class Work {
     private String input_date;
     
     
+    private String no;
     
     
     
     
     
+    //생산모니터링
+	/*
+	 * public String facility_name; public String mach_code;
+	 */
+    public String std_weight;
+    public String c_t;
+    public String aa;
+    public String bb;
+    public String work_day;
+    public String set_hr;
+    public String mok_hr;
+    public String capa_day;
+    public String day_ton;
+    public String percent_day;
+    public String bujok_day;
+    public String capa_month;
+    public String capa_sum;
+    public String cc;
+    public String dd;
+    public String ee;
+
     
     
     
-    
-    
+	public String getStd_weight() {
+		return std_weight;
+	}
+	public void setStd_weight(String std_weight) {
+		this.std_weight = std_weight;
+	}
+	public String getC_t() {
+		return c_t;
+	}
+	public void setC_t(String c_t) {
+		this.c_t = c_t;
+	}
+	public String getAa() {
+		return aa;
+	}
+	public void setAa(String aa) {
+		this.aa = aa;
+	}
+	public String getBb() {
+		return bb;
+	}
+	public void setBb(String bb) {
+		this.bb = bb;
+	}
+	public String getWork_day() {
+		return work_day;
+	}
+	public void setWork_day(String work_day) {
+		this.work_day = work_day;
+	}
+	public String getSet_hr() {
+		return set_hr;
+	}
+	public void setSet_hr(String set_hr) {
+		this.set_hr = set_hr;
+	}
+	public String getMok_hr() {
+		return mok_hr;
+	}
+	public void setMok_hr(String mok_hr) {
+		this.mok_hr = mok_hr;
+	}
+	public String getCapa_day() {
+		return capa_day;
+	}
+	public void setCapa_day(String capa_day) {
+		this.capa_day = capa_day;
+	}
+	public String getDay_ton() {
+		return day_ton;
+	}
+	public void setDay_ton(String day_ton) {
+		this.day_ton = day_ton;
+	}
+	public String getPercent_day() {
+		return percent_day;
+	}
+	public void setPercent_day(String percent_day) {
+		this.percent_day = percent_day;
+	}
+	public String getBujok_day() {
+		return bujok_day;
+	}
+	public void setBujok_day(String bujok_day) {
+		this.bujok_day = bujok_day;
+	}
+	public String getCapa_month() {
+		return capa_month;
+	}
+	public void setCapa_month(String capa_month) {
+		this.capa_month = capa_month;
+	}
+	public String getCapa_sum() {
+		return capa_sum;
+	}
+	public void setCapa_sum(String capa_sum) {
+		this.capa_sum = capa_sum;
+	}
+	public String getCc() {
+		return cc;
+	}
+	public void setCc(String cc) {
+		this.cc = cc;
+	}
+	public String getDd() {
+		return dd;
+	}
+	public void setDd(String dd) {
+		this.dd = dd;
+	}
+	public String getEe() {
+		return ee;
+	}
+	public void setEe(String ee) {
+		this.ee = ee;
+	}
+	public String getNo() {
+		return no;
+	}
+	public void setNo(String no) {
+		this.no = no;
+	}
 	public String getR_num() {
 		return r_num;
 	}

@@ -2,6 +2,7 @@ package com.geomet.service;
 
 import java.util.List;
 
+
 import com.geomet.domain.Work;
 
 public interface WorkService {
@@ -18,4 +19,8 @@ public interface WorkService {
 	 	List<Work> getWorkDailyList(Work work);
 	    List<Work> getWorkDailySum(Work work);
 	    List<Work> getReportInputLIst(Work work);
+	    
+	//작업일보
+		void insertReportInput(Work work); 
+		void deleteReportInput(Work work); 
 }
