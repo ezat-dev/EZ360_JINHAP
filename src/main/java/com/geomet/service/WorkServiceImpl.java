@@ -58,5 +58,16 @@ public class WorkServiceImpl implements WorkService {
 	    public void deleteReportInput(Work work) {
 	    	workDao.deleteReportInput(work); 	   
 	    }
+	    
+	    @Override
+	    public List<Work> MonitoringStatusList(Work work) {
+	        return workDao.MonitoringStatusList(work);
+	    }
+
+	    @Override
+	    public List<Work> MonitoringStatusList2(Work work) {
+	        return workDao.MonitoringStatusList2(work);
+	    }
+	    
 
 }

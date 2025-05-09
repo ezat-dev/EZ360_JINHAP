@@ -87,36 +87,7 @@ public class WorkController {
     }
     
     
-    @RequestMapping(value = "/work/workDailyReport/list", method = RequestMethod.POST)
-    @ResponseBody
-    public Map<String, Object> getworkDailyReportList(@RequestBody Work work) {
-        System.out.println("==[ 원본 Work 객체 정보 ]==");
-        System.out.println("raw s_time: " + work.getS_time());
-        System.out.println("raw e_time: " + work.getE_time());
 
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-         String sTimeWithOffset = work.getS_time() + "0800";
-
-        LocalDate eDate = LocalDate.parse(work.getE_time(), fmt).plusDays(1);
-        String eTimeWithOffset = eDate.format(fmt) + "0800";
-
-
-        work.setS_time(sTimeWithOffset);
-        work.setE_time(eTimeWithOffset);
-
-        System.out.println("==[ 변환된 Work 객체 정보 ]==");
-        System.out.println("s_time: " + work.getS_time());
-        System.out.println("e_time: " + work.getE_time());
-        System.out.println("m_code: "  + work.getM_code());
-
-      
-        Map<String, Object> result = new HashMap<>();
-        result.put("table1", workService.getReportInputLIst(work));
-        result.put("table2", workService.getWorkDailySum(work));
-        result.put("table3", workService.getWorkDailyList(work));
-        return result;
-    }
 
 
 	
@@ -245,24 +216,29 @@ public class WorkController {
         return "/work/report_shot6.jsp";
     }
 
-    //작업일보 수정삭제추가
+    //작업일보 수정추가
     @RequestMapping(value = "/work/workDailyReport/insert", method = RequestMethod.POST)
     @ResponseBody
     public String insertReportInput(@ModelAttribute Work work) {
 
-        System.out.println("===== 저장 요청 받은 데이터 =====");
-        System.out.println("mch_name: " + work.getMch_name());
-        System.out.println("mch_code: " + work.getMch_code());
-        System.out.println("input_date: " + work.getInput_date());
-        System.out.println("gb: " + work.getGb());
-        System.out.println("visc: " + work.getVisc());
-        System.out.println("pre_temp: " + work.getPre_temp());
-        System.out.println("heat_temp: " + work.getHeat_temp());
-        System.out.println("liq_temp: " + work.getLiq_temp());
-        System.out.println("sg: " + work.getSg());
-        System.out.println("idx: " + work.getIdx());
-
-        workService.insertReportInput(work);
+    	
+//    	R
+//		I U
+//		D 전부   	
+    	
+	        System.out.println("===== 저장 요청 받은 데이터 =====");
+	        System.out.println("mch_name: " + work.getMch_name());
+	        System.out.println("mch_code: " + work.getMch_code());
+	        System.out.println("input_date: " + work.getInput_date());
+	        System.out.println("gb: " + work.getGb());
+	        System.out.println("visc: " + work.getVisc());
+	        System.out.println("pre_temp: " + work.getPre_temp());
+	        System.out.println("heat_temp: " + work.getHeat_temp());
+	        System.out.println("liq_temp: " + work.getLiq_temp());
+	        System.out.println("sg: " + work.getSg());
+	        System.out.println("idx: " + work.getIdx());
+	
+	        workService.insertReportInput(work);
 
         return "success";
     }
@@ -284,5 +260,68 @@ public class WorkController {
         return rtnMap;
     }
     
+    @RequestMapping(value = "/work/workDailyReport/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getworkDailyReportList(@RequestBody Work work) {
+        System.out.println("==[ 원본 Work 객체 정보 ]==");
+        System.out.println("raw s_time: " + work.getS_time());
+        System.out.println("raw e_time: " + work.getE_time());
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+         String sTimeWithOffset = work.getS_time() + "0800";
+
+        LocalDate eDate = LocalDate.parse(work.getE_time(), fmt).plusDays(1);
+        String eTimeWithOffset = eDate.format(fmt) + "0800";
+
+
+        work.setS_time(sTimeWithOffset);
+        work.setE_time(eTimeWithOffset);
+
+        System.out.println("==[ 변환된 Work 객체 정보 ]==");
+        System.out.println("s_time: " + work.getS_time());
+        System.out.println("e_time: " + work.getE_time());
+        System.out.println("m_code: "  + work.getM_code());
+
+      
+        Map<String, Object> result = new HashMap<>();
+        result.put("table1", workService.getReportInputLIst(work));
+        result.put("table2", workService.getWorkDailySum(work));
+        result.put("table3", workService.getWorkDailyList(work));
+        return result;
+    }
     
+    
+    
+    
+    @RequestMapping(value = "/work/machinePerformStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getmachinePerformStatusList(@RequestBody Work work) {
+        System.out.println("==[ 모니터링 현황 시간 변경 전 ]==");
+        System.out.println("raw s_time: " + work.getS_time());
+        System.out.println("raw e_time: " + work.getE_time());
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+         String sTimeWithOffset = work.getS_time() + "080000";
+
+        LocalDate eDate = LocalDate.parse(work.getE_time(), fmt).plusDays(1);
+        String eTimeWithOffset = eDate.format(fmt) + "080000";
+
+
+        work.setS_time(sTimeWithOffset);
+        work.setE_time(eTimeWithOffset);
+
+        System.out.println("==[ 변환 모니터링 현황 ]==");
+        System.out.println("s_time: " + work.getS_time());
+        System.out.println("e_time: " + work.getE_time());
+       
+
+      
+        Map<String, Object> result = new HashMap<>();
+       
+        result.put("table2", workService.MonitoringStatusList(work));
+        result.put("table3", workService.MonitoringStatusList2(work));
+        return result;
+    }
 }

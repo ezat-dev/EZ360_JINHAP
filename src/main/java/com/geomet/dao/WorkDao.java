@@ -26,5 +26,10 @@ public interface WorkDao {
     
 	//작업일보
 	void insertReportInput(Work work); 
-	void deleteReportInput(Work work); 
+	void deleteReportInput(Work work);
+	
+	
+	//모니터링 현황
+	List<Work> MonitoringStatusList(Work work);
+    List<Work> MonitoringStatusList2(Work work);
 }

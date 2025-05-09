@@ -59,4 +59,16 @@ public class WorkDaoImpl implements WorkDao {
     public void deleteReportInput(Work work) {
            sqlSession.insert("work.deleteReportInput", work);
     }
+    
+    // 작업일보 
+    @Override
+    public List<Work> MonitoringStatusList(Work work) {
+        return sqlSession.selectList("work.MonitoringStatusList", work);
+    }
+
+    // 작업일보 
+    @Override
+    public List<Work> MonitoringStatusList2(Work work) {
+        return sqlSession.selectList("work.MonitoringStatusList2", work);
+    }
 }

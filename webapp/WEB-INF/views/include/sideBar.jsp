@@ -287,8 +287,8 @@
 //					console.log(key);
 					if(key != "perm_code" && key != "user_code"){
 						if(data[key] != null && data[key] != "N"){
-//							console.log(data[key]);
-//							console.log(pageObject(key));
+							//console.log(data[key]);
+							//console.log(pageObject(key));
 							var _link = pageObject(key)[0];
 							var _name = pageObject(key)[1];
 							

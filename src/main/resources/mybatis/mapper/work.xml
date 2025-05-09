@@ -442,7 +442,7 @@
            (((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) AS a11,
            (((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) / 60 AS a12,
            ((((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) / 60) / ((work_time - non_time) * 60) AS a13,
-           MAX(facility_name) AS facility_name
+           facility_name
     FROM (
         SELECT mach_code, MAX(facility_name) AS facility_name,
                SUM(tong) AS tong,
