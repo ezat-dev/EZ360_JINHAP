@@ -35,4 +35,7 @@ public interface UserDao {
 	void insertplanManage(Users users); 
 	void delplanManage(Users users);
 
+	
+	
+	List<Users> getUserInfo(); 
 }

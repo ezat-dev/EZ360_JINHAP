@@ -65,15 +65,25 @@ public class UserController {
 		 }
 		 
 		 
-		 //로그인한 대상의 page정보 세션저장
+		// 로그인한 대상의 page정보 세션저장
 		 Permission loginPermission = userService.userLoginPermission(loginUser);
-		 session.setAttribute("loginUser",loginUser);
-		 session.setAttribute("loginUserPage",loginPermission);
-		 
+
+		 // 세션에 저장
+		 session.setAttribute("loginUser", loginUser);
+		 System.out.println("세션 저장: loginUser = " + loginUser);
+
+		 session.setAttribute("loginUserPage", loginPermission);
+		 System.out.println("user_code: " + loginUser.getUser_code());
+		 System.out.println("user_id: " + loginUser.getUser_id());
+		 System.out.println("user_name: " + loginUser.getUser_name());
+		 System.out.println("user_level: " + loginUser.getUser_level());
+
+		 // 반환용 맵 구성
 		 rtnMap.put("data", loginUser);
 		 rtnMap.put("loginUserPage", loginPermission);
-		 
-		 return rtnMap; 
+
+		 return rtnMap;
+
 	 }	
 	
 	 //로그인한 사용자의 메뉴셋팅
@@ -88,6 +98,12 @@ public class UserController {
 		 
 		 return rtnMap;
 	 }
+	 
+	 
+
+
+	 
+	 
 	 
 	 //로그인한 사용자의 메뉴저장
 	 @RequestMapping(value = "/user/login/menuSave", method = RequestMethod.POST) 
@@ -298,7 +314,26 @@ public class UserController {
 	 }
 	 
 	 
-	 
+	 @RequestMapping(value = "/user/info", method = RequestMethod.POST)
+	 @ResponseBody
+	 public Map<String, Object> getUserInfo(HttpSession session) {
+	     Map<String, Object> result = new HashMap<>();
+	     
+	     // 세션에서 데이터 가져오기
+	     Users loginUser = (Users) session.getAttribute("loginUser");
+	     Permission loginPermission = (Permission) session.getAttribute("loginUserPage");
+
+	     // 세션이 null일 수 있으므로, null 체크 필요
+	     if (loginUser != null) {
+	         result.put("loginUser", loginUser);
+	     }
+	     if (loginPermission != null) {
+	         result.put("loginUserPage", loginPermission);
+	     }
+	     
+	     return result;
+	 }
+
 
 	 
 	 

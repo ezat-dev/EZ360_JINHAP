@@ -293,4 +293,10 @@
         DELETE FROM tb_plan_manage
         WHERE no = #{no}
     </delete>
+    
+    
+    <select id="getUserInfo" resultType="Users">
+        SELECT *
+        FROM tb_permission
+    </select>
 </mapper>

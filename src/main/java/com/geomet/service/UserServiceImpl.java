@@ -71,7 +71,7 @@ public class UserServiceImpl implements UserService{
 		userDao.userLoginMenuRemove(userMenu);
 	}
 	
-	
+
 	
 	
 	
@@ -86,5 +86,11 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public void delplanManage(Users users) {
 		userDao.delplanManage(users); 	   
+	}
+	
+	
+	@Override
+	public List<Users> getUserInfo(){
+		return userDao.getUserInfo();
 	}
 }

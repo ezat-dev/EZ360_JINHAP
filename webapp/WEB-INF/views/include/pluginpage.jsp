@@ -37,7 +37,16 @@
 <script>
 
 $(function(){
+
+
 	rpImagePopup();
+
+
+
+
+
+
+	
 
 	//airDatePicker 설정
 	//날짜 : 일
@@ -303,6 +312,38 @@ $(window).on("load", function () {
         }
     });
 });
+
+
+
+
+
+
+    function userInfoList(now_page_code) {
+    	 console.log("페이지 코드:", now_page_code);
+        $.ajax({
+            url: '/geomet/user/info',
+            type: 'POST',
+            contentType: 'application/json',
+            dataType: 'json',
+            success: function(response) {
+                console.log("실행함");
+
+                console.log("loginUser:", response.loginUser);
+                console.log("loginUserPage:", response.loginUserPage);
+
+                if (response.loginUser) {
+                    console.log("user_code:", response.loginUser.user_code);
+                    console.log("user_name:", response.loginUser.user_name);
+                    console.log("user_level:", response.loginUser.user_level);
+                }
+              
+            },
+            error: function(xhr, status, error) {
+                console.error("데이터 가져오기 실패:", error);
+            }
+        });
+    }
+
 
 
 </script>

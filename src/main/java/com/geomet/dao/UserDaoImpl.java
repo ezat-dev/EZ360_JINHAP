@@ -117,4 +117,12 @@ public class UserDaoImpl implements UserDao{
 	  public void delplanManage(Users users) {
 	         sqlSession.insert("users.delplanManage", users);
 	  }
+	  
+	  
+	  
+	  
+	  @Override
+	    public List<Users> getUserInfo() {
+	        return sqlSession.selectList("users.getUserInfo");
+	    }
 }

@@ -407,7 +407,24 @@
         }
       });
     });
+
+
   });
+
+
+
+ 
+
+
+  $(document).ready(function() {
+  var now_page_code = "h04";  
+  userInfoList(now_page_code);
+  console.log("페이지로드 실행now_page_code",now_page_code)
+  });
+
+
+
+  
 </script>
 
 

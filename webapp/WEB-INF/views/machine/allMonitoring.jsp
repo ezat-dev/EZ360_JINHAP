@@ -277,7 +277,12 @@
     <script>
         $(function() {
             getDataList();
-     
+
+           
+            
+            var as = "a01";
+        
+               
         });
 
         function getDataList() {
@@ -301,7 +306,7 @@
                 },
 
                 ajaxResponse: function (url, params, response) {
-                    console.log("받아온 데이터:", response.data);
+                 //   console.log("받아온 데이터:", response.data);
                     const cleanData = response.data.map(item => {
                         const newItem = {};
                         for (let key in item) {

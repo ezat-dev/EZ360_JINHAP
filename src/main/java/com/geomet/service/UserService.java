@@ -36,4 +36,7 @@ public interface UserService {
 	List<Users> getplanManageList(Users users);
 	void insertplanManage(Users users); 
 	void delplanManage(Users users);
+	
+	
+	List<Users> getUserInfo(); 
 }
