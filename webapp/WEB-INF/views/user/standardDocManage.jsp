@@ -44,7 +44,7 @@
 	
 <script>
 	//전역변수
-
+  let now_page_code = "i01";
 	//로드
 	$(function(){
 		$(".headerP").text("문서관리 - 관리계획서 등 관리");

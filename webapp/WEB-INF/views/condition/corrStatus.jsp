@@ -246,6 +246,8 @@
 
 
     <script>
+    let now_page_code = "c01";
+    
     $(document).ready(function () {
 	    getDataList();
 	    // 모달 열기 버튼 이벤트

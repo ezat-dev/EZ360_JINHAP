@@ -299,6 +299,9 @@
 
 
 <script>
+
+let now_page_code = "h06";
+
 $(function() {
   var dataTable;
   var selectedRowData = null;

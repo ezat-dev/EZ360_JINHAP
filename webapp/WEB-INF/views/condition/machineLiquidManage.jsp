@@ -42,7 +42,7 @@
 	</main>
 <script>
 	//전역변수
-
+ let now_page_code = "c03";
 	//로드
 	$(function(){
 		$(".headerP").text("조건관리 - 신액 교반일지");

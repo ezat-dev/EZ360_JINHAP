@@ -42,7 +42,7 @@
 	</main>
 <script>
 	//전역변수
-
+  let now_page_code = "h07";
 	//로드
 	$(function(){
 		$(".headerP").text("취출 운전관리 - LOT 보고서");

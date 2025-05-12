@@ -271,7 +271,7 @@
 	</div>
 
 <script>
-
+let now_page_code = "b05";
 	$(document).ready(function () {
 
 	  $(".headerP").text("생산관리 - 재고관리");

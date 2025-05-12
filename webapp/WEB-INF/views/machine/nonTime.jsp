@@ -277,6 +277,9 @@
 
 <script>
 
+let now_page_code = "h02";
+
+
 $(document).ready(function() {
     // 화면 로드 시 어제 날짜와 오늘 날짜 자동 설정
     var today = new Date();

@@ -255,6 +255,9 @@
   </div>
 
   <script>
+
+  	let now_page_code = "e01";
+  
     var dataTable, selectedRowData = null;
 
     $(function() {

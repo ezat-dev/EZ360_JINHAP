@@ -42,7 +42,7 @@
 	</main>
 <script>
 	//전역변수
-
+let now_page_code = "d02";
 	//로드
 	$(function(){
 		$(".headerP").text("품질관리 - 내식성 테스트");

@@ -282,10 +282,13 @@
 
 
 <script>
+  let now_page_code = "h05";
+
   var dataTable;
   var selectedRowData = null;
 
   $(function() {
+
     dataTable = new Tabulator('#dataTable', {
       height: '790px',
       layout: 'fitDataFill',
@@ -415,12 +418,6 @@
 
  
 
-
-  $(document).ready(function() {
-  var now_page_code = "h04";  
-  userInfoList(now_page_code);
-  console.log("페이지로드 실행now_page_code",now_page_code)
-  });
 
 
 

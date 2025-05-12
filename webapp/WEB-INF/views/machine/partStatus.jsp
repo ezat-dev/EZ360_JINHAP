@@ -272,6 +272,10 @@
 
 
 <script>
+
+let now_page_code = "h04";
+
+
   var dataTable;
   var selectedRowData = null;
 

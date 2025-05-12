@@ -247,6 +247,8 @@
 
 
 <script>
+let now_page_code = "c02";
+
   $(function () {
     var now    = new Date();
     var year   = now.getFullYear();

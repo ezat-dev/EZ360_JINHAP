@@ -42,7 +42,7 @@
 	</main>
 <script>
 	//전역변수
-
+ let now_page_code = "d04";
 	//로드
 	$(function(){
 		$(".headerP").text("품질관리 - 욕액분석");

@@ -264,6 +264,8 @@
 
 
     <script>
+    let now_page_code = "b03";
+    
         $(function() {
             getDataList();
 

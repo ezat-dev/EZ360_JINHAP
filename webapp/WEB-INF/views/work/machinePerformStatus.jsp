@@ -223,7 +223,7 @@
 
 
 <script>
-
+let now_page_code = "b01";
 
 
   function loadWorkDailyData() {

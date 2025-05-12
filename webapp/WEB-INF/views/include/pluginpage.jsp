@@ -316,33 +316,76 @@ $(window).on("load", function () {
 
 
 
+let userPermissions = {};
 
+function userInfoList(now_page_code) {
+    $.ajax({
+        url: '/geomet/user/info',
+        type: 'POST',
+        contentType: 'application/json',
+        dataType: 'json',
+        success: function(response) {
+            const loginUserPage = response.loginUserPage;
+            userPermissions = loginUserPage || {};
+            controlButtonPermissions(now_page_code);
+        },
+        error: function(xhr, status, error) {
+            console.error("데이터 가져오기 실패:", error);
+        }
+    });
+}
 
-    function userInfoList(now_page_code) {
-    	 console.log("페이지 코드:", now_page_code);
-        $.ajax({
-            url: '/geomet/user/info',
-            type: 'POST',
-            contentType: 'application/json',
-            dataType: 'json',
-            success: function(response) {
-                console.log("실행함");
+function controlButtonPermissions(now_page_code) {
+    const permission = userPermissions?.[now_page_code];
+    console.log("현재 페이지 권한(permission):", permission);
 
-                console.log("loginUser:", response.loginUser);
-                console.log("loginUserPage:", response.loginUserPage);
+    const canRead = permission === "R" || permission === "C" || permission === "D";
+    const canCreate = permission === "C" || permission === "D";
+    const canDelete = permission === "D";
 
-                if (response.loginUser) {
-                    console.log("user_code:", response.loginUser.user_code);
-                    console.log("user_name:", response.loginUser.user_name);
-                    console.log("user_level:", response.loginUser.user_level);
-                }
-              
-            },
-            error: function(xhr, status, error) {
-                console.error("데이터 가져오기 실패:", error);
-            }
-        });
+    if (!canRead) {
+        $(".select-button").css("pointer-events", "none").css("background-color", "#ced4da");
     }
+
+    if (!canCreate) {
+        $(".insert-button").css("pointer-events", "none").css("background-color", "#ced4da");
+        $("#corrForm").prop("disabled", true);
+    }
+
+    if (!canDelete) {
+        $(".delete-button").css("pointer-events", "none").css("background-color", "#ced4da");
+    }
+
+    $(".select-button").on("click", function (e) {
+        if (!canRead) {
+            alert("당신의 권한이 없습니다. (조회)");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    });
+
+    $(".insert-button").on("click", function (e) {
+        if (!canCreate) {
+            alert("당신의 권한이 없습니다. (추가)");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    });
+
+    $(".delete-button").on("click", function (e) {
+        if (!canDelete) {
+            alert("당신의 권한이 없습니다. (삭제)");
+            e.preventDefault();
+            e.stopImmediatePropagation();
+        }
+    });
+}
+
+
+$(document).ready(function() {
+    userInfoList(now_page_code);
+    console.log("나우페이지코드",now_page_code)
+});
 
 
 

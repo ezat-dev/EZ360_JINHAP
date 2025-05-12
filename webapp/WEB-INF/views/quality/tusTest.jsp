@@ -126,5 +126,9 @@
         </tr>
     </table>
 </div>
+
+<script>
+let now_page_code = "d01";
+</script>
 </body>
 </html>

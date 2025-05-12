@@ -266,7 +266,7 @@
 </div>
 <script>
   let table1, table2, table3, selectedRowData;
-
+  let now_page_code = "b04";
 
   $('.insert-button').click(function() {
 	  const startDate = $('#s_time').val();

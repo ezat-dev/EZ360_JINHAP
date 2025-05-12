@@ -42,7 +42,7 @@
 	</main>
 <script>
 	//전역변수
-
+let now_page_code = "e02";
 	//로드
 	$(function(){
 		$(".headerP").text("인원 및 안전관리 - 작업자 근무현황");

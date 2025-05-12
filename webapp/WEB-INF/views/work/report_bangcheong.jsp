@@ -89,6 +89,9 @@
     </main>
 
 <script>
+	let now_page_code = "b04";
+
+
     let table1, table2, table3;
 
     function loadWorkDailyData() {

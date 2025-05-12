@@ -44,7 +44,7 @@
 	
 <script>
 	//전역변수
-
+  let now_page_code = "i02";
 	//로드
 	$(function(){
 		$(".headerP").text("문서관리 - 사양별 대기통수");

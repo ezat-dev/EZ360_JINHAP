@@ -90,7 +90,7 @@
 
 <script>
     let table1, table2, table3;
-
+    let now_page_code = "b04";
     function loadWorkDailyData() {
       let s_time = $("#s_time").val().replaceAll("-", "");
       let e_time = s_time;

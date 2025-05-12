@@ -112,7 +112,7 @@
 </main>
 
 <script>
-
+let now_page_code = "e06";
 	//전역변수
     var userTable;	
 	

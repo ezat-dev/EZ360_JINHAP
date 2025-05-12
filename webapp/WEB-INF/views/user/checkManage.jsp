@@ -42,7 +42,7 @@
 	</main>
 <script>
 	//전역변수
-
+    let now_page_code = "i03";
 	//로드
 	$(function(){
 		$(".headerP").text("인원 및 안전관리 - 유해화학물질 점검일지");

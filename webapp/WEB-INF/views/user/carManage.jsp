@@ -299,6 +299,10 @@
 
 
     <script>
+
+    let now_page_code = "e03";
+
+    
         $(function() {
             getDataList();
            /*  getDataList2(); */

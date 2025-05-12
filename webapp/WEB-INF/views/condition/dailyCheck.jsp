@@ -41,7 +41,8 @@
 
 	</main>
 <script>
-	//전역변수
+	//전역변
+	  let now_page_code = "c04";
 
 	//로드
 	$(function(){

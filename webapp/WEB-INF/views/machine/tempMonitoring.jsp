@@ -105,6 +105,9 @@
     </main>
 
  <script>
+ let now_page_code = "a05";
+
+ 
     $(function () {
         $(".headerP").text("모니터링 - 온도경향 모니터링");
     });

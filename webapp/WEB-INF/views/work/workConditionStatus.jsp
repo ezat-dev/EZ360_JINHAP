@@ -247,6 +247,8 @@
 
 
     <script>
+    let now_page_code = "g02";
+    
         $(function() {
 
             const today = new Date().toISOString().split('T')[0];

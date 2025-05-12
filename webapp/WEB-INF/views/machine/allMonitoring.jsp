@@ -275,6 +275,8 @@
 
 
     <script>
+
+    let now_page_code = "a01";
         $(function() {
             getDataList();
 

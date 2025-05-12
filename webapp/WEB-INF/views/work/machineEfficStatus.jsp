@@ -35,6 +35,9 @@
         </div>
     </main>
     <script>
+    let now_page_code = "b02";
+
+    
         $(document).ready(function() {
             new Tabulator("#dataList", {
                 height: "760px",

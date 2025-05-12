@@ -268,6 +268,10 @@
 
 
      <script>
+     let now_page_code = "h01";
+
+
+     
     $(document).ready(function () {
 
     	const currentYear = new Date().getFullYear();
