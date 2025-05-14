@@ -275,6 +275,8 @@
                 layout: "fitColumns",
                 selectable: true,
                 tooltips: true,
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
                 selectableRangeMode: "click",
                 reactiveData: true,
                 headerHozAlign: "center",

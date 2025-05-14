@@ -212,28 +212,36 @@
 	   <div id="modalContainer" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
+	        <h2>TC/조절계 이력</h2>
 	        <form id="corrForm" autocomplete="off">
 	            <label>설비명</label>
 	            
-	            <select class="equipment_name equipment_name_select" id="equipment_name">
-	            </select>
+	            <input type="text" name="equipment_name" placeholder="설비명" readonly>
+
+	      
 	
-	            <label>존 구분</label>
-	            <input type="text" name="location" value="소입1존">
+	            <label>위치 구분</label>
+	            <input type="text" name="location" readonly>
 	
 	            <label>시리얼 번호</label>
 	            <input type="text" name="serial_number" placeholder="시리얼 번호">
 	
 				<label>교체일자</label>
 				<input type="text" class="daySet" name="replacement_date" placeholder="조치완료일 선택" style="text-align: left;" autocomplete="off">
+								
+				<label>교체 주기</label>
+		   		<select name="replacement_cycle">
+		   		<option value="x">선택</option>
+			     <option value="1년">1년</option>
+			     <option value="2년">2년</option>    
+			             
+			    </select>
+				
 				
 				<label>차기 교체일자</label>
-				<input type="text" class="daySet" name="next_date" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
+				<input type="text" name="next_date" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off" readonly>
 				
-				<label>교체 주기</label>
-				<input type="text" class="cycle" name="replacement_cycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
-
+				
 	            <label>비고</label>
 	            <textarea name="remarks" rows="3"></textarea>
 				<input type="hidden" name="no">
@@ -247,6 +255,45 @@
 
     <script>
     let now_page_code = "c01";
+
+    $(function() {
+       
+        function calcNextDate() {
+          var dateStr = $('input[name="replacement_date"]').val();    // 교체일자
+          var cycle   = $('select[name="replacement_cycle"]').val();  // 교체 주기
+
+          if (dateStr && cycle !== 'x') {
+          
+            var parts = dateStr.split('-');
+            if (parts.length === 3) {
+              var y = parseInt(parts[0], 10),
+                  m = parseInt(parts[1], 10) - 1, 
+                  d = parseInt(parts[2], 10);
+
+              var dt = new Date(y, m, d);
+
+              var addYears = parseInt(cycle, 10);
+              dt.setFullYear(dt.getFullYear() + addYears);
+
+             
+              var ny = dt.getFullYear(),
+                  nm = ('0' + (dt.getMonth() + 1)).slice(-2),
+                  nd = ('0' + dt.getDate()).slice(-2);
+
+              $('input[name="next_date"]').val(ny + '-' + nm + '-' + nd);
+            }
+          } else {
+    
+            $('input[name="next_date"]').val('');
+          }
+        }
+
+      
+        $('input[name="replacement_date"], select[name="replacement_cycle"]')
+          .on('change', calcNextDate);
+      });
+
+
     
     $(document).ready(function () {
 	    getDataList();
@@ -296,6 +343,8 @@
         	    layout: "fitColumns",
         	    selectable: true,
         	    tooltips: true,
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
         	    selectableRangeMode: "click",
         	    reactiveData: true,
         	    headerHozAlign: "center",
@@ -326,9 +375,12 @@
         	        {title: "설비명", field: "equipment_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
         	        {title: "위치 구분", field: "location", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
         	        {title: "시리얼 번호", field: "serial_number", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+        	       
         	        {title: "교체일자", field: "replacement_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-        	        {title: "차기 교체일자", field: "next_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+        	     
         	        {title: "교체주기", field: "replacement_cycle", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+
+        	        {title: "차기 교체일자", field: "next_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
         	        {title: "비고", field: "remarks", sorter: "string", width: 350, hozAlign: "center", headerSort: false},
         	    ],
         	    rowClick: function(e, row) {
@@ -348,7 +400,7 @@
 
                     // 값 세팅
                     $("#modalContainer input[name='no']").val(rowData.no);
-                    $("#modalContainer select[name='equipment_name']").val(rowData.equipment_name);
+                    $("#modalContainer input[name='equipment_name']").val(rowData.equipment_name);
                     $("#modalContainer input[name='location']").val(rowData.location);
                     $("#modalContainer input[name='serial_number']").val(rowData.serial_number);
                     $("#modalContainer input[name='replacement_date']").val(rowData.replacement_date);
@@ -383,7 +435,7 @@
                     contentType: false,
                     success: function (response) {
                         if (response.result === "success") {
-                            alert("부적합품 관리 성공적으로 저장되었습니다!");
+                            alert("TC/조절계 이력 성공적으로 저장되었습니다!");
                             $("#modalContainer").hide();
                             getDataList(); 
                         } else {

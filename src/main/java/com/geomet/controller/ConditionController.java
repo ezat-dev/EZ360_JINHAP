@@ -58,7 +58,7 @@ public class ConditionController {
     public String corrStatus(Model model) {
         return "/condition/corrStatus.jsp"; // 
     }
-    //TC/조절 리스트
+   
     @RequestMapping(value = "/condition/corrStatus/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> corrStatusList(

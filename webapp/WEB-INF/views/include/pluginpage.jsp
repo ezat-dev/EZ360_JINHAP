@@ -337,7 +337,7 @@ function userInfoList(now_page_code) {
 
 function controlButtonPermissions(now_page_code) {
     const permission = userPermissions?.[now_page_code];
-    console.log("현재 페이지 권한(permission):", permission);
+  //  console.log("현재 페이지 권한(permission):", permission);
 
     const canRead = permission === "R" || permission === "C" || permission === "D";
     const canCreate = permission === "C" || permission === "D";

@@ -337,6 +337,8 @@ let now_page_code = "b05";
 		    headerSort: false,
 		    selectable: true,
 		    tooltips: true,
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
 		    selectableRangeMode: "click",
 		    reactiveData: true,
 		    headerHozAlign: "center",

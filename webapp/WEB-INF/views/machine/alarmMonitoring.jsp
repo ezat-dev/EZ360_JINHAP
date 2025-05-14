@@ -193,9 +193,9 @@
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
+              <!--   <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+                </button> -->
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
@@ -303,6 +303,8 @@
                 layout: "fitColumns",
                 selectable: true,
                 tooltips: true,
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
                 selectableRangeMode: "click",
                 reactiveData: true,
                 headerHozAlign: "center",

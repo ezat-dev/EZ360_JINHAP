@@ -294,6 +294,8 @@
       layout: 'fitDataFill',
       headerSort: false,
       reactiveData: true,
+      columnHeaderVertAlign: "middle",
+      rowVertAlign: "middle",
       headerHozAlign: 'center',
       ajaxConfig: { method: 'POST' },
       ajaxURL: "/geomet/machine/spareStatus/list",

@@ -398,6 +398,8 @@ function getDataList() {
         tooltips: true,
         selectableRangeMode: "click",
         reactiveData: true,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
         headerHozAlign: "center",
         ajaxConfig: "POST",
         ajaxLoader: false,

@@ -275,6 +275,8 @@ let now_page_code = "b01";
     	table2 = new Tabulator("#table2", {
     	    height: "390px",
     	    layout: "fitColumns",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
     	    headerHozAlign: "center",
 
     	    columns: [

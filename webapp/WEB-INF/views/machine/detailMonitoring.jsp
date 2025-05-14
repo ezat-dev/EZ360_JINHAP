@@ -257,6 +257,8 @@
             reactiveData: true,
             headerHozAlign: "center",
             ajaxConfig: "POST",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
             ajaxLoader: false,
             ajaxURL: "/geomet/quality/tustest/selectList",
             ajaxProgressiveLoad: "scroll",

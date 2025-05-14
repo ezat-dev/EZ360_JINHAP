@@ -411,6 +411,8 @@
     	 
     	table1 = new Tabulator("#table1", {
     	    height: "115px",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
     	    layout: "fitColumns",
     	    headerHozAlign: "center",
     	    columnDefaults: {
@@ -450,6 +452,8 @@
     	    height: "120px",
     	    layout: "fitColumns",
     	    headerHozAlign: "center",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
     	    columnDefaults: {
     	        hozAlign: "center",
     	        headerTooltip: false
@@ -475,6 +479,8 @@
     	table3 = new Tabulator("#table3", {
     	    height: "400px",
     	    layout: "fitColumns",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
     	    headerHozAlign: "center",
     	    columnDefaults: {
     	        hozAlign: "center",

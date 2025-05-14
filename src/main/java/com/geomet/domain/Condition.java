@@ -11,6 +11,7 @@ public class Condition {
 	    private String avg_weight;      // 평균중량
 	    private String equip_1;         // 설비명1
 	    private String load_1;          // 장입기준1
+	
 	    private String equip_2;         // 설비명2
 	    private String load_2;          // 장입기준2
 	    private String split_cnt;       // 분할횟수

@@ -341,16 +341,20 @@
             <label>평균중량</label>
             <input type="text" name="avg_weight" placeholder="">
             
-            <label>설비명</label>
+            <label>메인설비</label>
             <input type="text" name="equip_1" placeholder="">
             
-            <label>장입기준</label>
+            <label>메인 장입기준</label>
             <input type="text" name="load_1" placeholder="">
             
-            <label>설비명</label>
+            <label>보조 설비</label>
             <input type="text" name="equip_2" placeholder="">
             
-            <label>장입기준분할횟수</label>
+             <label>보조 장입기준</label>
+            <input type="text" name="load_2" placeholder="">
+            
+            
+            <label>분할횟수</label>
             <input type="text" name="split_cnt" placeholder="">
             
             <label>장입량(현재장입량)</label>
@@ -377,6 +381,8 @@
 
 
   <script>
+  let now_page_code = "c05";
+
   $(document).ready(function () {
 	    getDataList();
 
@@ -490,6 +496,8 @@
             tooltips: true,
             selectableRangeMode: "click",
             reactiveData: true,
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
             headerHozAlign: "center",
             ajaxConfig: "POST",
             ajaxLoader: false,
@@ -507,32 +515,88 @@
                 return response;
             },
             columns: [
-                { title: "도금품번", field: "plating_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
-                { title: "자제품번", field: "material_no", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
-                { title: "품명", field: "pum_name", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
-                { title: "표면처리 사양", field: "surface_spec", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
-                { title: "최대중량", field: "max_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "최소중량", field: "min_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "평균중량", field: "avg_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "MAIN설비명", field: "equip_1", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                { title: "장입기준", field: "load_1", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "SUB설비명", field: "equip_2", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-                { title: "장입기준", field: "load_2", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "분할횟수", field: "split_cnt", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "장입량", field: "avg_load", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "G-800", field: "g800", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "G600", field: "g600", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "공용설비", field: "common_equip", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-                { title: "K-BLACK", field: "k_black", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            ],
+            	  { title: "도금품번",      field: "plating_no",   sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+            	  { title: "자제품번",      field: "material_no",  sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+            	  { title: "품명",          field: "pum_name",     sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+            	  { title: "표면처리 사양", field: "surface_spec", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+
+            	
+            	  {
+            	    title: "공정창고 출고기준 중량",
+            	    columns: [
+            	      { title: "최대중량", field: "max_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	      { title: "최소중량", field: "min_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	      { title: "평균중량", field: "avg_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	    ]
+            	  },
+
+            	  {
+            	    title: "메인 장입",
+            	    columns: [
+            	      { title: "설비",     field: "equip_1", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+            	      { title: "장입기준", field: "load_1",  sorter: "string", width: 90,  hozAlign: "center", headerSort: false },
+            	    ]
+            	  },
+
+            
+            	  {
+            	    title: "보조 장입",
+            	    columns: [
+            	      { title: "설비명",   field: "equip_2", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+            	      { title: "장입기준", field: "load_2",  sorter: "string", width: 90,  hozAlign: "center", headerSort: false },
+            	    ]
+            	  },
+
+            	  { title: "분할횟수",    field: "split_cnt",    sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "장입량",      field: "avg_load",     sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "G-800",       field: "g800",         sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "G600",        field: "g600",         sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "공용설비",    field: "common_equip", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "K-BLACK",     field: "k_black",      sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	],
+
             rowClick: function(e, row) {
                 $("#dataList .tabulator-row").removeClass("row_select");
                 row.getElement().classList.add("row_select");
 
                 selectedRow = row; 
                 console.log("선택된 도금품번:", selectedRow.getData().plating_no);
-            }
+            },
+            rowDblClick: function(e, row) {
+                var d = row.getData();
+                selectedRowData = d;
 
+                // 폼 초기화
+                $('#corrForm')[0].reset();
+
+                // 각 필드에 값 채우기
+                var $f = $('#corrForm');
+                $f.find('input[name="plating_no"]').val(d.plating_no);
+                $f.find('input[name="material_no"]').val(d.material_no);
+                $f.find('input[name="pum_name"]').val(d.pum_name);
+                $f.find('input[name="surface_spec"]').val(d.surface_spec);
+                $f.find('input[name="max_weight"]').val(d.max_weight);
+                $f.find('input[name="min_weight"]').val(d.min_weight);
+                $f.find('input[name="avg_weight"]').val(d.avg_weight);
+                $f.find('input[name="equip_1"]').val(d.equip_1);
+                $f.find('input[name="load_1"]').val(d.load_1);
+                $f.find('input[name="equip_2"]').val(d.equip_2);
+                $f.find('input[name="load_1"]').val(d.load_1);
+                $f.find('input[name="split_cnt"]').val(d.split_cnt);
+                $f.find('input[name="avg_load"]').val(d.avg_load);
+                $f.find('input[name="g800"]').val(d.g800);
+                $f.find('input[name="g600"]').val(d.g600);
+                $f.find('input[name="common_equip"]').val(d.common_equip);
+                $f.find('input[name="k_black"]').val(d.k_black);
+
+                // 만약 hidden 필드 no가 있으면
+                if (d.no !== undefined) {
+                    $f.find('input[name="no"]').val(d.no);
+                }
+
+                // 모달/폼 열기
+                $('#modalContainer').show().addClass('show');
+            }
         });
     }
 

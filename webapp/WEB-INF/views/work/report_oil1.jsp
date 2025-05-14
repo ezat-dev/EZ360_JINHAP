@@ -6,7 +6,7 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>탈유탈지(1호기)</title>
+    <title>세척(1호기)</title>
 <style>
     .tab {
         width: 99%;
@@ -70,7 +70,7 @@
 <body>
   <main>
      <div class="tab">
-	     <h2>탈유탈지(1호기)</h2>
+	     <h2>세척(1호기)</h2>
 	    <div class="tab-controls">
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
@@ -131,6 +131,8 @@
         height: "115px",
 	    layout: "fitColumns",
 	    headerHozAlign: "center",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
 	    columnDefaults: {
 	        hozAlign: "center",
 	        headerTooltip: false
@@ -150,6 +152,8 @@
         height: "150px",
 	    layout: "fitColumns",
 	    headerHozAlign: "center",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
 	    columnDefaults: {
 	        hozAlign: "center",
 	        headerTooltip: false
@@ -177,6 +181,8 @@
         height: "460px",
 	    layout: "fitColumns",
 	    headerHozAlign: "center",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
 	    columnDefaults: {
 	        hozAlign: "center",
 	        headerTooltip: false

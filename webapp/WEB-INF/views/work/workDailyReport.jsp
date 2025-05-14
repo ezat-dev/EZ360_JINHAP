@@ -50,8 +50,8 @@
            
             <button id="btn3">공용설비</button>
             <button id="btn4">K-BLACK</button>
-            <button id="btn5">탈유지 1호기</button>
-            <button id="btn6">탈유지 2호기</button>
+            <button id="btn5">세척 1호기</button>
+            <button id="btn6">세척 2호기</button>
             <button id="btn7">쇼트1호기</button>
             <button id="btn8">쇼트2호기</button>
             <button id="btn9">쇼트3호기</button>

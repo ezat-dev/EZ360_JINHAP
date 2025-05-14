@@ -170,6 +170,8 @@ $(function(){
   function getAllUserList(){
 	  userTable = new Tabulator('#dataList', {
 		  height: '250px',
+          columnHeaderVertAlign: "middle",
+          rowVertAlign: "middle",
 		  layout: 'fitColumns',
 		  reactiveData: true,
 		  ajaxConfig: { method: 'POST' },

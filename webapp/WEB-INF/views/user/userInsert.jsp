@@ -8,270 +8,387 @@
     <title>사용자 등록</title>
     <link rel="stylesheet" href="/geomet/css/userInsert/userInsert.css">
 <%@include file="../include/pluginpage.jsp" %>
+    <jsp:include page="../include/tabBar.jsp"/>
     
     <style>
-.tabulator {
-	width: 100%;
-	max-width: 100%;
-	max-height: 1200px;
-	overflow-x: hidden !important;  
-}
-        
-.tabulator .tabulator-cell {
-	white-space: normal !important;
-	word-break: break-word; 
-	text-align: center;
-}
-.search{
-	border-radius: 5px;
-	display: flex;
-	align-items: center;
-	margin:1rem 0 0 2rem;	
-	/*상 우 하 좌*/
-	height:40px;
+        .container {
+            display: flex;
+            justify-content: space-between;
+            padding: 20px;
+            margin-left: 1008px;
+            margin-top: 200px;
+        }
+        .view {
+            display: flex;
+            justify-content: center;
+            margin-top: 1%;
+        }
+        .tab {
+            width: 95%;
+            margin-bottom: 37px;
+            margin-top: 5px;
+            height: 45px;
+            border-radius: 6px 6px 0px 0px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            transition: opacity 0.3s ease-in-out;
+        }
+	    .modal-content {
+	        background: white;
+	        width: 24%;
+	        max-width: 500px;
+	        height: 80vh; 
+	        overflow-y: auto; 
+	        margin: 6% auto 0;
+	        padding: 20px;
+	        border-radius: 10px;
+	        position: relative;
+	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+	        transform: scale(0.8);
+	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	        opacity: 0;
+	    }
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .close {
+            background-color:white;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        .modal-content input, .modal-content textarea {
+            width: 97%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal-content button {
+            background-color: #d3d3d3;
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .modal-content button:hover {
+            background-color: #a9a9a9;
+        }
+        .button-container {
+    		display: flex;
+		    gap: 10px;
+		    margin-left: auto;
+		    margin-right: 10px;
+		    margin-top: 40px;
+		}
+		.box1 {
+		    display: flex;
+		    justify-content: right;
+		    align-items: center;
+		    width: 1000px;
+		    margin-right: 20px;
+		    margin-top:4px;
+		}
+        .dayselect {
+            width: 20%;
+            text-align: center;
+            font-size: 15px;
+        }
+        .daySet {
+        	width: 20%;
+      		text-align: center;
+            height: 16px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        .daylabel {
+            margin-right: 10px;
+            margin-bottom: 13px;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+        button-container.button{
+        height: 16px;
+        }
+         .mid{
+        margin-right: 9px;
+	    font-size: 20px;
+	    font-weight: bold;
+	
+	    height: 42px;
+	    margin-left: 9px;
+        }
+        .row_select {
+	    background-color: #ffeeba !important;
+	    }
+	    
+	    .form-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;           /* 레이블–인풋 간격 */
+  flex-wrap: wrap;     /* 화면 좁아지면 줄 바꿈 */
+  margin-bottom: 12px; /* 각 행 간 간격 */
 }
 
-.search label{
-	font-size:12pt;
-	font-weight:700;
-	margin-right:1%;
-}
+    </style>
+</head>
 
+<body>
 
-.search input{
-	font-size:13pt;
-	font-weight:700;
-	width:120px;
-	text-align:center;
-}
-
-.view{
-	display: flex; 
-	justify-content: center;
-	margin-top:1%;
-}  
-</style>
-    
-    
-    <body>
-        
     <main class="main">
-    
-    	<div class="search">
+        <div class="tab">
+        
 
-    	</div>
-    
-	<jsp:include page="../include/tabBar.jsp"/>
+            <div class="button-container">
+            
+               <div class="box1">
+	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+	           <label class="daylabel">입사 일자 :</label>
+				<input type="text" autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+				
+				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 	
+				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> 
+
 	
-	<div class="view">
-	  <div id="dataList" class="tabulator"></div>
+			  <label class="daylabel">성명 :</label>
+			  <input type="text" id="u_name" class="daySet" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+			
+
+
+
 	</div>
-	
-	<div class="userModal">
-	<form method="post" id="userForm" name="userForm" autocomplete="off">
-	<div class="user-insert-box"></div>
-    <div class="user-inser-header">사용자등록</div>
-    <div class="user-no-box">아이디</div>
-    <div class="user-buso-box">이름</div>
-    <div class="user-name-box">비밀번호</div>
-    <div class="user-jick-box">등급</div>
-   
-    <div class="user-jdate-box">부서</div>
-    <div class="user-odate-box">직책</div>
-<!--     
-    <div class="user-id-box">아이디</div>
-    <div class="user-pwd-box">패스워드</div>
-    <div class="user-phone-box">휴대전화</div>
-    <div class="user-add-box">주소</div>
-    <div class="user-bigo-box">비고</div>
-    <div class="user-sms-box">SMS 발송</div>
- -->
- 	
-    <input type="text" id="user_id" name="user_id" class="user-no">
-    <input type="password" id="user_pw" name="user_pw" class="user-name">
-    <input type="text" id="user_name" name="user_name" class="user-buso">
 
-    <select id="user_level" name="user_level" class="user-jick">
-    	<option value="2">사용자</option>
-    	<option value="1">일반관리자</option>
-    </select>
-    <input type="text" id="user_busu" name="user_busu" class="user-jdate">
-    <input type="text" id="user_jick" name="user_jick" class="user-odate">
-<!--     
-    <input type="text" class="user-id">
-    <input type="text" class="user-pwd">
-    <input type="text" class="user-phone">
-    <input type="text" class="user-add">
-    <input type="text" class="user-bigo">
- -->
-    <button type="button" class="saveModal" onclick="userSave();">저장</button>
-    <button type="button" class="closeModal">닫기</button>
-</form>
-</div>
-</main>
+	           
+		
+                <button class="select-button">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                </button>
+                <button class="insert-button">
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                </button>
+                <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
+                
+                
+                <button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                </button>
+                
+            </div>
+        </div>
+
+        <div class="view">
+            <div id="dataTable"></div>
+        </div>
+    </main>
+	
+	   <div id="modalContainer" class="modal">
+	    <div class="modal-content">
+	        <span class="close">&times;</span>
+	        <h2>부품교체 이력 등록</h2>
+	        <form id="corrForm"autocomplete="off">
+	          
+	
+	          
+	
+	            <label>ID</label>
+				<input type="text" name="user_id">
+	
+	           <label>PassWord</label>
+	           <input type="text" name="user_pw">
+
+	
+	            <label>성명</label>
+	             <input type="text" name="user_name">
+	            	
+	            <label>등급</label>
+	             <input type="text" name="user_level">
+	            	            	
+	            <label>부서</label>
+	             <input type="text" name="user_busu">
+	           
+	            <label>직책</label>
+	             <input type="text" name="user_jick">
+	            
+	         
+	
+	            <button type="submit" id="saveCorrStatus">저장</button>
+	            <button type="button" id="closeModal">닫기</button>
+	        </form>
+	    </div>
+	</div>
+
 
 <script>
-let now_page_code = "e06";
-	//전역변수
-    var userTable;	
-	
 
-	//로드
-	$(function(){
-		$(".headerP").text("인원 및 안전관리 - 사용자 등록");
-		//전체 사용자목록 조회
-		getAllUserList();
-	});
-	
-	
-	//함수
-	function getAllUserList(){
-		
-		userTable = new Tabulator("#dataList", {
-		    height:"760px",
-		    layout:"fitColumns",
-		    selectable:true,	//로우 선택설정
-		    tooltips:true,
-		    selectableRangeMode:"click",
-		    reactiveData:true,
-		    headerHozAlign:"center",
-		    ajaxConfig:"POST",
-		    ajaxLoader:false,
-		    ajaxURL:"/geomet/user/userInsert/select",
-		    ajaxProgressiveLoad:"scroll",
-		    ajaxParams:{},
-		    placeholder:"조회된 데이터가 없습니다.",
-		    paginationSize:20,
-		    ajaxResponse:function(url, params, response){
-				$("#dataList .tabulator-col.tabulator-sortable").css("height","29px");
-		        return response; //return the response data to tabulator
-		    },
-		    columns:[
-		        {title:"NO", field:"idx", sorter:"int", width:100,
-		        	hozAlign:"center"},
-		        {title:"아이디", field:"user_id", sorter:"string", width:120,
-		        	hozAlign:"center"},
-		        {title:"성명", field:"user_name", sorter:"string", width:140,
-		        	hozAlign:"center"},
-		        {title:"등급", field:"user_level", sorter:"string", width:140,
-		        	hozAlign:"center"},
-		        {title:"부서", field:"user_busu", sorter:"string", width:140,
-		        	hozAlign:"center"},
-		        {title:"직책", field:"user_jick", sorter:"string", width:140,
-		        	hozAlign:"center"}
-		    ],
-		    rowFormatter:function(row){
-			    var data = row.getData();
-			    
-			    row.getElement().style.fontWeight = "700";
-				row.getElement().style.backgroundColor = "#FFFFFF";
-			},
-			rowClick:function(e, row){
-
-				$("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item){
-						
-					if($(this).hasClass("row_select")){							
-						$(this).removeClass('row_select');
-						row.getElement().className += " row_select";
-					}else{
-						$("#dataList div.row_select").removeClass("row_select");
-						row.getElement().className += " row_select";	
-					}
-				});
-
-				var rowData = row.getData();
-				$(".userName").text(rowData.user_name);
-				
-				
-			},
-			rowDblClick:function(e, row){
+let now_page_code = "h03";
 
 
-				var rowData = row.getData();
-				$(".userName").text(rowData.user_name);
-			},			
-		});		
-	}
+  var dataTable;
+  var selectedRowData = null;
 
-	// 드래그 기능 추가
-	const modal = document.querySelector('.userModal');
-	const header = document.querySelector('.user-inser-header'); // 헤더를 드래그할 요소로 사용
+  $(function() {
+    dataTable = new Tabulator('#dataTable', {
+      height: '790px',
+      layout: 'fitDataFill',
+      headerSort: false,
+      reactiveData: true,
+      columnHeaderVertAlign: "middle",
+      rowVertAlign: "middle",
+      headerHozAlign: 'center',
+      ajaxConfig: { method: 'POST' },
+      ajaxLoader:false,
+	    ajaxURL:"/geomet/user/userInsert/select",
+	    ajaxProgressiveLoad:"scroll",
+	    ajaxParams:{},
+	    placeholder:"조회된 데이터가 없습니다.",
+	    paginationSize:20,
+	    ajaxResponse:function(url, params, response){
+			$("#dataList .tabulator-col.tabulator-sortable").css("height","29px");
+	        return response; //return the response data to tabulator
+	    },
+	    columns:[
+	        {title:"NO", field:"idx", sorter:"int", width:100,
+	        	hozAlign:"center"},
+	        {title:"아이디", field:"user_id", sorter:"string", width:120,
+	        	hozAlign:"center"},
+	        {title:"성명", field:"user_name", sorter:"string", width:140,
+	        	hozAlign:"center"},
+	        {title:"등급", field:"user_level", sorter:"string", width:140,
+	        	hozAlign:"center"},
+	        {title:"부서", field:"user_busu", sorter:"string", width:140,
+	        	hozAlign:"center"},
+	        {title:"직책", field:"user_jick", sorter:"string", width:140,
+	        	hozAlign:"center"}
+	    ],
+      rowClick: function(e, row) {
+        $('#dataTable .tabulator-row').removeClass('row_select');
+        row.getElement().classList.add('row_select');
+        selectedRowData = row.getData();
+      },
+      rowDblClick: function(e, row) {
+        var d = row.getData();
+        selectedRowData = d;
+        $('#corrForm')[0].reset();
+        $('select[name="no"]').val(d.no);
+        $('select[name="user_id"]').val(d.user_id);
+        $('select[name="user_pw"]').val(d.user_pw);
+        $('select[name="user_name"]').val(d.user_name);
+        $('input[name="user_level"]').val(d.user_level);
+        $('select[name="user_busu"]').val(d.user_busu);
+        $('textarea[name="user_jick"]').val(d.user_jick);
+        $('#modalContainer').show().addClass('show');
+      }
+    });
 
-	header.addEventListener('mousedown', function(e) {
-	    let offsetX = e.clientX - modal.getBoundingClientRect().left; // 마우스와 모달의 x 위치 차이
-	    let offsetY = e.clientY - modal.getBoundingClientRect().top; // 마우스와 모달의 y 위치 차이
 
-	    function moveModal(e) {
-	        modal.style.left = (e.clientX - offsetX) + 'px';
-	        modal.style.top = (e.clientY - offsetY) + 'px';
-	    }
+    $('.select-button').click(function(){
+      var sel = $('.dayselect').val();
+      dataTable.setData("/geomet/user/userInsert/select");
+    });
 
-	    function stopMove() {
-	        window.removeEventListener('mousemove', moveModal); // 이동 중지
-	        window.removeEventListener('mouseup', stopMove); // 마우스 업 이벤트 제거
-	    }
+    $('.insert-button').click(function(){
+      selectedRowData = null;
+      $('#corrForm')[0].reset();
+      $('#modalContainer').show().addClass('show');
+    });
 
-	    window.addEventListener('mousemove', moveModal); // 마우스 이동 이벤트
-	    window.addEventListener('mouseup', stopMove); // 마우스 업 이벤트
-	});
-		
+    $('.delete-button').click(function(){
+      if (!selectedRowData) {
+        alert('삭제할 행을 먼저 클릭해 주세요.');
+        return;
+      }
+      if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
 
-	// 모달 열기
-/*	
-	const insertButton = document.querySelector('.insert-button');
-	const userModal = document.querySelector('.userModal');
-	const closeButton = document.querySelector('.closeModal');
+      $.ajax({
+        url: "/geomet/user/userInsert/delete",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify({ no: selectedRowData.no }),
+        success: function(res){
+          alert('삭제되었습니다.');
+          var currentFilter = $('.dayselect').val() || 'ALL';
+          dataTable.setData("/geomet/user/userInsert/list", { mch_name: currentFilter });
+          selectedRowData = null;
+        },
+        error: function(){
+          alert('삭제 중 오류가 발생했습니다.');
+        }
+      });
+    });
 
-	insertButton.addEventListener('click', function() {
-	    userModal.style.display = 'block'; // 모달 표시
-	});
+    $('.close, #closeModal').click(function(){
+      $('#modalContainer').removeClass('show').hide();
+    });
 
-	closeButton.addEventListener('click', function() {
-	    userModal.style.display = 'none'; // 모달 숨김
-	});
-*/
-	function modalOpen(){
-		$(".userModal").show();
-	}
-	
-	function modalClose(){
-		$(".userModal").hide();
-	}
+    $('#saveCorrStatus').click(function(event){
+      event.preventDefault();
+      var formData = new FormData($('#corrForm')[0]);
+      if (selectedRowData && selectedRowData.no) {
+        formData.append('no', selectedRowData.no);
+      }
+      $.ajax({
+        url: "/geomet/user/userInsert/insert",
+        type: "POST",
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(){
+          alert("저장되었습니다!");
+          $('#modalContainer').hide();
+          var currentFilter = $('.dayselect').val() || 'ALL';
+          dataTable.setData("/geomet/user/userInsert/list", { mch_name: currentFilter });
+          selectedRowData = null;
+        },
+        error: function(){
+          alert('저장 중 오류가 발생했습니다.');
+        }
+      });
+    });
+  });
+</script>
 
-	//이벤트
-	$(".insert-button").on("click",function(){
-		modalOpen();
-	});
 
-	$(".closeModal").on("click", function(){
-		$("#userForm")[0].reset();
-		modalClose();
-	});
-	
-	
-	// 사용자 등록 모달 ajax
-	
-	function userSave(){
-		var userData = new FormData($("#userForm")[0]);
-		
-		console.log(userData);
-		
-		$.ajax({
-			url:"/geomet/user/userInsert/insert",
-			type:"post",
-			contentType: false,
-			processData: false,
-			dataType: "json",
-			data:userData,
-			success:function(result){
-				getAllUserList();
-				modalClose();
-			}
-		});
-	}
-
-    </script>
-
-	</body>
+</body>
 </html>

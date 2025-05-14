@@ -56,7 +56,10 @@
             border-radius: 5px;
             font-size: 15px;
         }
-
+	  .highcharts-title {
+	    font-size: 18px !important;
+	    font-weight: bold !important;
+	  }
         .daylabel {
             margin-right: 10px;
             margin-bottom: 13px;
@@ -107,111 +110,120 @@
  <script>
  let now_page_code = "a05";
 
- 
-    $(function () {
-        $(".headerP").text("모니터링 - 온도경향 모니터링");
-    });
+ $(function () {
+     $(".headerP").text("모니터링 - 온도경향 모니터링");
+ });
 
-    $(document).ready(function () {
+ $(document).ready(function () {
 
-        function loadChart(startDate, endDate) {
-            console.log(" 검색 기간:", startDate, "~", endDate);
+     function loadChart(startDate, endDate) {
+         console.log(" 검색 기간:", startDate, "~", endDate);
 
-            $.ajax({
-                type: "POST",
-                url: "/geomet/machine/tempMonitoring/list",
-                data: {
-                    startDate: startDate,
-                    endDate: endDate
-                },
-                dataType: "json",
-                success: function (data) {
-                    console.log("받아온 데이터:", data);
+         $.ajax({
+             type: "POST",
+             url: "/geomet/machine/tempMonitoring/list",
+             data: { startDate, endDate },
+             dataType: "json",
+             success: function (data) {
+                 if (data.status !== "success") {
+                     alert("데이터 로딩 실패: " + data.message);
+                     return;
+                 }
 
-                    if (data.status !== "success") {
-                        alert("데이터 로딩 실패: " + data.message);
-                        return;
-                    }
+                 const raw = data.data;
+                 if (!raw || raw.length === 0) {
+                     alert("데이터가 없습니다.");
+                     return;
+                 }
 
-                    const raw = data.data;
-                    if (!raw || raw.length === 0) {
-                        alert("데이터가 없습니다.");
-                        return;
-                    }
+                 // X축 카테고리(시간)
+                 const categories = raw.map(item => item.temp_time);
 
-                    const categories = raw.map(item => item.temp_time);
+                 // key와 출력 레이블을 직접 지정
+                 const seriesInfo = [
+                     { key: "t_600_d12000", label: "t_600 예열" },
+                     { key: "t_600_d12001", label: "t_600 가열" },
+                     { key: "t_800_d12000", label: "t_800 예열" },
+                     { key: "t_800_d12001", label: "t_800 가열" },
+                     { key: "blk_d12000",    label: "blk 예열"   },
+                     { key: "blk_d12001",    label: "blk 가열"   },
+                     { key: "mlpl_d12000",   label: "mlpl 예열"  },
+                     { key: "mlpl_d12001",   label: "mlpl 가열"  }
+                 ];
 
-                    const seriesNames = [
-                        "t_600_d12000", "t_600_d12001",
-                        "t_800_d12000", "t_800_d12001",
-                        "blk_d12000", "blk_d12001",
-                        "mlpl_d12000", "mlpl_d12001"
-                    ];
+                 // series 생성
+                 const series = seriesInfo.map(info => ({
+                     name: info.label,
+                     data: raw.map(item => item[info.key])
+                 }));
 
-                    const series = seriesNames.map(name => ({
-                        name: name,
-                        data: raw.map(item => item[name])
-                    }));
+                 // 차트 렌더링
+                 Highcharts.chart('chartContainer', {
+                     chart: { type: 'line' },
+                     title: {
+                         text: '온도 경향 모니터링',
+                         style: {
+                             fontSize: '18px',
+                             fontWeight: 'bold'
+                         }
+                     },
+                     exporting: { enabled: false },
+                     xAxis: {
+                         categories,
+                         title: { text: '시간' },
+                         // 약 20개만 라벨 표시
+                         tickInterval: Math.max(1, Math.floor(categories.length / 20)),
+                         labels: {
+                             rotation: 0,
+                             align: 'center',
+                             style: {
+                                 whiteSpace: 'normal',
+                                 fontSize: '14px'
+                             },
+                             formatter: function () {
+                                 const [date, time] = this.value.split(' ');
+                                 const mmdd = date.slice(5);                    // MM-DD
+                                 const hhmm = time.split('.')[0].slice(0,5);   // hh:mm
+                                 return mmdd + '</br>' + hhmm;
+                             }
+                         }
+                     },
+                     yAxis: {
+                         title: { text: '(℃)' }
+                     },
+                     series: series
+                 });
+             },
+             error: function (xhr, status, error) {
+                 console.error("❌ 데이터 불러오기 실패:", status, error);
+             }
+         });
+     }
 
-                    if (!document.getElementById('chartContainer')) {
-                        console.error("❌ 'chartContainer' div가 없습니다.");
-                        return;
-                    }
+     // 조회 버튼 클릭
+     $(".select-button").click(function () {
+         const startDate = $("#startDate").val() || "";
+         const endDate   = $("#endDate").val()   || "";
+         loadChart(startDate, endDate);
+     });
 
-                    Highcharts.chart('chartContainer', {
-                        chart: { type: 'line' },
-                        title: {
-                            text: '온도 경향 모니터링'
-                        },
-                        xAxis: {
-                            categories: categories,
-                            title: { text: '시간' },
-                            labels: {
-                                rotation: -45,
-                                formatter: function () {
-                                    const time = this.value.split(' ')[1];
-                                    return time ? time.split('.')[0] : this.value;
-                                }
-                            }
-                        },
-                        yAxis: {
-                            title: { text: '(℃) ' }
-                        },
-                        series: series
-                    });
-                },
-                error: function (xhr, status, error) {
-                    console.error("❌ 데이터 불러오기 실패:", status, error);
-                }
-            });
-        }
+     // 날짜 포맷 함수
+     function formatDate(date) {
+         return date.toISOString().slice(0, 16).replace('T', ' ');
+     }
 
-        $(".select-button").click(function () {
-            const startDate = $("#startDate").val() || "";
-            const endDate = $("#endDate").val() || "";
-            loadChart(startDate, endDate);
-        });
+     // 초기 날짜 세팅 (오늘 00:00 ~ 현재 시각)
+     const now = new Date();
+     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0);
+     const startDate = formatDate(todayStart);
+     const endDate   = formatDate(now);
 
-        function formatDate(date) {
-            // "YYYY-MM-DD hh:mm" 형태로
-            return date.toISOString().slice(0, 16).replace('T', ' ');
-          }
+     $("#startDate").val(startDate);
+     $("#endDate").val(endDate);
 
-          // 현재 시간
-          const now = new Date();
-          // 오늘 00:00 시각
-          const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0);
-
-          const startDate = formatDate(todayStart);
-          const endDate   = formatDate(now);
-
-          // input에 값 세팅
-          $("#startDate").val(startDate);
-          $("#endDate").val(endDate);
-
-          // 하루치 차트 로드
-          loadChart(startDate, endDate);
-        });
+     // 최초 차트 로드
+     loadChart(startDate, endDate);
+ });
 </script>
 
 </body>

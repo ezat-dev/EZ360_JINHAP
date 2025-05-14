@@ -9,10 +9,10 @@
 	    FROM tb_standard_info
 	    <where>
 	        <if test="plating_no != null and plating_no != ''">
-	            AND plating_no = #{plating_no}
+	            AND plating_no LIKE CONCAT('%',#{plating_no},'%')
 	        </if>
 	        <if test="pum_name != null and pum_name != ''">
-	            AND pum_name = #{pum_name}
+	            AND pum_name LIKE CONCAT('%',#{pum_name},'%')
 	        </if>
 	        <if test="surface_spec != null and surface_spec != ''">
 	            AND surface_spec LIKE CONCAT('%',#{surface_spec},'%')

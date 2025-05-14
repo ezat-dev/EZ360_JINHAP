@@ -130,6 +130,8 @@
     	 
       table1 = new Tabulator("#table1", {
         height: "115px",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
         layout: "fitColumns",
         headerHozAlign: "center",
         columns: [
@@ -169,6 +171,8 @@
       table3 = new Tabulator("#table3", {
         height: "400px",
         layout: "fitColumns",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
         headerHozAlign: "center",
         columns: [
           { title: "순서", field: "r_num" },

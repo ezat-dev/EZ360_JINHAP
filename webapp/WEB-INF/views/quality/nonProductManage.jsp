@@ -430,6 +430,8 @@ $(document).ready(function () {
             height: "760px",
             layout: "fitColumns",
             selectable: true,
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
             tooltips: true,
             selectableRangeMode: "click",
             reactiveData: true,

@@ -294,6 +294,8 @@
                 columnMinWidth: 170, 
                 selectable: true,
                 tooltips: true,
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
                 selectableRangeMode: "click",
                 reactiveData: true,
                 headerHozAlign: "center",

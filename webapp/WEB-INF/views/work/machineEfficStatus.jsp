@@ -9,8 +9,20 @@
     <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
    <style>
-        #legend { position:absolute; top:20px; right:100px; background:#fff; border:1px solid #ccc; border-radius:6px; padding:8px 12px; font-family:Arial,sans-serif; font-size:14px; white-space:nowrap; box-shadow:0 2px 6px rgba(0,0,0,0.1); }
-        #legend span { margin-right:16px; vertical-align:middle; }
+		#legend {
+		    position: absolute;
+		    top: 50px;
+		    right: 100px;
+		    background: #fff;
+		    border: 1px solid #ccc;
+		    border-radius: 6px;
+		    padding: 8px 12px;
+		    font-family: Arial, sans-serif;
+		    font-size: 18px;
+		    white-space: nowrap;
+		    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+		}
+#legend span { margin-right:16px; vertical-align:middle; }
         #dataList { margin:80px auto 0; width:90%; }
         .tabulator .tabulator-row.tabulator-selected { background-color: inherit !important; }
    
@@ -19,6 +31,9 @@
     .tabulator-cell.grade-B-cell { color: #ff7f0e !important; }
     .tabulator-cell.grade-C-cell { color: #d62728 !important; }
     .tabulator-cell.grade-D-cell { color: #7f7f7f !important; }
+    .view{margin-top:140px;}
+    
+    
     </style>
 </head>
 <body>
@@ -47,17 +62,24 @@
                 tooltips: true,
                 headerHozAlign: "center",
                 ajaxConfig: "POST",
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
                 ajaxURL: "/geomet/work/machineEfficStatus/list",
                 placeholder: "조회된 데이터가 없습니다.",
                 ajaxResponse: function(url, params, response) {
                     return response;
                 },
+                rowFormatter: function(row) {
+                    row.getElement().style.height = "42px";
+                    row.getElement().style.fontWeight = "bold";
+                    row.getElement().style.fontSize = "15pt";
+                },
                 columns: [
-                    { title: "설비명",      field: "facility_name", width: 260, sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "생산효율(%)",    field: "a",              width: 260, sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "가동효율(%)",    field: "b",              width: 260, sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "양품율(%)",      field: "c",              width: 260, sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "종합효율(%)",    field: "d",              width: 270, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "설비명",      field: "facility_name", width: 265, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "생산효율(%)",    field: "a",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "가동효율(%)",    field: "b",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "양품율(%)",      field: "c",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
+                    { title: "종합효율(%)",    field: "d",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
                     {
                         title: "등급", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
                         formatter: function(cell) {

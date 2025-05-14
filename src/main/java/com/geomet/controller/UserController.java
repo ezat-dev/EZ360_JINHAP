@@ -323,7 +323,7 @@ public class UserController {
 	     Users loginUser = (Users) session.getAttribute("loginUser");
 	     Permission loginPermission = (Permission) session.getAttribute("loginUserPage");
 
-	     // 세션이 null일 수 있으므로, null 체크 필요
+	 
 	     if (loginUser != null) {
 	         result.put("loginUser", loginUser);
 	     }

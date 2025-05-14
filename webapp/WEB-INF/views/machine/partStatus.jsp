@@ -284,6 +284,8 @@ let now_page_code = "h04";
       height: '790px',
       layout: 'fitDataFill',
       headerSort: false,
+      columnHeaderVertAlign: "middle",
+      rowVertAlign: "middle",
       reactiveData: true,
       headerHozAlign: 'center',
       ajaxConfig: { method: 'POST' },
