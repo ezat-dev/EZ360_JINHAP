@@ -102,7 +102,7 @@
             </div>
         </div>
 
-         <div id="chartWrapper" style="height: 100vh;">
+         <div id="chartWrapper" style="height: 90vh;">
 		    <div id="chartContainer" style="width:100%; height:calc(100vh - 100px);"></div>
 		  </div>
     </main>

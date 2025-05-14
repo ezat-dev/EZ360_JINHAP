@@ -121,7 +121,7 @@
 		    justify-content: right;
 		    align-items: center;
 		    width: 1000px;
-		    margin-right: 20px;
+		    margin-right: -50px;
 		    margin-top:4px;
 		}
         .dayselect {
@@ -230,37 +230,14 @@
              <div class="status">
 		        <span class="running"></span> 가동
 		    </div>
-<!-- 		    <div class="status">
-		        <span class="changing"></span> 변경
-		    </div> -->
 		    <div class="status">
 		        <span class="stopped"></span> 비가동
 		    </div>
 		    <div class="unit">단위: ton, %</div>
-           
-        
-<!--            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">교체일자 :</label>
-			<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-			
-			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
-
-			<input type="text" autocomplete="off"class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
-
+         
            
 			</div>
-<!--                 <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-                </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button> -->
-<!--                 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button> -->
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+
             </div>
         </div>
 
