@@ -8,29 +8,25 @@
     <title>작업자 근무현황</title>
 <%@include file="../include/pluginpage.jsp" %>   
 <jsp:include page="../include/tabBar.jsp"/> 
-<style>
-.search{
-	height:40px;
-}
-.container {
-	display: flex;
-	justify-content: space-between;
-	padding: 20px;
-	margin-left:1008px;
-	margin-top:200px;
-}
+
     
 <style>
-    .tab {
-        width: 99%;
-        margin-bottom: 37px;
-        margin-top: 5px;
-        height: 55px;
-        border-radius: 6px 6px 0px 0px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
+
+
+	.tab {
+	    width: 99%;
+	    margin-bottom: 37px;
+	    margin-top: 5px;
+	    height: 55px;
+	    display: flex;
+	    align-items: center;
+	
+	   
+	    justify-content: flex-end;
+	    gap: 20px;
+	    padding-right: 20px;
+	}
+
 
     .tab-header {
         display: flex;
@@ -39,21 +35,17 @@
         font-weight: bold;
     }
 
-    .tab-controls {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        font-size: 16px;
-    }
 
-	.tab-controls label {
+
+	.tab label {
 	    margin-right: 5px;
 	    font-weight: 500;
-	   	font-size: 19px;
+	   	font-size: 20px;
+	   	margin-top: 2px;
 	}
 	
-.tab-controls input.daySet {
-    margin-top: 10px;
+.tab input.daySet {
+    
     padding: 6px 12px;
     font-size: 19px;
     border: 1px solid #ccc;
@@ -110,6 +102,8 @@
             transform: scale(1);
             opacity: 1;
         }
+        .modal.show .modal-content2 { opacity:1; transform: scale(1); }
+        
         .close {
             background-color:white;
             position: absolute;
@@ -134,12 +128,38 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
+        
+       .modal-content2 form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content2 label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        .modal-content2 input, .modal-content2 textarea {
+            width: 97%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
         select {
             width: 100%;
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
+        }
+          .modal-content2 button {
+       
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+          
         }
         .modal-content button {
        
@@ -165,7 +185,7 @@
 		    display: flex;
 		    justify-content: right;
 		    align-items: center;
-		    width: 800px;
+		    width: 1000px;
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
@@ -175,14 +195,14 @@
             font-size: 15px;
         }
         .daySet {
-        	width: 20%;
+        	width: 30%;
       		text-align: center;
-            height: 16px;
+            height: 21px;
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
-            font-size: 15px;
+            font-size: 17px;
         }
         .daylabel {
             margin-right: 10px;
@@ -204,6 +224,57 @@
         .row_select {
 	    background-color: #ffeeba !important;
 	    }
+.modal-content2 {
+    background: white;
+    width: 24%;
+    max-width: 500px;
+    height: 80vh; 
+    overflow-y: auto; 
+    margin: 6% auto 0;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+}
+
+.modal.show {
+    display: block;
+    opacity: 1;
+}
+
+.modal.show .modal-content2 {
+    transform: scale(1);
+    opacity: 1;
+}
+
+.close2 {
+    background-color: white;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+}
+.navigate-button {
+  background-color: #e0e0e0;
+  color: #333;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 20px;
+  font-size: 14px;
+  height: 30px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.navigate-button:hover {
+  background-color: #cfcfcf;
+}
 </style>
 
 
@@ -212,8 +283,13 @@
 <body>
   <main>
      <div class="tab">
-	 
-	    <div class="tab-controls">
+
+	   <div class="button-container">
+	        
+			<button class="navigate-button" onclick="location.href='/geomet/user/workerManage2'">
+			  인수인계 페이지
+			</button>
+			 
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
 	        <button class="select-button" onclick="loadWorkDailyData()">
@@ -269,13 +345,55 @@
 
 
 
-<div id="modalContainer2" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>작업자 근무현황</h2>
+<div id="modalContainer2" class="modal" style="display:none;">
+  <div class="modal-content2">
+    <span class="close2">&times;</span>
+    <h2>상세 근무현황 수정</h2>
     <form id="corrForm2" autocomplete="off">
-     
- 	
+      <input type="hidden" name="id">
+
+      <label>날짜</label>
+      <input type="date" name="date">
+
+      <label>주/야</label>
+      <input type="text" name="shift_type">
+
+      <label>라인장</label>
+      <input type="text" name="line_leader">
+
+      <label>세척</label>
+      <input type="text" name="degreasing">
+
+      <label>쇼트</label>
+      <input type="text" name="shot">
+
+      <label>G-800</label>
+      <input type="text" name="g800">
+
+      <label>G-600</label>
+      <input type="text" name="g600">
+
+      <label>공용설비(후처리)</label>
+      <input type="text" name="common">
+
+      <label>K-BLACK</label>
+      <input type="text" name="k_black">
+
+      <label>액관리</label>
+      <input type="text" name="liquid_mgmt">
+
+      <label>e-coating</label>
+      <input type="text" name="e_coating">
+
+      <label>그룹장</label>
+      <input type="text" name="group_leader">
+
+      <label>방청</label>
+      <input type="text" name="rust">
+
+      <label>실험</label>
+      <input type="text" name="lab">
+
       <button type="submit" id="saveCorrStatus2">저장</button>
       <button type="button" id="closeModal2">닫기</button>
     </form>
@@ -350,7 +468,37 @@
 	  });
 	});
 
+  $('#saveCorrStatus2').on('click', function(e){
+	  e.preventDefault();
 
+	  const $form = $('#corrForm2');
+	  const formData = {};
+
+	  // form 안의 input[name] 값들을 모두 읽어서 객체에 저장
+	  $form.find('input[name]').each(function(){
+	    const name = $(this).attr('name');
+	    const val  = $(this).val();
+	    formData[name] = val;
+	  });
+
+	  console.log('보내는 데이터 (table2 수정):', formData);
+
+	  $.ajax({
+	    url: '/geomet/user/workerManage/insertSchedule',  // 실제 수정용 엔드포인트로 변경
+	    method: 'POST',
+	    contentType: 'application/json',
+	    data: JSON.stringify(formData),
+	    success: function(res){
+	      alert('수정이 완료되었습니다.');
+	      $('#modalContainer2').hide();
+	      loadWorkDailyData();    
+	    },
+	    error: function(xhr){
+	      console.error(xhr.responseText);
+	      alert('수정 중 오류가 발생했습니다.');
+	    }
+	  });
+	})
 
 
   $('.delete-button').click(function() {
@@ -493,7 +641,7 @@
 
     	        { title: "주/야", field: "shift_type", hozAlign: "center",headerSort: false },
     	        { title: "라인장", field: "line_leader", hozAlign: "center",headerSort: false },
-    	        { title: "탈유탈지", field: "degreasing", hozAlign: "center" ,headerSort: false},
+    	        { title: "세척", field: "degreasing", hozAlign: "center" ,headerSort: false},
     	        { title: "쇼트", field: "shot", hozAlign: "center",headerSort: false },
     	        { title: "G-800", field: "g800", hozAlign: "center",headerSort: false },
     	        { title: "G-600", field: "g600", hozAlign: "center",headerSort: false },
@@ -505,12 +653,44 @@
     	        { title: "방청", field: "rust", hozAlign: "center" ,headerSort: false},
     	        { title: "실험", field: "lab", hozAlign: "center" ,headerSort: false}
     	        
-    	    ]
-    	});
+    	    ],
+    	    rowDblClick: function(e, row) {
+    	        const data = row.getData();
+    	        const $form = $('#corrForm2');
 
+    	        // 1) 폼 초기화
+    	        $form[0].reset();
 
-    }
+    	        // 2) 각 필드별로 값 채우기
+    	        $form.find('input[name="id"]').val(data.id);
+    	        $form.find('input[name="date"]').val(data.date);
+    	        $form.find('input[name="shift_type"]').val(data.shift_type);
+    	        $form.find('input[name="line_leader"]').val(data.line_leader);
+    	        $form.find('input[name="degreasing"]').val(data.degreasing);
+    	        $form.find('input[name="shot"]').val(data.shot);
+    	        $form.find('input[name="g800"]').val(data.g800);
+    	        $form.find('input[name="g600"]').val(data.g600);
+    	        $form.find('input[name="common"]').val(data.common);
+    	        $form.find('input[name="k_black"]').val(data.k_black);
+    	        $form.find('input[name="liquid_mgmt"]').val(data.liquid_mgmt);
+    	        $form.find('input[name="e_coating"]').val(data.e_coating);
+    	        $form.find('input[name="group_leader"]').val(data.group_leader);
+    	        $form.find('input[name="rust"]').val(data.rust);
+    	        $form.find('input[name="lab"]').val(data.lab);
+    	        $form.find('input[name="memo"]').val(data.memo);
 
+    	      
+    	        $('#modalContainer2')
+    	          .show()
+    	          .addClass('show');
+    	      }
+    	    });
+
+    
+    	    $('#closeModal2, .close2').on('click', () => {
+    	      $('#modalContainer2').hide();
+    	    });
+    	  }
   $(function() {
     $('#s_time').val(new Date().toISOString().split('T')[0]);
     initTables();

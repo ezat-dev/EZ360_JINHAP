@@ -57,6 +57,14 @@ public class Users {
     private String always_day_shift;    // 상시주간
     
     
+    private String b_f;
+    private String ex1;
+    private String ex2;	
+    private String ex3;
+ 
+    
+    
+    
     
 
     private String division;        // 구분
@@ -74,6 +82,39 @@ public class Users {
     private String rust;            // 방청
     private String lab;             // 실험
     private String memo;            // 메모
+    
+    
+    
+    
+    
+    
+    
+    
+    
+	public String getB_f() {
+		return b_f;
+	}
+	public void setB_f(String b_f) {
+		this.b_f = b_f;
+	}
+	public String getEx1() {
+		return ex1;
+	}
+	public void setEx1(String ex1) {
+		this.ex1 = ex1;
+	}
+	public String getEx2() {
+		return ex2;
+	}
+	public void setEx2(String ex2) {
+		this.ex2 = ex2;
+	}
+	public String getEx3() {
+		return ex3;
+	}
+	public void setEx3(String ex3) {
+		this.ex3 = ex3;
+	}
 	public String getColumn() {
 		return column;
 	}

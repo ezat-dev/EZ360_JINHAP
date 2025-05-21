@@ -43,7 +43,11 @@ public interface UserService {
 	List<Users> getWork_schedule_select(Users users);
 
 	void work_handover_update(Users users); 
+	List<Users> work_handover_select(Users users);
+	
 	void work_team_update(Users users); 
+	
+	void work_schedule_update(Users users); 
 	
 	List<Users> getUserInfo(); 
 }

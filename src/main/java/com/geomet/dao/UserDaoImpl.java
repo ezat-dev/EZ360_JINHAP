@@ -141,10 +141,20 @@ public class UserDaoImpl implements UserDao{
 		
 		  @Override
 		  public void work_handover_update(Users users) {
-		         sqlSession.insert("users.work_team_update", users);
+		         sqlSession.insert("users.work_handover_update", users);
 		  }
+		  
+			@Override
+			public List<Users> work_handover_select(Users users) {
+				return sqlSession.selectList("users.work_handover_select", users);
+			}
 		  @Override
 		  public void work_team_update(Users users) {
 		         sqlSession.insert("users.work_team_update", users);
+		  }
+		  
+		  @Override
+		  public void work_schedule_update(Users users) {
+		         sqlSession.insert("users.work_schedule_update", users);
 		  }
 }

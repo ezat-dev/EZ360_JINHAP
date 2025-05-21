@@ -115,11 +115,22 @@ public class UserServiceImpl implements UserService{
 	   public void work_handover_update(Users users) {
 	       userDao.work_handover_update(users);
 	   }
+	   
+	   @Override
+	    public List<Users> work_handover_select(Users users) {
+	        return userDao.work_handover_select(users);
+	    }
+	   
+	   
 	   @Override
 	   public void work_team_update(Users users) {
 
 	       userDao.work_team_update(users);
 	   }
 
+	   @Override
+	   public void work_schedule_update(Users users) {
 
+	       userDao.work_schedule_update(users);
+	   }
 }

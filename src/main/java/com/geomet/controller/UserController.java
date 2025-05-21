@@ -444,6 +444,11 @@ public class UserController {
     public String workerManage(Model model) {
         return "/user/workerManage.jsp"; // 
     }	
+	//작업자 근무현황 및 인수인계 포함
+    @RequestMapping(value= "/user/workerManage2", method = RequestMethod.GET)
+    public String workerManage2(Model model) {
+        return "/user/workerManage2.jsp"; // 
+    }	
 	
 	//지게차, 청소차 점검일지
     @RequestMapping(value= "/user/carManage", method = RequestMethod.GET)
@@ -476,6 +481,8 @@ public class UserController {
     public String checkDocManage(Model model) {
         return "/user/checkDocManage.jsp"; // 
     }	
+    
+	
     
     
     @RequestMapping(value = "/user/equipment_name_select", method = RequestMethod.POST)
@@ -552,7 +559,81 @@ public class UserController {
         rtnMap.put("result", "success");
         return rtnMap;
     }
+    @RequestMapping(
+    	    value = "/user/workerManage/insertSchedule", 
+    	    method = RequestMethod.POST,
+    	    consumes = "application/json" 
+    	)
+    	@ResponseBody
+    	public Map<String, Object> work_schedule_update(@RequestBody Users users) {
+    	    Map<String, Object> rtn = new HashMap<>();
 
+    	    System.out.println("=== updateWorkSchedule 요청값 ===");
+    	    System.out.println("id: "         + users.getId());
+    	    System.out.println("date: "       + users.getDate());
+    	    System.out.println("shift_type: "+ users.getShift_type());
+    	
+    	    System.out.println("==============================");
+
+    	    if (users.getId() == null) {
+    	        rtn.put("error", "ID 필요");
+    	        return rtn;
+    	    }
+
+    	
+    	    userService.work_schedule_update(users);
+
+    	    rtn.put("result", "success");
+    	    return rtn;
+    	}
+
+    
+    
+    
+    
+    
+    @RequestMapping(
+    	    value = "/user/work_handover/insert", 
+    	    method = RequestMethod.POST,
+    	    consumes = "application/json" 
+    	)
+    	@ResponseBody
+    	public Map<String, Object> work_handover_update(@RequestBody Users users) {
+    	    Map<String, Object> rtn = new HashMap<>();
+
+    	    System.out.println("=== 인수인계 요청값 ===");
+    	    System.out.println("id: "         + users.getId());
+    	   
+    	
+    	    System.out.println("==============================");
+
+    	    if (users.getId() == null) {
+    	        rtn.put("error", "ID 필요");
+    	        return rtn;
+    	    }
+
+    	
+    	    userService.work_handover_update(users);
+
+    	    rtn.put("result", "success");
+    	    return rtn;
+    	}
+
+    @RequestMapping(value = "/user/work_handover/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> work_handover_select(@RequestBody Users users) {
+        System.out.println("받은 s_time 값: " + users.getS_time());
+
+        Map<String, Object> result = new HashMap<>();
+      
+        List<?> table2 = userService.work_handover_select(users);
+
+ 
+     //   System.out.println("table2 리턴값: " + table2);
+
+        result.put("table2", table2);
+        return result;
+    }
 
 
 }

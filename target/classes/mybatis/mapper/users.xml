@@ -364,28 +364,38 @@
     WHERE id = #{id}
 	</update>
     
-    <update id="work_handover_update" parameterType="Users">
-	  UPDATE tb_work_handover
-	  SET ${column} = #{value}
-	  WHERE id = #{id}
-	</update>
-	    
+
+
     
-    <update id="work_schedule_update" parameterType="Users">
-	  UPDATE tb_work_schedule
-	  <set>
-	    <if test="column != null and value != null">
-	      ${column} = #{value}
-	    </if>
-	  </set>
-	  WHERE id = #{id}
-	</update>
-	
+<update id="work_schedule_update" parameterType="Users">
+  UPDATE tb_work_schedule
+  <set>
+    <if test="date != null">date = #{date},</if>
+    <if test="division != null">division = #{division},</if>
+    <if test="shift_type != null">shift_type = #{shift_type},</if>
+    <if test="line_leader != null">line_leader = #{line_leader},</if>
+    <if test="degreasing != null">degreasing = #{degreasing},</if>
+    <if test="shot != null">shot = #{shot},</if>
+    <if test="g800 != null">g800 = #{g800},</if>
+    <if test="g600 != null">g600 = #{g600},</if>
+    <if test="common != null">common = #{common},</if>
+    <if test="k_black != null">k_black = #{k_black},</if>
+    <if test="liquid_mgmt != null">liquid_mgmt = #{liquid_mgmt},</if>
+    <if test="e_coating != null">e_coating = #{e_coating},</if>
+    <if test="group_leader != null">group_leader = #{group_leader},</if>
+    <if test="rust != null">rust = #{rust},</if>
+    <if test="lab != null">lab = #{lab},</if>
+    <if test="memo != null">memo = #{memo},</if>
+  </set>
+  WHERE id = #{id}
+</update>
+
+
 	
 	
 	
 	<!-- tb_work_team 조회 -->
-<select id="getWork_team_select" parameterType="Users" resultType="Users">
+<select id="getWork_team_select" parameterType="String" resultType="Users">
   SELECT
     id,
     date,
@@ -396,8 +406,9 @@
     sub_task,
     always_day_shift
   FROM tb_work_team
-  WHERE date = #{s_time}
+  WHERE date LIKE CONCAT(#{s_time}, '%')
 </select>
+
 
 <!-- tb_work_schedule 조회 -->
 <select id="getWork_schedule_select" parameterType="Users" resultType="Users">
@@ -420,7 +431,7 @@
     lab,
     memo
   FROM tb_work_schedule
-  WHERE date = #{s_time}
+  WHERE date LIKE CONCAT(SUBSTR(#{s_time}, 1, 7), '%')
 </select>
 
 <!-- tb_work_handover 조회 -->
@@ -428,14 +439,24 @@
   SELECT
     id,
     date,
-    category,
-    day_shift,
-    night_shift,
-    note
+    b_f,
+    ex1,
+    ex2,
+    ex3
   FROM tb_work_handover
   WHERE date = #{s_time}
 </select>
 
 	
-    
+   	<update id="work_handover_update" parameterType="Users">
+	  UPDATE tb_work_handover
+	  <set>
+	    <if test="date != null">date = #{date},</if>
+	    <if test="b_f != null">b_f = #{b_f},</if>
+	    <if test="ex1 != null">ex1 = #{ex1},</if>
+	    <if test="ex2 != null">ex2 = #{ex2},</if>
+	    <if test="ex3 != null">ex3 = #{ex3},</if>
+	  </set>
+	  WHERE id = #{id}
+	</update> 
 </mapper>
