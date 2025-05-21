@@ -19,8 +19,8 @@ public interface UserDao {
 
 	List<Users> userPermissionUserSelect();
 
-	List<Users> userInsertSelect();
-
+	List<Users> userInsertSelect(Users users);
+	void userInsertDel(Users users);
 	Users userDuplicateCheck(Users users);
 
 	List<UserMenu> userLoginMenuList(UserMenu userMenu);
@@ -35,6 +35,11 @@ public interface UserDao {
 	void insertplanManage(Users users); 
 	void delplanManage(Users users);
 
+	
+	List<Users> getWork_team_select(Users users);
+	List<Users> getWork_schedule_select(Users users);
+	void work_handover_update(Users users); 
+	void work_team_update(Users users);
 	
 	
 	List<Users> getUserInfo(); 

@@ -6,7 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>작업자 근무현황</title>
-<%@include file="../include/pluginpage.jsp" %>    
+<%@include file="../include/pluginpage.jsp" %>   
+<jsp:include page="../include/tabBar.jsp"/> 
 <style>
 .search{
 	height:40px;
@@ -19,40 +20,502 @@
 	margin-top:200px;
 }
     
+<style>
+    .tab {
+        width: 99%;
+        margin-bottom: 37px;
+        margin-top: 5px;
+        height: 55px;
+        border-radius: 6px 6px 0px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .tab-header {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .tab-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+    }
+
+	.tab-controls label {
+	    margin-right: 5px;
+	    font-weight: 500;
+	   	font-size: 19px;
+	}
+	
+.tab-controls input.daySet {
+    margin-top: 10px;
+    padding: 6px 12px;
+    font-size: 19px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 150px;
+    text-align: center;
+    height: 25px;
+}
+
+
+
+    .button-image {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+    }
+
+    #m_code {
+        display: none;
+    }
+    h2 {
+    margin-left: 20px;
+	}
+   .modal {
+            display: none;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+        
+            transition: opacity 0.3s ease-in-out;
+        }
+	    .modal-content {
+	        background: white;
+	        width: 24%;
+	        max-width: 500px;
+	        height: 80vh; 
+	        overflow-y: auto; 
+	        margin: 6% auto 0;
+	        padding: 20px;
+	        border-radius: 10px;
+	        position: relative;
+	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+	        transform: scale(0.8);
+	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	        opacity: 0;
+	    }
+        .modal.show {
+            display: block;
+            opacity: 1;
+        }
+        .modal.show .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+        .close {
+            background-color:white;
+            position: absolute;
+            right: 15px;
+            top: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .modal-content form {
+            display: flex;
+            flex-direction: column;
+        }
+        .modal-content label {
+            font-weight: bold;
+            margin: 10px 0 5px;
+        }
+        .modal-content input, .modal-content textarea {
+            width: 97%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .modal-content button {
+       
+            color: black;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            margin-top: 10px;
+            cursor: pointer;
+          
+        }
+        .modal-content button:hover {
+  
+        }
+        .button-container {
+    		display: flex;
+		    gap: 10px;
+		    margin-left: auto;
+		    margin-right: 10px;
+		    margin-top: 40px;
+		}
+		.box1 {
+		    display: flex;
+		    justify-content: right;
+		    align-items: center;
+		    width: 800px;
+		    margin-right: 20px;
+		    margin-top:4px;
+		}
+        .dayselect {
+            width: 20%;
+            text-align: center;
+            font-size: 15px;
+        }
+        .daySet {
+        	width: 20%;
+      		text-align: center;
+            height: 16px;
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 15px;
+        }
+        .daylabel {
+            margin-right: 10px;
+            margin-bottom: 13px;
+            font-size: 18px;
+            margin-left: 20px;
+        }
+        button-container.button{
+        height: 16px;
+        }
+         .mid{
+        margin-right: 9px;
+	    font-size: 20px;
+	    font-weight: bold;
+	
+	    height: 42px;
+	    margin-left: 9px;
+        }
+        .row_select {
+	    background-color: #ffeeba !important;
+	    }
 </style>
-    
-    
+
+
+
+</head>
 <body>
-
-	<main class="main">
-    	<!-- 조회조건 표시 -->
-    	<div class="search">
-    		
-    	</div>
-    	
-    	
-		<jsp:include page="../include/tabBar.jsp"/>
-	   
-	    
-	    <!-- 화면표시 -->
-	    <div class="view">
-
+  <main>
+     <div class="tab">
+	 
+	    <div class="tab-controls">
+	        <label for="s_time">검색일자 :</label>
+	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
+	        <button class="select-button" onclick="loadWorkDailyData()">
+	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+	        </button>
+	          <button class="insert-button">
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                </button>
+                      <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
+                
 	    </div>
+	    <div id="m_code">G03-GG03</div>
+	</div>
 
-	</main>
+        <div class="view">
+            <div id="table1"></div>
+            <div id="table2"></div>
+            <div id="table3"></div>
+        </div>
+    </main>
+    
+
+  <div id="modalContainer" class="modal" style="display:none;">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>작업자 근무현황</h2>
+    <form id="corrForm" autocomplete="off">
+      <label>NO</label>
+      <input type="text" name="id">
+
+      <label>날짜</label>
+      <input type="text" name="date">
+
+      <label>업무 조/상시주간</label>
+
+      <input type="text" name="column" id="teamField">
+
+      <label>업무</label>
+      <input type="text" name="sub_task">
+
+      <label>작업자</label>
+   
+      <input type="text" id="workerField">
+
+      <button type="submit" id="saveCorrStatus">저장</button>
+      <button type="button" id="closeModal">닫기</button>
+    </form>
+  </div>
+</div>
+
+
+
+
+<div id="modalContainer2" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>작업자 근무현황</h2>
+    <form id="corrForm2" autocomplete="off">
+     
+ 	
+      <button type="submit" id="saveCorrStatus2">저장</button>
+      <button type="button" id="closeModal2">닫기</button>
+    </form>
+  </div>
+</div>
+
+
+
+
 <script>
-	//전역변수
-let now_page_code = "e02";
-	//로드
-	$(function(){
-		$(".headerP").text("인원 및 안전관리 - 작업자 근무현황");
+  let table1, table2, selectedRowData;
+  let now_page_code = "e02";
+
+
+
+  $('.close, #closeModal').click(function() {
+      $('#modalContainer').removeClass('show').hide();
+    });
+  
+  $('#saveCorrStatus').click(function(event) {
+	  event.preventDefault();
+
+	  const id = $('input[name="id"]').val();
+
+
+	  const selectedTeam = $('#teamField').val();
+	  let column = '';
+
+	  switch (selectedTeam) {
+	    case 'A조':
+	      column = 'team_a';
+	      break;
+	    case 'B조':
+	      column = 'team_b';
+	      break;
+	    case 'C조':
+	      column = 'team_c';
+	      break;
+	    case '상시주간':
+	      column = 'always_day_shift';
+	      break;
+	    default:
+	      column = selectedTeam; 
+	  }
+
+	  const value = $('#workerField').val();
+
+	  const formData = new FormData();
+	  formData.append('id', id);
+	  formData.append('column', column);
+	  formData.append('value', value);
+
+	  console.log("보내는 데이터:");
+	  for (let [key, val] of formData.entries()) {
+	    console.log(`${key}: ${val}`);
+	  }
+
+	  $.ajax({
+	    url: "/geomet/user/workerManage/insert",
+	    method: "POST",
+	    data: formData,
+	    processData: false,
+	    contentType: false,
+	    success: () => {
+	      alert('저장되었습니다.');
+	      $('#modalContainer').removeClass('show').hide(); // 모달 닫기
+	      loadWorkDailyData(); // 테이블 새로고침
+	    },
+	    error: () => {
+	      alert('저장 중 오류가 발생했습니다.');
+	    }
+	  });
 	});
 
-	//이벤트
-	
-	
-	//함수
 
+
+
+  $('.delete-button').click(function() {
+	  if (!selectedRowData) {
+	    return alert('삭제할 행을 먼저 클릭해 주세요.');
+	  }
+	  if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
+
+	  const deleteData = { idx: selectedRowData.idx };
+	  console.log("삭제 요청 데이터:", deleteData);
+
+	  $.ajax({
+	    url: "/geomet/user/workerManage/delete",
+	    method: "POST",
+	    contentType: "application/json",
+	    data: JSON.stringify(deleteData),
+	    success: () => loadWorkDailyData(),
+	    error:   () => alert('삭제 중 오류가 발생했습니다.')
+	  });
+	});
+
+
+
+
+  function loadWorkDailyData() {
+	  let s_time = $("#s_time").val();
+
+      console.log("보내는 값:", { s_time });
+
+      $.ajax({
+        type: "POST",
+        url: "/geomet/user/workerManage/list",
+        contentType: "application/json",
+        data: JSON.stringify({ s_time }),
+        success: function(response) {
+//        	console.log(response);
+        	console.log(response.table1);
+          table1.setData(response.table1);
+          table2.setData(response.table2);
+
+        },
+        error: function(xhr, status, error) {
+          console.error("에러 응답:", xhr.responseText);
+          alert("조회에 실패했습니다.");
+        }
+      });
+    }
+
+    $(function() {
+        const today = new Date().toISOString().split('T')[0];
+        $('#s_time').val(today);
+        initTables();
+        loadWorkDailyData();
+    });
+
+    const ALLOWED = ['team_a','team_b','team_c','always_day_shift'];
+    function initTables() {
+    	 
+    	table1 = new Tabulator("#table1", {
+    		  height: "365px",
+    		  layout: "fitColumns",
+    		  headerHozAlign: "center",        // 헤더 가운데
+    		  headerVertAlign: "middle",       // 헤더 세로 가운데
+    		  columnDefaults: {
+    		    hozAlign: "center",            // 셀 가운데
+    		    vertAlign: "middle",           // 셀 세로 가운데
+    		    headerTooltip: false
+    		  },
+    	    columns:[
+    	        {title:"NO", field:"id", headerSort:false,hozAlign: "center"},
+    	        { title: "날짜", field: "date", headerSort: false, hozAlign: "center", visible: false },
+
+    	        {title:"업무", field:"task", headerSort:false,hozAlign: "center"},
+    	        {title:"A조", field:"team_a", headerSort:false,hozAlign: "center"},
+    	        {title:"B조", field:"team_b", headerSort:false,hozAlign: "center"},
+    	        {title:"C조", field:"team_c", headerSort:false,hozAlign: "center"},
+    	        {title:"업무", field:"sub_task", headerSort:false,hozAlign: "center"},
+    	        {title:"상시주간", field:"always_day_shift", headerSort:false,hozAlign: "center"},
+    	      ],
+    	      cellClick: function(e, cell){
+    	    	    if(!ALLOWED.includes(cell.getField())) return false;
+    	    	    const row = cell.getRow();
+    	    	    table1.getRows().forEach(r=> r.getElement().style.backgroundColor = "");
+    	    	    row.getElement().style.backgroundColor = "#d3d3d3";
+    	    	  },
+
+    	    	  cellDblClick: function(e, cell){
+    	    		  const field = cell.getField();
+    	    		  if(!ALLOWED.includes(field)) return;
+
+    	    		  const data = cell.getRow().getData();
+
+    	    		 
+    	    		  $('#corrForm')[0].reset();
+
+    	    		  $('#corrForm input[name="id"]').val(data.id);
+
+    	    		  $('#corrForm input[name="date"]').val(data.date);
+
+    	    		  if(field === 'always_day_shift'){
+
+    	    		    $('#corrForm input[name="sub_task"]').val(data.sub_task);
+    	    		  } else {
+  
+    	    		    $('#corrForm input[name="sub_task"]').val(data.task);
+    	    		  }
+
+    	    		  const title = cell.getColumn().getDefinition().title;
+    	    		  $('#teamField')
+    	    		    .attr('name', field)
+    	    		    .val(title);
+
+    	    		  $('#workerField')
+    	    		    .attr('name', field)
+    	    		    .val(cell.getValue());
+    	    		  $('#modalContainer').show().addClass('show');
+    	    		},
+
+    	    	});
+
+    	    	$('#closeModal, .close').on('click', ()=>{
+    	    	  $('#modalContainer').hide().removeClass('show');
+    	    	});
+
+    	table2 = new Tabulator("#table2", {
+    	    height: "420px",
+    	    layout: "fitColumns",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
+    	    headerHozAlign: "center",
+    	    columnDefaults: {
+    	        hozAlign: "center",
+    	        headerTooltip: false
+    	    },
+    	    columns: [
+    	    	{ title: "구분", field: "id", hozAlign: "center", headerSort: false, visible: false },
+    	    	{ title: "날짜", field: "date", hozAlign: "center", headerSort: false},
+    	    	
+
+
+    	        { title: "주/야", field: "shift_type", hozAlign: "center",headerSort: false },
+    	        { title: "라인장", field: "line_leader", hozAlign: "center",headerSort: false },
+    	        { title: "탈유탈지", field: "degreasing", hozAlign: "center" ,headerSort: false},
+    	        { title: "쇼트", field: "shot", hozAlign: "center",headerSort: false },
+    	        { title: "G-800", field: "g800", hozAlign: "center",headerSort: false },
+    	        { title: "G-600", field: "g600", hozAlign: "center",headerSort: false },
+    	        { title: "공용설비(후처리)", field: "common", hozAlign: "center" ,headerSort: false},
+    	        { title: "K-BLACK", field: "k_black", hozAlign: "center" ,headerSort: false},
+    	        { title: "액관리", field: "liquid_mgmt", hozAlign: "center" ,headerSort: false},
+    	        { title: "e-coating", field: "e_coating", hozAlign: "center" ,headerSort: false},
+    	        { title: "그룹장", field: "group_leader", hozAlign: "center" ,headerSort: false},
+    	        { title: "방청", field: "rust", hozAlign: "center" ,headerSort: false},
+    	        { title: "실험", field: "lab", hozAlign: "center" ,headerSort: false}
+    	        
+    	    ]
+    	});
+
+
+    }
+
+  $(function() {
+    $('#s_time').val(new Date().toISOString().split('T')[0]);
+    initTables();
+    loadWorkDailyData();
+  });
 </script>
 
 </body>

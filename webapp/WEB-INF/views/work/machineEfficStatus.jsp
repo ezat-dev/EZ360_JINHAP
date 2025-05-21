@@ -83,7 +83,7 @@
                     {
                         title: "등급", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
                         formatter: function(cell) {
-                          var v = cell.getValue() * 100,
+                          var v = cell.getValue(),
                               grade,
                               el = cell.getElement();
 

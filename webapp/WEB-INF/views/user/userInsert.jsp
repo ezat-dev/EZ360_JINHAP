@@ -182,17 +182,16 @@
             
                <div class="box1">
 	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-	           <label class="daylabel">입사 일자 :</label>
-				<input type="text" autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+	           <label class="daylabel">입사 연도 :</label>
+				<input type="text" autocomplete="off" class="yearSet" id="startDate" style="font-size:16px; height:30px; width:220px; margin-bottom:10px; text-align:center; border-radius:6px; border:1px solid #ccc;" placeholder="시작 날짜 선택">
 				
-				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+				<!-- <span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span> -->
 	
-				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> 
-
+			<!-- 	<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> 
+ -->
 	
 			  <label class="daylabel">성명 :</label>
-			  <input type="text" id="u_name" class="daySet" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-			
+			 <input type="text" id="user_name" style="font-size:16px; height:30px; width:220px; margin-bottom:10px; text-align:center; border-radius:6px; border:1px solid #ccc;" placeholder="이름 입력">
 
 
 
@@ -226,11 +225,11 @@
 	   <div id="modalContainer" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <h2>부품교체 이력 등록</h2>
+	        <h2>사용자 등록</h2>
 	        <form id="corrForm"autocomplete="off">
 	          
-	
-	          
+		<!-- 	<input type="text" name="user_code" style="display:none;">
+ -->
 	
 	            <label>ID</label>
 				<input type="text" name="user_id">
@@ -240,10 +239,28 @@
 
 	
 	            <label>성명</label>
-	             <input type="text" name="user_name">
-	            	
+	            <input type="text" name="user_name">
+	            
+	            <label>입사일</label>
+	            <input type="text" name="st_day" class="daySet" style="text-align: left;">
+
+	            
+	              <label>전화번호</label>
+	            <input type="text" name="user_phone">
+	            
+	            
+	            
 	            <label>등급</label>
-	             <input type="text" name="user_level">
+	         
+	          	<select name="user_level" >
+	          	    <option value="0">0</option>
+				    <option value="1">1</option>
+				    <option value="2">2</option>
+				    <option value="3">3</option>
+				
+				</select>	
+	            	
+	            	
 	            	            	
 	            <label>부서</label>
 	             <input type="text" name="user_busu">
@@ -261,132 +278,147 @@
 
 
 <script>
-
 let now_page_code = "h03";
+var dataTable;
+var selectedRowData = null;
 
+$(function() {
+  // Initialize the dataTable
+  dataTable = new Tabulator('#dataTable', {
+    height: "705px",
+    layout: "fitColumns",
+    headerHozAlign: "center",
+    ajaxConfig: { method: 'POST' },
+    ajaxLoader: false,
+    ajaxURL: "/geomet/user/userInsert/select",
+    ajaxParams: {},
+    placeholder: "조회된 데이터가 없습니다.",
+    ajaxResponse: function(url, params, response) {
+     // console.log("서버 응답 데이터 확인:", response);
+      return response;
+    },
+    columns: [
+      { title: "NO", formatter: "rownum", hozAlign: "center", width: 120 },
+      { title: "user_code", field: "user_code", sorter: "string", width: 240, hozAlign: "center", visible: false },
 
-  var dataTable;
-  var selectedRowData = null;
-
-  $(function() {
-    dataTable = new Tabulator('#dataTable', {
-      height: '790px',
-      layout: 'fitDataFill',
-      headerSort: false,
-      reactiveData: true,
-      columnHeaderVertAlign: "middle",
-      rowVertAlign: "middle",
-      headerHozAlign: 'center',
-      ajaxConfig: { method: 'POST' },
-      ajaxLoader:false,
-	    ajaxURL:"/geomet/user/userInsert/select",
-	    ajaxProgressiveLoad:"scroll",
-	    ajaxParams:{},
-	    placeholder:"조회된 데이터가 없습니다.",
-	    paginationSize:20,
-	    ajaxResponse:function(url, params, response){
-			$("#dataList .tabulator-col.tabulator-sortable").css("height","29px");
-	        return response; //return the response data to tabulator
-	    },
-	    columns:[
-	        {title:"NO", field:"idx", sorter:"int", width:100,
-	        	hozAlign:"center"},
-	        {title:"아이디", field:"user_id", sorter:"string", width:120,
-	        	hozAlign:"center"},
-	        {title:"성명", field:"user_name", sorter:"string", width:140,
-	        	hozAlign:"center"},
-	        {title:"등급", field:"user_level", sorter:"string", width:140,
-	        	hozAlign:"center"},
-	        {title:"부서", field:"user_busu", sorter:"string", width:140,
-	        	hozAlign:"center"},
-	        {title:"직책", field:"user_jick", sorter:"string", width:140,
-	        	hozAlign:"center"}
-	    ],
-      rowClick: function(e, row) {
-        $('#dataTable .tabulator-row').removeClass('row_select');
-        row.getElement().classList.add('row_select');
-        selectedRowData = row.getData();
-      },
-      rowDblClick: function(e, row) {
-        var d = row.getData();
-        selectedRowData = d;
-        $('#corrForm')[0].reset();
-        $('select[name="no"]').val(d.no);
-        $('select[name="user_id"]').val(d.user_id);
-        $('select[name="user_pw"]').val(d.user_pw);
-        $('select[name="user_name"]').val(d.user_name);
-        $('input[name="user_level"]').val(d.user_level);
-        $('select[name="user_busu"]').val(d.user_busu);
-        $('textarea[name="user_jick"]').val(d.user_jick);
-        $('#modalContainer').show().addClass('show');
-      }
-    });
-
-
-    $('.select-button').click(function(){
-      var sel = $('.dayselect').val();
-      dataTable.setData("/geomet/user/userInsert/select");
-    });
-
-    $('.insert-button').click(function(){
-      selectedRowData = null;
+      { title: "아이디", field: "user_id", sorter: "string", width: 240, hozAlign: "center" },
+      { title: "비밀번호", field: "user_pw", sorter: "string", width: 240, hozAlign: "center", visible: false },
+      { title: "성명", field: "user_name", sorter: "string", width: 240, hozAlign: "center" },
+      { title: "입사일", field: "st_day", width: 140, hozAlign: "center" },
+      { title: "전화번호", field: "user_phone", width: 140, hozAlign: "center" },
+      { title: "등급", field: "user_level", sorter: "string", width: 240, hozAlign: "center" },
+      { title: "부서", field: "user_busu", sorter: "string", width: 240, hozAlign: "center" },
+      { title: "직책", field: "user_jick", sorter: "string", width: 240, hozAlign: "center" }
+    ],
+    rowClick: function(e, row) {
+      $('#dataTable .tabulator-row').removeClass('row_select');
+      row.getElement().classList.add('row_select');
+      selectedRowData = row.getData();
+    },
+    rowDblClick: function(e, row) {
+      var d = row.getData();
+      selectedRowData = d;
       $('#corrForm')[0].reset();
+      $('input[name="no"]').val(d.idx);
+      $('input[name="user_id"]').val(d.user_id);
+      $('input[name="user_pw"]').val(d.user_pw);
+      $('input[name="st_day"]').val(d.st_day);
+      $('input[name="user_phone"]').val(d.user_phone);
+      $('input[name="user_name"]').val(d.user_name);
+      $('select[name="user_level"]').val(d.user_level);
+      $('input[name="user_busu"]').val(d.user_busu);
+      $('input[name="user_jick"]').val(d.user_jick);
       $('#modalContainer').show().addClass('show');
-    });
+    }
+  });
 
-    $('.delete-button').click(function(){
-      if (!selectedRowData) {
-        alert('삭제할 행을 먼저 클릭해 주세요.');
-        return;
-      }
-      if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
+  // 조회 버튼 클릭 시
+  $('.select-button').click(function() {
+    var user_name = $('#user_name').val();
+    var startDate = $('#startDate').val();
+/*     console.log("조회 버튼 클릭됨 - 전송 데이터:", {
+      user_name: user_name,
+      startDate: startDate
+    }); */
+   // console.log("전송된 startDate 값:", startDate);
 
-      $.ajax({
-        url: "/geomet/user/userInsert/delete",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({ no: selectedRowData.no }),
-        success: function(res){
-          alert('삭제되었습니다.');
-          var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/user/userInsert/list", { mch_name: currentFilter });
-          selectedRowData = null;
-        },
-        error: function(){
-          alert('삭제 중 오류가 발생했습니다.');
-        }
-      });
-    });
-
-    $('.close, #closeModal').click(function(){
-      $('#modalContainer').removeClass('show').hide();
-    });
-
-    $('#saveCorrStatus').click(function(event){
-      event.preventDefault();
-      var formData = new FormData($('#corrForm')[0]);
-      if (selectedRowData && selectedRowData.no) {
-        formData.append('no', selectedRowData.no);
-      }
-      $.ajax({
-        url: "/geomet/user/userInsert/insert",
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(){
-          alert("저장되었습니다!");
-          $('#modalContainer').hide();
-          var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/user/userInsert/list", { mch_name: currentFilter });
-          selectedRowData = null;
-        },
-        error: function(){
-          alert('저장 중 오류가 발생했습니다.');
-        }
-      });
+    dataTable.setData("/geomet/user/userInsert/select", {
+      user_name: user_name,
+      startDate: startDate
     });
   });
+
+  // 삽입 버튼 클릭 시
+  $('.insert-button').click(function() {
+    selectedRowData = null;
+    $('#corrForm')[0].reset();
+    $('#modalContainer').show().addClass('show');
+  });
+
+  // 삭제 버튼 클릭 시
+  $('.delete-button').click(function() {
+    if (!selectedRowData) {
+      alert('삭제할 행을 먼저 클릭해 주세요.');
+      return;
+    }
+    if (!selectedRowData) {
+    	  alert('삭제할 행을 먼저 클릭해 주세요.');
+    	  return;
+    	}
+    	if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
+
+    	const deleteData = { user_code: selectedRowData.user_code };
+    	console.log("삭제 요청 데이터:", deleteData); // 추가된 로그
+
+    	$.ajax({
+    	  url: "/geomet/user/userInsert/delete",
+    	  type: "POST",
+    	  contentType: "application/json",
+    	  data: JSON.stringify(deleteData),
+    	  success: function(res) {
+    	    alert('삭제되었습니다.');
+    	
+    	    dataTable.setData("/geomet/user/userInsert/select", {});
+    	    selectedRowData = null;
+    	  },
+    	  error: function() {
+    	    alert('삭제 중 오류가 발생했습니다.');
+    	  }
+    	});
+  });
+
+  // 모달 닫기
+  $('.close, #closeModal').click(function() {
+    $('#modalContainer').removeClass('show').hide();
+  });
+
+  // 저장 버튼 클릭 시
+  $('#saveCorrStatus').click(function(event) {
+    event.preventDefault();
+    var formData = new FormData($('#corrForm')[0]);
+    if (selectedRowData && selectedRowData.user_code) {
+      formData.append('user_code', selectedRowData.user_code);  // 수정 시 user_code 추가
+    }
+
+    $.ajax({
+      url: "/geomet/user/userInsert/insert",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function() {
+        alert("저장되었습니다!");
+        $('#modalContainer').hide();
+    
+        dataTable.setData("/geomet/user/userInsert/select", {});
+        selectedRowData = null;
+      },
+      error: function() {
+        alert('저장 중 오류가 발생했습니다.');
+      }
+    });
+  });
+});
 </script>
 
 

@@ -184,10 +184,10 @@
   margin-right: 6px;
 }
 
-    .color-red        { background: red;        }
-    .color-orange     { background: orange;     }
-    .color-yellow     { background: yellow;     }
-    .color-lightgreen { background: #13ac13; }
+    .color-red        { background: #e74c3c;        }
+    .color-orange     { background: #e67e22;     }
+    .color-yellow     { background: #f1c40f;     }
+    .color-lightgreen { background: #2ecc71; }
         
    #dataList .tabulator-tableHolder .tabulator-row {
     height: 37px !important;
@@ -204,6 +204,35 @@
     line-height: 37px !important;
      font-size: 17px !important;
   }
+      .custom-progress {
+      background: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 22px;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .custom-progress .bar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease-in-out;
+    }
+    /* 값 범위별 색상 */
+    .bar.color-red { background: #e74c3c; }
+    .bar.color-orange { background: #e67e22; }
+    .bar.color-yellow { background: #f1c40f; }
+    .bar.color-lightgreen { background: #2ecc71; }
+    .custom-progress .label {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-size: 15px;
+      font-weight: bold;
+      color: #333;
+      top: 0;
+      left: 0;
+      line-height: 16px;
+    }
     </style>
 </head>
 
@@ -247,125 +276,99 @@
     });
 
     function getDataList() {
-        dataTable = new Tabulator("#dataList", {
-            height: "760px",
-            layout: "fitColumns",
-            rowHeight: 44, // 행 높이 추가
-            selectable: true,
-            tooltips: true,
-            selectableRangeMode: "click",
-            reactiveData: true,
-            headerHozAlign: "center",
-            ajaxConfig: "POST",
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
-            ajaxLoader: false,
-            ajaxURL: "/geomet/quality/tustest/selectList",
-            ajaxProgressiveLoad: "scroll",
-            ajaxParams: {},
-            placeholder: "조회된 데이터가 없습니다.",
-            paginationSize: 20,
-            ajaxResponse: function(url, params, response) {
-                $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                return response;
-            },
-            columns: [
-            	  // 1) 일일 생산 현황 그룹
-            	  {
-            	    title: "일일 생산 현황",
-            	    hozAlign: "center",
-            	    headerSort: false,
-            	    colspan: 6, // 묶을 서브 컬럼 수
-            	    columns: [
-            	      { title: "설비명",     field: "field1", hozAlign: "center", width: 110 },
-            	      { title: "목표 생산량", field: "field2", hozAlign: "center", width: 120 },
-            	      { title: "현재 생산량", field: "field3", hozAlign: "center", width: 120 },
-            	      { 
-            	    	    title: "진도율%", 
-            	    	    field: "field4", 
-            	    	    formatter: "progress", 
-            	    	    formatterParams: {
-            	    	      min: 0,
-            	    	      max: 100,
-            	    	      color: function(value){
-            	    	        if(value <= 25)   { return "red";    }  // 0~25 : 빨강
-            	    	        else if(value <= 50) { return "orange"; }  // 26~50 : 주황
-            	    	        else if(value <= 75) { return "yellow"; }  // 51~75 : 노랑
-            	    	        else                { return "#13ac13";  }  // 76~100 : 초록
-            	    	      }
-            	    	    },
-            	    	   
-            	    	    width: 200 
-            	    	  },
-            	    	  { 
-            	    	    title: "달성률%", 
-            	    	    field: "field5", 
-            	    	    formatter: "progress", 
-            	    	    formatterParams: {
-            	    	      min: 0,
-            	    	      max: 100,
-            	    	      color: function(value){
-            	    	        if(value <= 25)   { return "red";    }
-            	    	        else if(value <= 50) { return "orange"; }
-            	    	        else if(value <= 75) { return "yellow"; }
-            	    	        else                { return "#13ac13";  }
-            	    	      }
-            	    	    },
-            	    	
-            	    	    width: 200 
-            	    	  },
-            	    	  { 
-            	    	    title: "버스켓효율%", 
-            	    	    field: "field6", 
-            	    	    formatter: "progress", 
-            	    	    formatterParams: {
-            	    	      min: 0,
-            	    	      max: 100,
-            	    	      color: function(value){
-            	    	        if(value <= 25)   { return "red";    }
-            	    	        else if(value <= 50) { return "orange"; }
-            	    	        else if(value <= 75) { return "yellow"; }
-            	    	        else                { return "#13ac13";  }
-            	    	      }
-            	    	    },
-            	    	 
-            	    	    width: 200 
-            	    	  },
-            	    ]
-            	  },
+    
+    	  if (!document.getElementById('progress-styles')) {
+    	    const style = document.createElement('style');
+    	    style.id = 'progress-styles';
+    	    style.innerHTML = `
+    	      .custom-progress { background: #f0f0f0; border-radius: 4px; overflow: hidden; height: 22px; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+    	      .custom-progress .bar { height: 100%; border-radius: 4px; transition: width 0.5s ease-in-out; }
+    	      .bar.color-red { background: #e74c3c; }
+    	      .bar.color-orange { background: #e67e22; }
+    	      .bar.color-yellow { background: #f1c40f; }
+    	      .bar.color-lightgreen { background: #2ecc71; }
+    	      .custom-progress .label { position: absolute; width: 100%; text-align: center; font-size: 12px; font-weight: bold; color: #333; top: 0; left: 0; line-height: 16px; }
+    	    `;
+    	    document.head.appendChild(style);
+    	  }
 
-            	  // 2) 제품 투입 그룹
-            	  {
-            	    title: "제품 투입",
-            	    hozAlign: "center",
-            	    headerSort: false,
-            	    colspan: 3,
-            	    columns: [
-            	      { title: "바코드",      field: "field7", hozAlign: "center", width: 130 },
-            	      { title: "투입 시간",   field: "field8", hozAlign: "center", width: 160 },
-            	      { title: "기준 장입량", field: "field9", hozAlign: "center", width: 120 },
-            	    ]
-            	  },
+    	  // 퍼센트 포맷터 정의: 범위별 색상 적용
+    	  var percentFormatter = function(cell, formatterParams, onRendered) {
+    	    var value = cell.getValue() || 0;
+    	    var colorClass = value <= 25 ? 'color-red'
+    	                   : value <= 50 ? 'color-orange'
+    	                   : value <= 75 ? 'color-yellow'
+    	                   : 'color-lightgreen';
+    	    var wrapper = document.createElement('div');
+    	    wrapper.className = 'custom-progress';
 
-            	  // 3) 제품 퇴출 그룹
-            	  {
-            	    title: "제품 퇴출",
-            	    hozAlign: "center",
-            	    headerSort: false,
-            	    colspan: 4,
-            	    columns: [
-            	      { title: "분할 기준량",  field: "field10", hozAlign: "center", width: 130 },
-            	      { title: "바코드(퇴출)", field: "field11", hozAlign: "center", width: 130 },
-            	      { title: "코팅횟수",     field: "field12", hozAlign: "center", width: 95 },
-            	      { title: "합 중량",      field: "field13", hozAlign: "center", width:  90 },
-            	    ]
-            	  }
-            	],
+    	    var bar = document.createElement('div');
+    	    bar.className = 'bar ' + colorClass;
+    	    bar.style.width = value + '%';
+    	    wrapper.appendChild(bar);
 
+    	    var label = document.createElement('div');
+    	    label.className = 'label';
+    	    label.textContent = value + '%';
+    	    wrapper.appendChild(label);
 
-           
-            
-            rowFormatter: function(row) {
+    	    return wrapper;
+    	  };
+
+    	  // Tabulator 초기화
+    	  dataTable = new Tabulator('#dataList', {
+    	    height: '760px',
+    	    layout: 'fitColumns',
+    	    rowHeight: 44,
+    	    selectable: true,
+    	    tooltips: true,
+    	    selectableRangeMode: 'click',
+    	    reactiveData: true,
+    	    headerHozAlign: 'center',
+    	    ajaxConfig: 'POST',
+    	    columnHeaderVertAlign: 'middle',
+    	    rowVertAlign: 'middle',
+    	    ajaxLoader: false,
+    	    ajaxURL: '/geomet/quality/tustest/selectList',
+    	    ajaxProgressiveLoad: 'scroll',
+    	    ajaxParams: {},
+    	    placeholder: '조회된 데이터가 없습니다.',
+    	    paginationSize: 20,
+    	    ajaxResponse: function(url, params, response) {
+    	      document.querySelectorAll('#dataList .tabulator-col.tabulator-sortable').forEach(el => el.style.height = '29px');
+    	      return response;
+    	    },
+    	    columns: [
+    	      {
+    	        title: '일일 생산 현황', hozAlign: 'center', headerSort: false, colspan: 6,
+    	        columns: [
+    	          { title: '설비명', field: 'field1', hozAlign: 'center', width: 110 },
+    	          { title: '목표 생산량', field: 'field2', hozAlign: 'center', width: 120 },
+    	          { title: '현재 생산량', field: 'field3', hozAlign: 'center', width: 120 },
+    	          { title: '진도율%', field: 'field4', formatter: percentFormatter, width: 200 },
+    	          { title: '달성률%', field: 'field5', formatter: percentFormatter, width: 200 },
+    	          { title: '버스켓효율%', field: 'field6', formatter: percentFormatter, width: 200 },
+    	        ]
+    	      },
+    	      {
+    	        title: '제품 투입', hozAlign: 'center', headerSort: false, colspan: 3,
+    	        columns: [
+    	          { title: '바코드', field: 'field7', hozAlign: 'center', width: 130 },
+    	          { title: '투입 시간', field: 'field8', hozAlign: 'center', width: 160 },
+    	          { title: '기준 장입량', field: 'field9', hozAlign: 'center', width: 120 },
+    	        ]
+    	      },
+    	      {
+    	        title: '제품 퇴출', hozAlign: 'center', headerSort: false, colspan: 4,
+    	        columns: [
+    	          { title: '분할 기준량', field: 'field10', hozAlign: 'center', width: 130 },
+    	          { title: '바코드(퇴출)', field: 'field11', hozAlign: 'center', width: 130 },
+    	          { title: '코팅횟수', field: 'field12', hozAlign: 'center', width: 95 },
+    	          { title: '합 중량', field: 'field13', hozAlign: 'center', width: 90 },
+    	        ]
+    	      }
+    	    ],
+    	    rowFormatter: function(row) {
                 var data = row.getData();
                 row.getElement().style.fontWeight = "700";
                 row.getElement().style.backgroundColor = "#FFFFFF";

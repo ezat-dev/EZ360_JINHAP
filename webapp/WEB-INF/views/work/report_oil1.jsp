@@ -105,7 +105,7 @@
         data: JSON.stringify({ s_time, e_time, m_code }),
         success: function(response) {
 //        	console.log(response);
-        	console.log(response.table1);
+//        	console.log(response.table1);
           table1.setData(response.table1);
           table2.setData(response.table2);
           table3.setData(response.table3);

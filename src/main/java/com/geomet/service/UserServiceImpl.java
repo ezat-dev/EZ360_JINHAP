@@ -10,6 +10,7 @@ import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
+import com.geomet.domain.Work;
 
 @Service
 public class UserServiceImpl implements UserService{
@@ -43,10 +44,13 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<Users> userInsertSelect() {
-		return userDao.userInsertSelect();
+	public List<Users> userInsertSelect(Users users) {
+		return userDao.userInsertSelect(users);
 	}
-
+	@Override
+	public void userInsertDel(Users users) {
+		userDao.userInsertInsert(users);
+	}
 	@Override
 	public Users userDuplicateCheck(Users users) {
 		return userDao.userDuplicateCheck(users);
@@ -93,4 +97,29 @@ public class UserServiceImpl implements UserService{
 	public List<Users> getUserInfo(){
 		return userDao.getUserInfo();
 	}
+	
+	
+
+	
+	   @Override
+	    public List<Users> getWork_team_select(Users users) {
+	        return userDao.getWork_team_select(users);
+	    }
+	   
+	   @Override
+	    public List<Users> getWork_schedule_select(Users users) {
+	        return userDao.getWork_schedule_select(users);
+	    }
+	   
+	   @Override
+	   public void work_handover_update(Users users) {
+	       userDao.work_handover_update(users);
+	   }
+	   @Override
+	   public void work_team_update(Users users) {
+
+	       userDao.work_team_update(users);
+	   }
+
+
 }

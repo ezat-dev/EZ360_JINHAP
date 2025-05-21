@@ -297,7 +297,7 @@
 
 	  $('#corrForm input').css('color', '');
 
-	  if (isNaN(visc) || visc < 20 || visc > 40) {
+/* 	  if (isNaN(visc) || visc < 20 || visc > 40) {
 		  $('input[name="visc"]').css('color', 'red');
 		  valid = false;
 		  message += '점도는 20~40초 사이여야 합니다.\n';
@@ -314,7 +314,7 @@
 		  valid = false;
 		  message += '가열존온도는 170~190℃ 사이여야 합니다.\n';
 		}
-
+ */
 
 
 	  if (!valid) {
@@ -387,7 +387,7 @@
         data: JSON.stringify({ s_time, e_time, m_code }),
         success: function(response) {
 //        	console.log(response);
-        	console.log(response.table1);
+//        	console.log(response.table1);
           table1.setData(response.table1);
           table2.setData(response.table2);
           table3.setData(response.table3);
@@ -421,7 +421,7 @@
     	    },
     	    columns: [
     	        { title: "주간/야간", field: "gb", headerSort: false,hozAlign: "center" },
-    	        { title: "점도</br>PLUS : 45±10초", value: "visc", headerSort: false },
+    	        { title: "점도</br>PLUS : 45±10초", field: "visc",hozAlign: "center", headerSort: false },
     	        { title: "예열존온도</br>(설정값±10°C)", field: "pre_temp", hozAlign: "center", headerSort: false },
     	        { title: "가열존온도</br>(설정값±10°C)", field: "heat_temp", hozAlign: "center", headerSort: false }
     	    ],

@@ -37,15 +37,18 @@ public class UserDaoImpl implements UserDao{
 	public void userPermissionUpdate(Permission permission) {
 		sqlSession.update("users.userPermissionUpdate",permission);
 	}
-
+    @Override
+    public void userInsertDel(Users users) {
+        sqlSession.update("users.userInsertDel", users);
+    }
 	@Override
 	public List<Users> userPermissionUserSelect() {
 		return sqlSession.selectList("users.userPermissionUserSelect");
 	}
 
 	@Override
-	public List<Users> userInsertSelect() {
-		return sqlSession.selectList("users.userInsertSelect");
+	public List<Users> userInsertSelect(Users users) {
+		return sqlSession.selectList("users.userInsertSelect",users);
 	}
 
 	@Override
@@ -125,4 +128,23 @@ public class UserDaoImpl implements UserDao{
 	    public List<Users> getUserInfo() {
 	        return sqlSession.selectList("users.getUserInfo");
 	    }
+	  
+		@Override
+		public List<Users> getWork_team_select(Users users) {
+			return sqlSession.selectList("users.getWork_team_select", users);
+		}
+		
+		@Override
+		public List<Users> getWork_schedule_select(Users users) {
+			return sqlSession.selectList("users.getWork_schedule_select", users);
+		}
+		
+		  @Override
+		  public void work_handover_update(Users users) {
+		         sqlSession.insert("users.work_team_update", users);
+		  }
+		  @Override
+		  public void work_team_update(Users users) {
+		         sqlSession.insert("users.work_team_update", users);
+		  }
 }

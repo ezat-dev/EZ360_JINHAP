@@ -1,6 +1,8 @@
 package com.geomet.controller;
 
 import java.io.File;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -26,6 +28,7 @@ import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
+import com.geomet.domain.Work;
 import com.geomet.service.UserService;
 
 @Controller
@@ -185,33 +188,47 @@ public class UserController {
 		 return "/user/userInsert.jsp";	       
 	 }
 	 
-	 //전체 사용자목록 조회
-	 @RequestMapping(value = "/user/userInsert/select", method = RequestMethod.POST) 
-	 @ResponseBody 
-	 public Map<String, Object> userInsertSelect() {
-		 Map<String, Object> rtnMap = new HashMap<String, Object>();
-		 
-		 List<Users> userList = userService.userInsertSelect();
-		 
-		 List<HashMap<String, Object>> rtnList = new ArrayList<HashMap<String, Object>>();
-		 for(int i=0; i<userList.size(); i++) {
-			 HashMap<String, Object> rowMap = new HashMap<String, Object>();
-			 rowMap.put("idx", (i+1));
-			 rowMap.put("user_id", userList.get(i).getUser_id());
-			 rowMap.put("user_busu", userList.get(i).getUser_busu());
-			 rowMap.put("user_level", userList.get(i).getUser_level());
-			 rowMap.put("user_code", userList.get(i).getUser_code());
-			 rowMap.put("user_jick", userList.get(i).getUser_jick());
-			 rowMap.put("user_name", userList.get(i).getUser_name());
-			 rtnList.add(rowMap);
-		 }
-		 
-		 rtnMap.put("last_page",1);
-		 rtnMap.put("data",rtnList);
-		 
-		 return rtnMap; 
+	// 전체 사용자목록 조회
+	 @RequestMapping(value = "/user/userInsert/select", method = RequestMethod.POST)
+	 @ResponseBody
+	 public List<Users> userInsertSelect(Users users) {
+	     // System.out.println("======= [userInsertSelect 호출됨] =======");
+	     // System.out.println("user_name: " + users.getUser_name());
+	     // System.out.println("startDate: " + users.getStartDate());
+	     // System.out.println("=======================================");
+
+	     List<Users> result = userService.userInsertSelect(users);
+
+	     // System.out.println("======= [반환 데이터 목록] =======");
+	     // for (Users u : result) {
+	     //     System.out.println(
+	     //         "ID: " + u.getUser_id() +
+	     //         ", 이름: " + u.getUser_name() +
+	     //         ", 입사일: " + u.getSt_day() +
+	     //         ", 부서: " + u.getUser_busu()
+	     //     );
+	     // }
+	     // System.out.println("총 개수: " + result.size());
+	     // System.out.println("===================================");
+
+	     return result;
 	 }
-	 
+
+	 @RequestMapping(value = "/user/userInsert/delete", method = RequestMethod.POST)
+	 @ResponseBody
+	 public String deleteUser(@RequestBody Users user) {
+	     System.out.println("======= [deleteUser 호출됨] =======");
+	     System.out.println("삭제 대상 user_code: " + user.getUser_code());
+	     System.out.println("===================================");
+
+	     try {
+	    	 userService.userInsertDel(user); 
+	         return "success";
+	     } catch (Exception e) {
+	         e.printStackTrace();
+	         return "fail";
+	     }
+	 }
 	 
 	 //사용자 등록 입력
 	 @RequestMapping(value = "/user/userInsert/insert", method = RequestMethod.POST)
@@ -485,6 +502,57 @@ public class UserController {
 
         return rtnMap;
     }
+
+    @RequestMapping(value = "/user/workerManage/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getworkDailyReportList(@RequestBody Users users) {
+        System.out.println("받은 s_time 값: " + users.getS_time());
+
+        Map<String, Object> result = new HashMap<>();
+        List<?> table1 = userService.getWork_team_select(users);
+        List<?> table2 = userService.getWork_schedule_select(users);
+
+     //   System.out.println("table1 리턴값: " + table1);
+     //   System.out.println("table2 리턴값: " + table2);
+
+        result.put("table1", table1);
+        result.put("table2", table2);
+        return result;
+    }
+
+    @RequestMapping(value = "/user/workerManage/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> work_handover_update(
+        @RequestParam("id") Integer id,
+        @RequestParam("column") String column,
+        @RequestParam("value") String value) {
+
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        System.out.println("== work_handover_update 요청값 ==");
+        System.out.println("id: " + id);
+        System.out.println("column: " + column);
+        System.out.println("value: " + value);
+        System.out.println("==============================");
+
+        if (id == null) {
+            rtnMap.put("error", "ID 입력 필요");
+            return rtnMap;
+        }
+
+      
+        Users users = new Users();
+        users.setId(id);
+        users.setColumn(column);  
+        users.setValue(value);   
+
+      
+        userService.work_team_update(users);
+
+        rtnMap.put("result", "success");
+        return rtnMap;
+    }
+
 
 
 }

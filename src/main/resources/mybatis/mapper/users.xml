@@ -25,20 +25,71 @@
         WHERE user_level <![CDATA[<>]]> 0 AND user_yn = 'Y'
     </select>
 	
-	<!-- 전체 사용자 목록 조회 -->
 	<select id="userInsertSelect" parameterType="users" resultType="users">
-        SELECT *
-        FROM tb_user
-        WHERE user_yn = 'Y'
-    </select>
+	  SELECT *
+	  FROM tb_user
+	  <where>
+	    user_yn = 'Y'
+	    
+	    <if test="user_name != null and user_name != ''">
+	      AND user_name LIKE CONCAT('%', #{user_name}, '%')
+	    </if>
+	    
+	    <if test="startDate != null and startDate != ''">
+	      AND st_day LIKE CONCAT('%', #{startDate}, '%')
+	    </if>
+	  </where>
+	</select>
+
+	<update id="userInsertDel" parameterType="Users">
+	  UPDATE tb_user
+	  SET user_yn = 'N'
+	  WHERE user_code = #{user_code}
+	</update>
+
+
+
  
     
     <!-- 작업자등록 -->
     <insert id="userInsertInsert" parameterType="users">
-    	INSERT INTO tb_user (user_id, user_pw, user_name, user_level, user_busu, user_jick, user_phone)
-    	VALUES (#{user_id}, #{user_pw}, #{user_name}, #{user_level}, #{user_busu}, #{user_jick}, #{user_phone});
-    	
+ INSERT INTO tb_user
+    (user_code,
+     user_id,
+     user_pw,
+     user_name,
+     user_level,
+     user_busu,
+     user_jick,
+     user_phone,
+     st_day)
+  VALUES
+    (#{user_code, jdbcType=INTEGER},
+     #{user_id,   jdbcType=VARCHAR},
+     #{user_pw,   jdbcType=VARCHAR},
+     #{user_name, jdbcType=VARCHAR},
+     #{user_level,jdbcType=INTEGER},
+     #{user_busu, jdbcType=VARCHAR},
+     #{user_jick, jdbcType=VARCHAR},
+     #{user_phone,jdbcType=VARCHAR},
+     #{st_day,    jdbcType=VARCHAR})
+  ON DUPLICATE KEY UPDATE
+    user_id    = VALUES(user_id),
+    user_pw    = VALUES(user_pw),
+    user_name  = VALUES(user_name),
+    user_level = VALUES(user_level),
+    user_busu  = VALUES(user_busu),
+    user_jick  = VALUES(user_jick),
+    user_phone = VALUES(user_phone),
+    st_day     = VALUES(st_day)
 	</insert>
+	
+	<delete id="deleteUser" parameterType="users">
+	  DELETE FROM tb_user
+	  WHERE user_code = #{user_code}
+	</delete>
+	
+	
 	
 	<!-- 중복된 사용자인지 확인 -->
 	<select id="userDuplicateCheck" parameterType="users" resultType="users">
@@ -299,4 +350,92 @@
         SELECT *
         FROM tb_permission
     </select>
+    
+    
+    
+    
+    <update id="work_team_update" parameterType="Users">
+    UPDATE tb_work_team
+    <set>
+        <if test="column != null and value != null">
+            ${column} = #{value}
+        </if>
+    </set>
+    WHERE id = #{id}
+	</update>
+    
+    <update id="work_handover_update" parameterType="Users">
+	  UPDATE tb_work_handover
+	  SET ${column} = #{value}
+	  WHERE id = #{id}
+	</update>
+	    
+    
+    <update id="work_schedule_update" parameterType="Users">
+	  UPDATE tb_work_schedule
+	  <set>
+	    <if test="column != null and value != null">
+	      ${column} = #{value}
+	    </if>
+	  </set>
+	  WHERE id = #{id}
+	</update>
+	
+	
+	
+	
+	<!-- tb_work_team 조회 -->
+<select id="getWork_team_select" parameterType="Users" resultType="Users">
+  SELECT
+    id,
+    date,
+    task,
+    team_a,
+    team_b,
+    team_c,
+    sub_task,
+    always_day_shift
+  FROM tb_work_team
+  WHERE date = #{s_time}
+</select>
+
+<!-- tb_work_schedule 조회 -->
+<select id="getWork_schedule_select" parameterType="Users" resultType="Users">
+  SELECT
+    id,
+    date,
+    division,
+    shift_type,
+    line_leader,
+    degreasing,
+    shot,
+    g800,
+    g600,
+    common,
+    k_black,
+    liquid_mgmt,
+    e_coating,
+    group_leader,
+    rust,
+    lab,
+    memo
+  FROM tb_work_schedule
+  WHERE date = #{s_time}
+</select>
+
+<!-- tb_work_handover 조회 -->
+<select id="work_handover_select" parameterType="Users" resultType="Users">
+  SELECT
+    id,
+    date,
+    category,
+    day_shift,
+    night_shift,
+    note
+  FROM tb_work_handover
+  WHERE date = #{s_time}
+</select>
+
+	
+    
 </mapper>
