@@ -138,4 +138,12 @@ public class MachineDaoImpl implements MachineDao{
     public void dellogStatus(Machine machine) {
            sqlSession.insert("machine.dellogStatus", machine);
     }
+    
+    
+    
+    @Override
+    public List<Machine> getErrDataList(Machine machine) {
+      
+        return sqlSession.selectList("machine.getErrDataList", machine);
+    }
 }

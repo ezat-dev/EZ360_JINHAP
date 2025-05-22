@@ -53,4 +53,8 @@ public interface MachineService {
 	void insertlogStatus(Machine machine); 
 	void dellogStatus(Machine machine);
 
+	
+	
+	List<Machine> getErrDataList(Machine machine);
+	
 }

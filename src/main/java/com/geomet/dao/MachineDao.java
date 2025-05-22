@@ -52,4 +52,6 @@ public interface MachineDao {
 		List<Machine> getlogStatusList(Machine machine);
 		void insertlogStatus(Machine machine); 
 		void dellogStatus(Machine machine); 
+		
+		List<Machine> getErrDataList(Machine machine);
 }

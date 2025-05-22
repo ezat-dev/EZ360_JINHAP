@@ -120,4 +120,9 @@ public class MachineServiceImpl implements MachineService {
 	      public void dellogStatus(Machine machine) {
 	           machineDao.dellogStatus(machine); 	   
 	      }
+	      
+	      @Override
+	      public List<Machine> getErrDataList(Machine machine) {
+	           return machineDao.getErrDataList(machine); 	   
+	      }
 }

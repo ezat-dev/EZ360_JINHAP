@@ -473,6 +473,36 @@ SELECT * FROM v_moniteolingling
     DELETE FROM tb_log_status
     WHERE no = #{no}
   </delete>
+  
+  
+  
+<select id="getErrDataList" parameterType="Machine" resultType="Machine">
+  SELECT
+      e.position_cd,
+      e.mach_code,
+      e.facility_name,
+      e.line_cd,
+      e.err_code,
+      e.err_name,
+      e.start_time_formatted,
+      e.end_time_formatted,
+      e.remark
+  FROM
+      v_errdata e
+  WHERE
+    1 = 1
+    <if test="mach_code != null and mach_code != 'ALL'">
+      AND e.mach_code = #{mach_code}
+    </if>
+    AND e.start_time_formatted &gt;= #{start_time}
+    AND e.end_time_formatted &lt;= #{end_time}
+  ORDER BY
+      e.start_time_formatted
+</select>
+
+
+  
+  
 
 </mapper>
 

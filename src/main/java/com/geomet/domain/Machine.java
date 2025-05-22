@@ -3,6 +3,9 @@ package com.geomet.domain;
 public class Machine {
 	//tb_check_plan
 	private String id;
+	private String start_time_formatted;
+	private String end_time_formatted;
+
     private String equipmentName;
     private String inspectionDate;
     private String itemType;
@@ -139,11 +142,62 @@ public class Machine {
 
     
     
+    //경보
+    private String position_cd;
+    private String mach_code;
+ 
+    private String line_cd;
+    private String err_code;
+    private String err_name;
+
+
     
     
     
     
     
+
+	public String getPosition_cd() {
+		return position_cd;
+	}
+
+	public void setPosition_cd(String position_cd) {
+		this.position_cd = position_cd;
+	}
+
+
+
+	public String getLine_cd() {
+		return line_cd;
+	}
+
+	public void setLine_cd(String line_cd) {
+		this.line_cd = line_cd;
+	}
+
+	public String getErr_code() {
+		return err_code;
+	}
+
+	public void setErr_code(String err_code) {
+		this.err_code = err_code;
+	}
+
+	public String getErr_name() {
+		return err_name;
+	}
+
+	public void setErr_name(String err_name) {
+		this.err_name = err_name;
+	}
+
+	public String getMach_code() {
+		return mach_code;
+	}
+
+	public void setMach_code(String mach_code) {
+		this.mach_code = mach_code;
+	}
 
 	public String getGong_date() {
 		return gong_date;
@@ -964,6 +1018,22 @@ public class Machine {
 
 	public void setSum_time_ch(String sum_time_ch) {
 		this.sum_time_ch = sum_time_ch;
+	}
+
+	public String getStart_time_formatted() {
+		return start_time_formatted;
+	}
+
+	public void setStart_time_formatted(String start_time_formatted) {
+		this.start_time_formatted = start_time_formatted;
+	}
+
+	public String getEnd_time_formatted() {
+		return end_time_formatted;
+	}
+
+	public void setEnd_time_formatted(String end_time_formatted) {
+		this.end_time_formatted = end_time_formatted;
 	}
     
     
