@@ -60,4 +60,33 @@ public class ConditionDaoImpl implements ConditionDao {
 	public void machinePartTempUpdate(Condition condition) {
 		sqlSession.update("condition.machinePartTempUpdate",condition);
 	}
+	
+	
+	//액교반
+	@Override
+	public List<Condition> getMachineliquidmanage(Condition condition) {
+		return sqlSession.selectList("condition.getMachineliquidmanage",condition);
+	}
+	@Override
+	public void insertMachineliquidmanage(Condition condition) {
+		sqlSession.update("condition.insertMachineliquidmanage",condition);
+	}
+	//액교반
+		@Override
+		public List<Condition> getMachineliquidmanage2(Condition condition) {
+			return sqlSession.selectList("condition.getMachineliquidmanage2",condition);
+		}
+		@Override
+		public void insertMachineliquidmanage2(Condition condition) {
+			sqlSession.update("condition.insertMachineliquidmanage2",condition);
+		}
+		
+		@Override
+		public void deleteMachineliquidmanage(Condition condition) {
+			sqlSession.update("condition.deleteMachineliquidmanage",condition);
+		}
+		@Override
+		public void deleteMachineliquidmanage2(Condition condition) {
+			sqlSession.update("condition.deleteMachineliquidmanage2",condition);
+		}
 }

@@ -28,5 +28,19 @@ public interface ConditionDao {
 	  
 	  List<Condition> getconditionList(Condition condition);
 	  void machinePartTempUpdate(Condition condition);
+	 
 	  
+	  
+	  //액교반일지
+	  
+	    List<Condition> getMachineliquidmanage(Condition condition); 
+	    void insertMachineliquidmanage(Condition condition); 
+	    
+	    List<Condition> getMachineliquidmanage2(Condition condition); 
+	    void insertMachineliquidmanage2(Condition condition); 
+	   
+	    void deleteMachineliquidmanage(Condition condition); 
+	    void deleteMachineliquidmanage2(Condition condition); 
+	    
+
 }

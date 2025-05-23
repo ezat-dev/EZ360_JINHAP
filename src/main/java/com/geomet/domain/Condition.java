@@ -35,7 +35,8 @@ public class Condition {
 	    private String no;
 	    private String equipmentName;
 	    
-	    private String id;
+	    private Integer id;
+
 	    private String date;
 	    private String mch_code;
 	    private String mch_nname;
@@ -50,9 +51,269 @@ public class Condition {
 
 	    
 	    
+	   
+	    private String in_date;
+
+	    private String m68_mixer_no;
+	    private String m68_g1_temp;
+	    private String m68_g2_temp;
+	    private String m68_g1_lot_no;
+	    private String m68_g2_lot_no;
+	    private String m68_thickener_time;
+	    private String m68_thickener_g;
+	    private String m68_thickener_lot;
+	    private String m68_post_rpm;
+	    private String m68_mixing_start_time;
+	    private String m68_mixing_time;
+	    private String m68_checker;
+	    private String m68_mch_temp;
+	    private String m68_humidity;
+	    private String m68_viscosity;
+	    private String m68_out_time;
+
+	    private String kmp_humidity;
+	    private String kmp_mixing_temp;
+	    private String kmp_mch_temp;
+	    private String kmp_liquid_lot_no;
+	    private String kmp_mixing_start_time;
+	    private String kmp_mixing_time;
+	    private String kmp_mch_visc;
+	    private String kmp_out_time;
+	    private String kmp_checker;
+	    private String mch_name;
+
 	    
+	    
+	    
+	    private String tank_no;
+	    private String ck_time;
+	    private String liquid_lot_no;
+	    private String liquid_in;
+	    private String distilles_in;
+	    private String liquid_viscosity;
+
+	    private String viscosity_after;
+	    private String ck_time2;
+	    private String operator;
 
 
+		public String getTank_no() {
+			return tank_no;
+		}
+		public void setTank_no(String tank_no) {
+			this.tank_no = tank_no;
+		}
+		public String getCk_time() {
+			return ck_time;
+		}
+		public void setCk_time(String ck_time) {
+			this.ck_time = ck_time;
+		}
+		public String getLiquid_lot_no() {
+			return liquid_lot_no;
+		}
+		public void setLiquid_lot_no(String liquid_lot_no) {
+			this.liquid_lot_no = liquid_lot_no;
+		}
+		public String getLiquid_in() {
+			return liquid_in;
+		}
+		public void setLiquid_in(String liquid_in) {
+			this.liquid_in = liquid_in;
+		}
+		public String getDistilles_in() {
+			return distilles_in;
+		}
+		public void setDistilles_in(String distilles_in) {
+			this.distilles_in = distilles_in;
+		}
+		public String getLiquid_viscosity() {
+			return liquid_viscosity;
+		}
+		public void setLiquid_viscosity(String liquid_viscosity) {
+			this.liquid_viscosity = liquid_viscosity;
+		}
+		public String getViscosity_after() {
+			return viscosity_after;
+		}
+		public void setViscosity_after(String viscosity_after) {
+			this.viscosity_after = viscosity_after;
+		}
+		public String getCk_time2() {
+			return ck_time2;
+		}
+		public void setCk_time2(String ck_time2) {
+			this.ck_time2 = ck_time2;
+		}
+		public String getOperator() {
+			return operator;
+		}
+		public void setOperator(String operator) {
+			this.operator = operator;
+		}
+		public String getIn_date() {
+			return in_date;
+		}
+		public void setIn_date(String in_date) {
+			this.in_date = in_date;
+		}
+		public String getM68_mixer_no() {
+			return m68_mixer_no;
+		}
+		public void setM68_mixer_no(String m68_mixer_no) {
+			this.m68_mixer_no = m68_mixer_no;
+		}
+		public String getM68_g1_temp() {
+			return m68_g1_temp;
+		}
+		
+		public String getMch_name() {
+			return mch_name;
+		}
+		public void setMch_name(String mch_name) {
+			this.mch_name = mch_name;
+		}
+		public void setM68_g1_temp(String m68_g1_temp) {
+			this.m68_g1_temp = m68_g1_temp;
+		}
+		public String getM68_g2_temp() {
+			return m68_g2_temp;
+		}
+		public void setM68_g2_temp(String m68_g2_temp) {
+			this.m68_g2_temp = m68_g2_temp;
+		}
+		public String getM68_g1_lot_no() {
+			return m68_g1_lot_no;
+		}
+		public void setM68_g1_lot_no(String m68_g1_lot_no) {
+			this.m68_g1_lot_no = m68_g1_lot_no;
+		}
+		public String getM68_g2_lot_no() {
+			return m68_g2_lot_no;
+		}
+		public void setM68_g2_lot_no(String m68_g2_lot_no) {
+			this.m68_g2_lot_no = m68_g2_lot_no;
+		}
+		public String getM68_thickener_time() {
+			return m68_thickener_time;
+		}
+		public void setM68_thickener_time(String m68_thickener_time) {
+			this.m68_thickener_time = m68_thickener_time;
+		}
+		public String getM68_thickener_g() {
+			return m68_thickener_g;
+		}
+		public void setM68_thickener_g(String m68_thickener_g) {
+			this.m68_thickener_g = m68_thickener_g;
+		}
+		public String getM68_thickener_lot() {
+			return m68_thickener_lot;
+		}
+		public void setM68_thickener_lot(String m68_thickener_lot) {
+			this.m68_thickener_lot = m68_thickener_lot;
+		}
+		public String getM68_post_rpm() {
+			return m68_post_rpm;
+		}
+		public void setM68_post_rpm(String m68_post_rpm) {
+			this.m68_post_rpm = m68_post_rpm;
+		}
+		public String getM68_mixing_start_time() {
+			return m68_mixing_start_time;
+		}
+		public void setM68_mixing_start_time(String m68_mixing_start_time) {
+			this.m68_mixing_start_time = m68_mixing_start_time;
+		}
+		public String getM68_mixing_time() {
+			return m68_mixing_time;
+		}
+		public void setM68_mixing_time(String m68_mixing_time) {
+			this.m68_mixing_time = m68_mixing_time;
+		}
+		public String getM68_checker() {
+			return m68_checker;
+		}
+		public void setM68_checker(String m68_checker) {
+			this.m68_checker = m68_checker;
+		}
+		public String getM68_mch_temp() {
+			return m68_mch_temp;
+		}
+		public void setM68_mch_temp(String m68_mch_temp) {
+			this.m68_mch_temp = m68_mch_temp;
+		}
+		public String getM68_humidity() {
+			return m68_humidity;
+		}
+		public void setM68_humidity(String m68_humidity) {
+			this.m68_humidity = m68_humidity;
+		}
+		public String getM68_viscosity() {
+			return m68_viscosity;
+		}
+		public void setM68_viscosity(String m68_viscosity) {
+			this.m68_viscosity = m68_viscosity;
+		}
+		public String getM68_out_time() {
+			return m68_out_time;
+		}
+		public void setM68_out_time(String m68_out_time) {
+			this.m68_out_time = m68_out_time;
+		}
+		public String getKmp_humidity() {
+			return kmp_humidity;
+		}
+		public void setKmp_humidity(String kmp_humidity) {
+			this.kmp_humidity = kmp_humidity;
+		}
+		public String getKmp_mixing_temp() {
+			return kmp_mixing_temp;
+		}
+		public void setKmp_mixing_temp(String kmp_mixing_temp) {
+			this.kmp_mixing_temp = kmp_mixing_temp;
+		}
+		public String getKmp_mch_temp() {
+			return kmp_mch_temp;
+		}
+		public void setKmp_mch_temp(String kmp_mch_temp) {
+			this.kmp_mch_temp = kmp_mch_temp;
+		}
+		public String getKmp_liquid_lot_no() {
+			return kmp_liquid_lot_no;
+		}
+		public void setKmp_liquid_lot_no(String kmp_liquid_lot_no) {
+			this.kmp_liquid_lot_no = kmp_liquid_lot_no;
+		}
+		public String getKmp_mixing_start_time() {
+			return kmp_mixing_start_time;
+		}
+		public void setKmp_mixing_start_time(String kmp_mixing_start_time) {
+			this.kmp_mixing_start_time = kmp_mixing_start_time;
+		}
+		public String getKmp_mixing_time() {
+			return kmp_mixing_time;
+		}
+		public void setKmp_mixing_time(String kmp_mixing_time) {
+			this.kmp_mixing_time = kmp_mixing_time;
+		}
+		public String getKmp_mch_visc() {
+			return kmp_mch_visc;
+		}
+		public void setKmp_mch_visc(String kmp_mch_visc) {
+			this.kmp_mch_visc = kmp_mch_visc;
+		}
+		public String getKmp_out_time() {
+			return kmp_out_time;
+		}
+		public void setKmp_out_time(String kmp_out_time) {
+			this.kmp_out_time = kmp_out_time;
+		}
+		public String getKmp_checker() {
+			return kmp_checker;
+		}
+		public void setKmp_checker(String kmp_checker) {
+			this.kmp_checker = kmp_checker;
+		}
 		public String getField() {
 			return field;
 		}
@@ -83,10 +344,11 @@ public class Condition {
 		public void setMch_nname(String mch_nname) {
 			this.mch_nname = mch_nname;
 		}
-		public String getId() {
+
+		public Integer getId() {
 			return id;
 		}
-		public void setId(String id) {
+		public void setId(Integer id) {
 			this.id = id;
 		}
 		public String getDate() {

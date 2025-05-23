@@ -125,5 +125,191 @@
     WHERE id = #{id}
 </update>
 
+
+
+
+
+
+
+
+
+<select id="getMachineliquidmanage" parameterType="Condition" resultType="Condition">
+    SELECT *
+    FROM tb_machineliquidmanage
+    WHERE 1 = 1
+    <if test="in_date != null and in_date != ''">
+        AND in_date = #{in_date}
+    </if>
+    <if test="mch_name != null and mch_name != ''">
+        AND mch_name = #{mch_name}
+    </if>
+</select>
+
+<insert id="insertMachineliquidmanage" parameterType="Condition">
+  INSERT INTO tb_machineliquidmanage (
+ 	id,
+    mch_name,
+    in_date,
+    m68_mixer_no,
+    m68_g1_temp,
+    m68_g2_temp,
+    m68_g1_lot_no,
+    m68_g2_lot_no,
+    m68_thickener_time,
+    m68_thickener_g,
+    m68_thickener_lot,
+    m68_post_rpm,
+    m68_mixing_start_time,
+    m68_mixing_time,
+    m68_checker,
+    m68_mch_temp,
+    m68_humidity,
+    m68_viscosity,
+    m68_out_time,
+    kmp_humidity,
+    kmp_mixing_temp,
+    kmp_mch_temp,
+    kmp_liquid_lot_no,
+    kmp_mixing_start_time,
+    kmp_mixing_time,
+    kmp_mch_visc,
+    kmp_out_time,
+    kmp_checker
+  )
+  VALUES (
+ 	#{id},
+    #{mch_name},
+    #{in_date},
+    #{m68_mixer_no},
+    #{m68_g1_temp},
+    #{m68_g2_temp},
+    #{m68_g1_lot_no},
+    #{m68_g2_lot_no},
+    #{m68_thickener_time},
+    #{m68_thickener_g},
+    #{m68_thickener_lot},
+    #{m68_post_rpm},
+    #{m68_mixing_start_time},
+    #{m68_mixing_time},
+    #{m68_checker},
+    #{m68_mch_temp},
+    #{m68_humidity},
+    #{m68_viscosity},
+    #{m68_out_time},
+    #{kmp_humidity},
+    #{kmp_mixing_temp},
+    #{kmp_mch_temp},
+    #{kmp_liquid_lot_no},
+    #{kmp_mixing_start_time},
+    #{kmp_mixing_time},
+    #{kmp_mch_visc},
+    #{kmp_out_time},
+    #{kmp_checker}
+  )
+  ON DUPLICATE KEY UPDATE
+    in_date = VALUES(in_date),
+    mch_name = VALUES(mch_name),
+    m68_mixer_no = VALUES(m68_mixer_no),
+    m68_g1_temp = VALUES(m68_g1_temp),
+    m68_g2_temp = VALUES(m68_g2_temp),
+    m68_g1_lot_no = VALUES(m68_g1_lot_no),
+    m68_g2_lot_no = VALUES(m68_g2_lot_no),
+    m68_thickener_time = VALUES(m68_thickener_time),
+    m68_thickener_g = VALUES(m68_thickener_g),
+    m68_thickener_lot = VALUES(m68_thickener_lot),
+    m68_post_rpm = VALUES(m68_post_rpm),
+    m68_mixing_start_time = VALUES(m68_mixing_start_time),
+    m68_mixing_time = VALUES(m68_mixing_time),
+    m68_checker = VALUES(m68_checker),
+    m68_mch_temp = VALUES(m68_mch_temp),
+    m68_humidity = VALUES(m68_humidity),
+    m68_viscosity = VALUES(m68_viscosity),
+    m68_out_time = VALUES(m68_out_time),
+    kmp_humidity = VALUES(kmp_humidity),
+    kmp_mixing_temp = VALUES(kmp_mixing_temp),
+    kmp_mch_temp = VALUES(kmp_mch_temp),
+    kmp_liquid_lot_no = VALUES(kmp_liquid_lot_no),
+    kmp_mixing_start_time = VALUES(kmp_mixing_start_time),
+    kmp_mixing_time = VALUES(kmp_mixing_time),
+    kmp_mch_visc = VALUES(kmp_mch_visc),
+    kmp_out_time = VALUES(kmp_out_time),
+    kmp_checker = VALUES(kmp_checker)
+</insert>
+
+	
+	
+	
+
+<select id="getMachineliquidmanage2" parameterType="Condition" resultType="Condition">
+    SELECT *
+    FROM tb_machineliquidmanage_2
+    WHERE 1=1
+    <if test="mch_name != null and mch_name != ''">
+        AND mch_name = #{mch_name}
+    </if>
+    <if test="in_date != null and in_date != ''">
+        AND in_date = #{in_date}
+    </if>
+    ORDER BY ck_time DESC
+</select>
+
+<!-- insert 매퍼: id 제외 -->
+<insert id="insertMachineliquidmanage2" parameterType="Condition">
+    INSERT INTO tb_machineliquidmanage_2 (
+        id,
+        mch_name,
+        in_date,
+        tank_no,
+        ck_time,
+        liquid_lot_no,
+        liquid_in,
+        distilles_in,
+        liquid_viscosity,
+        specific_gravity,
+        viscosity_after,
+        ck_time2,
+        operator
+    )
+    VALUES (
+        #{id},
+        #{mch_name},
+        #{in_date},
+        #{tank_no},
+        #{ck_time},
+        #{liquid_lot_no},
+        #{liquid_in},
+        #{distilles_in},
+        #{liquid_viscosity},
+        #{specific_gravity},
+        #{viscosity_after},
+        #{ck_time2},
+        #{operator}
+    )
+    ON DUPLICATE KEY UPDATE
+        mch_name = VALUES(mch_name),
+        in_date = VALUES(in_date),
+        tank_no = VALUES(tank_no),
+        ck_time = VALUES(ck_time),
+        liquid_lot_no = VALUES(liquid_lot_no),
+        liquid_in = VALUES(liquid_in),
+        distilles_in = VALUES(distilles_in),
+        liquid_viscosity = VALUES(liquid_viscosity),
+        specific_gravity = VALUES(specific_gravity),
+        viscosity_after = VALUES(viscosity_after),
+        ck_time2 = VALUES(ck_time2),
+        operator = VALUES(operator)
+</insert>
+
+
+
+<delete id="deleteMachineliquidmanage" parameterType="int">
+    DELETE FROM tb_machineliquidmanage
+    WHERE id = #{id}
+</delete>
+<delete id="deleteMachineliquidmanage2" parameterType="int">
+    DELETE FROM tb_machineliquidmanage_2
+    WHERE id = #{id}
+</delete>
+
 	
 </mapper>

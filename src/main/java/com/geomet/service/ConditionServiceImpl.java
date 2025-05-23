@@ -60,5 +60,37 @@ private ConditionDao conditionDao;
 		    public void machinePartTempUpdate(Condition condition) {
 			 	conditionDao.machinePartTempUpdate(condition);
 		    }
+		 
+		 
+			@Override
+			public List<Condition> getMachineliquidmanage(Condition condition){
+				return conditionDao.getMachineliquidmanage(condition);
+			}
+			
+			 @Override
+			    public void insertMachineliquidmanage(Condition condition) {
+				 	conditionDao.insertMachineliquidmanage(condition);
+			    }
+			 
+			 
+				@Override
+				public List<Condition> getMachineliquidmanage2(Condition condition){
+					return conditionDao.getMachineliquidmanage2(condition);
+				}
+				
+				 @Override
+				    public void insertMachineliquidmanage2(Condition condition) {
+					 	conditionDao.insertMachineliquidmanage2(condition);
+				    }
+				 
+				 @Override
+				 public void deleteMachineliquidmanage(Condition condition) {
+				     conditionDao.deleteMachineliquidmanage(condition);
+				 }
+
+				 @Override
+				 public void deleteMachineliquidmanage2(Condition condition) {
+				     conditionDao.deleteMachineliquidmanage2(condition);
+				 }
  
 }

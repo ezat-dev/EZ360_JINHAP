@@ -35,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import com.geomet.domain.Condition;
+import com.geomet.domain.Users;
 import com.geomet.domain.Work;
 import com.geomet.service.ConditionService;
 
@@ -270,28 +271,35 @@ public class ConditionController {
         for (Map.Entry<String, String> entry : params.entrySet()) {
             System.out.println(entry.getKey() + ": " + entry.getValue());
         }
-        String id = params.get("id");
+        String idStr = params.get("id");
         String date = params.get("date");
         String filed = params.get("filed");
         String value = params.get("value");
 
-        if(id == null || date == null || filed == null || value == null) {
+        if (idStr == null || date == null || filed == null || value == null) {
             rtnMap.put("data", "모든 필드를 입력하세요!");
             return rtnMap;
         }
 
-        
+        int idInt;
+        try {
+            idInt = Integer.parseInt(idStr);
+        } catch (NumberFormatException e) {
+            rtnMap.put("data", "ID는 숫자여야 합니다.");
+            return rtnMap;
+        }
+
         Condition condition = new Condition();
-        condition.setId(id);
+        condition.setId(idInt);
         condition.setDate(date);
         condition.setFiled(filed);
         condition.setValue(value);
 
-       
         conditionService.machinePartTempUpdate(condition);
 
         rtnMap.put("data", "성공적으로 업데이트되었습니다!");
         return rtnMap;
+
     }
 
     
@@ -538,4 +546,79 @@ public class ConditionController {
         return rtnMap;
     }
    
+    // 액교반탱크일지
+    @RequestMapping(value = "/condition/machineliquidmanage/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getworkDailyReportList(@RequestBody Condition condition) {
+        System.out.println("받은 getIn_date 값: " + condition.getIn_date());
+        System.out.println("mch_name: " + condition.getMch_name());
+        Map<String, Object> result = new HashMap<>();
+        List<?> table1 = conditionService.getMachineliquidmanage(condition);
+        List<?> table2 = conditionService.getMachineliquidmanage2(condition);
+
+     //   System.out.println("table1 리턴값: " + table1);
+     //   System.out.println("table2 리턴값: " + table2);
+
+        result.put("table1", table1);
+        result.put("table2", table2);
+        return result;
+    }
+    // 액교반탱크일지2
+    @RequestMapping(value = "/condition/machineliquidmanage2/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Condition> getMachineliquidmanage2(Condition condition) {
+        System.out.println(">>> in_date2: " + condition.getIn_date());
+        System.out.println(">>> mch_name2: " + condition.getMch_nname());
+        return conditionService.getMachineliquidmanage2(condition);
+    }
+    
+    //액교반탱크일지 추가
+    @RequestMapping(value = "/condition/machineliquidmanage/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertMachineliquidmanage(@ModelAttribute Condition condition) {
+        
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+        
+        System.out.println("받은 ID: " + condition.getId());
+       conditionService.insertMachineliquidmanage(condition); 
+        
+        return rtnMap;
+    }
+    //액교반탱크일지 추가
+    @RequestMapping(value = "/condition/machineliquidmanage2/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertMachineliquidmanage2(@ModelAttribute Condition condition) {
+        
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+        
+        System.out.println("받은 ID: " + condition.getId());
+       conditionService.insertMachineliquidmanage2(condition); 
+        
+        return rtnMap;
+    }
+    @RequestMapping(value = "/condition/machineliquidmanage/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteMachineliquidmanage(@RequestBody Condition condition) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        
+        System.out.println("삭제 요청 ID: " + condition.getId());
+        conditionService.deleteMachineliquidmanage(condition);
+        
+        return rtnMap;
+    }
+
+    @RequestMapping(value = "/condition/machineliquidmanage2/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteMachineliquidmanage2(@RequestBody Condition condition) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        
+        System.out.println("삭제 요청 ID: " + condition.getId());
+        conditionService.deleteMachineliquidmanage2(condition);
+        
+        return rtnMap;
+    }
+
+
+    
+    
 }
