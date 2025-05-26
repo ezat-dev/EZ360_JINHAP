@@ -32,4 +32,21 @@ public class QualityDaoImpl implements QualityDao {
     public void delNonProductManage(Quality quality) {
     	sqlSession.delete("quality.delNonProductManage",quality);
     }
+    
+    
+    
+    @Override
+    public List<Quality> getqualityList(Quality quality) {
+      
+        return sqlSession.selectList("quality.getqualityList", quality);
+    }
+    @Override
+    public void savetusTest(Quality quality) {
+    	sqlSession.insert("quality.savetusTest",quality);
+    }
+    
+    @Override
+    public void deltusTest(Quality quality) {
+    	sqlSession.delete("quality.deltusTest",quality);
+    }
 }

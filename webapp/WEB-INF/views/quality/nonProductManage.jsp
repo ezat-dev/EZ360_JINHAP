@@ -488,50 +488,44 @@ $(document).ready(function () {
 
     $(".delete-button").click(function(event) {
         event.preventDefault();
-    
-    console.log("삭제 버튼 클릭됨");
 
-    if (!selectedRow) {
-        alert("삭제할 행을 선택하세요.");
-        return;
-    }
+        console.log("삭제 버튼 클릭됨");
 
-    var no = selectedRow.getData().no;
-    
-    console.log("no", no);
-
-    if (!no) {
-        alert("삭제할 항목이 없습니다.");
-        return;
-    }
-
-    var requestData = JSON.stringify({ "no": no });
-    console.log("전송된 데이터:", requestData);
-
-    $.ajax({
-        url: "/geomet/quality/nonProductManage/del",
-        type: "POST",
-        data: {
-            equipment_name: $("#equipment_name").val() || "",
-            startDate: $("#startDate").val() || "",
-            endDate: $("#endDate").val() || ""
-        },
-        dataType: "json",  
-        success: function(response) {
-            console.log("엑셀 생성 성공:", response);
-            alert("엑셀 파일이 성공적으로 생성되었습니다!");
-     
-            if (response.data) {
-                window.open("/file/download?path=" + encodeURIComponent(response.data));
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error("엑셀 생성 오류:", xhr.responseText);
-            alert("엑셀 생성 중 오류가 발생했습니다: " + error);
+        if (!selectedRow) {
+            alert("삭제할 행을 선택하세요.");
+            return;
         }
+
+        var no = selectedRow.getData().no;
+
+        console.log("no", no);
+
+        if (!no) {
+            alert("삭제할 항목이 없습니다.");
+            return;
+        }
+
+        var requestData = JSON.stringify({ "no": no });
+        console.log("전송된 데이터:", requestData);
+
+        $.ajax({
+            url: "/geomet/quality/nonProductManage/del",
+            type: "POST",
+            contentType: "application/json", 
+            data: requestData,
+            dataType: "json",
+            success: function(response) {
+                console.log("행 삭제 성공:", response);
+                alert("행 삭제 완료");
+
+            },
+            error: function(xhr, status, error) {
+                console.error("삭제 오류:", xhr.responseText);
+                alert("삭제 중 오류가 발생했습니다: " + error);
+            }
+        });
     });
 
-});
 
     $(".excel-button").on("click", function () {
   	  console.log("엑셀 다운로드 버튼 클릭됨"); 

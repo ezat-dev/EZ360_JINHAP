@@ -44,5 +44,48 @@
         DELETE FROM tb_non_product_manage 
         WHERE no = #{no}
     	</delete>
-    
+    	
+    	
+    	
+    	
+      <select id="getqualityList" parameterType="Quality" resultType="Quality">
+        SELECT *
+        FROM tb_tustest
+        <where>
+            <if test="mch_name != null and mch_name != ''">
+                AND mch_name = #{mch_name}
+            </if>
+            <if test="t_year != null and t_year != ''">
+                AND t_year = #{t_year}
+            </if>
+        </where>
+        ORDER BY id DESC
+    </select>
+
+	<insert id="savetusTest" parameterType="Quality">
+	    INSERT INTO tb_tustest (
+	        id, mch_name, t_year, t_month, t_url, t_ok,
+	        t_gb, t_day, t_min, t_result
+	    ) VALUES (
+	        #{id}, #{mch_name}, #{t_year}, #{t_month}, #{t_url}, #{t_ok},
+	        #{t_gb}, #{t_day}, #{t_min}, #{t_result}
+	    )
+	    ON DUPLICATE KEY UPDATE
+	        mch_name = VALUES(mch_name),
+	        t_year = VALUES(t_year),
+	        t_month = VALUES(t_month),
+	        t_url = VALUES(t_url),
+	        t_ok = VALUES(t_ok),
+	        t_gb = VALUES(t_gb),
+	        t_day = VALUES(t_day),
+	        t_min = VALUES(t_min),
+	        t_result = VALUES(t_result)
+	</insert>
+
+
+    <!-- 3. deltusTest: id 기준으로 삭제 -->
+    <delete id="deltusTest" parameterType="Quality">
+        DELETE FROM tb_tustest
+        WHERE id = #{id}
+    </delete>
 </mapper>

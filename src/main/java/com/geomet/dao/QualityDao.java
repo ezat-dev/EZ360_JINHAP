@@ -13,4 +13,13 @@ public interface QualityDao {
 	  void saveNonProductManage(Quality quality);
 	  
 	  void delNonProductManage(Quality quality);
+	  
+	  
+	    
+	    
+	    List<Quality> getqualityList(Quality quality); 
+	    
+	    void savetusTest(Quality quality);
+	    
+	    void deltusTest(Quality quality);
 }

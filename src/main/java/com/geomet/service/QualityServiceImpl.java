@@ -29,4 +29,19 @@ public class QualityServiceImpl implements QualityService {
     public void delNonProductManage(Quality quality) {
 		qualityDao.delNonProductManage(quality);
     }
+	
+	
+	//부적합품 관리
+	@Override
+	public List<Quality> getqualityList(Quality quality) {
+	    return qualityDao.getqualityList(quality); 	   
+	}
+	@Override
+    public void savetusTest(Quality quality) {
+		qualityDao.savetusTest(quality);
+    }
+	@Override
+    public void deltusTest(Quality quality) {
+		qualityDao.deltusTest(quality);
+    }
 }

@@ -1,9 +1,13 @@
 package com.geomet.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
@@ -258,5 +263,115 @@ public class QualityController {
         return rtnMap;
     }
 
+
+    
+    @RequestMapping(value = "/quality/tusTest/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Quality> getqualityList(Quality quality) {
+		/*
+		 * System.out.println(">>> test_mch_name: " + quality.getMch_name());
+		 * System.out.println(">>> test_t_year: " + quality.getT_year());
+		 */
+        return qualityService.getqualityList(quality);
+    }
+
+    @ResponseBody
+    public Map<String, Object> savetusTest(@ModelAttribute Quality quality) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+     
+        if (quality.getT_month() != null && quality.getT_month().length() >= 4) {
+            String year = quality.getT_month().substring(0, 4);
+            quality.setT_year(year);
+        }
+
+        if (quality.getT_min() != null) {
+            try {
+                int tMin = Integer.parseInt(quality.getT_min().trim());
+                if (tMin >= 10) {
+                    quality.setT_result("합격");
+                } else {
+                    quality.setT_result("불합격");
+                }
+            } catch (NumberFormatException e) {
+                quality.setT_result("불합격");
+            }
+        } else {
+            quality.setT_result("불합격");
+        }
+  
+        qualityService.savetusTest(quality);
+
+        System.out.println(">>> mch_name: " + quality.getMch_name());
+        System.out.println(">>> id: " + quality.getId());
+        System.out.println(">>> t_result: " + quality.getT_result());
+        System.out.println(">>> test_t_year: " + quality.getT_year());
+        System.out.println(">>> t_url: " + quality.getT_url());
+
+        rtnMap.put("result", "success");
+        return rtnMap;
+    }
+
+
+    @RequestMapping(value = "/quality/tusTest/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deltusTest(@RequestBody Quality quality) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        if (quality.getId() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        qualityService.deltusTest(quality);
+
+        rtnMap.put("data", "success"); 
+        return rtnMap;
+    }
+    
+    @RequestMapping(value = "/download_tusTest", method = RequestMethod.GET)
+    public void downloadExcel(@RequestParam("filename") String filename,
+                              HttpServletResponse response) throws IOException {
+
+        String baseDir = "D:/GEOMET양식/온도균일성/";
+
+        //System.out.println("다운 주소 filename: " + filename);
+
+        if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        File file = new File(baseDir + filename);
+        //System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+        if (!file.exists()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        String mimeType = Files.probeContentType(file.toPath());
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setContentType(mimeType);
+        response.setContentLengthLong(file.length());
+
+   
+        String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+        }
+    }
 
 }

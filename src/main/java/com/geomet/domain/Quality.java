@@ -24,7 +24,82 @@ public class Quality {
 	    private String yn_b;
 	    private String start_date;
 	    
+	    private String id;
+	    private String mch_name;
+	    private String t_year;
+	    private String t_month;
+	    private String t_url;
+	    private String t_ok;
+	    private String t_gb;
+	    private String t_day;
+	    private String t_min;
+	    private String t_result;
+
 	    
+	    
+	    
+	    
+	    
+		public String getId() {
+			return id;
+		}
+		public void setId(String id) {
+			this.id = id;
+		}
+		public String getMch_name() {
+			return mch_name;
+		}
+		public void setMch_name(String mch_name) {
+			this.mch_name = mch_name;
+		}
+		public String getT_year() {
+			return t_year;
+		}
+		public void setT_year(String t_year) {
+			this.t_year = t_year;
+		}
+		public String getT_month() {
+			return t_month;
+		}
+		public void setT_month(String t_month) {
+			this.t_month = t_month;
+		}
+		public String getT_url() {
+			return t_url;
+		}
+		public void setT_url(String t_url) {
+			this.t_url = t_url;
+		}
+		public String getT_ok() {
+			return t_ok;
+		}
+		public void setT_ok(String t_ok) {
+			this.t_ok = t_ok;
+		}
+		public String getT_gb() {
+			return t_gb;
+		}
+		public void setT_gb(String t_gb) {
+			this.t_gb = t_gb;
+		}
+		public String getT_day() {
+			return t_day;
+		}
+		public void setT_day(String t_day) {
+			this.t_day = t_day;
+		}
+		public String getT_min() {
+			return t_min;
+		}
+		public void setT_min(String t_min) {
+			this.t_min = t_min;
+		}
+		public String getT_result() {
+			return t_result;
+		}
+		public void setT_result(String t_result) {
+			this.t_result = t_result;
+		}
 		public String getYn_a() {
 			return yn_a;
 		}
