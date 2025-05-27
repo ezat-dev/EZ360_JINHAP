@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.geomet.domain.Condition;
 import com.geomet.domain.Quality;
@@ -275,11 +276,13 @@ public class QualityController {
         return qualityService.getqualityList(quality);
     }
 
+    @RequestMapping(value = "/quality/tusTest/insert", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> savetusTest(@ModelAttribute Quality quality) {
+    public Map<String, Object> savetusTest(@ModelAttribute Quality quality,
+                                           @RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile) {
         Map<String, Object> rtnMap = new HashMap<>();
 
-     
+   
         if (quality.getT_month() != null && quality.getT_month().length() >= 4) {
             String year = quality.getT_month().substring(0, 4);
             quality.setT_year(year);
@@ -288,18 +291,38 @@ public class QualityController {
         if (quality.getT_min() != null) {
             try {
                 int tMin = Integer.parseInt(quality.getT_min().trim());
-                if (tMin >= 10) {
-                    quality.setT_result("합격");
-                } else {
-                    quality.setT_result("불합격");
-                }
+                quality.setT_result(tMin >= 10 ? "합격" : "불합격");
             } catch (NumberFormatException e) {
                 quality.setT_result("불합격");
             }
         } else {
             quality.setT_result("불합격");
         }
-  
+
+      
+        if (uploadFile != null && !uploadFile.isEmpty()) {
+            try {
+                String originalFilename = uploadFile.getOriginalFilename();
+                String savePath = "D:/GEOMET양식/온도균일성/";
+
+                File dir = new File(savePath);
+                if (!dir.exists()) dir.mkdirs();
+
+                File dest = new File(savePath + originalFilename);
+                uploadFile.transferTo(dest);
+
+              
+                quality.setT_url(originalFilename);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                rtnMap.put("result", "fail");
+                rtnMap.put("message", "파일 저장 실패");
+                return rtnMap;
+            }
+        }
+
+   
         qualityService.savetusTest(quality);
 
         System.out.println(">>> mch_name: " + quality.getMch_name());
@@ -311,7 +334,6 @@ public class QualityController {
         rtnMap.put("result", "success");
         return rtnMap;
     }
-
 
     @RequestMapping(value = "/quality/tusTest/del", method = RequestMethod.POST)
     @ResponseBody
@@ -335,16 +357,14 @@ public class QualityController {
 
         String baseDir = "D:/GEOMET양식/온도균일성/";
 
-        //System.out.println("다운 주소 filename: " + filename);
-
+       
         if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
 
         File file = new File(baseDir + filename);
-        //System.out.println("파일 전체 경로: " + file.getAbsolutePath());
-
+      
         if (!file.exists()) {
             response.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;

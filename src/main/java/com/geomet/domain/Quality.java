@@ -1,7 +1,7 @@
 package com.geomet.domain;
 
 public class Quality {
-	
+
 		private String no;
 	    private String startDate;
 	    private String Equipment_name;

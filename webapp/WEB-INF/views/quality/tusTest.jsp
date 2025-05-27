@@ -349,8 +349,8 @@
 			 <input type="text"  name="t_year">
 	 -->
 			<label>기준서(PDF)</label>
-			<input type="file" id="fileInput" accept="application/pdf">
-			
+			<input type="file" id="fileInput" name="uploadFile" accept="application/pdf">
+
 			<label>파일 이름</label>
 			<input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)">
 
