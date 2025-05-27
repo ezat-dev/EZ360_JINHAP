@@ -157,4 +157,22 @@ public class UserDaoImpl implements UserDao{
 		  public void work_schedule_update(Users users) {
 		         sqlSession.insert("users.work_schedule_update", users);
 		  }
+		  
+			@Override
+			public List<Users> getCleanCar(Users users) {
+				return sqlSession.selectList("users.getCleanCar", users);
+			}
+			
+			@Override
+			public List<Users> getForkCar(Users users) {
+				return sqlSession.selectList("users.getForkCar", users);
+			}
+			@Override
+			  public void insertForkCar(Users users) {
+			         sqlSession.update("users.insertForkCar", users);
+			  }
+			@Override
+			  public void insertCleanCar(Users users) {
+			         sqlSession.insert("users.insertCleanCar", users);
+			  }
 }

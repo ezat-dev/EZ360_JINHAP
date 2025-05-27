@@ -133,4 +133,25 @@ public class UserServiceImpl implements UserService{
 
 	       userDao.work_schedule_update(users);
 	   }
+	   
+		@Override
+		public List<Users> getCleanCar(Users users) {
+			return userDao.getCleanCar(users);
+		}
+		@Override
+		public List<Users> getForkCar(Users users) {
+			return userDao.getForkCar(users);
+		}
+		
+		 @Override
+		   public void insertForkCar(Users users) {
+
+		       userDao.insertForkCar(users);
+		   }
+		 
+		 @Override
+		   public void insertCleanCar(Users users) {
+
+		       userDao.insertCleanCar(users);
+		   }
 }

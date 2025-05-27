@@ -50,4 +50,11 @@ public interface UserService {
 	void work_schedule_update(Users users); 
 	
 	List<Users> getUserInfo(); 
+	
+	
+	List<Users> getCleanCar(Users users);
+	List<Users> getForkCar(Users users);
+	void insertForkCar(Users users); 
+	void insertCleanCar(Users users); 
+	
 }

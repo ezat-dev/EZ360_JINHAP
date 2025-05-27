@@ -16,6 +16,7 @@
             margin-left: 1008px;
             margin-top: 200px;
         }
+
         
 		#dataList2 {
 		    position: absolute;
@@ -53,21 +54,22 @@
             background-color: rgba(0, 0, 0, 0.5);
             transition: opacity 0.3s ease-in-out;
         }
-	    .modal-content {
-	        background: white;
-	        width: 24%;
-	        max-width: 500px;
-	        height: 80vh; 
-	        overflow-y: auto; 
-	        margin: 6% auto 0;
-	        padding: 20px;
-	        border-radius: 10px;
-	        position: relative;
-	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-	        transform: scale(0.8);
-	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-	        opacity: 0;
-	    }
+		.modal-content {
+		    background: white;
+		    width: 34%;
+		    max-width: 500px;
+		    height: 82vh;
+	
+		    overflow-y: auto;
+		    margin: 6% auto 0;
+		    padding: 20px;
+		    border-radius: 10px;
+		    position: relative;
+		    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+		    transform: scale(0.8);
+		    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+		    opacity: 0;
+		}
         .modal.show {
             display: block;
             opacity: 1;
@@ -207,6 +209,33 @@
 		    height: 20%;
 		    margin-left: 20%;
 		}
+		
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+
+  table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: center;
+  }
+
+  table th {
+    background-color: #f4f4f4;
+  }
+
+  #corrForm button {
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 10px 20px;
+  }
+
+  select {
+    width: 100px;
+    padding: 5px;
+  }
     </style>
 </head>
 
@@ -223,12 +252,12 @@
 
         
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">교체일자 :</label>
-			<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+           <label class="daylabel">점검 일자 :</label>
+			<input type="text" autocomplete="off"class="daySet" id="s_date" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 			
 			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-			<input type="text" autocomplete="off"class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+			<input type="text" autocomplete="off"class="daySet" id="e_date" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
            <label class="daylabel">설비명 :</label>
             <select class="dayselect">
@@ -241,15 +270,15 @@
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
+<!--                 <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+                </button> -->
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
+<!--                 <button class="printer-button">
                     <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+                </button> -->
             </div>
               
         </div>
@@ -260,43 +289,82 @@
         </div>
     </main>
 	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
-	            <label>설비명</label>
-	            <select name="equipmentName">
-	                <option value="1">지게차</option>
-	                <option value="2">청소차</option>
+<div id="modalContainer" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>지게차 점검일지</h2>
+    <form id="corrForm">
+       <label>날짜</label>
+      <input type="text" class="daySet"autocomplete="off"name="car_date"readonly>
+              <input type="text"name="idx"readonly>
+      <table>
+    
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>점검 항목</th>
+            <th>작업 전</th>
+            <th>작업 후</th>
+          </tr>
+        </thead>
+        <tbody>
+        
+          <tr>
+            <td>1</td>
+            <td>백레스트 설치상태</td>
+            <td><select name="a1"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b1"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>헤드가드 설치상태</td>
+            <td><select name="a2"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b2"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>(비상) 브레이크 작동상태</td>
+            <td><select name="a3"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b3"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>후진 경보장치 작동상태</td>
+            <td><select name="a4"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b4"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>전조등/후미등 작동상태</td>
+            <td><select name="a5"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b5"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>안전벨트/경음기(혼) 작동상태</td>
+            <td><select name="a6"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b6"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>무자격자 운전자 운행금지</td>
+            <td><select name="a7"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b7"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>블루라이트/빔 상태(좌우전후)</td>
+            <td><select name="a8"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="b8"><option>O</option><option>X</option><option>-</option></select></td>
+          </tr>
+        </tbody>
+      </table>
 
-	            </select>
-	
-	            <label>존 구분</label>
-	            <input type="text" name="location" value="소입1존">
-	
-	            <label>시리얼 번호</label>
-	            <input type="text" name="serialNumber" placeholder="시리얼 번호">
-	
-	            <label>교체일자</label>
-	            <input type="date"class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;">
-
-	
-	            <label>차기 교체일자</label>
-	            <input type="text" name="nextDate">
-	            
-	            <label>교체 주기</label>
-	            <input type="text" name="replacementCycle">
-	
-	            <label>비고</label>
-	            <textarea name="remarks" rows="3"></textarea>
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
-
+      <button type="submit" id="saveCorrStatus">저장</button>
+      <button type="button" id="closeModal">닫기</button>
+    </form>
+  </div>
+</div>
 
     <script>
 
@@ -320,41 +388,115 @@
     // yyyy-MM-dd 형식으로 변환
     const formatDate = (date) => date.toISOString().split('T')[0];
 
-    $('#startDate').val(formatDate(firstDay));
-    $('#endDate').val(formatDate(lastDay));
+    $('#s_date').val(formatDate(firstDay));
+    $('#e_date').val(formatDate(lastDay));
 
         });
 
         function getDataList2() {
-            dataTable = new Tabulator("#dataList2", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
+        	 const s_date_val = $('#s_date').val();
+     	    const e_date_val = $('#e_date').val();
+
+     	    console.log("getDataList2 보내는 값 → s_date:", s_date_val, "e_date:", e_date_val);
+         dataTable = new Tabulator("#dataList2", {
+             height: "720px",
+             layout: "fitColumns",
+             selectableRangeMode: "click",
+             columnHeaderVertAlign: "middle",
+             rowVertAlign: "middle",
+     	    headerHozAlign: "center",
+     	    columnDefaults: {
+     	        hozAlign: "center",
+     	        headerTooltip: false
+     	    },
+             ajaxConfig: "POST",
+             ajaxLoader: false,
+             ajaxURL: "/geomet/user/getCleanCar/List",
+
+             ajaxParams: {
+                 s_date: s_date_val,
+                 e_date: e_date_val
+             },
+             placeholder: "조회된 데이터가 없습니다.",
+
+             ajaxResponse: function(url, params, response) {
+             	console.log("청소차 서버 응답:", response);
+                 return response;
+             },
                 columns: [
-                    {title: "설비", field: "equipment", sorter: "string", width: 150, hozAlign: "center", headerSort: false},
-                    {title: "설비 상태", field: "status", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "시간당 생산 통수", field: "production_per_hour", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "보유 시간", field: "holding_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "장입 통수", field: "charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "평균 장입 통수", field: "avg_charge_count", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "통당 간격", field: "interval_per_ton", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "생산 LOSS 시간(비가동)", field: "loss_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "가동 시간", field: "operation_time", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "id", field: "idx", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                    {title: "점검일자", field: "car_date", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+
+                    {
+                        title: "1.사이드 브러쉬</br>청결 상태",
+                        columns: [
+                            {title: "주간", field: "a_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "a_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "2.배터리 증류수</br>보충 상태",
+                        columns: [
+                            {title: "주간", field: "b_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "b_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "3.먼지통</br>청결 상태",
+                        columns: [
+                            {title: "주간", field: "c_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "c_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "4.청소차</br>충전 상태",
+                        columns: [
+                            {title: "주간", field: "d_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "d_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "5.필터</br>청결 상태",
+                        columns: [
+                            {title: "주간", field: "e_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "e_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "6.시동키</br>제거 상태",
+                        columns: [
+                            {title: "주간", field: "f_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "f_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "7.타이어</br>공기압 상태",
+                        columns: [
+                            {title: "주간", field: "g_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "g_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "8.소모품</br>소모 상태",
+                        columns: [
+                            {title: "주간", field: "h_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "h_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "9.먼지</br>흡입 상태",
+                        columns: [
+                            {title: "주간", field: "i_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "i_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    },
+                    {
+                        title: "10.충전기</br>가동 상태",
+                        columns: [
+                            {title: "주간", field: "j_1", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
+                            {title: "야간", field: "j_2", sorter: "string", width: 70, hozAlign: "center", headerSort: false}
+                        ]
+                    }
                 ],
                 rowFormatter: function(row) {
                     var data = row.getData();
@@ -381,76 +523,94 @@
 
 
         function getDataList() {
+        	 const s_date_val = $('#s_date').val();
+        	    const e_date_val = $('#e_date').val();
+
+        	    console.log("getDataList 보내는 값 → s_date:", s_date_val, "e_date:", e_date_val);
             dataTable = new Tabulator("#dataList", {
-                height: "560px",
+                height: "520px",
                 layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
                 selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
+        	    headerHozAlign: "center",
+        	    columnDefaults: {
+        	        hozAlign: "center",
+        	        headerTooltip: false
+        	    },
                 ajaxConfig: "POST",
                 ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
+                ajaxURL: "/geomet/user/getForkCar/List",
+
+                ajaxParams: {
+                    s_date: s_date_val,
+                    e_date: e_date_val
+                },
                 placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
+
                 ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+                	console.log("포크 서버 응답:", response);
                     return response;
                 },
                 columns: [
-                    {title: "항목", field: "1", sorter: "string", width: 125, hozAlign: "center", headerSort: false},
-                    {title: "장비작업", field: "2", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
-                    {title: "주/야간", field: "3", sorter: "string", width: 70, hozAlign: "center", headerSort: false},
-                    {title: "1", field: "4", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "2", field: "5", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "3", field: "6", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "4", field: "7", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "5", field: "8", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "6", field: "9", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "7", field: "10", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "8", field: "11", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "9", field: "12", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "10", field: "13", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "11", field: "14", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "12", field: "15", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "13", field: "16", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "14", field: "17", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "15", field: "18", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "16", field: "19", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "17", field: "20", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "18", field: "21", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "19", field: "22", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "20", field: "23", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "21", field: "24", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "22", field: "25", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "23", field: "26", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "24", field: "27", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "25", field: "28", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "26", field: "29", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "27", field: "30", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "28", field: "31", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "29", field: "32", sorter: "string", width: 50, hozAlign: "center", headerSort: false},
-                    {title: "30", field: "33", sorter: "string", width: 50, hozAlign: "center", headerSort: false}
+                    { title: "id", field: "idx", sorter: "string", width: 85, hozAlign: "center", headerSort: false },
+                    { title: "정검일자", field: "car_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false },
+
+                    {
+                        title: "안전장치 점검항목",
+                        columns: [
+                            {
+                                title: "작업 전",
+                                columns: [
+                                    { title: "1", field: "a1", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "2", field: "a2", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "3", field: "a3", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "4", field: "a4", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "5", field: "a5", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "6", field: "a6", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "7", field: "a7", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "8", field: "a8", sorter: "string", width: 80, hozAlign: "center", headerSort: false }
+                                ]
+                            },
+                            {
+                                title: "작업 후",
+                                columns: [
+                                    { title: "1", field: "b1", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "2", field: "b2", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "3", field: "b3", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "4", field: "b4", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "5", field: "b5", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "6", field: "b6", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "7", field: "b7", sorter: "string", width: 80, hozAlign: "center", headerSort: false },
+                                    { title: "8", field: "b8", sorter: "string", width: 80, hozAlign: "center", headerSort: false }
+                                ]
+                            }
+                        ]
+                    }
                 ],
+
 
                 rowFormatter: function(row) {
                     var data = row.getData();
                     row.getElement().style.fontWeight = "700";
                     row.getElement().style.backgroundColor = "#FFFFFF";
                 },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
+             // 행 더블클릭 이벤트 처리
+                rowDblClick: function (e, row) {
+                  const data = row.getData();
+
+                  // 날짜 셋팅
+                  $('input[name="car_date"]').val(data.car_date);
+                  $('input[name="idx"]').val(data.idx);
+
+                  // 작업 전 점검 항목
+                  for (let i = 1; i <= 8; i++) {
+                    $(`select[name="a${i}"]`).val(data[`a${i}`]);
+                    $(`select[name="b${i}"]`).val(data[`b${i}`]);
+                  }
+
+                  let modal = document.getElementById("modalContainer");
+                  modal.classList.add("show");
                 },
             });
         }
@@ -482,15 +642,16 @@
                 });
 
                 $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
+                    url: "/geomet/user/getForkCar/insert",
                     type: "POST",
                     data: corrForm,
                     dataType: "json",
                     processData: false,  
                     contentType: false,  
                     success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
+                        alert("지게차 성공적으로 저장되었습니다!");
                         $("#modalContainer").hide(); 
+                        getDataList();
                     }
                 });
             });

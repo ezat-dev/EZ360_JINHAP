@@ -499,7 +499,7 @@ $("#saveCorrStatus").click(function (event) {
             { title: "계획", field: "t_day", width: 200, hozAlign: "center" },
             { title: "실적", field: "t_min", width: 200, hozAlign: "center" },
             {
-                title: "합부", field: "t_result", width: 200, hozAlign: "center",
+                title: "합부", field: "t_result", width: 220, hozAlign: "center",
                 formatter: function (cell) {
                     var value = cell.getValue();
                     if (value === "불합격") {
@@ -512,7 +512,7 @@ $("#saveCorrStatus").click(function (event) {
                 title: "첨부 파일",
                 field: "t_url",
                 hozAlign: "center",
-                width: 250,
+                width: 310,
                 formatter: function(cell, formatterParams, onRendered) {
                     const fileName = cell.getValue();
                     if (!fileName) return "";

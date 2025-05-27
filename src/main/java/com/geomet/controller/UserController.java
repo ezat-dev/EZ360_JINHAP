@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.geomet.domain.Condition;
 import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
+import com.geomet.domain.Quality;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
 import com.geomet.domain.Work;
@@ -635,6 +636,49 @@ public class UserController {
         return result;
     }
 
+    
+    @RequestMapping(value = "/user/getCleanCar/List", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Users> getCleanCar(Users users) {
 
+        return userService.getCleanCar(users);
+    }
+    @RequestMapping(value = "/user/getForkCar/List", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Users> getForkCar(Users users) {
+        return userService.getForkCar(users);
+    }
+    
+    @RequestMapping(value = "/user/getForkCar/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertForkCar(@ModelAttribute Users users) {
+        
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+        
+        if(users.getCar_date() == null) {
+        	rtnMap.put("data", "날짜 입력하시오!");
+        	return rtnMap;
+        }
+
+        userService.insertForkCar(users); 
+        
+        return rtnMap;
+    }
+    @RequestMapping(value = "/user/getCleanCar/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertCleanCar(@ModelAttribute Users users) {
+        
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+        
+        if(users.getCar_date() == null) {
+        	rtnMap.put("data", "날짜 입력하시오!");
+        	return rtnMap;
+        }
+
+        userService.insertCleanCar(users); 
+        
+        return rtnMap;
+    }
+    
 }
 

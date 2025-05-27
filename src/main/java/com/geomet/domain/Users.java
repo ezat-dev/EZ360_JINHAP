@@ -2,6 +2,60 @@ package com.geomet.domain;
 
 public class Users {
 	
+	//카
+	
+	
+
+	public String e_date;
+	public String idx;
+	public String car_date;
+	public String a_1;
+	public String a_2;
+	public String b_1;
+	public String b_2;
+	public String c_1;
+	public String c_2;
+	public String d_1;
+	public String d_2;
+	public String e_1;
+	public String e_2;
+	public String f_1;
+	public String f_2;
+	public String g_1;
+	public String g_2;
+	public String h_1;
+	public String h_2;
+	public String i_1;
+	public String i_2;
+	public String j_1;
+	public String j_2;
+
+	
+
+	public String a1;
+	public String a2;
+	public String a3;
+	public String a4;
+	public String a5;
+	public String a6;
+	public String a7;
+	public String a8;
+	public String b1;
+	public String b2;
+	public String b3;
+	public String b4;
+	public String b5;
+	public String b6;
+	public String b7;
+	public String b8;
+
+	
+	
+	
+	
+	
+	
+	
 	private String column;
 	private String value;
 	private String date;
@@ -91,6 +145,240 @@ public class Users {
     
     
     
+	public String getE_date() {
+		return e_date;
+	}
+	public void setE_date(String e_date) {
+		this.e_date = e_date;
+	}
+	public String getIdx() {
+		return idx;
+	}
+	public void setIdx(String idx) {
+		this.idx = idx;
+	}
+	public String getCar_date() {
+		return car_date;
+	}
+	public void setCar_date(String car_date) {
+		this.car_date = car_date;
+	}
+	public String getA_1() {
+		return a_1;
+	}
+	public void setA_1(String a_1) {
+		this.a_1 = a_1;
+	}
+	public String getA_2() {
+		return a_2;
+	}
+	public void setA_2(String a_2) {
+		this.a_2 = a_2;
+	}
+	public String getB_1() {
+		return b_1;
+	}
+	public void setB_1(String b_1) {
+		this.b_1 = b_1;
+	}
+	public String getB_2() {
+		return b_2;
+	}
+	public void setB_2(String b_2) {
+		this.b_2 = b_2;
+	}
+	public String getC_1() {
+		return c_1;
+	}
+	public void setC_1(String c_1) {
+		this.c_1 = c_1;
+	}
+	public String getC_2() {
+		return c_2;
+	}
+	public void setC_2(String c_2) {
+		this.c_2 = c_2;
+	}
+	public String getD_1() {
+		return d_1;
+	}
+	public void setD_1(String d_1) {
+		this.d_1 = d_1;
+	}
+	public String getD_2() {
+		return d_2;
+	}
+	public void setD_2(String d_2) {
+		this.d_2 = d_2;
+	}
+	public String getE_1() {
+		return e_1;
+	}
+	public void setE_1(String e_1) {
+		this.e_1 = e_1;
+	}
+	public String getE_2() {
+		return e_2;
+	}
+	public void setE_2(String e_2) {
+		this.e_2 = e_2;
+	}
+	public String getF_1() {
+		return f_1;
+	}
+	public void setF_1(String f_1) {
+		this.f_1 = f_1;
+	}
+	public String getF_2() {
+		return f_2;
+	}
+	public void setF_2(String f_2) {
+		this.f_2 = f_2;
+	}
+	public String getG_1() {
+		return g_1;
+	}
+	public void setG_1(String g_1) {
+		this.g_1 = g_1;
+	}
+	public String getG_2() {
+		return g_2;
+	}
+	public void setG_2(String g_2) {
+		this.g_2 = g_2;
+	}
+	public String getH_1() {
+		return h_1;
+	}
+	public void setH_1(String h_1) {
+		this.h_1 = h_1;
+	}
+	public String getH_2() {
+		return h_2;
+	}
+	public void setH_2(String h_2) {
+		this.h_2 = h_2;
+	}
+	public String getI_1() {
+		return i_1;
+	}
+	public void setI_1(String i_1) {
+		this.i_1 = i_1;
+	}
+	public String getI_2() {
+		return i_2;
+	}
+	public void setI_2(String i_2) {
+		this.i_2 = i_2;
+	}
+	public String getJ_1() {
+		return j_1;
+	}
+	public void setJ_1(String j_1) {
+		this.j_1 = j_1;
+	}
+	public String getJ_2() {
+		return j_2;
+	}
+	public void setJ_2(String j_2) {
+		this.j_2 = j_2;
+	}
+	public String getA1() {
+		return a1;
+	}
+	public void setA1(String a1) {
+		this.a1 = a1;
+	}
+	public String getA2() {
+		return a2;
+	}
+	public void setA2(String a2) {
+		this.a2 = a2;
+	}
+	public String getA3() {
+		return a3;
+	}
+	public void setA3(String a3) {
+		this.a3 = a3;
+	}
+	public String getA4() {
+		return a4;
+	}
+	public void setA4(String a4) {
+		this.a4 = a4;
+	}
+	public String getA5() {
+		return a5;
+	}
+	public void setA5(String a5) {
+		this.a5 = a5;
+	}
+	public String getA6() {
+		return a6;
+	}
+	public void setA6(String a6) {
+		this.a6 = a6;
+	}
+	public String getA7() {
+		return a7;
+	}
+	public void setA7(String a7) {
+		this.a7 = a7;
+	}
+	public String getA8() {
+		return a8;
+	}
+	public void setA8(String a8) {
+		this.a8 = a8;
+	}
+	public String getB1() {
+		return b1;
+	}
+	public void setB1(String b1) {
+		this.b1 = b1;
+	}
+	public String getB2() {
+		return b2;
+	}
+	public void setB2(String b2) {
+		this.b2 = b2;
+	}
+	public String getB3() {
+		return b3;
+	}
+	public void setB3(String b3) {
+		this.b3 = b3;
+	}
+	public String getB4() {
+		return b4;
+	}
+	public void setB4(String b4) {
+		this.b4 = b4;
+	}
+	public String getB5() {
+		return b5;
+	}
+	public void setB5(String b5) {
+		this.b5 = b5;
+	}
+	public String getB6() {
+		return b6;
+	}
+	public void setB6(String b6) {
+		this.b6 = b6;
+	}
+	public String getB7() {
+		return b7;
+	}
+	public void setB7(String b7) {
+		this.b7 = b7;
+	}
+	public String getB8() {
+		return b8;
+	}
+	public void setB8(String b8) {
+		this.b8 = b8;
+	}
 	public String getB_f() {
 		return b_f;
 	}
