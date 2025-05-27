@@ -472,37 +472,32 @@
 	
 	
 
-	<insert id="insertCleanCar" parameterType="Users">
-	  INSERT INTO tb_clean_car (
-	    car_date, a_1, a_2, b_1, b_2, c_1, c_2, d_1, d_2,
-	    e_1, e_2, f_1, f_2, g_1, g_2, h_1, h_2, i_1, i_2, j_1, j_2
-	  ) VALUES (
-	    #{car_date}, #{a_1}, #{a_2}, #{b_1}, #{b_2}, #{c_1}, #{c_2}, #{d_1}, #{d_2},
-	    #{e_1}, #{e_2}, #{f_1}, #{f_2}, #{g_1}, #{g_2}, #{h_1}, #{h_2}, #{i_1}, #{i_2}, #{j_1}, #{j_2}
-	  )
-	  ON DUPLICATE KEY UPDATE
-	    a_1 = VALUES(a_1),
-	    a_2 = VALUES(a_2),
-	    b_1 = VALUES(b_1),
-	    b_2 = VALUES(b_2),
-	    c_1 = VALUES(c_1),
-	    c_2 = VALUES(c_2),
-	    d_1 = VALUES(d_1),
-	    d_2 = VALUES(d_2),
-	    e_1 = VALUES(e_1),
-	    e_2 = VALUES(e_2),
-	    f_1 = VALUES(f_1),
-	    f_2 = VALUES(f_2),
-	    g_1 = VALUES(g_1),
-	    g_2 = VALUES(g_2),
-	    h_1 = VALUES(h_1),
-	    h_2 = VALUES(h_2),
-	    i_1 = VALUES(i_1),
-	    i_2 = VALUES(i_2),
-	    j_1 = VALUES(j_1),
-	    j_2 = VALUES(j_2)
-	</insert>
-	
+	<update id="insertCleanCar" parameterType="Users">
+	UPDATE tb_clean_car
+  SET
+    car_date = #{car_date},
+    a_1 = #{a_1},
+    a_2 = #{a_2},
+    b_1 = #{b_1},
+    b_2 = #{b_2},
+    c_1 = #{c_1},
+    c_2 = #{c_2},
+    d_1 = #{d_1},
+    d_2 = #{d_2},
+    e_1 = #{e_1},
+    e_2 = #{e_2},
+    f_1 = #{f_1},
+    f_2 = #{f_2},
+    g_1 = #{g_1},
+    g_2 = #{g_2},
+    h_1 = #{h_1},
+    h_2 = #{h_2},
+    i_1 = #{i_1},
+    i_2 = #{i_2},
+    j_1 = #{j_1},
+    j_2 = #{j_2}
+  WHERE idx = #{idx}
+</update>
 	
 	<update  id="insertForkCar" parameterType="Users">
     UPDATE tb_fork_car

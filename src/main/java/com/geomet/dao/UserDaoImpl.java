@@ -173,6 +173,6 @@ public class UserDaoImpl implements UserDao{
 			  }
 			@Override
 			  public void insertCleanCar(Users users) {
-			         sqlSession.insert("users.insertCleanCar", users);
+			         sqlSession.update("users.insertCleanCar", users);
 			  }
 }

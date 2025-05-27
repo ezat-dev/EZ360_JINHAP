@@ -73,6 +73,7 @@
         .modal.show {
             display: block;
             opacity: 1;
+            
         }
         .modal.show .modal-content {
             transform: scale(1);
@@ -270,9 +271,9 @@
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-<!--                 <button class="insert-button">
+           <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button> -->
+                </button>
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
@@ -366,14 +367,203 @@
   </div>
 </div>
 
+
+
+
+<div id="modalContainerClean" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <h2>청소차 점검일지</h2>
+    <form id="cleanForm">
+      <label>날짜</label>
+      <input type="text" class="daySet" autocomplete="off" name="car_date" readonly>
+      <input type="text" name="idx" readonly>
+      <table>
+        <thead>
+          <tr>
+            <th>번호</th>
+            <th>점검 항목</th>
+            <th>주간</th>
+            <th>야간</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td>사이드 브러쉬 청결 상태</td>
+            <td>
+              <select name="a_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="a_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td>배터리 증류수 보충 상태</td>
+            <td>
+              <select name="b_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="b_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>먼지통 청결 상태</td>
+            <td>
+              <select name="c_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="c_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td>청소차 충전 상태</td>
+            <td>
+              <select name="d_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="d_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td>필터 청결 상태</td>
+            <td>
+              <select name="e_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="e_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td>시동키 제거 상태</td>
+            <td>
+              <select name="f_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="f_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>7</td>
+            <td>타이어 공기압 상태</td>
+            <td>
+              <select name="g_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="g_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>8</td>
+            <td>소모품 소모 상태</td>
+            <td>
+              <select name="h_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="h_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>9</td>
+            <td>먼지 흡입 상태</td>
+            <td>
+              <select name="i_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="i_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td>10</td>
+            <td>충전기 가동 상태</td>
+            <td>
+              <select name="j_1">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+            <td>
+              <select name="j_2">
+                <option value="O" selected>O</option>
+                <option value="X">X</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <button type="submit" id="saveCleanStatus">저장</button>
+      <button type="button" id="closeCleanModal">닫기</button>
+    </form>
+  </div>
+</div>
+
+
     <script>
 
     let now_page_code = "e03";
 
     
         $(function() {
-            getDataList();
-           /*  getDataList2(); */
+ 
 
             
     const now = new Date();
@@ -391,6 +581,31 @@
     $('#s_date').val(formatDate(firstDay));
     $('#e_date').val(formatDate(lastDay));
 
+    getDataList();
+    /*  getDataList2(); */
+
+
+
+    $(".dayselect").on("change", function(){
+        const v = $(this).val();
+        console.log("dayselect 변경 →", v);
+
+        if (v === "1") {
+          $("#dataList").show();
+          $(".car").show();
+          $("#dataList2").hide();
+          getDataList();
+        } else {
+          $("#dataList").hide();
+          $(".car").hide();
+          $("#dataList2").show();
+          getDataList2();
+        }
+      });
+
+      // 3) 초기 실행
+      $(".dayselect").trigger("change");
+  
         });
 
         function getDataList2() {
@@ -503,30 +718,121 @@
                     row.getElement().style.fontWeight = "700";
                     row.getElement().style.backgroundColor = "#FFFFFF";
                 },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
+                rowDblClick: function (e, row) {
+              	  const data = row.getData();
+
+              	  // 날짜 세팅
+              	  $('input[name="car_date"]').val(data.car_date);
+              	  $('input[name="idx"]').val(data.idx);
+
+              	
+              	  $('select[name="a_1"]').val(data['a_1']);
+              	  $('select[name="b_1"]').val(data['b_1']);
+              	  $('select[name="c_1"]').val(data['c_1']);
+              	  $('select[name="d_1"]').val(data['d_1']);
+              	  $('select[name="e_1"]').val(data['e_1']);
+              	  $('select[name="f_1"]').val(data['f_1']);
+              	  $('select[name="g_1"]').val(data['g_1']);
+              	  $('select[name="h_1"]').val(data['h_1']);
+              	  $('select[name="i_1"]').val(data['i_1']);
+              	  $('select[name="j_1"]').val(data['j_1']);
+
+              	  // 작업 후 점검 항목 (야간 a_2 ~ j_2)
+              	  $('select[name="a_2"]').val(data['a_2']);
+              	  $('select[name="b_2"]').val(data['b_2']);
+              	  $('select[name="c_2"]').val(data['c_2']);
+              	  $('select[name="d_2"]').val(data['d_2']);
+              	  $('select[name="e_2"]').val(data['e_2']);
+              	  $('select[name="f_2"]').val(data['f_2']);
+              	  $('select[name="g_2"]').val(data['g_2']);
+              	  $('select[name="h_2"]').val(data['h_2']);
+              	  $('select[name="i_2"]').val(data['i_2']);
+              	  $('select[name="j_2"]').val(data['j_2']);
+
+              
+              	  const modal = document.getElementById("modalContainerClean");
+              	  modal.style.zIndex = 9999;     
+              	  modal.classList.add("show");
+              	},
+                });
+              }
+
+              // 모달 닫기
+              $('#modalContainerClean .close, #closeCleanModal').on('click', function(){
+                $('#modalContainerClean').removeClass('show');
+              });
+
+
+
+        function openEditForm() {
+            $('#editFormModal').show(); 
         }
 
+        function closeEditForm() {
+            $('#editFormModal').hide();
+        }
+
+        function fillFormData(data) {
+
+            for (const key in data) {
+                if (data.hasOwnProperty(key)) {
+               
+                    const $el = $(`[name="${key}"]`);
+                    if ($el.length) {
+                        $el.val(data[key]);
+                    }
+                }
+            }
+        }
+
+        $(document).ready(function () {
+            //청소차 저장
+            $("#saveCleanStatus").click(function (event) {
+                event.preventDefault();
+                
+                var cleanCarForm = new FormData($("#cleanForm")[0]);  // 청소차 폼 데이터
+
+                
+                cleanCarForm.forEach(function(value, key){
+                    console.log(key + ": " + value);
+                });
+
+                $.ajax({
+                    url: "/geomet/user/getCleanCar/insert",  // 청소차 저장 API 주소
+                    type: "POST",
+                    data: cleanCarForm,
+                    dataType: "json",
+                    processData: false,  
+                    contentType: false,  
+                    success: function (response) {
+                        alert("청소차 성공적으로 저장되었습니다!");
+                        $("#modalContainerClean").hide(); 
+                        getDataList2();  // 청소차 데이터 다시 불러오기 함수
+                    },
+                    error: function(xhr, status, error) {
+                        alert("저장 중 오류가 발생했습니다: " + error);
+                    }
+                });
+            });
+        });
 
 
 
 
+
+
+
+
+
+
+
+        
 
         function getDataList() {
         	 const s_date_val = $('#s_date').val();
         	    const e_date_val = $('#e_date').val();
 
-        	    console.log("getDataList 보내는 값 → s_date:", s_date_val, "e_date:", e_date_val);
+        	    console.log("getDataListㅋㅌㅊㅋㅌㅊ 보내는 값 → s_date:", s_date_val, "e_date:", e_date_val);
             dataTable = new Tabulator("#dataList", {
                 height: "520px",
                 layout: "fitColumns",
@@ -597,21 +903,35 @@
                 },
              // 행 더블클릭 이벤트 처리
                 rowDblClick: function (e, row) {
-                  const data = row.getData();
+                	  const data = row.getData();
 
-                  // 날짜 셋팅
-                  $('input[name="car_date"]').val(data.car_date);
-                  $('input[name="idx"]').val(data.idx);
+                	  // 날짜 세팅
+                	  $('input[name="car_date"]').val(data.car_date);
+                	  $('input[name="idx"]').val(data.idx);
 
-                  // 작업 전 점검 항목
-                  for (let i = 1; i <= 8; i++) {
-                    $(`select[name="a${i}"]`).val(data[`a${i}`]);
-                    $(`select[name="b${i}"]`).val(data[`b${i}`]);
-                  }
+                	
+                	  $('select[name="a1"]').val(data.a1);
+                	  $('select[name="a2"]').val(data.a2);
+                	  $('select[name="a3"]').val(data.a3);
+                	  $('select[name="a4"]').val(data.a4);
+                	  $('select[name="a5"]').val(data.a5);
+                	  $('select[name="a6"]').val(data.a6);
+                	  $('select[name="a7"]').val(data.a7);
+                	  $('select[name="a8"]').val(data.a8);
 
-                  let modal = document.getElementById("modalContainer");
-                  modal.classList.add("show");
-                },
+                	  $('select[name="b1"]').val(data.b1);
+                	  $('select[name="b2"]').val(data.b2);
+                	  $('select[name="b3"]').val(data.b3);
+                	  $('select[name="b4"]').val(data.b4);
+                	  $('select[name="b5"]').val(data.b5);
+                	  $('select[name="b6"]').val(data.b6);
+                	  $('select[name="b7"]').val(data.b7);
+                	  $('select[name="b8"]').val(data.b8);
+
+                	
+                	  document.getElementById("modalContainer").classList.add("show");
+                	},
+
             });
         }
         
@@ -631,6 +951,7 @@
 
 
         $(document).ready(function () {
+            //지게차 저장
             $("#saveCorrStatus").click(function (event) {
                 event.preventDefault();
                 
@@ -662,26 +983,7 @@
             });
         });
 
-        $(document).ready(function () {
-            getDataList();
-
-            $(".dayselect").change(function () {
-                var selectedValue = $(this).val();
-
-                if (selectedValue == "1") {
-                    $(".car").show();
-                    $("#dataList2").empty();
-                    getDataList();
-                } else if (selectedValue == "2") {
-                    $(".car").hide();
-                    $("#dataList").empty();
-                    getDataList2();
-                }
-            });
-
-            $(".dayselect").trigger("change");
-        });
-                	
+   	
 
 
         
