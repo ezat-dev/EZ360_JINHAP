@@ -533,4 +533,50 @@
   ORDER BY car_date
 </select>
 	
+	
+	
+	
+	
+	
+	
+	
+	
+<!-- 표준문서 목록 조회 -->
+	<select id="standardDocList" parameterType="Users" resultType="Users">
+	  SELECT *
+	  FROM tb_standard_doc
+	  <where>
+	    <if test="mch_name != null and mch_name.trim() != ''">
+	      AND mch_name = #{mch_name}
+	    </if>
+
+	    <if test="startDate != null and endDate != null">
+	      AND cr_date BETWEEN #{startDate} AND #{endDate}
+	    </if>
+	  </where>
+	</select>
+
+
+    <!-- 표준문서 저장 (있으면 업데이트, 없으면 인서트) -->
+	<insert id="standardDocSaves" parameterType="Users">
+	    INSERT INTO tb_standard_doc (
+	        idx, cr_date, mch_name, box1, box2, box3, box4, memo
+	    ) VALUES (
+	        #{idx}, #{cr_date}, #{mch_name}, #{box1}, #{box2}, #{box3}, #{box4}, #{memo}
+	    )
+	    ON DUPLICATE KEY UPDATE
+	        cr_date = VALUES(cr_date),
+	        mch_name = VALUES(mch_name),
+	        box1 = VALUES(box1),
+	        box2 = VALUES(box2),
+	        box3 = VALUES(box3),
+	        box4 = VALUES(box4),
+	        memo = VALUES(memo)
+	</insert>
+
+    <!-- 표준문서 삭제 -->
+    <delete id="standardDocDel" parameterType="Users">
+        DELETE FROM tb_standard_doc
+        WHERE idx = #{idx}
+    </delete>
 </mapper>

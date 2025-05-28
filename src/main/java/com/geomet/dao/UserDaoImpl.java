@@ -175,4 +175,21 @@ public class UserDaoImpl implements UserDao{
 			  public void insertCleanCar(Users users) {
 			         sqlSession.update("users.insertCleanCar", users);
 			  }
+			
+			
+			
+			   @Override
+			    public List<Users> standardDocList(Users users) {
+			      
+			        return sqlSession.selectList("users.standardDocList", users);
+			    }
+			    @Override
+			    public void standardDocSaves(Users users) {
+			    	sqlSession.insert("users.standardDocSaves",users);
+			    }
+			    
+			    @Override
+			    public void standardDocDel(Users users) {
+			    	sqlSession.delete("users.standardDocDel",users);
+			    }	
 }

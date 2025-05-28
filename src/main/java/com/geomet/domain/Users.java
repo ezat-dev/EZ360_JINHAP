@@ -2,10 +2,25 @@ package com.geomet.domain;
 
 public class Users {
 	
-	//카
+	
+	
+	
+	
+	
+	//tb_standard_doc 
+	public String mch_name;
+	public String cr_date;
+	public String box1;
+	public String  box2;
+	public String box3;
+	public String  box4;
+	
 	
 	
 
+	
+	
+	//카
 	public String e_date;
 	public String idx;
 	public String car_date;
@@ -145,6 +160,42 @@ public class Users {
     
     
     
+	public String getMch_name() {
+		return mch_name;
+	}
+	public void setMch_name(String mch_name) {
+		this.mch_name = mch_name;
+	}
+	public String getCr_date() {
+		return cr_date;
+	}
+	public void setCr_date(String cr_date) {
+		this.cr_date = cr_date;
+	}
+	public String getBox1() {
+		return box1;
+	}
+	public void setBox1(String box1) {
+		this.box1 = box1;
+	}
+	public String getBox2() {
+		return box2;
+	}
+	public void setBox2(String box2) {
+		this.box2 = box2;
+	}
+	public String getBox3() {
+		return box3;
+	}
+	public void setBox3(String box3) {
+		this.box3 = box3;
+	}
+	public String getBox4() {
+		return box4;
+	}
+	public void setBox4(String box4) {
+		this.box4 = box4;
+	}
 	public String getE_date() {
 		return e_date;
 	}

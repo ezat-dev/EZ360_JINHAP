@@ -93,7 +93,7 @@
 		    background: white;
 		    width: 40%; /* 가로 길이를 50%로 설정 */
 		    max-width: 400px; /* 최대 너비를 설정하여 너무 커지지 않도록 */
-		    max-height: 700px; /* 화면 높이에 맞게 제한 */
+		    max-height: 800px; /* 화면 높이에 맞게 제한 */
 		    overflow-y: auto;
 		    margin: 2% auto; /* 수평 중앙 정렬 */
 		    padding: 20px;
@@ -493,11 +493,11 @@ $("#saveCorrStatus").click(function (event) {
             { title: "NO2", field: "id", visible: false },
 
             { title: "No", formatter: "rownum", hozAlign: "center", width: 70, headerSort: false },
-            { title: "연도", field: "t_year", width: 200, hozAlign: "center" },
-            { title: "월", field: "t_month", width: 200, hozAlign: "center" },
+            { title: "연도", field: "t_year", width: 210, hozAlign: "center" },
+            { title: "월", field: "t_month", width: 210, hozAlign: "center" },
           /*   { title: "구분", field: "t_gb", width: 200, hozAlign: "center" }, */
-            { title: "계획", field: "t_day", width: 200, hozAlign: "center" },
-            { title: "실적", field: "t_min", width: 200, hozAlign: "center" },
+            { title: "계획", field: "t_day", width: 210, hozAlign: "center" },
+            { title: "실적", field: "t_min", width: 210, hozAlign: "center" },
             {
                 title: "합부", field: "t_result", width: 220, hozAlign: "center",
                 formatter: function (cell) {
@@ -512,7 +512,7 @@ $("#saveCorrStatus").click(function (event) {
                 title: "첨부 파일",
                 field: "t_url",
                 hozAlign: "center",
-                width: 310,
+                width: 360,
                 formatter: function(cell, formatterParams, onRendered) {
                     const fileName = cell.getValue();
                     if (!fileName) return "";
@@ -616,7 +616,7 @@ $("#saveCorrStatus").click(function (event) {
           dataType: "json",
           success: function (result) {
               console.log(result);
-              alert("D:\\GEOMET양식\\부적합품 관리 저장 완료되었습니다.");
+              alert("D:\\GEOMET양식\\온도 균일성 저장 완료되었습니다.");
           },
           error: function (xhr, status, error) {
               alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");

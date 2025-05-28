@@ -57,4 +57,12 @@ public interface UserService {
 	void insertForkCar(Users users); 
 	void insertCleanCar(Users users); 
 	
+	  
+	
+
+	List<Users> standardDocList(Users users); 
+    
+    void standardDocSaves(Users users);
+    
+    void standardDocDel(Users users);
 }

@@ -1,13 +1,20 @@
 package com.geomet.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -22,6 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.geomet.domain.Condition;
 import com.geomet.domain.Facility;
@@ -680,5 +688,129 @@ public class UserController {
         return rtnMap;
     }
     
+    
+    //
+    @RequestMapping(value = "/user/standardDoc/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Users>standardDocList(Users users) {
+        /*
+         * System.out.println(">>> test_mch_name: " + users.getMch_name());
+         * System.out.println(">>> test_t_year: " + users.getT_year());
+         */
+        return userService.standardDocList(users);
+    }
+
+    @RequestMapping(value = "/user/standardDoc/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> standardDocSaves(
+        @RequestParam(value = "idx", required = false) String idx,
+        @RequestParam("cr_date") String cr_date,
+        @RequestParam("mch_name") String mch_name,
+        @RequestParam(value = "memo", required = false) String memo,
+        @RequestParam(value = "box1", required = false) MultipartFile box1,
+        @RequestParam(value = "box2", required = false) MultipartFile box2,
+        @RequestParam(value = "box3", required = false) MultipartFile box3,
+        @RequestParam(value = "box4", required = false) MultipartFile box4
+    ) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        String basePath = "D:/GEOMET양식/문서관리/";
+
+        try {
+            Users users = new Users();
+            users.setIdx(idx);
+            users.setCr_date(cr_date);
+            users.setMch_name(mch_name);
+            users.setMemo(memo);
+
+            if (box1 != null && !box1.isEmpty()) {
+                String origName = box1.getOriginalFilename();
+                box1.transferTo(new File(basePath + origName));
+                users.setBox1(origName);
+            }
+            if (box2 != null && !box2.isEmpty()) {
+                String origName = box2.getOriginalFilename();
+                box2.transferTo(new File(basePath + origName));
+                users.setBox2(origName);
+            }
+            if (box3 != null && !box3.isEmpty()) {
+                String origName = box3.getOriginalFilename();
+                box3.transferTo(new File(basePath + origName));
+                users.setBox3(origName);
+            }
+            if (box4 != null && !box4.isEmpty()) {
+                String origName = box4.getOriginalFilename();
+                box4.transferTo(new File(basePath + origName));
+                users.setBox4(origName);
+            }
+
+            userService.standardDocSaves(users);
+
+            rtnMap.put("result", "success");
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("result", "fail");
+            rtnMap.put("message", "DB 저장 실패: " + e.getMessage());
+        }
+        return rtnMap;
+    }
+    @RequestMapping(value = "/user/standardDoc/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> standardDocDel(@RequestBody Users users) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        if (users.getIdx() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        userService.standardDocDel(users);
+
+        rtnMap.put("data", "success"); 
+        return rtnMap;
+    }
+
+    @RequestMapping(value = "/download_standardDoc", method = RequestMethod.GET)
+    public void downloadExcel(@RequestParam("filename") String filename,
+                              HttpServletResponse response) throws IOException {
+
+        String baseDir = "D:/GEOMET양식/문서관리/";
+
+       
+        if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return;
+        }
+
+        File file = new File(baseDir + filename);
+      
+        if (!file.exists()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        String mimeType = Files.probeContentType(file.toPath());
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setContentType(mimeType);
+        response.setContentLengthLong(file.length());
+
+
+        String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+        }
+    }
+
 }
 

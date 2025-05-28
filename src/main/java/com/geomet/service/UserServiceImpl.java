@@ -154,4 +154,16 @@ public class UserServiceImpl implements UserService{
 
 		       userDao.insertCleanCar(users);
 		   }
+		    @Override
+			public List<Users> standardDocList(Users users) {
+			    return userDao.standardDocList(users); 	   
+			}
+			@Override
+		    public void standardDocSaves(Users users) {
+				userDao.standardDocSaves(users);
+		    }
+			@Override
+		    public void standardDocDel(Users users) {
+				userDao.standardDocDel(users);
+		    }
 }
