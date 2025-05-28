@@ -750,17 +750,12 @@
               	  $('select[name="j_2"]').val(data['j_2']);
 
               
-              	  const modal = document.getElementById("modalContainerClean");
-              	  modal.style.zIndex = 9999;     
-              	  modal.classList.add("show");
+              	openModal("#modalContainerClean");
               	},
                 });
               }
 
-              // 모달 닫기
-              $('#modalContainerClean .close, #closeCleanModal').on('click', function(){
-                $('#modalContainerClean').removeClass('show');
-              });
+         
 
 
 
@@ -806,7 +801,7 @@
                     contentType: false,  
                     success: function (response) {
                         alert("청소차 성공적으로 저장되었습니다!");
-                        $("#modalContainerClean").hide(); 
+                        closeModal("#modalContainerClean");
                         getDataList2();  // 청소차 데이터 다시 불러오기 함수
                     },
                     error: function(xhr, status, error) {
@@ -929,25 +924,45 @@
                 	  $('select[name="b8"]').val(data.b8);
 
                 	
-                	  document.getElementById("modalContainer").classList.add("show");
+                	  openModal("#modalContainer");
                 	},
 
             });
         }
-        
+        function openModal(selector) {
+        	  $(selector).addClass("show");
+        	}
+        	function closeModal(selector) {
+        	  $(selector).removeClass("show");
+        	}
+        	        
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
+        	// 1) 모달 열기/닫기 통일 함수
+        	function openModal(selector) {
+        	  $(selector)
+        	    .css("z-index", 9999)  // 맨 앞으로
+        	    .addClass("show");
+        	}
+        	function closeModal(selector) {
+        	  $(selector).removeClass("show");
+        	}
 
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
+        	// 2) “폼 열기” 버튼들
+        	$(".insert-button").on("click", function() {
+        	  openModal("#modalContainer");
+        	});
+        	$(".insert-clean-button").on("click", function() {
+        	  openModal("#modalContainerClean");
+        	});
+
+        	// 3) “닫기” 버튼들 (id, 클래스, .close 모두)
+        	$("#closeModal, .close-modal-btn, .close").on("click", function() {
+        	  closeModal("#modalContainer");
+        	});
+        	$("#closeCleanModal, .close-clean-btn, .close").on("click", function() {
+        	  closeModal("#modalContainerClean");
+        	});
+
 
 
         $(document).ready(function () {
@@ -971,16 +986,13 @@
                     contentType: false,  
                     success: function (response) {
                         alert("지게차 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
+                        closeModal("#modalContainer"); 
                         getDataList();
                     }
                 });
             });
 
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
+           
         });
 
    	
