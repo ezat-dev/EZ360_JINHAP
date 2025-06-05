@@ -63,11 +63,11 @@
     </div>
     <div class="section">
       <h3>생산관리</h3>
-      <div class="control"><label for="b01">생산실적</label><select id="b01" name="b01"><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="b02">설비효율</label><select id="b02" name="b02"><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="b03">모니터링 현황</label><select id="b03" name="b03"><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="b04">작업일보</label><select id="b04" name="b04"><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="b05">재고관리</label><select id="b05" name="b05"><option value="N">없음</option><option value="R">조회</option></select></div>
+      <div class="control"><label for="b01">생산실적</label><select id="b01" name="b01"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      <div class="control"><label for="b02">설비효율</label><select id="b02" name="b02"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      <div class="control"><label for="b03">모니터링 현황</label><select id="b03" name="b03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      <div class="control"><label for="b04">작업일보</label><select id="b04" name="b04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      <div class="control"><label for="b05">재고관리</label><select id="b05" name="b05"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
     </div>
     <div class="section">
       <h3>조건관리</h3>
@@ -161,10 +161,43 @@ $(function(){
     $('select').val('N');
   });
 
-  // 최고권한
-  $(document).on('click', '.allUpdate', function(){
-    $('select').val('R');
-  });
+
+  $(document).on('click', '.allUpdate', function () {
+	
+	    $('select').each(function () {
+	        if ($(this).find('option[value="D"]').length > 0) {
+	            $(this).val('D');
+	        } else if ($(this).find('option[value="R"]').length > 0) {
+	            $(this).val('R');
+	        }
+	    });
+
+
+	    var formData = new FormData($('#permissionForm')[0]);
+
+
+	    console.log('📤 FormData 전송 시작');
+	    for (let pair of formData.entries()) {
+	        console.log(`${pair[0]}: ${pair[1]}`);
+	    }
+
+	    $.ajax({
+	        url: '/geomet/user/userPermission/update',
+	        type: 'POST',
+	        data: formData,
+	        processData: false,
+	        contentType: false,
+	        success: function () {
+	            alert('권한이 수정되었습니다.');
+	        },
+	        error: function (xhr, status, error) {
+	            alert('수정 중 오류가 발생했습니다.');
+	            console.error('❌ AJAX 오류:', status, error);
+	            console.error('응답 내용:', xhr.responseText);
+	        }
+	    });
+	});
+
 
   // 행 더블클릭 시 권한 로드
   function getAllUserList(){

@@ -411,19 +411,19 @@
     	 
     	table1 = new Tabulator("#table1", {
     	    height: "115px",
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
     	    layout: "fitColumns",
     	    headerHozAlign: "center",
+    	    columnHeaderVertAlign: "middle",
+    	    rowVertAlign: "middle",
     	    columnDefaults: {
-    	        hozAlign: "center",
+    	        hozAlign: "left",
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "주간/야간", field: "gb", headerSort: false,hozAlign: "center" },
-    	        { title: "점도</br>PLUS : 45±10초", field: "visc",hozAlign: "center", headerSort: false },
-    	        { title: "예열존온도</br>(설정값±10°C)", field: "pre_temp", hozAlign: "center", headerSort: false },
-    	        { title: "가열존온도</br>(설정값±10°C)", field: "heat_temp", hozAlign: "center", headerSort: false }
+    	        { title: "주간/야간", field: "gb", headerSort: false,hozAlign: "left" },
+    	        { title: "점도</br>PLUS : 45±10초", field: "visc",hozAlign: "left", headerSort: false },
+    	        { title: "예열존온도</br>(설정값±10°C)", field: "pre_temp", hozAlign: "left", headerSort: false },
+    	        { title: "가열존온도</br>(설정값±10°C)", field: "heat_temp", hozAlign: "left", headerSort: false }
     	    ],
     	    rowClick: function (e, row) {
     	        selectedRowData = row.getData();
@@ -452,26 +452,26 @@
     	    height: "120px",
     	    layout: "fitColumns",
     	    headerHozAlign: "center",
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
+    	    columnHeaderVertAlign: "middle",
+    	    rowVertAlign: "middle",
     	    columnDefaults: {
-    	        hozAlign: "center",
+    	        hozAlign: "left",
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "일 작업통수", field: "tong_day", hozAlign: "center",headerSort: false  },
-    	        { title: "생산량", field: "weight_day", hozAlign: "center",headerSort: false },
-    	        { title: "평균생산중량", field: "avg_day", hozAlign: "center",headerSort: false },
-    	        { title: "누적 생산통수", field: "tong_sum", hozAlign: "center" ,headerSort: false},
-    	        { title: "누적 생산량", field: "weight_sum", hozAlign: "center",headerSort: false },
-    	        { title: "평균중량", field: "avg_sum", hozAlign: "center",headerSort: false },
-    	        { title: "가동시간", field: "work_time", hozAlign: "center",headerSort: false },
-    	        { title: "가동률", field: "work_percent", hozAlign: "center" ,headerSort: false},
+    	        { title: "일 작업통수", field: "tong_day", hozAlign: "left",headerSort: false  },
+    	        { title: "생산량", field: "weight_day", hozAlign: "left",headerSort: false },
+    	        { title: "평균생산중량", field: "avg_day", hozAlign: "left",headerSort: false },
+    	        { title: "누적 생산통수", field: "tong_sum", hozAlign: "left" ,headerSort: false},
+    	        { title: "누적 생산량", field: "weight_sum", hozAlign: "left",headerSort: false },
+    	        { title: "평균중량", field: "avg_sum", hozAlign: "left",headerSort: false },
+    	        { title: "가동시간", field: "work_time", hozAlign: "left",headerSort: false },
+    	        { title: "가동률", field: "work_percent", hozAlign: "left" ,headerSort: false},
     	        { title: "월누적", columns: [
-    	            { title: "가동시간", field: "sum_time", hozAlign: "center",headerSort: false },
-    	            { title: "가동율", field: "sum_percent", hozAlign: "center",headerSort: false },
-    	            { title: "UPH", field: "uph", hozAlign: "center",headerSort: false },
-    	            { title: "UPH(월누적)", field: "uph_sum", hozAlign: "center",headerSort: false }
+    	            { title: "가동시간", field: "sum_time", hozAlign: "left",headerSort: false },
+    	            { title: "가동율", field: "sum_percent", hozAlign: "left",headerSort: false },
+    	            { title: "UPH", field: "uph", hozAlign: "left",headerSort: false },
+    	            { title: "UPH(월누적)", field: "uph_sum", hozAlign: "left",headerSort: false }
     	        ]}
     	    ]
     	});
@@ -479,31 +479,31 @@
     	table3 = new Tabulator("#table3", {
     	    height: "400px",
     	    layout: "fitColumns",
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
     	    headerHozAlign: "center",
+    	    columnHeaderVertAlign: "middle",
+    	    rowVertAlign: "middle",
     	    columnDefaults: {
-    	        hozAlign: "center",
+    	        hozAlign: "left",
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "순서", field: "r_num", hozAlign: "center",headerSort: false },
-    	        { title: "투입시간", field: "start_time", hozAlign: "center",headerSort: false },
-    	        { title: "완료시간", field: "end_time", hozAlign: "center",headerSort: false },
-    	        { title: "투입통수", field: "tong_day", hozAlign: "center",headerSort: false },
-    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center",headerSort: false },
-    	        { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false, visible: false },
+    	        { title: "순서", field: "r_num", hozAlign: "left", headerSort: false, width: 50 },  
+    	        { title: "투입시간", field: "start_time", hozAlign: "left",headerSort: false },
+    	        { title: "완료시간", field: "end_time", hozAlign: "left",headerSort: false },
+    	        { title: "투입통수", field: "tong_day", hozAlign: "left",headerSort: false },
+    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "left",headerSort: false },
+    	        { title: "분할횟수", field: "a", hozAlign: "left", headerSort: false, visible: false },
 
-    	        { title: "품명", field: "item_nm", hozAlign: "center" ,headerSort: false},
-    	        { title: "품번", field: "item_cd", hozAlign: "center",headerSort: false },
-    	        { title: "사양", field: "next_facility", hozAlign: "center",headerSort: false },
-    	        { title: "검사항목", columns: [
-    	            { title: "외관", field: "b", hozAlign: "center",headerSort: false },
-    	            { title: "밀착성 테스트", field: "c", hozAlign: "center", headerSort: false, visible: false },
-    	            { title: "합부판정", field: "d", hozAlign: "center" ,headerSort: false}
-    	        ]},
-    	        { title: "구분</br>(신규/재작업)", field: "e", hozAlign: "center",headerSort: false },
-    	        { title: "비고", field: "f", hozAlign: "center",headerSort: false }
+    	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 }, 
+    	        { title: "품번", field: "item_cd", hozAlign: "left",headerSort: false },
+    	        { title: "사양", field: "next_facility", hozAlign: "left",headerSort: false },
+/*     	        { title: "검사항목", columns: [
+    	            { title: "외관", field: "b", hozAlign: "left",headerSort: false },
+    	            { title: "밀착성 테스트", field: "c", hozAlign: "left", headerSort: false, visible: false },
+    	            { title: "합부판정", field: "d", hozAlign: "left" ,headerSort: false}
+    	        ]}, */
+    	        { title: "구분</br>(신규/재작업)", field: "e", hozAlign: "left",headerSort: false },
+    	        { title: "비고", field: "f", hozAlign: "left",headerSort: false }
     	    ]
     	});
 

@@ -65,4 +65,9 @@ public interface UserService {
     void standardDocSaves(Users users);
     
     void standardDocDel(Users users);
+    
+    
+    List<Users> getCheckManageList(Users users); 
+    
+    void updateCheckManage(Users users);
 }

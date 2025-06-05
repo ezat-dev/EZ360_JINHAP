@@ -263,34 +263,63 @@ public class WorkController {
     @RequestMapping(value = "/work/workDailyReport/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getworkDailyReportList(@RequestBody Work work) {
-        System.out.println("==[ 원본 Work 객체 정보 ]==");
-        System.out.println("raw s_time: " + work.getS_time());
-        System.out.println("raw e_time: " + work.getE_time());
-
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
-
-         String sTimeWithOffset = work.getS_time() + "0800";
+        String sTimeWithOffset = work.getS_time() + "0800";
 
         LocalDate eDate = LocalDate.parse(work.getE_time(), fmt).plusDays(1);
         String eTimeWithOffset = eDate.format(fmt) + "0800";
 
-
         work.setS_time(sTimeWithOffset);
         work.setE_time(eTimeWithOffset);
 
-        System.out.println("==[ 변환된 Work 객체 정보 ]==");
-        System.out.println("s_time: " + work.getS_time());
-        System.out.println("e_time: " + work.getE_time());
-        System.out.println("m_code: "  + work.getM_code());
-
-      
         Map<String, Object> result = new HashMap<>();
         result.put("table1", workService.getReportInputLIst(work));
-        result.put("table2", workService.getWorkDailySum(work));
-        result.put("table3", workService.getWorkDailyList(work));
+        
+        List<Work> table2Data = workService.getWorkDailySum(work);
+        for (Work w : table2Data) {
+            if (w.getAvg_day() != null) {
+                w.setAvg_day(w.getAvg_day() + "kg");
+            }
+            if (w.getAvg_sum() != null) {
+                w.setAvg_sum(w.getAvg_sum() + "kg");
+            }
+            if (w.getWork_time() != null) {
+                w.setWork_time(w.getWork_time() + "hr");
+            }
+            if (w.getSum_time() != null) {
+                w.setSum_time(w.getSum_time() + "hr");
+            }
+            if (w.getSum_percent() != null) {
+                w.setSum_percent(w.getSum_percent() + "%");
+            }
+            if (w.getWork_percent() != null) {
+                w.setWork_percent(w.getWork_percent() + "%");
+            }
+        }
+        result.put("table2", table2Data);
+
+        List<Work> table3List = workService.getWorkDailyList(work);
+
+        for (Work w : table3List) {
+            if (w.getStart_time() != null && w.getStart_time().length() == 14) {
+                w.setStart_time(w.getStart_time().substring(8, 10) + ":" +
+                                w.getStart_time().substring(10, 12) + ":" +
+                                w.getStart_time().substring(12, 14));
+            }
+            if (w.getEnd_time() != null && w.getEnd_time().length() == 14) {
+                w.setEnd_time(w.getEnd_time().substring(8, 10) + ":" +
+                              w.getEnd_time().substring(10, 12) + ":" +
+                              w.getEnd_time().substring(12, 14));
+            }
+            if (w.getWeight_day() != null) {
+                w.setWeight_day(w.getWeight_day() + "kg");
+            }
+        }
+
+        result.put("table3", table3List);
         return result;
     }
-    
+
     
     
     

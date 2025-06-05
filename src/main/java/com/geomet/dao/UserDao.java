@@ -51,14 +51,16 @@ public interface UserDao {
 	
 	List<Users> getCleanCar(Users users);
 	List<Users> getForkCar(Users users);
-	
 	void insertForkCar(Users users); 
 	void insertCleanCar(Users users); 
 	
 
-	List<Users> standardDocList(Users users); 
-    
-    void standardDocSaves(Users users);
-    
+	List<Users> standardDocList(Users users);     
+    void standardDocSaves(Users users);   
     void standardDocDel(Users users);
+    
+ 
+    
+   List<Users> getCheckManageList(Users users);   
+    void updateCheckManage(Users users);
 }

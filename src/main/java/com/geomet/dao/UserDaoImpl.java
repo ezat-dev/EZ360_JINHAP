@@ -192,4 +192,17 @@ public class UserDaoImpl implements UserDao{
 			    public void standardDocDel(Users users) {
 			    	sqlSession.delete("users.standardDocDel",users);
 			    }	
+			    
+			    
+			    
+				
+				   @Override
+				    public List<Users> getCheckManageList(Users users) {
+				      
+				        return sqlSession.selectList("users.getCheckManageList", users);
+				    }
+				    @Override
+				    public void updateCheckManage(Users users) {
+				    	sqlSession.update("users.updateCheckManage",users);
+				    }
 }

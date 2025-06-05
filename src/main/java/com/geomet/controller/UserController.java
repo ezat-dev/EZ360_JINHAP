@@ -811,6 +811,35 @@ public class UserController {
             os.flush();
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    @RequestMapping(value = "/user/CheckManage/List", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Users> getCheckManageList(Users users) {
+        return userService.getCheckManageList(users);
+    }
+    
+    @RequestMapping(value = "/user/CheckManage/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> updateCheckManage(@ModelAttribute Users users) {
+        
+        Map<String, Object> rtnMap = new HashMap<String, Object>();
+        
+        if(users.getCk_date() == null) {
+        	rtnMap.put("ck_data", "날짜 입력하시오!");
+        	return rtnMap;
+        }
+
+        userService.updateCheckManage(users); 
+        
+        return rtnMap;
+    }
 
 }
 

@@ -579,4 +579,27 @@
         DELETE FROM tb_standard_doc
         WHERE idx = #{idx}
     </delete>
+    
+    
+    
+    <select id="getCheckManageList" parameterType="Users" resultType="Users">
+	  SELECT *
+	  FROM tb_check_manage
+	  WHERE ck_date LIKE CONCAT('%', #{ck_date}, '%')
+	  ORDER BY ck_date
+	</select>
+	
+	<update id="updateCheckManage" parameterType="Users">
+	  UPDATE tb_check_manage
+	  SET
+	    ck_date = #{ck_date},
+	    a_1 = #{a_1},
+	    a_2 = #{a_2},
+	    a_3 = #{a_3},
+	    a_4 = #{a_4},
+	    a_5 = #{a_5}
+	  WHERE idx = #{idx}
+	</update>
+
+    
 </mapper>

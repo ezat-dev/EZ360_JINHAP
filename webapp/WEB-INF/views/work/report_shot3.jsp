@@ -170,27 +170,26 @@
       });
 
       table3 = new Tabulator("#table3", {
-        height: "522px",
-        layout: "fitColumns",
-        columnHeaderVertAlign: "middle",
-        rowVertAlign: "middle",
-        headerHozAlign: "center",
-        columns: [
-          { title: "순서", field: "r_num" },
-          { title: "투입시간", field: "start_time" },
-          { title: "완료시간", field: "end_time" },
-          { title: "투입통수", field: "tong_day" },
-          { title: "작업중량(kg)", field: "weight_day" },
-      
-          { title: "품명", field: "item_nm" },
-          { title: "품번", field: "item_cd" },
-       
-          { title: "구분</br>(신규/재작업)", field: "e" },
-          { title: "비고", field: "f" }
-        ]
-      });
-    }
-
+          height: "522px",
+          layout: "fitColumns",
+          columnHeaderVertAlign: "middle",
+          rowVertAlign: "middle",
+          headerHozAlign: "center",
+          columns: [
+            { title: "순서", field: "r_num", hozAlign: "left", headerSort: false, width: 50 },  
+            { title: "투입시간", field: "start_time" },
+            { title: "완료시간", field: "end_time" },
+            { title: "투입통수", field: "tong_day" },
+            { title: "작업중량(kg)", field: "weight_day" },
+        
+            { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 }, 
+            { title: "품번", field: "item_cd" },
+         
+            { title: "구분</br>(신규/재작업)", field: "e" },
+            { title: "비고", field: "f" }
+          ]
+        });
+      }
     
 </script>
 

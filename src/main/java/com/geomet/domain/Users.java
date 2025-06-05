@@ -2,7 +2,10 @@ package com.geomet.domain;
 
 public class Users {
 	
-	
+	public String ck_date;
+	public String a_3;
+	public String a_4;
+	public String a_5;
 	
 	
 	
@@ -160,6 +163,30 @@ public class Users {
     
     
     
+	public String getCk_date() {
+		return ck_date;
+	}
+	public void setCk_date(String ck_date) {
+		this.ck_date = ck_date;
+	}
+	public String getA_3() {
+		return a_3;
+	}
+	public void setA_3(String a_3) {
+		this.a_3 = a_3;
+	}
+	public String getA_4() {
+		return a_4;
+	}
+	public void setA_4(String a_4) {
+		this.a_4 = a_4;
+	}
+	public String getA_5() {
+		return a_5;
+	}
+	public void setA_5(String a_5) {
+		this.a_5 = a_5;
+	}
 	public String getMch_name() {
 		return mch_name;
 	}
