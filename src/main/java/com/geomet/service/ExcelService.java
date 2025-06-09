@@ -19,10 +19,16 @@ import com.google.common.collect.Table.Cell;
 public class ExcelService {
 
     private static final String[] fields = {
-            "plating_no", "material_no", "pum_name", "surface_spec",
-            "max_weight", "min_weight", "avg_weight", "equip_1", "load_1",
-            "equip_2", "load_2", "split_cnt", "avg_load", "g800", "g600",
-            "common_equip", "k_black"
+    		"group_id",
+      	    "item_cd",
+      	    "item_nm",
+      	    "mach_main",
+      	    "mach_main_weight",
+      	    "coating_nm",
+      	    "mach_sub",
+      	    "mach_sub_weight",
+      	    "mlpl_weight",
+      	    "kblack_weight"
     };
 
     private static final int startRow = 6; // 데이터가 시작되는 행
@@ -34,15 +40,27 @@ public class ExcelService {
 
         for (int i = startRow; i <= sheet.getLastRowNum(); i++) {
             XSSFRow row = sheet.getRow(i);
-            if (row == null) continue;
-
-            Condition condition = new Condition();
             StringBuilder logOutput = new StringBuilder("Row " + (i - startRow + 1) + " | ");
 
+//            if (row.getCell(2).getStringCellValue() == null) continue;
+            System.out.println(row);
+            /*
+             1. 각 행을 콘솔에 로그를 남겼을 때 null인지 아니면 어떤값인지 확인
+ 				-> continue를 쓸건지 break를 쓸건지 
+             */
+
+            Condition condition = new Condition();
+           
             for (int j = 0; j < fields.length; j++) {
-                XSSFCell cell = row.getCell(j + 1); // 첫 번째 컬럼(인덱스)은 건너뜀
+                XSSFCell cell = row.getCell(j + 1);
                 String value = (cell != null) ? getCellValue(cell) : "";
-                
+
+               
+                if (value.isEmpty() && fields[j].equals("item_cd")) {
+                    workbook.close();
+                    throw new IllegalArgumentException("엑셀 파일에 도금품번이 누락된 행이 있습니다. 행 번호: " + (i - 5));
+                }
+
                 try {
                     Field field = Condition.class.getDeclaredField(fields[j]);
                     field.setAccessible(true);
@@ -54,8 +72,9 @@ public class ExcelService {
                 logOutput.append(fields[j]).append(": ").append(value).append(", ");
             }
 
+
             // 각 행별 데이터 출력
-            System.out.println(logOutput.toString());
+          //  System.out.println(logOutput.toString());
 
             conditionList.add(condition);
         }

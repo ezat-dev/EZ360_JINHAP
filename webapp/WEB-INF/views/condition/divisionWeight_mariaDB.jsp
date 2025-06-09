@@ -252,53 +252,6 @@
 	.excel-import-button:hover {
 	    background-color: #f0f0f0;
 	}
-	
-	#excelOverlay {
-	  display: none;
-	  position: fixed;
-	  top: 0;
-	  left: 0;
-	  width: 100%;
-	  height: 100%;
-	  background-color: rgba(0,0,0,0.4);
-	  z-index: 9998;
-	}
-	
-	/* 로딩 박스 */
-	#excelLoading {
-	  display: none;
-	  position: fixed;
-	  top: 50%;
-	  left: 50%;
-	  transform: translate(-50%, -50%);
-	  background-color: white;
-	  padding: 20px 30px;
-	  border-radius: 10px;
-	  box-shadow: 0 0 20px rgba(0,0,0,0.2);
-	  font-size: 16px;
-	  font-weight: bold;
-	  z-index: 9999;
-	  text-align: center;
-	}
-	
-	/* 로딩 스피너 */
-	#excelLoading::before {
-	  content: "";
-	  display: block;
-	  margin: 0 auto 10px;
-	  width: 30px;
-	  height: 30px;
-	  border: 4px solid #ccc;
-	  border-top: 4px solid #4caf50;
-	  border-radius: 50%;
-	  animation: spin 1s linear infinite;
-	}
-	
-	/* 애니메이션 */
-	@keyframes spin {
-	  0% { transform: rotate(0deg); }
-	  100% { transform: rotate(360deg); }
-	}
 
     </style>
 </head>
@@ -317,20 +270,14 @@
         
 				
 			<div class="form-row">
+			  <label for="plating_no" class="form-label">도금품번 :</label>
+			  <input type="text" id="plating_no" class="form-input" placeholder="도금품번 선택" autocomplete="off">
 			
-		      <label for="group_id" class="form-label">표면처리 사양 :</label>
-			  <input type="text" id="s_coating_nm" class="form-input" placeholder="표면처리 사양" autocomplete="off">
+			  <label for="pum_name" class="form-label">품명 :</label>
+			  <input type="text" id="pum_name" class="form-input" placeholder="품명 선택" autocomplete="off">
 			
-			
-			
-			  <label for="group_id" class="form-label">그룹ID :</label>
-			  <input type="text" id="s_group_id" class="form-input" placeholder="그룹ID" autocomplete="off">
-			
-			  <label for="item_cd" class="form-label">도금품번 :</label>
-			  <input type="text" id="s_item_cd" class="form-input" placeholder="품번" autocomplete="off">
-			
-			  <label for="item_nm" class="form-label">품명 :</label>
-			  <input type="text" id="s_item_nm" class="form-input" placeholder="품명" autocomplete="off">
+			  <label for="surface_spec" class="form-label">표면처리사양 :</label>
+			  <input type="text" id="surface_spec" class="form-input" placeholder="표면처리사양" autocomplete="off">
 			</div>
 
 			
@@ -368,48 +315,68 @@
         <span class="close">&times;</span>
         <h2>기준 정보 등록</h2>
         <form id="corrForm">
-        	<input type="text" name="plac_cd" placeholder="" value="JH_KR_01" style="display:none;">
-        	<input type="text" name="plnt_cd" placeholder="" value="02" style="display:none;">
-            <label>그룹ID</label>
-            <input type="text" name="group_id" placeholder="">
         
             <label>도금 품번</label>
-            <input type="text" name="item_cd" placeholder="">
-           
+            <input type="text" name="plating_no" placeholder="">
+        
+            <label>자제품번</label>
+            <input type="text" name="material_no" placeholder="">
+            
             <label>품명</label>
-            <input type="text" name="item_nm" placeholder="">
-           
+            <input type="text" name="pum_name" placeholder="">
+
+            <label>표면처리 사양</label>
+            <select name="surface_spec">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+
+            <label>최대중량</label>
+            <input type="text" name="max_weight" placeholder="">
+            
+            <label>최소중량</label>
+            <input type="text" name="min_weight" placeholder="">
+            
+            <label>평균중량</label>
+            <input type="text" name="avg_weight" placeholder="">
+            
             <label>메인설비</label>
-            <input type="text" name="mach_main" placeholder="">
+            <input type="text" name="equip_1" placeholder="">
             
-            <label>메인 장입기준 (kg)</label>
-            <input type="text" name="mach_main_weight" placeholder="">
-            
-             <label>표면처리 사양</label>
-            <input type="text" name="coating_nm" placeholder="">
-            
+            <label>메인 장입기준</label>
+            <input type="text" name="load_1" placeholder="">
             
             <label>보조 설비</label>
-            <input type="text" name="mach_sub" placeholder="">
+            <input type="text" name="equip_2" placeholder="">
             
-             <label>보조 장입기준 (kg)</label>
-            <input type="text" name="mach_sub_weight" placeholder="">
-             
+             <label>보조 장입기준</label>
+            <input type="text" name="load_2" placeholder="">
+            
+            
+            <label>분할횟수</label>
+            <input type="text" name="split_cnt" placeholder="">
+            
+            <label>장입량(현재장입량)</label>
+            <input type="text" name="avg_load" placeholder="">
+            
+            <label>G-800 (kg)</label>
+            <input type="text" name="g800" placeholder="">
+            
+            <label>G600 (kg)</label>
+            <input type="text" name="g600" placeholder="">
+            
             <label>공용설비 (kg)</label>
-            <input type="text" name="mlpl_weight" placeholder="">
+            <input type="text" name="common_equip" placeholder="">
             
             <label>K-BLACK (kg)</label>
-            <input type="text" name="kblack_weight" placeholder="">
+            <input type="text" name="k_black" placeholder="">
             
             <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
         </form>
     </div>
 </div>
-
-
-<div id="excelOverlay"></div>
-<div id="excelLoading">엑셀 기능 진행 중 입니다.<br>잠시만 기다려주세요...</div>
 
 
 
@@ -422,10 +389,9 @@
 
 	    $(".select-button").click(function () {
 	        dataTable.setData("/geomet/condition/divisionWeight/list", {
-	            "group_id": $("#s_group_id").val() || "",
-	            "item_cd": $("#s_item_cd").val() || "",
-	            "item_nm": $("#s_item_nm").val() || "",
-	            "coating_nm": $("#s_coating_nm").val() || "",
+	            "plating_no": $("#plating_no").val() || "",
+	            "pum_name": $("#pum_name").val() || "",
+	            "surface_spec": $("#surface_spec").val() || "",
 	        });
 	    });
 
@@ -483,16 +449,16 @@
             return;
         }
 
-        var item_cd = selectedRow.getData().item_cd;
+        var platingNo = selectedRow.getData().plating_no;
         
-        console.log("전송할 plating_no 값:", item_cd);
+        console.log("전송할 plating_no 값:", platingNo);
 
-        if (!item_cd) {
+        if (!platingNo) {
             alert("삭제할 항목이 없습니다.");
             return;
         }
 
-        var requestData = JSON.stringify({ "item_cd": item_cd });
+        var requestData = JSON.stringify({ "plating_no": platingNo });
         console.log("전송된 데이터:", requestData);
 
         $.ajax({
@@ -508,9 +474,9 @@
                 selectedRow = null;
 
                 dataTable.setData("/geomet/condition/divisionWeight/list", {
-                    "group_id": $("#s_group_id").val() || "",
-                    "item_cd": $("#s_item_cd").val() || "",
-                    "item_nm": $("#s_item_nm").val() || ""
+                    "plating_no": $("#plating_no").val() || "",
+                    "pum_name": $("#pum_name").val() || "",
+                    "surface_spec": $("#surface_spec").val() || "",
                 });
                 getDataList();
             },
@@ -538,10 +504,9 @@
             ajaxURL: "/geomet/condition/divisionWeight/list",
             ajaxProgressiveLoad: "scroll",
             ajaxParams: {
-                "group_id": $("#s_group_id").val() || "",
-                "item_cd": $("#s_item_cd").val() || "",
-                "item_nm": $("#s_item_nm").val() || "",
-                "coating_nm": $("#s_coating_nm").val() || "",
+                "plating_no": $("#plating_no").val() || "",
+                "pum_name": $("#pum_name").val() || "",
+                "surface_spec": $("#surface_spec").val() || "",
             },
             placeholder: "조회된 데이터가 없습니다.",
             paginationSize: 20,
@@ -550,16 +515,44 @@
                 return response;
             },
             columns: [
-            	  { title: "그룹ID",      field: "group_id",   sorter: "string", width: 180, hozAlign: "center", headerSort: false },
-            	  { title: "도금품번",      field: "item_cd",  sorter: "string", width: 180, hozAlign: "center", headerSort: false },
-            	  { title: "품명",          field: "item_nm",     sorter: "string", width: 360, hozAlign: "center", headerSort: false },
-             	  { title: "메인설비",    field: "mach_main",    sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            	  { title: "메인장입 기준",      field: "mach_main_weight",     sorter: "string", width: 160, hozAlign: "center", headerSort: false },
-            	  { title: "표면처리 사양",      field: "coating_nm",     sorter: "string", width: 160, hozAlign: "center", headerSort: false },
-            	  { title: "보조설비",       field: "mach_sub",         sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            	  { title: "보조설비 기준",        field: "mach_sub_weight",         sorter: "string", width: 160, hozAlign: "center", headerSort: false },
-            	  { title: "공용설비",    field: "mlpl_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            	  { title: "K-BLACK",     field: "kblack_weight",      sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "도금품번",      field: "plating_no",   sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+            	  { title: "자제품번",      field: "material_no",  sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+            	  { title: "품명",          field: "pum_name",     sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+            	  { title: "표면처리 사양", field: "surface_spec", sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+
+            	
+            	  {
+            	    title: "공정창고 출고기준 중량",
+            	    columns: [
+            	      { title: "최대중량", field: "max_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	      { title: "최소중량", field: "min_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	      { title: "평균중량", field: "avg_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	    ]
+            	  },
+
+            	  {
+            	    title: "메인 장입",
+            	    columns: [
+            	      { title: "설비",     field: "equip_1", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+            	      { title: "장입기준", field: "load_1",  sorter: "string", width: 90,  hozAlign: "center", headerSort: false },
+            	    ]
+            	  },
+
+            
+            	  {
+            	    title: "보조 장입",
+            	    columns: [
+            	      { title: "설비명",   field: "equip_2", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+            	      { title: "장입기준", field: "load_2",  sorter: "string", width: 90,  hozAlign: "center", headerSort: false },
+            	    ]
+            	  },
+
+            	  { title: "분할횟수",    field: "split_cnt",    sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "장입량",      field: "avg_load",     sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "G-800",       field: "g800",         sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "G600",        field: "g600",         sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "공용설비",    field: "common_equip", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            	  { title: "K-BLACK",     field: "k_black",      sorter: "string", width: 90, hozAlign: "center", headerSort: false },
             	],
 
             rowClick: function(e, row) {
@@ -578,24 +571,30 @@
 
                 // 각 필드에 값 채우기
                 var $f = $('#corrForm');
+                $f.find('input[name="plating_no"]').val(d.plating_no);
+                $f.find('input[name="material_no"]').val(d.material_no);
+                $f.find('input[name="pum_name"]').val(d.pum_name);
+                $f.find('input[name="surface_spec"]').val(d.surface_spec);
+                $f.find('input[name="max_weight"]').val(d.max_weight);
+                $f.find('input[name="min_weight"]').val(d.min_weight);
+                $f.find('input[name="avg_weight"]').val(d.avg_weight);
+                $f.find('input[name="equip_1"]').val(d.equip_1);
+                $f.find('input[name="load_1"]').val(d.load_1);
+                $f.find('input[name="equip_2"]').val(d.equip_2);
+                $f.find('input[name="load_1"]').val(d.load_1);
+                $f.find('input[name="split_cnt"]').val(d.split_cnt);
+                $f.find('input[name="avg_load"]').val(d.avg_load);
+                $f.find('input[name="g800"]').val(d.g800);
+                $f.find('input[name="g600"]').val(d.g600);
+                $f.find('input[name="common_equip"]').val(d.common_equip);
+                $f.find('input[name="k_black"]').val(d.k_black);
 
-                $f.find('input[name="group_id"]').val(d.group_id);
-                $f.find('input[name="item_cd"]').val(d.item_cd);
-                $f.find('input[name="item_nm"]').val(d.item_nm);
-                $f.find('input[name="mach_main"]').val(d.mach_main);
-                $f.find('input[name="mach_main_weight"]').val(d.mach_main_weight);
-                $f.find('input[name="mach_main_weight"]').val(d.mach_main_weight);
-                $f.find('input[name="coating_nm"]').val(d.coating_nm);
-                $f.find('input[name="mach_sub_weight"]').val(d.mach_sub_weight);
-                $f.find('input[name="mlpl_weight"]').val(d.mlpl_weight);
-                $f.find('input[name="kblack_weight"]').val(d.kblack_weight);
-
-              
+                // 만약 hidden 필드 no가 있으면
                 if (d.no !== undefined) {
                     $f.find('input[name="no"]').val(d.no);
                 }
 
-              
+                // 모달/폼 열기
                 $('#modalContainer').show().addClass('show');
             }
         });
@@ -605,37 +604,23 @@
 
 
 
-    $(".excel-button").on("click", function () {
-        $("#excelOverlay").show();
-        $("#excelLoading").show();
 
+
+ // 엑셀 다운로드 버튼 클릭 이벤트
+    $(".excel-button").on("click", function () {
+    	  console.log("엑셀 다운로드 버튼 클릭됨"); 
+          
         $.ajax({
             url: "/geomet/condition/divisionWeight/excel",
             type: "post",
             dataType: "json",
             success: function (result) {
-                if (!result.error) {
-                   
-                  
-                    const a = document.createElement('a');
-                    a.href = "/geomet/download_divisionWeight?filename=기준정보.xlsx";
-                    a.style.display = 'none';
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    alert("기준정보 엑셀 저장 완료되었습니다.");
-                    
-                } else {
-                    alert("엑셀 생성 오류: " + result.error);
-                }
+                console.log(result);
+                alert("D:\\GEOMET양식\\기준정보 저장 완료되었습니다.");
             },
             error: function (xhr, status, error) {
                 alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
                 console.error("Error:", error);
-            },
-            complete: function () {
-                $("#excelOverlay").hide();
-                $("#excelLoading").hide();
             }
         });
     });
@@ -644,7 +629,6 @@
 
     
     $(".excel-import-button").on("click", function () {
-        $("#fileInput").val(""); 
         $("#fileInput").click(); 
     });
 
@@ -652,10 +636,6 @@
     $("#fileInput").on("change", function () {
         var file = this.files[0];
         if (!file) return;
-
-        // ⬇ 로딩 화면 표시
-        $("#excelOverlay").show();
-        $("#excelLoading").show();
 
         var formData = new FormData();
         formData.append("file", file);
@@ -667,23 +647,17 @@
             contentType: false,
             processData: false,
             success: function (response) {
-                if (response.success) {
-                    alert(response.message || "엑셀 업로드가 완료되었습니다.");
-                    getDataList();
-                } else {
-                    alert(response.error || "엑셀 업로드 실패");
-                }
+                alert("엑셀 업로드가 완료되었습니다.");
+                console.log(response);
+                getDataList();
             },
             error: function (xhr, status, error) {
-                alert("서버 오류 발생: " + error);
-            },
-            complete: function () {
-                $("#excelOverlay").hide();
-                $("#excelLoading").hide();
+                alert("엑셀 업로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+                console.error("Error:", error);
             }
         });
+   
     });
-
 
 
     

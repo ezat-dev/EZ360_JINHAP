@@ -84,7 +84,7 @@ public class Condition {
 
 	    
 	    
-	    
+	    private String coating_nm;
 	    private String tank_no;
 	    private String ck_time;
 	    private String liquid_lot_no;
@@ -95,8 +95,28 @@ public class Condition {
 	    private String viscosity_after;
 	    private String ck_time2;
 	    private String operator;
+	    
+	    
+	    private String plac_cd;
+	    private String plnt_cd;
+	    private String group_id;
+	    private String item_cd;
+	    private String item_nm;
+	    private String mach_main;
+	    private String mach_main_weight;
+	    private String mach_sub;
+	    private String mach_sub_weight;
+	    private String kblack_weight;
+	    private String mlpl_weight;
 
 
+
+		public String getCoating_nm() {
+			return coating_nm;
+		}
+		public void setCoating_nm(String coating_nm) {
+			this.coating_nm = coating_nm;
+		}
 		public String getTank_no() {
 			return tank_no;
 		}
@@ -561,14 +581,70 @@ public class Condition {
 		public void setK_black(String k_black) {
 			this.k_black = k_black;
 		}
-	    
-	    
-	    
-	    
-	    
-	    
-	
-	    
-	    
-
-}
+		public String getPlac_cd() {
+			return plac_cd;
+		}
+		public void setPlac_cd(String plac_cd) {
+			this.plac_cd = plac_cd;
+		}
+		public String getPlnt_cd() {
+			return plnt_cd;
+		}
+		public void setPlnt_cd(String plnt_cd) {
+			this.plnt_cd = plnt_cd;
+		}
+		public String getGroup_id() {
+			return group_id;
+		}
+		public void setGroup_id(String group_id) {
+			this.group_id = group_id;
+		}
+		public String getItem_cd() {
+			return item_cd;
+		}
+		public void setItem_cd(String item_cd) {
+			this.item_cd = item_cd;
+		}
+		public String getItem_nm() {
+			return item_nm;
+		}
+		public void setItem_nm(String item_nm) {
+			this.item_nm = item_nm;
+		}
+		public String getMach_main() {
+			return mach_main;
+		}
+		public void setMach_main(String mach_main) {
+			this.mach_main = mach_main;
+		}
+		public String getMach_main_weight() {
+			return mach_main_weight;
+		}
+		public void setMach_main_weight(String mach_main_weight) {
+			this.mach_main_weight = mach_main_weight;
+		}
+		public String getMach_sub() {
+			return mach_sub;
+		}
+		public void setMach_sub(String mach_sub) {
+			this.mach_sub = mach_sub;
+		}
+		public String getMach_sub_weight() {
+			return mach_sub_weight;
+		}
+		public void setMach_sub_weight(String mach_sub_weight) {
+			this.mach_sub_weight = mach_sub_weight;
+		}
+		public String getKblack_weight() {
+			return kblack_weight;
+		}
+		public void setKblack_weight(String kblack_weight) {
+			this.kblack_weight = kblack_weight;
+		}
+		public String getMlpl_weight() {
+			return mlpl_weight;
+		}
+		public void setMlpl_weight(String mlpl_weight) {
+			this.mlpl_weight = mlpl_weight;
+		}
+	}

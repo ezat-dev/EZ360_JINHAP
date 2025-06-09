@@ -1,9 +1,13 @@
 package com.geomet.controller;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
+import java.net.URLEncoder;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.sl.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -68,10 +73,10 @@ public class ConditionController {
             @RequestParam String endDate
     ) {
         // 요청 파라미터 로그 출력
-        System.out.println("Received request:");
-        System.out.println("equipment_name: " + equipment_name);
-        System.out.println("startDate: " + startDate);
-        System.out.println("endDate: " + endDate);
+        //system.out.println("Received request:");
+        //system.out.println("equipment_name: " + equipment_name);
+        //system.out.println("startDate: " + startDate);
+        //system.out.println("endDate: " + endDate);
 
         // 반환할 Map 생성
         Map<String, Object> rtnMap = new HashMap<>();
@@ -86,14 +91,14 @@ public class ConditionController {
 
             List<Condition> getCorrStatusList = conditionService.getCorrStatusList(condition);
 
-            System.out.println("getStandardInfoList Size: " + getCorrStatusList.size());
+            //system.out.println("getStandardInfoList Size: " + getCorrStatusList.size());
             // 성공 시 데이터 반환
             rtnMap.put("status", "success");
             rtnMap.put("last_page", 1);
             rtnMap.put("data", getCorrStatusList);
         } catch (Exception e) {
             // 에러 발생 시 에러 메시지 반환
-            System.out.println("Error occurred: " + e.getMessage());
+            //system.out.println("Error occurred: " + e.getMessage());
             rtnMap.put("status", "error");
             rtnMap.put("message", e.getMessage());
         }
@@ -154,17 +159,17 @@ public class ConditionController {
               @RequestParam String endDate
     		
     ) {
-    	System.out.println("엑셀 다운로드 요청 params:");
-        System.out.println("equipment_name = " + equipment_name);
-        System.out.println("startDate = " + startDate);
-        System.out.println("endDate = " + endDate);
+    	//system.out.println("엑셀 다운로드 요청 params:");
+        //system.out.println("equipment_name = " + equipment_name);
+        //system.out.println("startDate = " + startDate);
+        //system.out.println("endDate = " + endDate);
         
         Map<String, Object> rtnMap = new HashMap<>();
 
         // 날짜 및 파일명 생성
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
         Date time = new Date();
-        String fileName = format.format(time) + ".xlsx";
+        String fileName = format.format(time) + ".xls";
 
         FileOutputStream fos = null;
         FileInputStream fis = null;
@@ -180,7 +185,7 @@ public class ConditionController {
         // 필터링된 데이터만 조회
         List<Condition> getCorrStatusList = conditionService.getCorrStatusList(condition);
 
-        System.out.println("TC조회된 건수: " + (getCorrStatusList != null ? getCorrStatusList.size() : 0));
+        //system.out.println("TC조회된 건수: " + (getCorrStatusList != null ? getCorrStatusList.size() : 0));
 
         if (getCorrStatusList == null || getCorrStatusList.isEmpty()) {
             rtnMap.put("error", "데이터 없음");
@@ -267,9 +272,9 @@ public class ConditionController {
     public Map<String, Object> machinePartTempUpdate(@RequestParam Map<String, String> params) {
         Map<String, Object> rtnMap = new HashMap<String, Object>();
 
-        System.out.println("넘어온 파라미터:");
+        //system.out.println("넘어온 파라미터:");
         for (Map.Entry<String, String> entry : params.entrySet()) {
-            System.out.println(entry.getKey() + ": " + entry.getValue());
+            //system.out.println(entry.getKey() + ": " + entry.getValue());
         }
         String idStr = params.get("id");
         String date = params.get("date");
@@ -312,8 +317,8 @@ public class ConditionController {
     @RequestMapping(value = "/condition/machinePartTemp/list", method = RequestMethod.POST)
     @ResponseBody
     public List<Condition> getconditionList(Condition condition) {
-        System.out.println(">>> startDate: " + condition.getStartDate());
-        System.out.println(">>> mch_code: " + condition.getMch_code());
+        //system.out.println(">>> startDate: " + condition.getStartDate());
+        //system.out.println(">>> mch_code: " + condition.getMch_code());
         return conditionService.getconditionList(condition);
     }
 
@@ -344,16 +349,17 @@ public class ConditionController {
     @RequestMapping(value = "/condition/divisionWeight/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> workDetailList(
-            @RequestParam String plating_no,
-            @RequestParam String pum_name,
-            @RequestParam String surface_spec
+            @RequestParam String group_id,
+            @RequestParam String item_cd,
+            @RequestParam String item_nm
     ) {
         // 요청 파라미터 로그 출력
-        System.out.println("Received request:");
-        System.out.println("plating_no: " + plating_no);
-        System.out.println("pum_name: " + pum_name);
-        System.out.println("surface_spec_in: " + surface_spec);
-
+/*    	
+        //system.out.println("Received request:");
+        //system.out.println("plating_no: " + plating_no);
+        //system.out.println("pum_name: " + pum_name);
+        //system.out.println("surface_spec_in: " + surface_spec);
+*/
         // 반환할 Map 생성
         Map<String, Object> rtnMap = new HashMap<>();
 
@@ -361,20 +367,20 @@ public class ConditionController {
         try {
            
         	Condition standardInfo = new Condition();
-        	standardInfo.setPlating_no(plating_no.isEmpty() ? null : plating_no); 
-            standardInfo.setPum_name(pum_name.isEmpty() ? null : pum_name);        
-            standardInfo.setSurface_spec(surface_spec.isEmpty() ? null : surface_spec); 
+        	standardInfo.setGroup_id(group_id.isEmpty() ? null : group_id); 
+            standardInfo.setItem_cd(item_cd.isEmpty() ? null : item_cd);        
+            standardInfo.setItem_nm(item_nm.isEmpty() ? null : item_nm); 
 
             List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
 
-            System.out.println("getStandardInfoList Size: " + standardInfoList.size());
+     //       //system.out.println("getStandardInfoList Size: " + standardInfoList.size());
             // 성공 시 데이터 반환
             rtnMap.put("status", "success");
             rtnMap.put("last_page", 1);
             rtnMap.put("data", standardInfoList);
         } catch (Exception e) {
             // 에러 발생 시 에러 메시지 반환
-            System.out.println("Error occurred: " + e.getMessage());
+       //     //system.out.println("Error occurred: " + e.getMessage());
             rtnMap.put("status", "error");
             rtnMap.put("message", e.getMessage());
         }
@@ -389,12 +395,14 @@ public class ConditionController {
         
         Map<String, Object> rtnMap = new HashMap<String, Object>();
         
-        if(condition.getPlating_no() == null) {
-        	rtnMap.put("data", "도금 푼번을 입력하시오!");
-        	return rtnMap;
+        if(condition == null) {
+        	rtnMap.put("data", "기준정보가 없습니다.");
+        }else {
+	        if(condition.getItem_cd() == null) {
+	        	rtnMap.put("data", "도금 푼번을 입력하시오!");
+	        }
+	       conditionService.saveDivisionWeight(condition);         	
         }
-       conditionService.saveDivisionWeight(condition); 
-        
         return rtnMap;
     }
     
@@ -403,7 +411,7 @@ public class ConditionController {
     public Map<String, Object> delDivisionWeight(@RequestBody Condition condition) {
         Map<String, Object> rtnMap = new HashMap<>();
 
-        if (condition.getPlating_no() == null) {
+        if (condition.getItem_cd() == null) {
             rtnMap.put("data", "행 선택하세요");
             return rtnMap;
         }
@@ -420,20 +428,25 @@ public class ConditionController {
         Map<String, Object> rtnMap = new HashMap<>();
         Condition standardInfo = new Condition();
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
-        Date time = new Date();
-        String fileName = format.format(time) + ".xlsx";
+		/*
+		 * SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
+		 * Date time = new Date(); String fileName = format.format(time) + ".xlsx";
+		 */
+   	 
+        String fileName = "기준정보.xlsx";
 
+        
+        
         FileOutputStream fos = null;
         FileInputStream fis = null;
         String openPath = "D:/GEOMET양식/";
-        String savePath = "D:/GEOMET양식/조건관리/";
+        String savePath = "D:/GEOMET양식/기준정보/";
 
         List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
-        
-        // 받아온 데이터 개수 출력
-        System.out.println("getStandardInfoList Size: " + (standardInfoList != null ? standardInfoList.size() : 0));
-
+		/*
+		 * // 받아온 데이터 개수 출력 //system.out.println("getStandardInfoList Size: " +
+		 * (standardInfoList != null ? standardInfoList.size() : 0));
+		 */
         if (standardInfoList == null || standardInfoList.isEmpty()) {
             rtnMap.put("error", "데이터 없음");
             return rtnMap;
@@ -454,11 +467,17 @@ public class ConditionController {
 
 
             String[] fields = {
-                "plating_no", "material_no", "pum_name", "surface_spec",
-                "max_weight", "min_weight", "avg_weight", "equip_1", "load_1",
-                "equip_2", "load_2", "split_cnt", "avg_load", "g800", "g600",
-                "common_equip", "k_black"
-            };
+            	    "group_id",
+            	    "item_cd",
+            	    "item_nm",
+            	    "mach_main",
+            	    "mach_main_weight",
+            	    "mach_sub",
+            	    "mach_sub_weight",
+            	    "mlpl_weight",
+            	    "kblack_weight"
+            	};
+
 
             int startRow = 6;
 
@@ -493,7 +512,7 @@ public class ConditionController {
                 }
                 
                 // 각 행별 데이터 출력
-                System.out.println(logOutput.toString());
+              //  //system.out.println(logOutput.toString());
             }
 
             workbook.setForceFormulaRecalculation(true);
@@ -518,46 +537,107 @@ public class ConditionController {
 
         return rtnMap;
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @RequestMapping(value = "/download_divisionWeight", method = RequestMethod.GET)
+    public void downloadExcel(HttpServletResponse response) throws IOException {
+        // 고정된 파일명과 경로
+        String baseDir = "D:/GEOMET양식/기준정보/";
+        String fileName = "기준정보.xlsx";
 
-    //기준정보 엑셀 인풋
+        File file = new File(baseDir + fileName);
+
+        if (!file.exists()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        String mimeType = Files.probeContentType(file.toPath());
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setContentType(mimeType);
+        response.setContentLengthLong(file.length());
+
+        String encodedFilename = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+        }
+    }
+
+    
+    
+    
+
+ // 기준정보 엑셀 인풋
     @RequestMapping(value = "/condition/divisionWeight/excelFileInput", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> importExcel(@RequestParam("file") MultipartFile file) {
         Map<String, Object> rtnMap = new HashMap<>();
 
         if (file.isEmpty()) {
+            rtnMap.put("success", false);
             rtnMap.put("error", "파일이 비어 있습니다.");
             return rtnMap;
         }
 
         try {
-            // 엑셀 파일을 읽고 DB에 저장하는 로직
+            // 엑셀 파싱
             List<Condition> importedData = excelService.parseExcelFile(file);
+
             for (Condition condition : importedData) {
+                condition.setPlac_cd("JH_KR_01");
+                condition.setPlnt_cd("02");
+
                 conditionService.saveDivisionWeight(condition);
             }
 
+            rtnMap.put("success", true);
             rtnMap.put("message", "엑셀 데이터가 성공적으로 업로드되었습니다.");
-        } catch (Exception e) {
+        } catch (IllegalArgumentException e) {
+            // ITEM_CD 누락 등 사용자 입력 관련 오류
             e.printStackTrace();
-            rtnMap.put("error", "엑셀 파일 처리 중 오류 발생");
+            rtnMap.put("success", false);
+            rtnMap.put("error", e.getMessage());
+        } catch (Exception e) {
+            // 기타 시스템 오류
+            e.printStackTrace();
+            rtnMap.put("success", false);
+            rtnMap.put("error", "엑셀 파일 처리 중 오류가 발생했습니다.");
         }
 
         return rtnMap;
     }
+
    
     // 액교반탱크일지
     @RequestMapping(value = "/condition/machineliquidmanage/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getworkDailyReportList(@RequestBody Condition condition) {
-        System.out.println("받은 getIn_date 값: " + condition.getIn_date());
-        System.out.println("mch_name: " + condition.getMch_name());
+       // //system.out.println("받은 getIn_date 값: " + condition.getIn_date());
+     //   //system.out.println("mch_name: " + condition.getMch_name());
         Map<String, Object> result = new HashMap<>();
         List<?> table1 = conditionService.getMachineliquidmanage(condition);
         List<?> table2 = conditionService.getMachineliquidmanage2(condition);
 
-     //   System.out.println("table1 리턴값: " + table1);
-     //   System.out.println("table2 리턴값: " + table2);
+     //   //system.out.println("table1 리턴값: " + table1);
+     //   //system.out.println("table2 리턴값: " + table2);
 
         result.put("table1", table1);
         result.put("table2", table2);
@@ -567,8 +647,8 @@ public class ConditionController {
     @RequestMapping(value = "/condition/machineliquidmanage2/list", method = RequestMethod.POST)
     @ResponseBody
     public List<Condition> getMachineliquidmanage2(Condition condition) {
-        System.out.println(">>> in_date2: " + condition.getIn_date());
-        System.out.println(">>> mch_name2: " + condition.getMch_nname());
+   //     //system.out.println(">>> in_date2: " + condition.getIn_date());
+   //     //system.out.println(">>> mch_name2: " + condition.getMch_nname());
         return conditionService.getMachineliquidmanage2(condition);
     }
     
@@ -579,7 +659,7 @@ public class ConditionController {
         
         Map<String, Object> rtnMap = new HashMap<String, Object>();
         
-        System.out.println("받은 ID: " + condition.getId());
+   //     //system.out.println("받은 ID: " + condition.getId());
        conditionService.insertMachineliquidmanage(condition); 
         
         return rtnMap;
@@ -591,7 +671,7 @@ public class ConditionController {
         
         Map<String, Object> rtnMap = new HashMap<String, Object>();
         
-        System.out.println("받은 ID: " + condition.getId());
+      //  //system.out.println("받은 ID: " + condition.getId());
        conditionService.insertMachineliquidmanage2(condition); 
         
         return rtnMap;
@@ -601,7 +681,7 @@ public class ConditionController {
     public Map<String, Object> deleteMachineliquidmanage(@RequestBody Condition condition) {
         Map<String, Object> rtnMap = new HashMap<>();
         
-        System.out.println("삭제 요청 ID: " + condition.getId());
+    //    //system.out.println("삭제 요청 ID: " + condition.getId());
         conditionService.deleteMachineliquidmanage(condition);
         
         return rtnMap;
@@ -612,7 +692,7 @@ public class ConditionController {
     public Map<String, Object> deleteMachineliquidmanage2(@RequestBody Condition condition) {
         Map<String, Object> rtnMap = new HashMap<>();
         
-        System.out.println("삭제 요청 ID: " + condition.getId());
+    //    //system.out.println("삭제 요청 ID: " + condition.getId());
         conditionService.deleteMachineliquidmanage2(condition);
         
         return rtnMap;

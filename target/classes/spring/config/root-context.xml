@@ -41,6 +41,37 @@
 	        <constructor-arg ref="sqlSessionFactory" />
 	 </bean>
 	 
+	
+	
+	
+	
+	
+	<!--0605오라클 추가  -->
+	
+	
+	<!-- Oracle DataSource 설정 -->
+	<bean id="dataSourceOracle" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+	    <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+	    <property name="url" value="jdbc:oracle:thin:@10.10.10.124:1521:JQIS"/>
+	    <property name="username" value="PWO_ADM"/>
+	    <property name="password" value="PWO_ADM"/>
+	</bean>
+	
+	<!-- Oracle용 MyBatis 설정 -->
+	<bean id="sqlSessionFactoryOracle" class="org.mybatis.spring.SqlSessionFactoryBean">
+	    <property name="dataSource" ref="dataSourceOracle"/>
+	    <property name="configLocation" value="classpath:mybatis/config/mybatis-context.xml"/>
+	</bean>
+	
+	<bean id="orcleSession" class="org.mybatis.spring.SqlSessionTemplate">
+	    <constructor-arg ref="sqlSessionFactoryOracle"/>
+	</bean>
+	
+	
+	
+	
+	
+	
 	 
 	 
   <!-- MSSQL DataSource -->

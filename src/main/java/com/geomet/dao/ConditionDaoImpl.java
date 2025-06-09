@@ -15,23 +15,27 @@ public class ConditionDaoImpl implements ConditionDao {
 
 	 @Resource(name="session")
 	    private SqlSession sqlSession;
+	 
+	 
+	 @Resource(name="orcleSession")
+		private SqlSession sessionOrcle;
     
     
     //기준정보
     @Override
     public List<Condition> getStandardInfoList(Condition params) {
       
-        return sqlSession.selectList("condition.getStandardInfoList", params);
+        return sessionOrcle.selectList("condition.getStandardInfoList", params);
     }
     
     @Override
     public void saveDivisionWeight(Condition condition) {
-    	sqlSession.insert("condition.saveDivisionWeight",condition);
+    	sessionOrcle.insert("condition.saveDivisionWeight",condition);
     }
     
     @Override
     public void delDivisionWeight(Condition condition) {
-    	sqlSession.delete("condition.delDivisionWeight",condition);
+    	sessionOrcle.delete("condition.delDivisionWeight",condition);
     }
     
     //TC조절
