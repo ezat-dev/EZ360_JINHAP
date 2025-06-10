@@ -43,12 +43,14 @@ public class ExcelService {
             StringBuilder logOutput = new StringBuilder("Row " + (i - startRow + 1) + " | ");
 
 //            if (row.getCell(2).getStringCellValue() == null) continue;
-            System.out.println(row);
+          //  System.out.println(row);
             /*
              1. 각 행을 콘솔에 로그를 남겼을 때 null인지 아니면 어떤값인지 확인
  				-> continue를 쓸건지 break를 쓸건지 
              */
 
+            
+            
             Condition condition = new Condition();
            
             for (int j = 0; j < fields.length; j++) {

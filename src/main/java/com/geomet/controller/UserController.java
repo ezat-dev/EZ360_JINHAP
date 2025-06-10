@@ -46,6 +46,8 @@ public class UserController {
 	@Autowired
 	private UserService userService;
 	
+	public static int USER_CODE = 0;
+	
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	
@@ -90,6 +92,8 @@ public class UserController {
 		 System.out.println("user_name: " + loginUser.getUser_name());
 		 System.out.println("user_level: " + loginUser.getUser_level());
 
+		 UserController.USER_CODE = Integer.parseInt(loginUser.getUser_code());
+		 
 		 // 반환용 맵 구성
 		 rtnMap.put("data", loginUser);
 		 rtnMap.put("loginUserPage", loginPermission);

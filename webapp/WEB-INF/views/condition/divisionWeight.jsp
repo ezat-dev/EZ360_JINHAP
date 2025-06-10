@@ -24,7 +24,7 @@
             margin-top: 1%;
         }
         .tab {
-            width: 95%;
+            width: 100%;
             margin-bottom: 37px;
             margin-top: 5px;
             height: 45px;
@@ -121,11 +121,12 @@
 
 		.box1 {
 		    display: flex;
-		    justify-content: right;
+		    /* justify-content: right; */
+		    margin-left: 20px;
 		    align-items: center;
-		    width: 1000px;
+		    width: 1100px;
 		    margin-right: 20px;
-		    margin-top:4px;
+		    margin-top: 4px;
 		}
         .dayselect {
             width: 20%;
@@ -223,15 +224,16 @@
 }
 
 	.form-input {
-	  flex: 1;
-	  min-width: 180px;
-	  padding: 8px 12px;
-	  font-size: 14px;
-	  border: 1px solid #ccc;
-	  border-radius: 4px;
-	  transition: border-color 0.2s, box-shadow 0.2s;
+	    flex: 1;
+	    width: 160px;
+	    min-width: 100px;
+	    padding: 8px 12px;
+	    font-size: 14px;
+	    border: 1px solid #ccc;
+	    border-radius: 4px;
+	    transition: border-color 0.2s, box-shadow 0.2s;
 	}
-	
+		
 	.form-input:focus {
 	  outline: none;
 	  border-color: #409eff;    /* 블루 톤 */
@@ -363,11 +365,11 @@
         </div>
     </main>
 	
-	<div id="modalContainer" class="modal">
+	<div id="modalContainer" class="modal" >
     <div class="modal-content">
         <span class="close">&times;</span>
         <h2>기준 정보 등록</h2>
-        <form id="corrForm">
+        <form id="corrForm" autocomplete="off">
         	<input type="text" name="plac_cd" placeholder="" value="JH_KR_01" style="display:none;">
         	<input type="text" name="plnt_cd" placeholder="" value="02" style="display:none;">
             <label>그룹ID</label>
@@ -432,6 +434,8 @@
 	    // 모달 열기 버튼 이벤트
 	    $(".insert-button").click(function () {
 	        let modal = $("#modalContainer");
+	        modal.find("input[type='text'], input[type='number'], input[type='date'], textarea").val("");
+	        
 	        modal.show(); 
 	        modal.addClass("show");
 	    });
@@ -451,7 +455,12 @@
         event.preventDefault();
 
         var corrForm = new FormData($("#corrForm")[0]);
+        for (var pair of corrForm.entries()) {
+            console.log(pair[0] + ": " + pair[1]);
+        }
 
+
+        
         $.ajax({
             url: "/geomet/condition/divisionWeight/insert",
             type: "POST",
@@ -550,12 +559,12 @@
                 return response;
             },
             columns: [
-            	  { title: "그룹ID",      field: "group_id",   sorter: "string", width: 180, hozAlign: "center", headerSort: false },
+            	  { title: "그룹ID",      field: "group_id",   sorter: "string", width: 160, hozAlign: "center", headerSort: false },
             	  { title: "도금품번",      field: "item_cd",  sorter: "string", width: 180, hozAlign: "center", headerSort: false },
             	  { title: "품명",          field: "item_nm",     sorter: "string", width: 360, hozAlign: "center", headerSort: false },
              	  { title: "메인설비",    field: "mach_main",    sorter: "string", width: 90, hozAlign: "center", headerSort: false },
             	  { title: "메인장입 기준",      field: "mach_main_weight",     sorter: "string", width: 160, hozAlign: "center", headerSort: false },
-            	  { title: "표면처리 사양",      field: "coating_nm",     sorter: "string", width: 160, hozAlign: "center", headerSort: false },
+            	  { title: "표면처리 사양",      field: "coating_nm",     sorter: "string", width: 190, hozAlign: "center", headerSort: false },
             	  { title: "보조설비",       field: "mach_sub",         sorter: "string", width: 90, hozAlign: "center", headerSort: false },
             	  { title: "보조설비 기준",        field: "mach_sub_weight",         sorter: "string", width: 160, hozAlign: "center", headerSort: false },
             	  { title: "공용설비",    field: "mlpl_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
@@ -584,7 +593,7 @@
                 $f.find('input[name="item_nm"]').val(d.item_nm);
                 $f.find('input[name="mach_main"]').val(d.mach_main);
                 $f.find('input[name="mach_main_weight"]').val(d.mach_main_weight);
-                $f.find('input[name="mach_main_weight"]').val(d.mach_main_weight);
+                $f.find('input[name="mach_sub"]').val(d.mach_sub);
                 $f.find('input[name="coating_nm"]').val(d.coating_nm);
                 $f.find('input[name="mach_sub_weight"]').val(d.mach_sub_weight);
                 $f.find('input[name="mlpl_weight"]').val(d.mlpl_weight);

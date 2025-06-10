@@ -16,6 +16,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.poi.sl.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -40,11 +41,13 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import com.geomet.domain.Condition;
+import com.geomet.domain.UserLog;
 import com.geomet.domain.Users;
 import com.geomet.domain.Work;
 import com.geomet.service.ConditionService;
 
 import com.geomet.service.ExcelService;
+import com.geomet.service.UserService;
 
 @Controller
 public class ConditionController {
@@ -53,6 +56,9 @@ public class ConditionController {
 	
     @Autowired
     private ExcelService excelService; 
+    
+    @Autowired
+    private UserService UserService;
     
     @Autowired
     private ConditionService conditionService; 
@@ -122,7 +128,12 @@ public class ConditionController {
 
             // 실제 저장 로직 실행
             conditionService.saveCorrStatus(condition);
+                        
+//            UserController.USER_CODE;
+            
 
+            
+            
             rtnMap.put("result", "success");
         } catch (Exception e) {
             rtnMap.put("result", "fail");
@@ -349,62 +360,73 @@ public class ConditionController {
     @RequestMapping(value = "/condition/divisionWeight/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> workDetailList(
+            @RequestParam String coating_nm,
             @RequestParam String group_id,
             @RequestParam String item_cd,
             @RequestParam String item_nm
     ) {
-        // 요청 파라미터 로그 출력
-/*    	
-        //system.out.println("Received request:");
-        //system.out.println("plating_no: " + plating_no);
-        //system.out.println("pum_name: " + pum_name);
-        //system.out.println("surface_spec_in: " + surface_spec);
-*/
-        // 반환할 Map 생성
         Map<String, Object> rtnMap = new HashMap<>();
 
-        // 서비스 계층을 통해 데이터를 가져옴
+ 
+        System.out.println("========== [조회 조건] ==========");
+        System.out.println("coating_nm: " + coating_nm);
+        System.out.println("group_id  : " + group_id);
+        System.out.println("item_cd   : " + item_cd);
+        System.out.println("item_nm   : " + item_nm);
+        System.out.println("=================================");
+
         try {
-           
-        	Condition standardInfo = new Condition();
-        	standardInfo.setGroup_id(group_id.isEmpty() ? null : group_id); 
+            Condition standardInfo = new Condition();
+
+            standardInfo.setCoating_nm(coating_nm.isEmpty() ? null : coating_nm); 
+            standardInfo.setGroup_id(group_id.isEmpty() ? null : group_id); 
             standardInfo.setItem_cd(item_cd.isEmpty() ? null : item_cd);        
             standardInfo.setItem_nm(item_nm.isEmpty() ? null : item_nm); 
 
             List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
 
-     //       //system.out.println("getStandardInfoList Size: " + standardInfoList.size());
-            // 성공 시 데이터 반환
             rtnMap.put("status", "success");
             rtnMap.put("last_page", 1);
             rtnMap.put("data", standardInfoList);
         } catch (Exception e) {
-            // 에러 발생 시 에러 메시지 반환
-       //     //system.out.println("Error occurred: " + e.getMessage());
+            System.out.println("Error occurred: " + e.getMessage());
             rtnMap.put("status", "error");
             rtnMap.put("message", e.getMessage());
         }
 
         return rtnMap;
     }
+
     
     //기준정보 추가
     @RequestMapping(value = "/condition/divisionWeight/insert", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> saveDivisionWeight(@ModelAttribute Condition condition) {
-        
+
         Map<String, Object> rtnMap = new HashMap<String, Object>();
-        
-        if(condition == null) {
-        	rtnMap.put("data", "기준정보가 없습니다.");
-        }else {
-	        if(condition.getItem_cd() == null) {
-	        	rtnMap.put("data", "도금 푼번을 입력하시오!");
-	        }
-	       conditionService.saveDivisionWeight(condition);         	
+        condition.setPlac_cd("JH_KR_01");
+        condition.setPlnt_cd("02");
+
+        // 먼저 조건 확인 후 로그 기록
+        if (condition.getItem_cd() == null) {
+            rtnMap.put("data", "도금 푼번을 입력하시오!");
+        } else {
+            conditionService.saveDivisionWeight(condition);
+            rtnMap.put("data", "저장 완료");
         }
+
+        // 로그 설정 및 저장
+        UserLog userLog = new UserLog();
+        userLog.setUserCode(UserController.USER_CODE);
+        userLog.setPageCode("c05");
+        userLog.setWorkDesc(condition.getItem_cd() == null ? "추가" : "수정"); // 조건에 따라 설정
+        userLog.setWorkUrl("/condition/divisionWeight/insert");
+        userLog.setFileName("없음");
+        UserService.insertUserLog(userLog);
+
         return rtnMap;
     }
+
     
     @RequestMapping(value = "/condition/divisionWeight/del", method = RequestMethod.POST)
     @ResponseBody
@@ -416,11 +438,20 @@ public class ConditionController {
             return rtnMap;
         }
 
+        UserLog userLog = new UserLog();
+        userLog.setUserCode(UserController.USER_CODE);
+        userLog.setPageCode("c05");
+        userLog.setWorkDesc("삭제");
+        userLog.setWorkUrl("/condition/divisionWeight/del");
+        userLog.setFileName("없음"); 
+        UserService.insertUserLog(userLog); 
+
         conditionService.delDivisionWeight(condition);
 
-        rtnMap.put("data", "success"); // 응답도 명확히
+        rtnMap.put("data", "success");
         return rtnMap;
     }
+
     //기준정보 엑섹 저장
     @RequestMapping(value = "/condition/divisionWeight/excel", method = RequestMethod.POST)
     @ResponseBody
@@ -433,6 +464,19 @@ public class ConditionController {
 		 * Date time = new Date(); String fileName = format.format(time) + ".xlsx";
 		 */
    	 
+        
+        
+        
+        UserLog userLog = new UserLog();
+        userLog.setUserCode(UserController.USER_CODE);
+        userLog.setPageCode("c05");
+        userLog.setWorkDesc("엑셀저장");
+        userLog.setWorkUrl("/condition/divisionWeight/excel");
+        userLog.setFileName("기준정보"); 
+        UserService.insertUserLog(userLog); 
+        
+        
+        
         String fileName = "기준정보.xlsx";
 
         
@@ -472,6 +516,7 @@ public class ConditionController {
             	    "item_nm",
             	    "mach_main",
             	    "mach_main_weight",
+            	    "coating_nm",
             	    "mach_sub",
             	    "mach_sub_weight",
             	    "mlpl_weight",
@@ -596,6 +641,15 @@ public class ConditionController {
             rtnMap.put("error", "파일이 비어 있습니다.");
             return rtnMap;
         }
+        
+        
+        UserLog userLog = new UserLog();
+        userLog.setUserCode(UserController.USER_CODE);
+        userLog.setPageCode("c05");
+        userLog.setWorkDesc("엑셀 업로드");
+        userLog.setWorkUrl("/condition/divisionWeight/excelFileInput");
+        userLog.setFileName("기준정보"); 
+        UserService.insertUserLog(userLog); 
 
         try {
             // 엑셀 파싱

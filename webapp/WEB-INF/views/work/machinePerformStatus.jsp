@@ -364,7 +364,7 @@ let now_page_code = "b01";
     	        {
     	            title: "손실(운영계획 대비)",
     	            columns: [
-    	                { title: "통", field: "a10", headerSort: false },
+    	                { title: "통", field: "a10",hozAlign: "center", headerSort: false },
     	                { title: "중량(톤)", field: "a11", headerSort: false },
     	                {
     	                    title: "손실시간",

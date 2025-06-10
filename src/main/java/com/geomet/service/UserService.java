@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
+import com.geomet.domain.UserLog;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
 
@@ -70,4 +71,8 @@ public interface UserService {
     List<Users> getCheckManageList(Users users); 
     
     void updateCheckManage(Users users);
+    
+    
+    
+    void insertUserLog(UserLog userLog);
 }

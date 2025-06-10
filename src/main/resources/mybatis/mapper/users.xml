@@ -601,5 +601,23 @@
 	  WHERE idx = #{idx}
 	</update>
 
+
+	<insert id="insertUserLog" parameterType="UserLog">
+	 INSERT INTO tb_user_log (
+      page_code,
+      user_code,
+      file_name,
+      work_desc,
+      work_url,
+      start_day
+    ) VALUES (
+      #{pageCode},
+      #{userCode},
+      #{fileName},
+      #{workDesc},
+      #{workUrl},
+      CURRENT_TIMESTAMP
+    )
+  </insert>
     
 </mapper>

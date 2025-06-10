@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.geomet.dao.UserDao;
 import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
+import com.geomet.domain.UserLog;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
 
@@ -171,5 +172,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public void updateCheckManage(Users users) {
         userDao.updateCheckManage(users);
+    }
+    
+    
+    @Override
+    public void insertUserLog(UserLog userLog) {
+        userDao.insertUserLog(userLog);
     }
 }

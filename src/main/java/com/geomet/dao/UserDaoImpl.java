@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
+import com.geomet.domain.UserLog;
 import com.geomet.domain.UserMenu;
 import com.geomet.domain.Users;
 
@@ -196,13 +197,18 @@ public class UserDaoImpl implements UserDao{
 			    
 			    
 				
-				   @Override
-				    public List<Users> getCheckManageList(Users users) {
+				@Override
+				public List<Users> getCheckManageList(Users users) {
 				      
-				        return sqlSession.selectList("users.getCheckManageList", users);
-				    }
-				    @Override
-				    public void updateCheckManage(Users users) {
-				    	sqlSession.update("users.updateCheckManage",users);
-				    }
+				   return sqlSession.selectList("users.getCheckManageList", users);
+				 }
+				@Override
+				public void updateCheckManage(Users users) {
+				   sqlSession.update("users.updateCheckManage",users);
+				 }
+				
+				@Override
+				public void insertUserLog(UserLog userLog) {
+				   sqlSession.insert("users.insertUserLog",userLog);
+				 }
 }

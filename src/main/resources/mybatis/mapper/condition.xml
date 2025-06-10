@@ -6,7 +6,7 @@
 	<!--기준정보 -->
 	<select id="getStandardInfoList" parameterType="condition" resultType="condition">
 		 SELECT *
-		    FROM PWO_GEO_DIVISION_DATA_EZ_TEST
+		    FROM PWO_GEO_DIVISION_DATA_EZ
 		    
 		    <where>
 		        <if test="coating_nm != null and coating_nm != ''">
@@ -30,7 +30,7 @@
     
 	<insert id="saveDivisionWeight" parameterType="Condition">
 	
-	MERGE INTO PWO_GEO_DIVISION_DATA_EZ_TEST
+	MERGE INTO PWO_GEO_DIVISION_DATA_EZ
 	USING DUAL
 	ON (
 <!-- 		PLAC_CD = #{plac_cd} AND 
@@ -42,21 +42,21 @@
     group_id = #{group_id},
     item_nm = #{item_nm},
     mach_main = #{mach_main},
-    mach_main_weight = #{mach_main_weight},
-     coating_nm = #{coating_nm},
+    mach_main_weight = #{mach_main_weight},   
     mach_sub = #{mach_sub},
     mach_sub_weight = #{mach_sub_weight},
     mlpl_weight = #{mlpl_weight},
+    coating_nm = #{coating_nm},
     kblack_weight = #{kblack_weight}
    WHEN NOT MATCHED THEN
   	INSERT (PLAC_CD, PLNT_CD, GROUP_ID, ITEM_CD, ITEM_NM,
   	MACH_MAIN, MACH_MAIN_WEIGHT, MACH_SUB, MACH_SUB_WEIGHT,
-  	MLPL_WEIGHT, KBLACK_WEIGHT) 
+  	MLPL_WEIGHT,COATING_NM, KBLACK_WEIGHT) 
   	VALUES (#{plac_cd}, #{plnt_cd}, #{group_id}, #{item_cd}, #{item_nm},
   	#{mach_main}, #{mach_main_weight}, #{mach_sub}, #{mach_sub_weight},
-  	#{mlpl_weight}, #{kblack_weight})   
+  	#{mlpl_weight}, #{coating_nm}, #{kblack_weight})   
 <!-- 	
-    INSERT INTO PWO_GEO_DIVISION_DATA_EZ_TEST (
+    INSERT INTO PWO_GEO_DIVISION_DATA_EZ (
         PLAC_CD, PLNT_CD, GROUP_ID, ITEM_CD, ITEM_NM,
         MACH_MAIN, MACH_MAIN_WEIGHT, MACH_SUB, MACH_SUB_WEIGHT, 
         MLPL_WEIGHT, KBLACK_WEIGHT
@@ -82,7 +82,7 @@
 
     
         <delete id="delDivisionWeight" parameterType="string">
-        DELETE FROM PWO_GEO_DIVISION_DATA_EZ_TEST 
+        DELETE FROM PWO_GEO_DIVISION_DATA_EZ 
         WHERE item_cd = #{item_cd}
     	</delete>
     
