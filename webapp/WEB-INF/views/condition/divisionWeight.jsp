@@ -309,7 +309,6 @@
 
     <main class="main">
         <div class="tab">
-        
 
             <div class="button-container">
             
@@ -363,6 +362,10 @@
         <div class="view">
             <div id="dataList"></div>
         </div>
+           	<h3>기준정보 행번호 추가 및 그룹ID 도금품번 품명 정렬기능 추가했습니다.</h3>
+          	<h3>새로 고침하지 않고 바로 추가 할 수 있도록 적용했습니다</h3>
+       <h3>실시간으로 프로그램 적용 중입니다 사용하시다가 로그 아웃 되는 경우 양해 부탁드립니다.</h3>
+ 
     </main>
 	
 	<div id="modalContainer" class="modal" >
@@ -500,9 +503,14 @@
             success: function (response) {
                 alert("기준정보 성공적으로 저장되었습니다!");
                 $("#modalContainer").hide();
-                getDataList();
-             
-             
+
+                // 기존: 전체 테이블 다시 불러오기
+                // getDataList();
+
+                // ✅ 수정: 새로 추가된 데이터를 직접 삽입
+                if (response && response.data) {
+                    dataTable.addData([response.data], true); // true = top에 삽입, false = bottom
+                }
             }
         });
 
@@ -562,7 +570,7 @@
     var selectedRow = null;
     function getDataList() {
         dataTable = new Tabulator("#dataList", {
-            height: "830px",
+            height: "780px",
             layout: "fitColumns",
             selectable: true,
             tooltips: true,
@@ -588,9 +596,10 @@
                 return response;
             },
             columns: [
-            	  { title: "그룹ID",      field: "group_id",   sorter: "string", width: 160, hozAlign: "center", headerSort: false },
-            	  { title: "도금품번",      field: "item_cd",  sorter: "string", width: 180, hozAlign: "center", headerSort: false },
-            	  { title: "품명",          field: "item_nm",     sorter: "string", width: 360, hozAlign: "center", headerSort: false },
+            	 { title: 'NO',             formatter: 'rownum', width: 70,  hozAlign: 'center' },
+            	  { title: "그룹ID",      field: "group_id",   sorter: "string", width: 160, hozAlign: "center"},
+            	  { title: "도금품번",      field: "item_cd",  sorter: "string", width: 180, hozAlign: "center"},
+            	  { title: "품명",          field: "item_nm",     sorter: "string", width: 360, hozAlign: "center" },
              	  { title: "메인설비",    field: "mach_main",    sorter: "string", width: 90, hozAlign: "center", headerSort: false },
             	  { title: "메인장입 기준",      field: "mach_main_weight",     sorter: "string", width: 160, hozAlign: "center", headerSort: false },
             	  { title: "표면처리 사양",      field: "coating_nm",     sorter: "string", width: 190, hozAlign: "center", headerSort: false },

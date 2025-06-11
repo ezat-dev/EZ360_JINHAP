@@ -403,29 +403,36 @@ public class ConditionController {
     @ResponseBody
     public Map<String, Object> saveDivisionWeight(@ModelAttribute Condition condition) {
 
-        Map<String, Object> rtnMap = new HashMap<String, Object>();
+        Map<String, Object> rtnMap = new HashMap<>();
         condition.setPlac_cd("JH_KR_01");
         condition.setPlnt_cd("02");
 
-        // 먼저 조건 확인 후 로그 기록
-        if (condition.getItem_cd() == null) {
-            rtnMap.put("data", "도금 푼번을 입력하시오!");
-        } else {
-            conditionService.saveDivisionWeight(condition);
-            rtnMap.put("data", "저장 완료");
+        // 유효성 검사
+        if (condition.getItem_cd() == null || condition.getItem_cd().trim().isEmpty()) {
+            rtnMap.put("success", false);
+            rtnMap.put("message", "도금 품번을 입력하시오!");
+            return rtnMap;
         }
+
+        // 저장 수행
+        conditionService.saveDivisionWeight(condition);
 
         // 로그 설정 및 저장
         UserLog userLog = new UserLog();
         userLog.setUserCode(UserController.USER_CODE);
         userLog.setPageCode("c05");
-        userLog.setWorkDesc(condition.getItem_cd() == null ? "추가" : "수정"); // 조건에 따라 설정
+        userLog.setWorkDesc("추가");
         userLog.setWorkUrl("/condition/divisionWeight/insert");
         userLog.setFileName("없음");
         UserService.insertUserLog(userLog);
 
+        // 저장된 객체를 그대로 반환 (Tabulator에 추가하기 위해)
+        rtnMap.put("success", true);
+        rtnMap.put("data", condition);
+
         return rtnMap;
     }
+
 
     
     @RequestMapping(value = "/condition/divisionWeight/del", method = RequestMethod.POST)

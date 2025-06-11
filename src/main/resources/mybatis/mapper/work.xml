@@ -104,12 +104,12 @@
       item_nm,
       item_cd,
       next_facility,
-      '' AS a,
-      '' AS b,
-      '' AS c,
-      '' AS d,
-      '' AS e,
-      '' AS f
+      '' AS a, /*분할횟수*/
+      '' AS b, /*검사항목(내용)*/
+      '' AS c,/*검사항목(파일)*/      
+      '' AS d,/*검사항목(합부판정)*/
+      '' AS e,/*구분(신규/재작업)*/
+      '' AS f/*비고*/      
     FROM (
       SELECT
         *,
@@ -153,83 +153,72 @@
   </select>
   
   
-  
-  <select id="getWorkDailySum" parameterType="com.geomet.domain.Work" resultType="com.geomet.domain.Work">
+ <select id="getWorkDailySum" parameterType="Work" resultType="Work">
+  SELECT
+    mach_code,
+    tong_day,
+    FORMAT((tong_day * std_weight), 0)          AS weight_day,
+    tong_sum,
+    FORMAT((tong_sum * std_weight), 0)          AS weight_sum,
+    CONCAT(
+      LPAD(FLOOR(work_minutes / 60), 2, '0'),
+      ':',
+      LPAD(work_minutes % 60,     2, '0')
+    )                                            AS work_time,
+    ROUND(work_minutes / (24 * 60), 1)           AS work_percent,
+    (diff_day * 24)                             AS sum_time,
+    ROUND((diff_day * 20) / (diff_day * 24), 4)  AS sum_percent,
+    FORMAT((tong_day * std_weight) / tong_day, 1) AS avg_day,
+    FORMAT((tong_sum * std_weight) / tong_sum, 1) AS avg_sum,
+    ROUND(work_minutes / 60 / tong_day, 2)       AS uph,
+    ROUND((diff_day * 24) / tong_sum, 2)         AS uph_sum
+  FROM (
     SELECT
       mach_code,
-      tong_day,
-      (tong_day * std_weight)   AS weight_day,
-      tong_sum,
-      (tong_sum * std_weight)   AS weight_sum,
-      work_time,
-      work_time / 24            AS work_percent,
-      (diff_day * 24)           AS sum_time,
-      (diff_day * 20) / (diff_day * 24) AS sum_percent,
-      (tong_day * std_weight) / tong_day AS avg_day,
-      (tong_sum * std_weight) / tong_sum AS avg_sum,
-      work_time / tong_day      AS uph,
-      (diff_day * 24) / tong_sum AS uph_sum
-    FROM (
-      SELECT
-        mach_code,
-        SUM(CASE
-              WHEN end_time &gt;= #{s_time}
-               AND end_time &lt;= #{e_time}
-              THEN 1
-              ELSE 0
-            END)                       AS tong_day,
-        SUM(CASE
-              WHEN end_time &gt;= #{s_time}
-               AND end_time &lt;= #{e_time}
-              THEN weight
-              ELSE 0
-            END)                       AS weight_day,
-        SUM(1)                        AS tong_sum,
-        SUM(weight)                   AS weight_sum,
-        MAX(CASE
-              WHEN #{s_time} &lt;= end_time
-               AND end_time &lt;= #{e_time}
-              THEN
-                CASE
-                  WHEN TIMESTAMPDIFF(
-                         HOUR,
-                         STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
-                         NOW()
-                       ) = 0
-                   THEN 1
-                   ELSE TIMESTAMPDIFF(
-                          HOUR,
-                          STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
-                          NOW()
-                        )
-                END
-              ELSE 0
-            END)                       AS work_time,
-        TIMESTAMPDIFF(
-          DAY,
-          MIN(end_time),
-          MAX(end_time)
-        )                            AS diff_day,
-        MAX(std_weight)               AS std_weight
-      FROM tb_lowdata_save lows
-      INNER JOIN tb_facility fac
-        ON lows.mach_code = fac.facility_mach_code
-      WHERE 1=1
-        <if test="m_code != null">
-          AND mach_code = #{m_code}
-        </if>
-        <if test="s_time != null">
-          AND end_time &gt;= #{s_time}
-        </if>
-        <if test="e_time != null">
-          AND end_time &lt;= #{e_time}
-        </if>
-        AND weight IS NOT NULL
-        AND start_time IS NOT NULL
-        AND end_time IS NOT NULL
-      GROUP BY mach_code
-    ) AS agg
-  </select>
+      SUM(CASE WHEN end_time BETWEEN #{s_time} AND #{e_time} THEN 1 ELSE 0 END)   AS tong_day,
+      SUM(CASE WHEN end_time BETWEEN #{s_time} AND #{e_time} THEN weight ELSE 0 END) AS weight_day,
+      SUM(1)                             AS tong_sum,
+      SUM(weight)                        AS weight_sum,
+      MAX(
+        CASE
+          WHEN end_time BETWEEN #{s_time} AND #{e_time}
+          THEN GREATEST(
+                 TIMESTAMPDIFF(
+                   MINUTE,
+                   STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
+                   NOW()
+                 ),
+                 1
+               )
+          ELSE 0
+        END
+      )                                   AS work_minutes,
+      TIMESTAMPDIFF(
+        DAY,
+        MIN(end_time),
+        MAX(end_time)
+      )                                   AS diff_day,
+      MAX(std_weight)                    AS std_weight
+    FROM tb_lowdata_save lows
+    INNER JOIN tb_facility fac
+      ON lows.mach_code = fac.facility_mach_code
+    WHERE 1=1
+      <if test="m_code != null">
+        AND mach_code = #{m_code}
+      </if>
+      <if test="s_time != null">
+        AND end_time &gt;= #{s_time}
+      </if>
+      <if test="e_time != null">
+        AND end_time &lt;= #{e_time}
+      </if>
+      AND weight IS NOT NULL
+      AND start_time IS NOT NULL
+      AND end_time IS NOT NULL
+    GROUP BY mach_code
+  ) AS agg
+</select>
+
   
 <select id="getReportInputLIst" parameterType="Work" resultType="Work">
   SELECT

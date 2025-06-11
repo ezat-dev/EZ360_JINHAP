@@ -266,7 +266,7 @@
   
   
      <div class="tab">
-	     <h2>1호기(G-600)</h2>
+	     <h2>GEOMET 600톤</h2>
 	    <div class="tab-controls">
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
@@ -554,7 +554,7 @@
     	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center", headerSort: false },
     	        { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false },
     	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 },  // 넓힘
-    	        { title: "품번", field: "item_cd", hozAlign: "center", headerSort: false },
+    	        { title: "품번", field: "item_cd", hozAlign: "left", headerSort: false },
     	        { title: "후처리 사양", field: "next_facility", hozAlign: "center", headerSort: false },
     	        { title: "구분</br>(신규/재작업)", field: "e", hozAlign: "center", headerSort: false },
     	        { title: "비고", field: "f", hozAlign: "center", headerSort: false }
@@ -578,43 +578,59 @@
   $(".excel-button").on("click", function () {
 	    $("#excelOverlay, #excelLoading").show();
 
+	    // 1) 파라미터 준비
 	    let s_time = $("#s_time").val().replaceAll("-", "");
 	    let e_time = s_time;
 	    let m_code = $("#m_code").text().trim();
+	    let ex_mch_name  = "GEOMET 600톤 작업일보";
 
-	    console.log("▶ 엑셀 생성 보내는 값:", { s_time, e_time, m_code });
+	    console.log("▶ 엑셀 생성 요청 파라미터:", { s_time, e_time, m_code, ex_mch_name });
 
+	    // 2) AJAX 호출
 	    $.ajax({
 	        url: "/geomet/work/workDailyReport/excel",
 	        method: "POST",
 	        contentType: "application/json",
-	        data: JSON.stringify({ s_time, e_time, m_code }),
+	        data: JSON.stringify({ s_time, e_time, m_code, ex_mch_name }),
 	        dataType: "json",
+
 	        success: function (result) {
-	            if (!result.error) {
-	                const filename = encodeURIComponent("작업일보G600.xlsx");
-	                console.log("▶ 다운로드 호출 filename:", filename);
+	            console.log("▶ 서버가 돌려준 result:", result);
+
+	            if (result && result.downloadPath) {
+	                // 서버에서 완성된 downloadPath 를 그대로 사용
+	                const downloadUrl = result.downloadPath;
+	                console.log("▶ 다운로드 URL:", downloadUrl);
 
 	                const a = document.createElement('a');
-	                a.href = `/geomet/download_workDailyReport?filename=${filename}`;
+	                a.href = downloadUrl;
+	                a.style.display = 'none';
 	                document.body.appendChild(a);
 	                a.click();
 	                document.body.removeChild(a);
 
 	                alert("작업일보 엑셀 저장 완료되었습니다.");
 	            } else {
-	                alert("엑셀 생성 오류: " + result.error);
+	                console.warn("✋ downloadPath 키가 없습니다!", result);
+	                alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
 	            }
 	        },
+
 	        error: function (xhr, status, error) {
-	            console.error("▶ 엑셀 생성/다운로드 중 오류:", error);
+	            console.error("▶ 엑셀 생성/다운로드 중 오류:", {
+	                status: status,
+	                error: error,
+	                responseText: xhr.responseText
+	            });
 	            alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
 	        },
+
 	        complete: function () {
 	            $("#excelOverlay, #excelLoading").hide();
 	        }
 	    });
 	});
+
 
   
  

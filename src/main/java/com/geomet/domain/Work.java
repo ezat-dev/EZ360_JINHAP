@@ -3,7 +3,7 @@ package com.geomet.domain;
 import java.util.List;
 
 public class Work {
-
+	private String ex_mch_name;
 	private List<Work> table1;
 	private List<Work> table2;
 	private List<Work> table3;
@@ -137,6 +137,12 @@ public class Work {
     
     
     
+	public String getEx_mch_name() {
+		return ex_mch_name;
+	}
+	public void setEx_mch_name(String ex_mch_name) {
+		this.ex_mch_name = ex_mch_name;
+	}
 	public List<Work> getTable1() {
 		return table1;
 	}
