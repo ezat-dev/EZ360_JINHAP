@@ -198,9 +198,14 @@
 </head>
 <body>
   <main>
+   		
+        
+
+
+  
      <div class="tab">
 	     <h2>설비별 생산실적</h2>
-	   <!--  <div class="tab-controls">
+	     <div class="tab-controls">
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
 	        <button class="select-button" onclick="loadWorkDailyData()">
@@ -208,8 +213,8 @@
 	        </button>
 
                 
-	    </div> -->
-
+	
+		</div>
 	</div>
 
         <div class="view">
@@ -226,39 +231,39 @@
 let now_page_code = "b01";
 
 
-  function loadWorkDailyData() {
-
-	  let today = new Date();
-	  let currentDate = today.toISOString().split('T')[0].replace(/-/g, "");  // 2025-05-09 형식으로 변환
-
-	
-	  let tomorrow = new Date(today);
-	  tomorrow.setDate(today.getDate() + 1); 
-	  let nextDate = tomorrow.toISOString().split('T')[0].replace(/-/g, "");  // 2025-05-10 형식으로 변환
-
-	  let s_time = currentDate;  
-	  let e_time = nextDate; 
-	 
-
-	
-
-	  $.ajax({
-	    type: "POST",
-	    url: "/geomet/work/machinePerformStatus/list",
-	    contentType: "application/json",
-	    data: JSON.stringify({ s_time, e_time }),
-	    success: function(response) {
-	    	 console.log("받아온 데이터:", response);
-	      table2.setData(response.table2);
-	      table3.setData(response.table3);
-	    },
-	    error: function(xhr, status, error) {
-	      console.error("에러 응답:", xhr.responseText);
-	      alert("조회에 실패했습니다.");
-	    }
-	  });
-
+function loadWorkDailyData() {
+    let selectedDate = $('#s_time').val(); // yyyy-mm-dd 형식
+    if (!selectedDate) {
+        alert("날짜를 선택해주세요.");
+        return;
     }
+
+    // 날짜에서 하이픈 제거: yyyyMMdd 형식
+    let s_time = selectedDate.replace(/-/g, "");
+
+    // 다음 날 계산
+    let dateObj = new Date(selectedDate);
+    dateObj.setDate(dateObj.getDate() + 1);
+    let nextDate = dateObj.toISOString().split('T')[0].replace(/-/g, "");
+    let e_time = nextDate;
+
+    $.ajax({
+        type: "POST",
+        url: "/geomet/work/machinePerformStatus/list",
+        contentType: "application/json",
+        data: JSON.stringify({ s_time, e_time }),
+        success: function(response) {
+            console.log("받아온 데이터:", response);
+            table2.setData(response.table2);
+            table3.setData(response.table3);
+        },
+        error: function(xhr, status, error) {
+            console.error("에러 응답:", xhr.responseText);
+            alert("조회에 실패했습니다.");
+        }
+    });
+}
+
 
     $(function() {
         const today = new Date().toISOString().split('T')[0];
@@ -384,6 +389,8 @@ let now_page_code = "b01";
     initTables();
     loadWorkDailyData();
   });
+
+
 </script>
 
 </body>

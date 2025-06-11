@@ -6,7 +6,7 @@
 	<!--기준정보 -->
 	<select id="getStandardInfoList" parameterType="condition" resultType="condition">
 		 SELECT *
-		    FROM PWO_GEO_DIVISION_DATA_EZ
+		    FROM PWO_GEO_DIVISION_DATA
 		    
 		    <where>
 		        <if test="coating_nm != null and coating_nm != ''">
@@ -30,7 +30,7 @@
     
 	<insert id="saveDivisionWeight" parameterType="Condition">
 	
-	MERGE INTO PWO_GEO_DIVISION_DATA_EZ
+	MERGE INTO PWO_GEO_DIVISION_DATA
 	USING DUAL
 	ON (
 <!-- 		PLAC_CD = #{plac_cd} AND 
@@ -82,7 +82,7 @@
 
     
         <delete id="delDivisionWeight" parameterType="string">
-        DELETE FROM PWO_GEO_DIVISION_DATA_EZ 
+        DELETE FROM PWO_GEO_DIVISION_DATA 
         WHERE item_cd = #{item_cd}
     	</delete>
     

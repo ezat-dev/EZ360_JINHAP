@@ -1,7 +1,12 @@
 package com.geomet.domain;
 
+import java.util.List;
+
 public class Work {
 
+	private List<Work> table1;
+	private List<Work> table2;
+	private List<Work> table3;
     private String drug_name;
 	private String startDate;
     private String id;
@@ -132,6 +137,24 @@ public class Work {
     
     
     
+	public List<Work> getTable1() {
+		return table1;
+	}
+	public void setTable1(List<Work> table1) {
+		this.table1 = table1;
+	}
+	public List<Work> getTable2() {
+		return table2;
+	}
+	public void setTable2(List<Work> table2) {
+		this.table2 = table2;
+	}
+	public List<Work> getTable3() {
+		return table3;
+	}
+	public void setTable3(List<Work> table3) {
+		this.table3 = table3;
+	}
 	public String getTong() {
 		return tong;
 	}

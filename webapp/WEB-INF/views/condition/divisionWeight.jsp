@@ -394,15 +394,44 @@
             <label>보조 설비</label>
             <input type="text" name="mach_sub" placeholder="">
             
-             <label>보조 장입기준 (kg)</label>
-            <input type="text" name="mach_sub_weight" placeholder="">
-             
-            <label>공용설비 (kg)</label>
-            <input type="text" name="mlpl_weight" placeholder="">
-            
-            <label>K-BLACK (kg)</label>
-            <input type="text" name="kblack_weight" placeholder="">
-            
+          <label for="mach_sub_weight">보조 장입기준 (kg)</label>
+		  <input
+		    type="text"
+		    id="mach_sub_weight"
+		    name="mach_sub_weight"
+		    placeholder="예: 100"
+		    pattern="\d{3}"
+		    maxlength="3"
+		    inputmode="numeric"
+		    title="3자리 숫자를 입력하세요"
+		    required
+		  >
+		
+		  <label for="mlpl_weight">공용설비 (kg)</label>
+		  <input
+		    type="text"
+		    id="mlpl_weight"
+		    name="mlpl_weight"
+		    placeholder="예: 200"
+		    pattern="\d{3}"
+		    maxlength="3"
+		    inputmode="numeric"
+		    title="3자리 숫자를 입력하세요"
+		    required
+		  >
+		
+		  <label for="kblack_weight">K-BLACK (kg)</label>
+		  <input
+		    type="text"
+		    id="kblack_weight"
+		    name="kblack_weight"
+		    placeholder="예: 300"
+		    pattern="\d{3}"
+		    maxlength="3"
+		    inputmode="numeric"
+		    title="3자리 숫자를 입력하세요"
+		    required
+		  >
             <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
         </form>
