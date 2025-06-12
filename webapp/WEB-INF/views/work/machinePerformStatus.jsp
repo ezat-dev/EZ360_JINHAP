@@ -287,7 +287,7 @@ function loadWorkDailyData() {
     	    columns: [
     	        { title: "설비", field: "facility_name", hozAlign: "center", headerSort: false },
     	        { title: "설비코드", field: "mach_code", hozAlign: "center", headerSort: false },
-    	        { title: "투입중량", field: "std_weight", hozAlign: "center", headerSort: false },
+    	        { title: "표준중량", field: "std_weight", hozAlign: "center", headerSort: false },
     	        { title: "C/T", field: "c_t", hozAlign: "center", headerSort: false },
     	        { title: "분할<br>횟수", field: "aa", hozAlign: "center", headerSort: false },
     	        { title: "작업횟수<br>(코팅)", field: "bb", hozAlign: "center", headerSort: false },

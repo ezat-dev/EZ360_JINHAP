@@ -370,7 +370,7 @@
           $('textarea[name="note"]').val(d.note);
           // file 파일명만 표시 (input[type=file] 은 초기화 되므로 텍스트로)
          $('input[name="file_name"]').val(d.file_name);
-          $('#modalContainer').show();
+         $('#modalContainer').show().addClass('show');
         },
       });
 

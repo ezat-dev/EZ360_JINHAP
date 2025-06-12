@@ -125,4 +125,18 @@ public class MachineServiceImpl implements MachineService {
 	      public List<Machine> getErrDataList(Machine machine) {
 	           return machineDao.getErrDataList(machine); 	   
 	      }
+	      
+	      
+	      @Override
+	      public List<Machine> getFacilityList(Machine machine) {
+	           return machineDao.getFacilityList(machine); 	   
+	      }
+	      @Override
+	      public void insertFacility(Machine machine) {
+	           machineDao.insertFacility(machine); 	   
+	      }
+	      @Override
+	      public void deleteFacility(Machine machine) {
+	           machineDao.deleteFacility(machine); 	   
+	      }
 }

@@ -83,7 +83,7 @@
 	        background: white;
 	        width: 24%;
 	        max-width: 500px;
-	        height: 80vh; 
+	        height: 60vh; 
 	        overflow-y: auto; 
 	        margin: 6% auto 0;
 	        padding: 20px;

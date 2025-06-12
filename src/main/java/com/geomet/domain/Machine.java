@@ -152,10 +152,63 @@ public class Machine {
 
 
     
+    private Integer facility_code;
+
+    private String facility_comment;
+    private String facility_mach_code;
+
+    private String std_weight;
+    private String facility_yn;
+    private Integer ch_idx;
     
-    
-    
-    
+
+	public Integer getFacility_code() {
+		return facility_code;
+	}
+
+	public void setFacility_code(Integer facility_code) {
+		this.facility_code = facility_code;
+	}
+
+	public String getFacility_comment() {
+		return facility_comment;
+	}
+
+	public void setFacility_comment(String facility_comment) {
+		this.facility_comment = facility_comment;
+	}
+
+	public String getFacility_mach_code() {
+		return facility_mach_code;
+	}
+
+	public void setFacility_mach_code(String facility_mach_code) {
+		this.facility_mach_code = facility_mach_code;
+	}
+
+	public String getStd_weight() {
+		return std_weight;
+	}
+
+	public void setStd_weight(String std_weight) {
+		this.std_weight = std_weight;
+	}
+
+	public String getFacility_yn() {
+		return facility_yn;
+	}
+
+	public void setFacility_yn(String facility_yn) {
+		this.facility_yn = facility_yn;
+	}
+
+	public Integer getCh_idx() {
+		return ch_idx;
+	}
+
+	public void setCh_idx(Integer ch_idx) {
+		this.ch_idx = ch_idx;
+	}
 
 	public String getPosition_cd() {
 		return position_cd;

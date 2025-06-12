@@ -54,4 +54,9 @@ public interface MachineDao {
 		void dellogStatus(Machine machine); 
 		
 		List<Machine> getErrDataList(Machine machine);
+		
+		
+		List<Machine> getFacilityList(Machine machine);
+		void insertFacility(Machine machine); 
+		void deleteFacility(Machine machine);
 }

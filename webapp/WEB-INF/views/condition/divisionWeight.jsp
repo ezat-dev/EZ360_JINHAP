@@ -309,6 +309,7 @@
 
     <main class="main">
         <div class="tab">
+        
 
             <div class="button-container">
             
@@ -362,10 +363,6 @@
         <div class="view">
             <div id="dataList"></div>
         </div>
-           	<h3>기준정보 행번호 추가 및 그룹ID 도금품번 품명 정렬기능 추가했습니다.</h3>
-          	<h3>새로 고침하지 않고 바로 추가 할 수 있도록 적용했습니다</h3>
-       <h3>실시간으로 프로그램 적용 중입니다 사용하시다가 로그 아웃 되는 경우 양해 부탁드립니다.</h3>
- 
     </main>
 	
 	<div id="modalContainer" class="modal" >
@@ -448,51 +445,40 @@
 
 
   <script>
-  let now_page_code = "c05";
+let now_page_code = "c05";
+let dataTable;
+let selectedRow = null;
 
-  $(document).ready(function () {
-	    getDataList();
+$(document).ready(function () {
+    // 초기 테이블만 생성
+    initDataTable();
 
+    // 최초 조회
+    loadData();
 
-	    $(".select-button").click(function () {
-	        dataTable.setData("/geomet/condition/divisionWeight/list", {
-	            "group_id": $("#s_group_id").val() || "",
-	            "item_cd": $("#s_item_cd").val() || "",
-	            "item_nm": $("#s_item_nm").val() || "",
-	            "coating_nm": $("#s_coating_nm").val() || "",
-	        });
-	    });
-
-	    // 모달 열기 버튼 이벤트
-	    $(".insert-button").click(function () {
-	        let modal = $("#modalContainer");
-	        modal.find("input[type='text'], input[type='number'], input[type='date'], textarea").val("");
-	        
-	        modal.show(); 
-	        modal.addClass("show");
-	    });
-
-	    // 모달 닫기 버튼 이벤트
-	    $(".close, #closeModal").click(function () {
-	        let modal = $("#modalContainer");
-	        modal.removeClass("show").hide(); 
-	    });
-  
+    // 조회 버튼 클릭 시
+    $(".select-button").click(function () {
+        loadData(); // 데이터만 교체
     });
 
+    // 모달 열기
+    $(".insert-button").click(function () {
+        const modal = $("#modalContainer");
+        modal.find("input, textarea").val("");
+        modal.show().addClass("show");
+    });
 
+    // 모달 닫기
+    $(".close, #closeModal").click(function () {
+        $("#modalContainer").removeClass("show").hide();
+    });
 
-
+    // 저장
     $("#saveCorrStatus").click(function (event) {
         event.preventDefault();
 
-        var corrForm = new FormData($("#corrForm")[0]);
-        for (var pair of corrForm.entries()) {
-            console.log(pair[0] + ": " + pair[1]);
-        }
+        const corrForm = new FormData($("#corrForm")[0]);
 
-
-        
         $.ajax({
             url: "/geomet/condition/divisionWeight/insert",
             type: "POST",
@@ -501,157 +487,46 @@
             processData: false,
             contentType: false,
             success: function (response) {
-                alert("기준정보 성공적으로 저장되었습니다!");
+                alert("기준정보가 성공적으로 저장되었습니다!");
                 $("#modalContainer").hide();
-
-                // 기존: 전체 테이블 다시 불러오기
-                // getDataList();
-
-                // ✅ 수정: 새로 추가된 데이터를 직접 삽입
-                if (response && response.data) {
-                    dataTable.addData([response.data], true); // true = top에 삽입, false = bottom
-                }
+                loadData(); // 데이터 리플레이스
             }
         });
-
     });
 
-
-
-    
-    $(".delete-button").click(function(event) {
+    // 삭제
+    $(".delete-button").click(function (event) {
         event.preventDefault();
-        
-        console.log("삭제 버튼 클릭됨");
 
         if (!selectedRow) {
             alert("삭제할 행을 선택하세요.");
             return;
         }
 
-        var item_cd = selectedRow.getData().item_cd;
-        
-        console.log("전송할 plating_no 값:", item_cd);
-
+        const item_cd = selectedRow.getData().item_cd;
         if (!item_cd) {
             alert("삭제할 항목이 없습니다.");
             return;
         }
 
-        var requestData = JSON.stringify({ "item_cd": item_cd });
-        console.log("전송된 데이터:", requestData);
-
         $.ajax({
             url: "/geomet/condition/divisionWeight/del",
             type: "POST",
             contentType: "application/json",
-            data: requestData,
+            data: JSON.stringify({ item_cd }),
             dataType: "json",
-            success: function(response) {
-                console.log("삭제 성공:", response);
+            success: function (response) {
                 alert("기준정보가 성공적으로 삭제되었습니다!");
-                selectedRow.delete();
                 selectedRow = null;
-
-                dataTable.setData("/geomet/condition/divisionWeight/list", {
-                    "group_id": $("#s_group_id").val() || "",
-                    "item_cd": $("#s_item_cd").val() || "",
-                    "item_nm": $("#s_item_nm").val() || ""
-                });
-                getDataList();
+                loadData(); // 삭제 후 데이터 다시 로딩
             },
-            error: function(xhr, status, error) {
-                console.log("삭제 오류 발생:", xhr.responseText);
-                alert("삭제 중 오류가 발생했습니다: " + error);
+            error: function (xhr, status, error) {
+                alert("삭제 중 오류 발생: " + error);
             }
         });
     });
 
-    var selectedRow = null;
-    function getDataList() {
-        dataTable = new Tabulator("#dataList", {
-            height: "780px",
-            layout: "fitColumns",
-            selectable: true,
-            tooltips: true,
-            selectableRangeMode: "click",
-            reactiveData: true,
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
-            headerHozAlign: "center",
-            ajaxConfig: "POST",
-            ajaxLoader: false,
-            ajaxURL: "/geomet/condition/divisionWeight/list",
-            ajaxProgressiveLoad: "scroll",
-            ajaxParams: {
-                "group_id": $("#s_group_id").val() || "",
-                "item_cd": $("#s_item_cd").val() || "",
-                "item_nm": $("#s_item_nm").val() || "",
-                "coating_nm": $("#s_coating_nm").val() || "",
-            },
-            placeholder: "조회된 데이터가 없습니다.",
-            paginationSize: 20,
-            ajaxResponse: function(url, params, response) {
-                $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                return response;
-            },
-            columns: [
-            	 { title: 'NO',             formatter: 'rownum', width: 70,  hozAlign: 'center' },
-            	  { title: "그룹ID",      field: "group_id",   sorter: "string", width: 160, hozAlign: "center"},
-            	  { title: "도금품번",      field: "item_cd",  sorter: "string", width: 180, hozAlign: "center"},
-            	  { title: "품명",          field: "item_nm",     sorter: "string", width: 360, hozAlign: "center" },
-             	  { title: "메인설비",    field: "mach_main",    sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            	  { title: "메인장입 기준",      field: "mach_main_weight",     sorter: "string", width: 160, hozAlign: "center", headerSort: false },
-            	  { title: "표면처리 사양",      field: "coating_nm",     sorter: "string", width: 190, hozAlign: "center", headerSort: false },
-            	  { title: "보조설비",       field: "mach_sub",         sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            	  { title: "보조설비 기준",        field: "mach_sub_weight",         sorter: "string", width: 160, hozAlign: "center", headerSort: false },
-            	  { title: "공용설비",    field: "mlpl_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            	  { title: "K-BLACK",     field: "kblack_weight",      sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            	],
-
-            rowClick: function(e, row) {
-                $("#dataList .tabulator-row").removeClass("row_select");
-                row.getElement().classList.add("row_select");
-
-                selectedRow = row; 
-                console.log("선택된 도금품번:", selectedRow.getData().plating_no);
-            },
-            rowDblClick: function(e, row) {
-                var d = row.getData();
-                selectedRowData = d;
-
-                // 폼 초기화
-                $('#corrForm')[0].reset();
-
-                // 각 필드에 값 채우기
-                var $f = $('#corrForm');
-
-                $f.find('input[name="group_id"]').val(d.group_id);
-                $f.find('input[name="item_cd"]').val(d.item_cd);
-                $f.find('input[name="item_nm"]').val(d.item_nm);
-                $f.find('input[name="mach_main"]').val(d.mach_main);
-                $f.find('input[name="mach_main_weight"]').val(d.mach_main_weight);
-                $f.find('input[name="mach_sub"]').val(d.mach_sub);
-                $f.find('input[name="coating_nm"]').val(d.coating_nm);
-                $f.find('input[name="mach_sub_weight"]').val(d.mach_sub_weight);
-                $f.find('input[name="mlpl_weight"]').val(d.mlpl_weight);
-                $f.find('input[name="kblack_weight"]').val(d.kblack_weight);
-
-              
-                if (d.no !== undefined) {
-                    $f.find('input[name="no"]').val(d.no);
-                }
-
-              
-                $('#modalContainer').show().addClass('show');
-            }
-        });
-    }
-
-
-
-
-
+    // 엑셀 다운로드
     $(".excel-button").on("click", function () {
         $("#excelOverlay").show();
         $("#excelLoading").show();
@@ -662,23 +537,19 @@
             dataType: "json",
             success: function (result) {
                 if (!result.error) {
-                   
-                  
                     const a = document.createElement('a');
                     a.href = "/geomet/download_divisionWeight?filename=기준정보.xlsx";
                     a.style.display = 'none';
                     document.body.appendChild(a);
                     a.click();
                     document.body.removeChild(a);
-                    alert("기준정보 엑셀 저장 완료되었습니다.");
-                    
+                    alert("엑셀 저장 완료되었습니다.");
                 } else {
                     alert("엑셀 생성 오류: " + result.error);
                 }
             },
-            error: function (xhr, status, error) {
-                alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
-                console.error("Error:", error);
+            error: function () {
+                alert("엑셀 다운로드 오류 발생");
             },
             complete: function () {
                 $("#excelOverlay").hide();
@@ -687,24 +558,19 @@
         });
     });
 
-
-
-    
+    // 엑셀 업로드
     $(".excel-import-button").on("click", function () {
-        $("#fileInput").val(""); 
-        $("#fileInput").click(); 
+        $("#fileInput").val("").click();
     });
 
-    // 파일 선택 후 업로드 처리
     $("#fileInput").on("change", function () {
-        var file = this.files[0];
+        const file = this.files[0];
         if (!file) return;
 
-        // ⬇ 로딩 화면 표시
         $("#excelOverlay").show();
         $("#excelLoading").show();
 
-        var formData = new FormData();
+        const formData = new FormData();
         formData.append("file", file);
 
         $.ajax({
@@ -715,14 +581,11 @@
             processData: false,
             success: function (response) {
                 if (response.success) {
-                    alert(response.message || "엑셀 업로드가 완료되었습니다.");
-                    getDataList();
+                    alert(response.message || "엑셀 업로드 완료");
+                    loadData(); // 업로드 후 데이터 갱신
                 } else {
                     alert(response.error || "엑셀 업로드 실패");
                 }
-            },
-            error: function (xhr, status, error) {
-                alert("서버 오류 발생: " + error);
             },
             complete: function () {
                 $("#excelOverlay").hide();
@@ -730,10 +593,87 @@
             }
         });
     });
+});
 
+// 초기 Tabulator 정의
+function initDataTable() {
+    dataTable = new Tabulator("#dataList", {
+        height: "830px",
+        layout: "fitColumns",
+        reactiveData: true,
+        selectable: true,
+        tooltips: true,
+        ajaxLoader: false,
+        paginationSize: 20,
+        placeholder: "조회된 데이터가 없습니다.",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        headerHozAlign: "center",
+        columns: [
+            { title: 'NO', formatter: 'rownum', width: 70, hozAlign: 'center' },
+            { title: "그룹ID", field: "group_id", sorter: "string", width: 160, hozAlign: "center" },
+            { title: "도금품번", field: "item_cd", sorter: "string", width: 180, hozAlign: "center" },
+            { title: "품명", field: "item_nm", sorter: "string", width: 360, hozAlign: "center", headerSort: false },
+            { title: "메인설비", field: "mach_main", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            { title: "메인장입 기준", field: "mach_main_weight", sorter: "string", width: 160, hozAlign: "center", headerSort: false },
+            { title: "표면처리 사양", field: "coating_nm", sorter: "string", width: 190, hozAlign: "center", headerSort: false },
+            { title: "보조설비", field: "mach_sub", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            { title: "보조설비 기준", field: "mach_sub_weight", sorter: "string", width: 160, hozAlign: "center", headerSort: false },
+            { title: "공용설비", field: "mlpl_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            { title: "K-BLACK", field: "kblack_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false }
+        ],
+        rowClick: function (e, row) {
+            $("#dataList .tabulator-row").removeClass("row_select");
+            row.getElement().classList.add("row_select");
+            selectedRow = row;
+        },
+        rowDblClick: function (e, row) {
+            const d = row.getData();
+            const $f = $('#corrForm');
+            $f[0].reset();
+            $f.find('input[name="group_id"]').val(d.group_id);
+            $f.find('input[name="item_cd"]').val(d.item_cd);
+            $f.find('input[name="item_nm"]').val(d.item_nm);
+            $f.find('input[name="mach_main"]').val(d.mach_main);
+            $f.find('input[name="mach_main_weight"]').val(d.mach_main_weight);
+            $f.find('input[name="mach_sub"]').val(d.mach_sub);
+            $f.find('input[name="coating_nm"]').val(d.coating_nm);
+            $f.find('input[name="mach_sub_weight"]').val(d.mach_sub_weight);
+            $f.find('input[name="mlpl_weight"]').val(d.mlpl_weight);
+            $f.find('input[name="kblack_weight"]').val(d.kblack_weight);
+            if (d.no !== undefined) {
+                $f.find('input[name="no"]').val(d.no);
+            }
+            $('#modalContainer').show().addClass('show');
+        }
+    });
+}
 
+// Ajax로 데이터만 교체
+function loadData() {
+    $.ajax({
+        url: "/geomet/condition/divisionWeight/list",
+        type: "POST",
+        dataType: "json",
+        data: {
+            group_id: $("#s_group_id").val() || "",
+            item_cd: $("#s_item_cd").val() || "",
+            item_nm: $("#s_item_nm").val() || "",
+            coating_nm: $("#s_coating_nm").val() || "",
+        },
+        success: function (data) {
+            if (data.status === "success") {
+                dataTable.replaceData(data.data); // ✅ 배열만 넘김
+            } else {
+                alert("데이터 조회 실패: " + data.message);
+            }
+        },
 
-    
+        error: function () {
+            alert("데이터 조회 실패");
+        }
+    });
+}
 </script>
 
 

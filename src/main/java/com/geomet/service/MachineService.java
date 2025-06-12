@@ -57,4 +57,10 @@ public interface MachineService {
 	
 	List<Machine> getErrDataList(Machine machine);
 	
+	
+	  //설비 기준 정보
+	List<Machine> getFacilityList(Machine machine);
+	void insertFacility(Machine machine); 
+	void deleteFacility(Machine machine);
+	
 }

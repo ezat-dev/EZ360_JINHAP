@@ -745,6 +745,49 @@ public class MachineController {
     }
 
 
+    
+
+    @RequestMapping(value= "/machine/mch_info", method = RequestMethod.GET)
+    public String mch_info(Model model) {
+        return "/machine/mch_info.jsp"; 
+    }
+
+    
+    
+    //설비 기준 정보
+    @RequestMapping(value = "/machine/mch_info/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Machine> getFacilityList(Machine machine) {  
+        return machineService.getFacilityList(machine);
+    }
+
+    //설비 기준 정보
+    @RequestMapping(value = "/machine/mch_info/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertFacility(@ModelAttribute Machine machine) {
+
+
+        machineService.insertFacility(machine); 
+
+        return "success";
+    }
+    @RequestMapping(value = "/machine/mch_info/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> deleteFacility(@RequestBody Machine machine) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("삭제 요청 받은 데이터: " + machine);
+
+        if (machine.getNo() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        machineService.deleteFacility(machine);
+
+        rtnMap.put("data", "success");
+        return rtnMap;
+    }
+    
 
     
 }

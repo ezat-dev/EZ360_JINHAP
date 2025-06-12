@@ -253,6 +253,9 @@ function pageObject(paramKey){
 			"h05":["/geomet/machine/spareStatus","스페어부품 관리"],
 			"h06":["/geomet/machine/logStatus","공무 일지"],
 			"h07":["/geomet/work/MTTR","MTTR"],
+			
+			"h08":["/geomet/machine/mch_info","설비 기준관리"],
+			
 			"i01":["/geomet/user/standardDocManage","작업 표준서"],
 			"i02":["/geomet/user/productDocManage","사양별 대기통수"],
 			"i03":["/geomet/user/checkDocManage","점검일정 체크"],

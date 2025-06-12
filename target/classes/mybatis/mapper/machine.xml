@@ -501,8 +501,67 @@ SELECT * FROM v_moniteolingling
 </select>
 
 
+
+
+
+
+<select id="getFacilityList" resultType="Machine">
+    SELECT 
+        facility_code,
+        facility_name,
+        facility_mach_code,
+        facility_comment,
+        c_t,
+        capa,
+        std_weight,
+        facility_yn,
+        ch_idx
+    FROM tb_facility
+    ORDER BY ch_idx ASC
+</select>
+
+
+
+
+ <delete id="deleteFacility" parameterType="Machine">
+    DELETE FROM tb_facility
+    WHERE facility_code = #{facility_code}
+</delete>
+ 
   
-  
+<insert id="insertFacility" parameterType="Machine">
+    INSERT INTO tb_facility (
+        facility_code,
+        facility_name,
+        facility_mach_code,
+        facility_comment,
+        c_t,
+        capa,
+        std_weight,
+        facility_yn,
+        ch_idx
+    )
+    VALUES (
+        #{facility_code},
+        #{facility_name},
+        #{facility_mach_code},
+        #{facility_comment},
+        #{c_t},
+        #{capa},
+        #{std_weight},
+        #{facility_yn},
+        #{ch_idx}
+    )
+    ON DUPLICATE KEY UPDATE
+        facility_name = VALUES(facility_name),
+        facility_mach_code = VALUES(facility_mach_code),
+        facility_comment = VALUES(facility_comment),
+        c_t = VALUES(c_t),
+        capa = VALUES(capa),
+        std_weight = VALUES(std_weight),
+        facility_yn = VALUES(facility_yn),
+        ch_idx = VALUES(ch_idx)
+</insert>
 
 </mapper>
 

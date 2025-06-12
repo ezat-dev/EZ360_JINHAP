@@ -146,4 +146,22 @@ public class MachineDaoImpl implements MachineDao{
       
         return sqlSession.selectList("machine.getErrDataList", machine);
     }
+    
+    
+    //설비 기준정보
+    @Override
+    public List<Machine> getFacilityList(Machine machine) {
+      
+        return sqlSession.selectList("machine.getFacilityList", machine);
+    }
+    @Override
+    public void insertFacility(Machine machine) {
+           sqlSession.insert("machine.insertFacility", machine);
+    }
+    
+    @Override
+    public void deleteFacility(Machine machine) {
+           sqlSession.insert("machine.deleteFacility", machine);
+    }
+    
 }

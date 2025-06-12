@@ -131,7 +131,7 @@
           ON lows.mach_code = fac.facility_mach_code
         WHERE 1=1
           <if test="s_time != null">
-            AND end_time &gt;= #{s_time}
+            AND start_time &gt;= #{s_time}
           </if>
           <if test="e_time != null">
             AND end_time &lt;= #{e_time}
@@ -207,7 +207,7 @@
         AND mach_code = #{m_code}
       </if>
       <if test="s_time != null">
-        AND end_time &gt;= #{s_time}
+        AND start_time &gt;= #{s_time}
       </if>
       <if test="e_time != null">
         AND end_time &lt;= #{e_time}

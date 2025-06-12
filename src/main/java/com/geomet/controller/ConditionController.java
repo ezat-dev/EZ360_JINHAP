@@ -367,12 +367,8 @@ public class ConditionController {
     ) {
         Map<String, Object> rtnMap = new HashMap<>();
 
- 
-        System.out.println("========== [조회 조건] ==========");
-        System.out.println("coating_nm: " + coating_nm);
-        System.out.println("group_id  : " + group_id);
-        System.out.println("item_cd   : " + item_cd);
-        System.out.println("item_nm   : " + item_nm);
+        String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("기준정보 조회시간"+ now );
         System.out.println("=================================");
 
         try {
@@ -426,9 +422,16 @@ public class ConditionController {
         userLog.setFileName("없음");
         UserService.insertUserLog(userLog);
 
+        
+        String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("========== [기준정보 추가 요청 시간: " + now + "] ==========");
+        System.out.println("USER_CODE  : " + UserController.USER_CODE);
+        System.out.println("WorkDesc   : " + userLog.getWorkDesc());
+        
+        
         // 저장된 객체를 그대로 반환 (Tabulator에 추가하기 위해)
         rtnMap.put("success", true);
-        rtnMap.put("data", condition);
+		/* rtnMap.put("data", condition); */
 
         return rtnMap;
     }
@@ -454,7 +457,12 @@ public class ConditionController {
         UserService.insertUserLog(userLog); 
 
         conditionService.delDivisionWeight(condition);
+        Condition standardInfo = new Condition();
+        List<Condition> standardInfoList = conditionService.getStandardInfoList(standardInfo);
 
+        rtnMap.put("status", "success");
+        rtnMap.put("last_page", 1);
+        rtnMap.put("data", standardInfoList);
         rtnMap.put("data", "success");
         return rtnMap;
     }
