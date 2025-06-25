@@ -308,6 +308,7 @@
 <body>
 
     <main class="main">
+    <h3>표 우측에 (삭제 수정 추가) id와 시간 표기 했습니다</h3>
         <div class="tab">
         
 
@@ -598,7 +599,7 @@ $(document).ready(function () {
 // 초기 Tabulator 정의
 function initDataTable() {
     dataTable = new Tabulator("#dataList", {
-        height: "830px",
+        height: "770px",
         layout: "fitColumns",
         reactiveData: true,
         selectable: true,
@@ -610,7 +611,7 @@ function initDataTable() {
         rowVertAlign: "middle",
         headerHozAlign: "center",
         columns: [
-            { title: 'NO', formatter: 'rownum', width: 70, hozAlign: 'center' },
+            { title: 'NO', formatter: 'rownum', width: 60, hozAlign: 'center' },
             { title: "그룹ID", field: "group_id", sorter: "string", width: 160, hozAlign: "center" },
             { title: "도금품번", field: "item_cd", sorter: "string", width: 180, hozAlign: "center" },
             { title: "품명", field: "item_nm", sorter: "string", width: 360, hozAlign: "center", headerSort: false },
@@ -618,9 +619,11 @@ function initDataTable() {
             { title: "메인장입 기준", field: "mach_main_weight", sorter: "string", width: 160, hozAlign: "center", headerSort: false },
             { title: "표면처리 사양", field: "coating_nm", sorter: "string", width: 190, hozAlign: "center", headerSort: false },
             { title: "보조설비", field: "mach_sub", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            { title: "보조설비 기준", field: "mach_sub_weight", sorter: "string", width: 160, hozAlign: "center", headerSort: false },
+            { title: "보조설비 기준", field: "mach_sub_weight", sorter: "string", width: 150, hozAlign: "center", headerSort: false },
             { title: "공용설비", field: "mlpl_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
-            { title: "K-BLACK", field: "kblack_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false }
+            { title: "K-BLACK", field: "kblack_weight", sorter: "string", width: 90, hozAlign: "center", headerSort: false },
+            { title: "ID", field: "user_id", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
+            { title: "DATE", field: "upd_dt", sorter: "string", width: 120, hozAlign: "center"}
         ],
         rowClick: function (e, row) {
             $("#dataList .tabulator-row").removeClass("row_select");

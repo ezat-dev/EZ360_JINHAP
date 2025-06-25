@@ -1,6 +1,10 @@
 package com.geomet.domain;
 
 public class Condition {
+		private String user_name;
+		private String upd_dt;
+		private String user_id;
+	
 	
 	 	private String plating_no;      // 도금품번 (기준값)
 	    private String material_no;     // 자재품번
@@ -111,6 +115,24 @@ public class Condition {
 
 
 
+		public String getUser_id() {
+			return user_id;
+		}
+		public void setUser_id(String user_id) {
+			this.user_id = user_id;
+		}
+		public String getUser_name() {
+			return user_name;
+		}
+		public void setUser_name(String user_name) {
+			this.user_name = user_name;
+		}
+		public String getUpd_dt() {
+			return upd_dt;
+		}
+		public void setUpd_dt(String upd_dt) {
+			this.upd_dt = upd_dt;
+		}
 		public String getCoating_nm() {
 			return coating_nm;
 		}

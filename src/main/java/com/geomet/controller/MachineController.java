@@ -788,6 +788,25 @@ public class MachineController {
         return rtnMap;
     }
     
+    //설비별 모니터링
+    @RequestMapping(value = "/machine/detailMonitoring/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Machine> detailMonitoringList(Machine machine) {
+        List<Machine> result = machineService.getdetailMonitoring(machine);
+        
+        System.out.println("🔍 getdetailMonitoring result:");
+        for (Machine m : result) {
+            System.out.println("mach_code: " + m.getMach_code());
+            System.out.println("target: " + m.getTarget());
+            System.out.println("prodqty: " + m.getProdqty());
+            System.out.println("rate: " + m.getRate());
+            System.out.println("n_rate: " + m.getN_rate());
+            System.out.println("c_rate: " + m.getC_rate());
+            System.out.println("-------------");
+        }
+
+        return result;
+    }
 
     
 }

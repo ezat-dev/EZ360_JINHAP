@@ -191,6 +191,68 @@
         .row_select {
 	    background-color: #ffeeba !important;
 	    }
+	    
+	   	    	@media (max-width: 600px) {
+	  .form-row {
+	    flex-direction: column;
+	    align-items: stretch;
+	  }
+	  .form-label {
+	    margin-bottom: 4px;
+	  }
+	}
+	
+	.excel-import-button:hover {
+	    background-color: #f0f0f0;
+	}
+	
+	#excelOverlay {
+	  display: none;
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  background-color: rgba(0,0,0,0.4);
+	  z-index: 9998;
+	}
+	
+	/* 로딩 박스 */
+	#excelLoading {
+	  display: none;
+	  position: fixed;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  background-color: white;
+	  padding: 20px 30px;
+	  border-radius: 10px;
+	  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	  font-size: 16px;
+	  font-weight: bold;
+	  z-index: 9999;
+	  text-align: center;
+	}
+	
+	/* 로딩 스피너 */
+	#excelLoading::before {
+	  content: "";
+	  display: block;
+	  margin: 0 auto 10px;
+	  width: 30px;
+	  height: 30px;
+	  border: 4px solid #ccc;
+	  border-top: 4px solid #4caf50;
+	  border-radius: 50%;
+	  animation: spin 1s linear infinite;
+	}
+	
+	/* 애니메이션 */
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	} 
+	    
 </style>
 
 
@@ -200,6 +262,9 @@
 </head>
 <body>
   <main>
+ <div id="excelOverlay"></div>
+<div id="excelLoading">엑셀 기능 진행 중 입니다.<br>잠시만 기다려주세요...</div>
+  
      <div class="tab">
 	     <h2>PLUS / ML(공용설비)</h2>
 	    <div class="tab-controls">
@@ -214,6 +279,9 @@
                       <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
+				 <button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
+                </button>
 	    </div>
 	    <div id="m_code">G04-GG07</div>
 	</div>
@@ -416,14 +484,14 @@
     	    columnHeaderVertAlign: "middle",
     	    rowVertAlign: "middle",
     	    columnDefaults: {
-    	        hozAlign: "centert",
+    	        hozAlign: "center",
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "주간/야간", field: "gb", headerSort: false,hozAlign: "centert" },
-    	        { title: "점도</br>PLUS : 45±10초", field: "visc",hozAlign: "centert", headerSort: false },
-    	        { title: "예열존온도</br>(설정값±10°C)", field: "pre_temp", hozAlign: "centert", headerSort: false },
-    	        { title: "가열존온도</br>(설정값±10°C)", field: "heat_temp", hozAlign: "centert", headerSort: false }
+    	        { title: "주간/야간", field: "gb", headerSort: false,hozAlign: "center" },
+    	        { title: "점도</br>PLUS : 45±10초", field: "visc",hozAlign: "center", headerSort: false },
+    	        { title: "예열존온도</br>(설정값±10°C)", field: "pre_temp", hozAlign: "center", headerSort: false },
+    	        { title: "가열존온도</br>(설정값±10°C)", field: "heat_temp", hozAlign: "center", headerSort: false }
     	    ],
     	    rowClick: function (e, row) {
     	        selectedRowData = row.getData();
@@ -455,23 +523,23 @@
     	    columnHeaderVertAlign: "middle",
     	    rowVertAlign: "middle",
     	    columnDefaults: {
-    	        hozAlign: "centert",
+    	        hozAlign: "center",
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "일 작업통수", field: "tong_day", hozAlign: "centert",headerSort: false  },
-    	        { title: "생산량", field: "weight_day", hozAlign: "centert",headerSort: false },
-    	        { title: "평균생산중량", field: "avg_day", hozAlign: "centert",headerSort: false },
-    	        { title: "누적 생산통수", field: "tong_sum", hozAlign: "centert" ,headerSort: false},
-    	        { title: "누적 생산량", field: "weight_sum", hozAlign: "centert",headerSort: false },
-    	        { title: "평균중량", field: "avg_sum", hozAlign: "centert",headerSort: false },
-    	        { title: "가동시간", field: "work_time", hozAlign: "centert",headerSort: false },
-    	        { title: "가동률", field: "work_percent", hozAlign: "centert" ,headerSort: false},
+    	        { title: "일 작업통수", field: "tong_day", hozAlign: "center",headerSort: false  },
+    	        { title: "생산량", field: "weight_day", hozAlign: "center",headerSort: false },
+    	        { title: "평균생산중량", field: "avg_day", hozAlign: "center",headerSort: false },
+    	        { title: "누적 생산통수", field: "tong_sum", hozAlign: "center" ,headerSort: false},
+    	        { title: "누적 생산량", field: "weight_sum", hozAlign: "center",headerSort: false },
+    	        { title: "평균중량", field: "avg_sum", hozAlign: "center",headerSort: false },
+    	        { title: "가동시간", field: "work_time", hozAlign: "center",headerSort: false },
+    	        { title: "가동률", field: "work_percent", hozAlign: "center" ,headerSort: false},
     	        { title: "월누적", columns: [
-    	            { title: "가동시간", field: "sum_time", hozAlign: "centert",headerSort: false },
-    	            { title: "가동율", field: "sum_percent", hozAlign: "centert",headerSort: false },
-    	            { title: "UPH", field: "uph", hozAlign: "centert",headerSort: false },
-    	            { title: "UPH(월누적)", field: "uph_sum", hozAlign: "centert",headerSort: false }
+    	            { title: "가동시간", field: "sum_time", hozAlign: "center",headerSort: false },
+    	            { title: "가동율", field: "sum_percent", hozAlign: "center",headerSort: false },
+    	            { title: "UPH", field: "uph", hozAlign: "center",headerSort: false },
+    	            { title: "UPH(월누적)", field: "uph_sum", hozAlign: "center",headerSort: false }
     	        ]}
     	    ]
     	});
@@ -483,27 +551,27 @@
     	    columnHeaderVertAlign: "middle",
     	    rowVertAlign: "middle",
     	    columnDefaults: {
-    	        hozAlign: "centert",
+    	        hozAlign: "center",
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "순서", field: "r_num", hozAlign: "centert", headerSort: false, width: 50 },  
-    	        { title: "투입시간", field: "start_time", hozAlign: "centert",headerSort: false },
-    	        { title: "완료시간", field: "end_time", hozAlign: "centert",headerSort: false },
-    	        { title: "투입통수", field: "tong_day", hozAlign: "centert",headerSort: false },
-    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "centert",headerSort: false },
-    	        { title: "분할횟수", field: "a", hozAlign: "centert", headerSort: false, visible: false },
+    	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },  
+    	        { title: "투입시간", field: "start_time", hozAlign: "center",headerSort: false },
+    	        { title: "완료시간", field: "end_time", hozAlign: "center",headerSort: false },
+    	        { title: "투입통수", field: "tong_day", hozAlign: "center",headerSort: false },
+    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center",headerSort: false },
+    	        { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false, visible: false },
 
     	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 }, 
     	        { title: "품번", field: "item_cd", hozAlign: "left",headerSort: false },
-    	        { title: "사양", field: "next_facility", hozAlign: "centert",headerSort: false },
+    	        { title: "사양", field: "next_facility", hozAlign: "center",headerSort: false },
 /*     	        { title: "검사항목", columns: [
-    	            { title: "외관", field: "b", hozAlign: "centert",headerSort: false },
-    	            { title: "밀착성 테스트", field: "c", hozAlign: "centert", headerSort: false, visible: false },
-    	            { title: "합부판정", field: "d", hozAlign: "centert" ,headerSort: false}
+    	            { title: "외관", field: "b", hozAlign: "center",headerSort: false },
+    	            { title: "밀착성 테스트", field: "c", hozAlign: "center", headerSort: false, visible: false },
+    	            { title: "합부판정", field: "d", hozAlign: "center" ,headerSort: false}
     	        ]}, */
-    	        { title: "구분</br>(신규/재작업)", field: "e", hozAlign: "centert",headerSort: false },
-    	        { title: "비고", field: "f", hozAlign: "centert",headerSort: false }
+    	        { title: "구분</br>(신규/재작업)", field: "e", hozAlign: "center",headerSort: false },
+    	        { title: "비고", field: "f", hozAlign: "center",headerSort: false }
     	    ]
     	});
 
@@ -514,6 +582,66 @@
     initTables();
     loadWorkDailyData();
   });
+
+
+
+
+  $(".excel-button").on("click", function () {
+	    $("#excelOverlay, #excelLoading").show();
+
+	    // 1) 파라미터 준비
+	    let s_time = $("#s_time").val().replaceAll("-", "");
+	    let e_time = s_time;
+	    let m_code = $("#m_code").text().trim();
+	    let ex_mch_name  = "GEOMET 공용설비 작업일보";
+
+	    console.log("▶ 엑셀 생성 요청 파라미터:", { s_time, e_time, m_code, ex_mch_name });
+
+	    // 2) AJAX 호출
+	    $.ajax({
+	        url: "/geomet/work/workDailyReport_common/excel",
+	        method: "POST",
+	        contentType: "application/json",
+	        data: JSON.stringify({ s_time, e_time, m_code, ex_mch_name }),
+	        dataType: "json",
+
+	        success: function (result) {
+	            console.log("▶ 서버가 돌려준 result:", result);
+
+	            if (result && result.downloadPath) {
+	                // 서버에서 완성된 downloadPath 를 그대로 사용
+	                const downloadUrl = result.downloadPath;
+	                console.log("▶ 다운로드 URL:", downloadUrl);
+
+	                const a = document.createElement('a');
+	                a.href = downloadUrl;
+	                a.style.display = 'none';
+	                document.body.appendChild(a);
+	                a.click();
+	                document.body.removeChild(a);
+
+	                alert("작업일보 엑셀 저장 완료되었습니다.");
+	            } else {
+	                console.warn("✋ downloadPath 키가 없습니다!", result);
+	                alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
+	            }
+	        },
+
+	        error: function (xhr, status, error) {
+	            console.error("▶ 엑셀 생성/다운로드 중 오류:", {
+	                status: status,
+	                error: error,
+	                responseText: xhr.responseText
+	            });
+	            alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+	        },
+
+	        complete: function () {
+	            $("#excelOverlay, #excelLoading").hide();
+	        }
+	    });
+	});
+
 </script>
 
 </body>

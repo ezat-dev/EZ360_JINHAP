@@ -28,17 +28,14 @@
 	    </where>
 	</select>
     
-	<insert id="saveDivisionWeight" parameterType="Condition">
-	
-	MERGE INTO PWO_GEO_DIVISION_DATA
-	USING DUAL
-	ON (
-<!-- 		PLAC_CD = #{plac_cd} AND 
-		PLNT_CD = #{plnt_cd} AND -->
-		ITEM_CD = #{item_cd}
-	)
-	WHEN MATCHED THEN
-	UPDATE SET 
+<insert id="saveDivisionWeight" parameterType="Condition">
+  MERGE INTO PWO_GEO_DIVISION_DATA
+  USING DUAL
+  ON (
+    ITEM_CD = #{item_cd}
+  )
+  WHEN MATCHED THEN
+  UPDATE SET 
     group_id = #{group_id},
     item_nm = #{item_nm},
     mach_main = #{mach_main},
@@ -47,38 +44,24 @@
     mach_sub_weight = #{mach_sub_weight},
     mlpl_weight = #{mlpl_weight},
     coating_nm = #{coating_nm},
-    kblack_weight = #{kblack_weight}
-   WHEN NOT MATCHED THEN
-  	INSERT (PLAC_CD, PLNT_CD, GROUP_ID, ITEM_CD, ITEM_NM,
-  	MACH_MAIN, MACH_MAIN_WEIGHT, MACH_SUB, MACH_SUB_WEIGHT,
-  	MLPL_WEIGHT,COATING_NM, KBLACK_WEIGHT) 
-  	VALUES (#{plac_cd}, #{plnt_cd}, #{group_id}, #{item_cd}, #{item_nm},
-  	#{mach_main}, #{mach_main_weight}, #{mach_sub}, #{mach_sub_weight},
-  	#{mlpl_weight}, #{coating_nm}, #{kblack_weight})   
-<!-- 	
-    INSERT INTO PWO_GEO_DIVISION_DATA_EZ (
-        PLAC_CD, PLNT_CD, GROUP_ID, ITEM_CD, ITEM_NM,
-        MACH_MAIN, MACH_MAIN_WEIGHT, MACH_SUB, MACH_SUB_WEIGHT, 
-        MLPL_WEIGHT, KBLACK_WEIGHT
-    )
-    SELECT 
-        'JH_KR_01', '02', #{group_id}, #{item_cd}, #{item_nm}, 
-        #{mach_main}, #{mach_main_weight}, #{mach_sub}, #{mach_sub_weight}, 
-        #{mlpl_weight}, #{kblack_weight}
-    FROM DUAL
-    WHERE #{item_cd} IS NOT NULL AND #{item_cd} != ''
-    ON DUPLICATE KEY UPDATE 
-        group_id = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(group_id) ELSE group_id END,
-        item_cd = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(item_cd) ELSE item_cd END,
-        item_nm = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(item_nm) ELSE item_nm END,
-        mach_main = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(mach_main) ELSE mach_main END,
-        mach_main_weight = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(mach_main_weight) ELSE mach_main_weight END,
-        mach_sub = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(mach_sub) ELSE mach_sub END,
-        mach_sub_weight = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(mach_sub_weight) ELSE mach_sub_weight END,
-        mlpl_weight = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(mlpl_weight) ELSE mlpl_weight END,
-        kblack_weight = CASE WHEN VALUES(item_cd) IS NOT NULL AND VALUES(item_cd) != '' THEN VALUES(kblack_weight) ELSE kblack_weight END
- -->
-	</insert>
+    kblack_weight = #{kblack_weight},
+    user_id = #{user_id},
+    upd_dt = #{upd_dt}
+  WHEN NOT MATCHED THEN
+  INSERT (
+    plac_cd, plnt_cd, group_id, item_cd, item_nm,
+    mach_main, mach_main_weight, mach_sub, mach_sub_weight,
+    mlpl_weight, coating_nm, kblack_weight,
+    user_id, upd_dt
+  )
+  VALUES (
+    #{plac_cd}, #{plnt_cd}, #{group_id}, #{item_cd}, #{item_nm},
+    #{mach_main}, #{mach_main_weight}, #{mach_sub}, #{mach_sub_weight},
+    #{mlpl_weight}, #{coating_nm}, #{kblack_weight},
+    #{user_id}, #{upd_dt}
+  )
+</insert>
+
 
     
         <delete id="delDivisionWeight" parameterType="string">

@@ -18,6 +18,16 @@
 		
 	<task:annotation-driven executor="executor" scheduler="scheduler" proxy-target-class="false"/>
 <!-- 	<bean id="commProcessor" class="com.geomet.async.CommProcessor" /> -->
+<!-- 빈 등록: StartProcessor -->
+    <bean id="startProcessor" class="com.geomet.async.StartProcessor" />
+
+    <!-- 스케줄러 스레드 풀 정의 -->
+    <task:scheduler id="scheduler" pool-size="5"/>
+
+    <!-- 컴포넌트 스캔 -->
+    <context:component-scan base-package="com.geomet.service, com.geomet.async"/>
+	
+	
 	<bean id="startService" class="com.geomet.async.StartProcessor"></bean>
 	<task:scheduler id="scheduler" pool-size="4" />
 	<task:executor id="executor" keep-alive="10" pool-size="10-20"

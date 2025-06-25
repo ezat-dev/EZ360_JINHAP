@@ -3,6 +3,16 @@ package com.geomet.domain;
 import java.util.List;
 
 public class Work {
+	
+	private String capa_now_month;
+	private String month_ton;
+	private String percent_month;
+	private String bujok_month;
+	private String start_month;
+	
+	
+	
+	private String m_code2;
 	private String ex_mch_name;
 	private List<Work> table1;
 	private List<Work> table2;
@@ -70,6 +80,9 @@ public class Work {
     private String tong_sum;
     private String weight_sum;
     private String work_time;
+    
+    private String work_hour;
+    
     private String work_percent;
     private String sum_time;
     private String sum_percent;
@@ -137,6 +150,49 @@ public class Work {
     
     
     
+
+	public String getStart_month() {
+		return start_month;
+	}
+	public void setStart_month(String start_month) {
+		this.start_month = start_month;
+	}
+	public String getCapa_now_month() {
+		return capa_now_month;
+	}
+	public void setCapa_now_month(String capa_now_month) {
+		this.capa_now_month = capa_now_month;
+	}
+	public String getMonth_ton() {
+		return month_ton;
+	}
+	public void setMonth_ton(String month_ton) {
+		this.month_ton = month_ton;
+	}
+	public String getPercent_month() {
+		return percent_month;
+	}
+	public void setPercent_month(String percent_month) {
+		this.percent_month = percent_month;
+	}
+	public String getBujok_month() {
+		return bujok_month;
+	}
+	public void setBujok_month(String bujok_month) {
+		this.bujok_month = bujok_month;
+	}
+	public String getM_code2() {
+		return m_code2;
+	}
+	public void setM_code2(String m_code2) {
+		this.m_code2 = m_code2;
+	}
+	public String getWork_hour() {
+		return work_hour;
+	}
+	public void setWork_hour(String work_hour) {
+		this.work_hour = work_hour;
+	}
 	public String getEx_mch_name() {
 		return ex_mch_name;
 	}

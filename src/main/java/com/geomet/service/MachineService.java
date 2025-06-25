@@ -63,4 +63,7 @@ public interface MachineService {
 	void insertFacility(Machine machine); 
 	void deleteFacility(Machine machine);
 	
+	
+	//설비별 모니터링
+	List<Machine> getdetailMonitoring(Machine machine);
 }

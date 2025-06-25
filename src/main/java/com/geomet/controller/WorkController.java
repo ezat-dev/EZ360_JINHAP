@@ -289,61 +289,88 @@ public class WorkController {
     
     @RequestMapping(value = "/work/workDailyReport/list", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> getworkDailyReportList(@RequestBody Work work) {
+    public Map<String, Object> getWorkDailyReportList(@RequestBody Work work) {
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String sTimeWithOffset = work.getS_time() + "0800";
 
-        LocalDate eDate = LocalDate.parse(work.getE_time(), fmt).plusDays(1);
-        String eTimeWithOffset = eDate.format(fmt) + "0800";
+        // ★ 받은 원본 파라미터 로그 출력
+        System.out.println("▶ Received Work:");
+        System.out.println("   s_time  = " + work.getS_time());
+        System.out.println("   e_time  = " + work.getE_time());
+        System.out.println("   m_code  = " + work.getM_code());
 
-        work.setS_time(sTimeWithOffset);
-        work.setE_time(eTimeWithOffset);
+        // 1) 날짜 오프셋 처리
+        String rawStart = work.getS_time();
+        String rawEnd   = work.getE_time();
+        work.setS_time(rawStart + "0800");
+        LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
+        work.setE_time(eDate.format(fmt) + "0800");
 
+      
+        String code = work.getM_code();
+        String code2 = "";
+        if ("G03-GG01".equals(code)) {
+            code2 = "'G03-GG01','G04-GG05','G04-GG07'";
+        } else if ("G03-GG03".equals(code)) {
+            code2 = "'G03-GG03','G04-GG05','G04-GG07'";
+        }
+        work.setM_code2(code2);
+
+        // ★ 보낼 m_code2 로그 출력
+        System.out.println("▶ Computed m_code2 = " + code2);
+
+    
         Map<String, Object> result = new HashMap<>();
-        result.put("table1", workService.getReportInputLIst(work));
-        
+
+        List<Work> table1 = workService.getReportInputLIst(work);
+        result.put("table1", table1);
+
         List<Work> table2Data = workService.getWorkDailySum(work);
         for (Work w : table2Data) {
-            if (w.getAvg_day() != null) {
-                w.setAvg_day(w.getAvg_day() + "kg");
-            }
-            if (w.getAvg_sum() != null) {
-                w.setAvg_sum(w.getAvg_sum() + "kg");
-            }
-            if (w.getWork_time() != null) {
-                w.setWork_time(w.getWork_time() + "");
-            }
-            if (w.getSum_time() != null) {
-                w.setSum_time(w.getSum_time() + "hr");
-            }
-            if (w.getSum_percent() != null) {
-                w.setSum_percent(w.getSum_percent() + "%");
-            }
-            if (w.getWork_percent() != null) {
-                w.setWork_percent(w.getWork_percent() + "%");
-            }
+            if (w.getAvg_day()    != null) w.setAvg_day(w.getAvg_day() + "kg");
+            if (w.getAvg_sum()    != null) w.setAvg_sum(w.getAvg_sum() + "kg");
+            if (w.getWork_time()  != null) w.setWork_time(w.getWork_time() + "");
+            if (w.getSum_time()   != null) w.setSum_time(w.getSum_time() + "hr");
+            if (w.getSum_percent()!= null) w.setSum_percent(w.getSum_percent() + "%");
+            if (w.getWork_percent()!=null) w.setWork_percent(w.getWork_percent() + "%");
         }
         result.put("table2", table2Data);
 
         List<Work> table3List = workService.getWorkDailyList(work);
-
         for (Work w : table3List) {
             if (w.getStart_time() != null && w.getStart_time().length() == 14) {
-                w.setStart_time(w.getStart_time().substring(8, 10) + ":" +
-                                w.getStart_time().substring(10, 12) + ":" +
-                                w.getStart_time().substring(12, 14));
+                w.setStart_time(
+                    w.getStart_time().substring(8,10) + ":" +
+                    w.getStart_time().substring(10,12) + ":" +
+                    w.getStart_time().substring(12,14)
+                );
             }
             if (w.getEnd_time() != null && w.getEnd_time().length() == 14) {
-                w.setEnd_time(w.getEnd_time().substring(8, 10) + ":" +
-                              w.getEnd_time().substring(10, 12) + ":" +
-                              w.getEnd_time().substring(12, 14));
+                w.setEnd_time(
+                    w.getEnd_time().substring(8,10) + ":" +
+                    w.getEnd_time().substring(10,12) + ":" +
+                    w.getEnd_time().substring(12,14)
+                );
             }
             if (w.getWeight_day() != null) {
                 w.setWeight_day(w.getWeight_day() + "kg");
             }
         }
-
         result.put("table3", table3List);
+
+        // 4) 원본과 추가 문자열도 함께 리턴
+        result.put("m_code", code);
+        result.put("m_code2", code2);
+
+       
+        System.out.println("▶ Returning Map keys:");
+        result.forEach((k, v) -> {
+            if (v instanceof List) {
+                System.out.println("   " + k + " -> List size = " + ((List<?>) v).size());
+            } else {
+                System.out.println("   " + k + " -> " + v);
+            }
+        });
+
         return result;
     }
 
@@ -368,6 +395,7 @@ public class WorkController {
         List<Work> table2 = workService.getWorkDailySum(work);
         List<Work> table3 = workService.getWorkDailyList(work);
 
+        
         // 4) 템플릿 로드
         String templatePath = "D:/GEOMET양식/작업일보_양식/작업일보G600.xlsx";
         try (FileInputStream fis = new FileInputStream(templatePath);
@@ -512,7 +540,7 @@ public class WorkController {
             }
 
             // 10) 비고란 추가
-            int remarkRowIdx = rowIdx2 + 1; // table3 끝난 다음 행에 바로
+            int remarkRowIdx = rowIdx2; // table3 끝난 다음 행에 바로
             Row remarkRow = sheet.getRow(remarkRowIdx);
             if (remarkRow == null) remarkRow = sheet.createRow(remarkRowIdx);
 
@@ -527,16 +555,230 @@ public class WorkController {
                 cell.setCellStyle(borderStyle);
             }
 
-            // 기존 병합 영역이 있으면 삭제 (B~F)
+         // 1. B~L(1~11) 범위의 기존 병합 영역 모두 해제
             for (int i = sheet.getNumMergedRegions() - 1; i >= 0; i--) {
                 CellRangeAddress region = sheet.getMergedRegion(i);
-                if (region.getFirstRow() == remarkRowIdx && region.getFirstColumn() <= 5 && region.getLastColumn() >= 1) {
+                if (region.getFirstRow() == remarkRowIdx &&
+                    region.getFirstColumn() >= 1 && region.getLastColumn() <= 11) {
                     sheet.removeMergedRegion(i);
                 }
             }
 
-            // B~F(1~5) 병합
+            // 2. B~F(1~5)로 병합
             sheet.addMergedRegion(new CellRangeAddress(remarkRowIdx, remarkRowIdx, 1, 5));
+            
+            // 11) 파일 저장
+            String saveDir     = "D:/GEOMET양식/작업일보";
+            String safeName    = rawStart;
+            String mchNamePart = exMch.replaceAll("[^a-zA-Z0-9가-힣]", "");
+            String outFileName = String.format("작업일보_%s_%s.xlsx", safeName, mchNamePart);
+            File outFile       = new File(saveDir, outFileName);
+            try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                wb.write(fos);
+            }
+
+            // 12) 결과 리턴
+            Map<String, Object> result = new HashMap<>();
+            result.put("filename", outFileName);
+            result.put("downloadPath",
+                "/geomet/download_workDailyReport?filename=" + URLEncoder.encode(outFileName, "UTF-8"));
+            return result;
+        }
+    }
+    //공용설비 엑셀
+    
+    @RequestMapping(value = "/work/workDailyReport_common/excel", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> exportWorkDaily_common_ReportExcel(@RequestBody Work work) throws Exception {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        // 1) 원본 날짜 보관
+        String rawStart = work.getS_time();
+        String rawEnd   = work.getE_time();
+
+        // 2) 오프셋 처리
+        work.setS_time(rawStart + "0800");
+        LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
+        work.setE_time(eDate.format(fmt) + "0800");
+
+        // 3) 데이터 조회
+        List<Work> table1 = workService.getReportInputLIst(work);
+        List<Work> table2 = workService.getWorkDailySum(work);
+        List<Work> table3 = workService.getWorkDailyList(work);
+
+        // 4) 템플릿 로드
+        String templatePath = "D:/GEOMET양식/작업일보_양식/작업일보공용설비.xlsx";
+        try (FileInputStream fis = new FileInputStream(templatePath);
+             Workbook wb = WorkbookFactory.create(fis)) {
+
+            Sheet sheet = wb.getSheetAt(0);
+
+            // 헬퍼: cell 생성 보장
+            BiFunction<Row, Integer, Cell> getOrCreateCell = (r, c) -> {
+                Cell cell = r.getCell(c);
+                return (cell != null) ? cell : r.createCell(c);
+            };
+
+            // ▶ 테두리 스타일 선언: for문 전에 한 번만 생성
+            CellStyle borderStyle = wb.createCellStyle();
+            borderStyle.setBorderTop(BorderStyle.THIN);
+            borderStyle.setBorderBottom(BorderStyle.THIN);
+            borderStyle.setBorderLeft(BorderStyle.THIN);
+            borderStyle.setBorderRight(BorderStyle.THIN);
+
+            // 5) B2 셀에 ex_mch_name 쓰기
+            String exMch = work.getEx_mch_name();
+            Row row1 = sheet.getRow(1);
+            if (row1 == null) row1 = sheet.createRow(1);
+            getOrCreateCell.apply(row1, 1).setCellValue(exMch);
+
+            // 6) 7행(L열)에 yyyy-MM-dd 시작일자 쓰기
+            LocalDate startDate = LocalDate.parse(rawStart, fmt);
+            String formattedDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            Row row7 = sheet.getRow(6);
+            if (row7 == null) row7 = sheet.createRow(6);
+            getOrCreateCell.apply(row7, 11).setCellValue(formattedDate);
+
+            // 7) table1 쓰기 (6행, B열부터)
+            int rowIdx = 5;
+            for (Work w : table1) {
+                Row r = sheet.getRow(rowIdx);
+                if (r == null) r = sheet.createRow(rowIdx);
+                int col = 1;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getVisc());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getPre_temp());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getHeat_temp());
+				/*
+				 * getOrCreateCell.apply(r, col++).setCellValue(w.getLiq_temp());
+				 * getOrCreateCell.apply(r, col++).setCellValue(w.getSg());
+				 */
+                // 테두리 스타일 적용
+                for (int c = 1; c <= 5; c++) {
+                    getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
+                }
+                rowIdx++;
+            }
+
+            // 8) table2 쓰기 (10행, A열부터)
+            rowIdx = 9;
+            for (Work w : table2) {
+                if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
+                if (w.getAvg_sum() != null)      w.setAvg_sum(w.getAvg_sum() + "kg");
+                if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
+                if (w.getSum_time() != null)     w.setSum_time(w.getSum_time() + "hr");
+                if (w.getWork_percent() != null) w.setWork_percent(w.getWork_percent() + "%");
+                if (w.getSum_percent() != null)  w.setSum_percent(w.getSum_percent() + "%");
+
+                Row r = sheet.getRow(rowIdx);
+                if (r == null) r = sheet.createRow(rowIdx);
+                int col = 0;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_sum());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_sum());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_sum());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());
+                // 테두리 스타일 적용
+                for (int c = 0; c < 12; c++) {
+                    getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
+                }
+                rowIdx++;
+            }
+
+            // 9) table3 쓰기 (13행, A열부터)
+            int rowIdx2 = 12;
+            for (Work w : table3) {
+                if (w.getStart_time() != null && w.getStart_time().length() == 14) {
+                    w.setStart_time(
+                        w.getStart_time().substring(8,10) + ":" +
+                        w.getStart_time().substring(10,12) + ":" +
+                        w.getStart_time().substring(12,14));
+                }
+                if (w.getEnd_time() != null && w.getEnd_time().length() == 14) {
+                    w.setEnd_time(
+                        w.getEnd_time().substring(8,10) + ":" +
+                        w.getEnd_time().substring(10,12) + ":" +
+                        w.getEnd_time().substring(12,14));
+                }
+                if (w.getWeight_day() != null) {
+                    w.setWeight_day(w.getWeight_day() + "kg");
+                }
+
+                boolean hasValue =
+                    w.getR_num()          != null ||
+                    w.getStart_time()     != null ||
+                    w.getEnd_time()       != null ||
+                    w.getTong_day()       != null ||
+                    w.getWeight_day()     != null ||
+                    w.getA()              != null ||
+                    w.getItem_nm()        != null ||
+                    w.getItem_cd()        != null ||
+                    w.getNext_facility()  != null ||
+                    w.getE()              != null ||
+                    w.getF()              != null;
+
+                if (!hasValue) {
+                    rowIdx2++;
+                    continue;
+                }
+
+                Row r = sheet.getRow(rowIdx2);
+                if (r == null) r = sheet.createRow(rowIdx2);
+                int col = 0;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getA());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getE());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getF());
+
+                for (int c = 0; c < 12; c++) {
+                    getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
+                }
+
+                rowIdx2++;
+            }
+
+            // 10) 비고란 추가
+            int remarkRowIdx = rowIdx2; // table3 끝난 다음 행에 바로
+            Row remarkRow = sheet.getRow(remarkRowIdx);
+            if (remarkRow == null) remarkRow = sheet.createRow(remarkRowIdx);
+
+            // A열(0)에 "비고:"와 테두리 스타일
+            Cell lbl = getOrCreateCell.apply(remarkRow, 0);
+            lbl.setCellValue("비고:");
+            lbl.setCellStyle(borderStyle);
+
+            // B~F(1~5) 셀 생성 및 테두리 스타일 적용
+            for (int col = 1; col <= 5; col++) {
+                Cell cell = getOrCreateCell.apply(remarkRow, col);
+                cell.setCellStyle(borderStyle);
+            }
+
+         // 1. B~L(1~11) 범위의 기존 병합 영역 모두 해제
+            for (int i = sheet.getNumMergedRegions() - 1; i >= 0; i--) {
+                CellRangeAddress region = sheet.getMergedRegion(i);
+                if (region.getFirstRow() == remarkRowIdx &&
+                    region.getFirstColumn() >= 1 && region.getLastColumn() <= 11) {
+                    sheet.removeMergedRegion(i);
+                }
+            }
+
+            // 2. B~F(1~5)로 병합
+            sheet.addMergedRegion(new CellRangeAddress(remarkRowIdx, remarkRowIdx, 1, 5));
+            
             // 11) 파일 저장
             String saveDir     = "D:/GEOMET양식/작업일보";
             String safeName    = rawStart;
@@ -556,6 +798,227 @@ public class WorkController {
         }
     }
 
+    
+    
+    
+    
+  //세척설비 엑셀
+    
+    @RequestMapping(value = "/work/workDailyReport_oil/excel", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> exportWorkDaily_oil_ReportExcel(@RequestBody Work work) throws Exception {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+
+        // 1) 원본 날짜 보관
+        String rawStart = work.getS_time();
+        String rawEnd   = work.getE_time();
+
+        // 2) 오프셋 처리
+        work.setS_time(rawStart + "0800");
+        LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
+        work.setE_time(eDate.format(fmt) + "0800");
+
+        // 3) 데이터 조회
+        List<Work> table1 = workService.getReportInputLIst(work);
+        List<Work> table2 = workService.getWorkDailySum(work);
+        List<Work> table3 = workService.getWorkDailyList(work);
+
+        // 4) 템플릿 로드
+        String templatePath = "D:/GEOMET양식/작업일보_양식/작업일보세척설비.xlsx";
+        try (FileInputStream fis = new FileInputStream(templatePath);
+             Workbook wb = WorkbookFactory.create(fis)) {
+
+            Sheet sheet = wb.getSheetAt(0);
+
+            // 헬퍼: cell 생성 보장
+            BiFunction<Row, Integer, Cell> getOrCreateCell = (r, c) -> {
+                Cell cell = r.getCell(c);
+                return (cell != null) ? cell : r.createCell(c);
+            };
+
+            // ▶ 테두리 스타일 선언: for문 전에 한 번만 생성
+            CellStyle borderStyle = wb.createCellStyle();
+            borderStyle.setBorderTop(BorderStyle.THIN);
+            borderStyle.setBorderBottom(BorderStyle.THIN);
+            borderStyle.setBorderLeft(BorderStyle.THIN);
+            borderStyle.setBorderRight(BorderStyle.THIN);
+
+            // 5) B2 셀에 ex_mch_name 쓰기
+            String exMch = work.getEx_mch_name();
+            Row row1 = sheet.getRow(1);
+            if (row1 == null) row1 = sheet.createRow(1);
+            getOrCreateCell.apply(row1, 1).setCellValue(exMch);
+
+            // 6) 7행(L열)에 yyyy-MM-dd 시작일자 쓰기
+            LocalDate startDate = LocalDate.parse(rawStart, fmt);
+            String formattedDate = startDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            Row row7 = sheet.getRow(6);
+            if (row7 == null) row7 = sheet.createRow(6);
+            getOrCreateCell.apply(row7, 11).setCellValue(formattedDate);
+
+            // 7) table1 쓰기 (6행, B열부터)
+            int rowIdx = 5;
+            for (Work w : table1) {
+                Row r = sheet.getRow(rowIdx);
+                if (r == null) r = sheet.createRow(rowIdx);
+                int col = 1;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getVisc());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getPre_temp());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getHeat_temp());
+				/*
+				 * getOrCreateCell.apply(r, col++).setCellValue(w.getLiq_temp());
+				 * getOrCreateCell.apply(r, col++).setCellValue(w.getSg());
+				 */
+                // 테두리 스타일 적용
+                for (int c = 1; c <= 5; c++) {
+                    getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
+                }
+                rowIdx++;
+            }
+
+            // 8) table2 쓰기 (10행, A열부터)
+            rowIdx = 9;
+            for (Work w : table2) {
+                if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
+                if (w.getAvg_sum() != null)      w.setAvg_sum(w.getAvg_sum() + "kg");
+                if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
+                if (w.getSum_time() != null)     w.setSum_time(w.getSum_time() + "hr");
+                if (w.getWork_percent() != null) w.setWork_percent(w.getWork_percent() + "%");
+                if (w.getSum_percent() != null)  w.setSum_percent(w.getSum_percent() + "%");
+
+                Row r = sheet.getRow(rowIdx);
+                if (r == null) r = sheet.createRow(rowIdx);
+                int col = 0;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_sum());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_sum());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_sum());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());
+                // 테두리 스타일 적용
+                for (int c = 0; c < 12; c++) {
+                    getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
+                }
+                rowIdx++;
+            }
+
+            // 9) table3 쓰기 (13행, A열부터)
+            int rowIdx2 = 12;
+            for (Work w : table3) {
+                if (w.getStart_time() != null && w.getStart_time().length() == 14) {
+                    w.setStart_time(
+                        w.getStart_time().substring(8,10) + ":" +
+                        w.getStart_time().substring(10,12) + ":" +
+                        w.getStart_time().substring(12,14));
+                }
+                if (w.getEnd_time() != null && w.getEnd_time().length() == 14) {
+                    w.setEnd_time(
+                        w.getEnd_time().substring(8,10) + ":" +
+                        w.getEnd_time().substring(10,12) + ":" +
+                        w.getEnd_time().substring(12,14));
+                }
+                if (w.getWeight_day() != null) {
+                    w.setWeight_day(w.getWeight_day() + "kg");
+                }
+
+                boolean hasValue =
+                    w.getR_num()          != null ||
+                    w.getStart_time()     != null ||
+                    w.getEnd_time()       != null ||
+                    w.getTong_day()       != null ||
+                    w.getWeight_day()     != null ||
+                    w.getA()              != null ||
+                    w.getItem_nm()        != null ||
+                    w.getItem_cd()        != null ||
+                    w.getNext_facility()  != null ||
+                    w.getE()              != null ||
+                    w.getF()              != null;
+
+                if (!hasValue) {
+                    rowIdx2++;
+                    continue;
+                }
+
+                Row r = sheet.getRow(rowIdx2);
+                if (r == null) r = sheet.createRow(rowIdx2);
+                int col = 0;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getA());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getE());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getF());
+
+                for (int c = 0; c < 12; c++) {
+                    getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
+                }
+
+                rowIdx2++;
+            }
+
+            // 10) 비고란 추가
+            int remarkRowIdx = rowIdx2; // table3 끝난 다음 행에 바로
+            Row remarkRow = sheet.getRow(remarkRowIdx);
+            if (remarkRow == null) remarkRow = sheet.createRow(remarkRowIdx);
+
+            // A열(0)에 "비고:"와 테두리 스타일
+            Cell lbl = getOrCreateCell.apply(remarkRow, 0);
+            lbl.setCellValue("비고:");
+            lbl.setCellStyle(borderStyle);
+
+            // B~F(1~5) 셀 생성 및 테두리 스타일 적용
+            for (int col = 1; col <= 5; col++) {
+                Cell cell = getOrCreateCell.apply(remarkRow, col);
+                cell.setCellStyle(borderStyle);
+            }
+
+         // 1. B~L(1~11) 범위의 기존 병합 영역 모두 해제
+            for (int i = sheet.getNumMergedRegions() - 1; i >= 0; i--) {
+                CellRangeAddress region = sheet.getMergedRegion(i);
+                if (region.getFirstRow() == remarkRowIdx &&
+                    region.getFirstColumn() >= 1 && region.getLastColumn() <= 11) {
+                    sheet.removeMergedRegion(i);
+                }
+            }
+
+            // 2. B~F(1~5)로 병합
+            sheet.addMergedRegion(new CellRangeAddress(remarkRowIdx, remarkRowIdx, 1, 5));
+            
+            // 11) 파일 저장
+            String saveDir     = "D:/GEOMET양식/작업일보";
+            String safeName    = rawStart;
+            String mchNamePart = exMch.replaceAll("[^a-zA-Z0-9가-힣]", "");
+            String outFileName = String.format("작업일보_%s_%s.xlsx", safeName, mchNamePart);
+            File outFile       = new File(saveDir, outFileName);
+            try (FileOutputStream fos = new FileOutputStream(outFile)) {
+                wb.write(fos);
+            }
+
+            // 12) 결과 리턴
+            Map<String, Object> result = new HashMap<>();
+            result.put("filename", outFileName);
+            result.put("downloadPath",
+                "/geomet/download_workDailyReport?filename=" + URLEncoder.encode(outFileName, "UTF-8"));
+            return result;
+        }
+    }
+    
+    
+    
+    
+    
     
     
     
@@ -628,13 +1091,19 @@ public class WorkController {
         String eTimeWithOffset = eDate.format(fmt) + "080000";
 
 
+        
+        String yyyyMM = work.getS_time().substring(0, 6);
+        String startMonth = yyyyMM + "01080000";
+
+        
         work.setS_time(sTimeWithOffset);
         work.setE_time(eTimeWithOffset);
-
+        work.setStart_month(startMonth);
         System.out.println("==[ 변환 모니터링 현황 ]==");
         System.out.println("s_time: " + work.getS_time());
         System.out.println("e_time: " + work.getE_time());
-       
+        System.out.println("m_time: " + work.getStart_month());
+        
 
       
         Map<String, Object> result = new HashMap<>();

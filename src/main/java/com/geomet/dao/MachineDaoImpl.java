@@ -15,7 +15,10 @@ public class MachineDaoImpl implements MachineDao{
 
 	 @Resource(name="session")
 	    private SqlSession sqlSession;
-	
+	 @Resource(name="orcleSession")
+		private SqlSession sessionOrcle;
+    
+    
 	//정기점검 계획/실적
     @Override
     public List<Machine> getMachineList(Machine machine) {
@@ -164,4 +167,12 @@ public class MachineDaoImpl implements MachineDao{
            sqlSession.insert("machine.deleteFacility", machine);
     }
     
+    
+    
+    //설비별 모니터링
+    @Override
+    public List<Machine> getdetailMonitoring(Machine machine) {
+      
+        return sessionOrcle.selectList("machine.getdetailMonitoring", machine);
+    }
 }

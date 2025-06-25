@@ -309,7 +309,7 @@
                 columns: [
                 	  { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false },
 
-                	  { title: "설비상태", field: "machine_status", sorter: "string", hozAlign: "center", headerSort: false,
+                	  { title: "설비상태", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
                 	    formatter: function(cell) {
                 	      const value = cell.getValue();
                 	      if (value === "가동") {
@@ -321,22 +321,22 @@
                 	    }
                 	  },
 
-                	  { title: "관리기준 C/T", field: "c_t", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "실제생산 C/T", field: "work_ct", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "CAPA", field: "capa", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "현 생산목표", field: "capa_quality", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "현 생산실적", field: "tong_day", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "가동시간", field: "work_time", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "생산 LOSS 시간", field: "work_loss", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "실적-생산(ton)", field: "work_ton", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "실적-과부족(ton)", field: "work_bujok", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "실적-달성률(%)", field: "work_percent", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "누적-중량", field: "weight_sum", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "누적-통수", field: "tong_sum", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "과부족량-중량", field: "work_sum_weight_bujok", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "과부족량-통수", field: "work_sum_ton_bujok", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "달성률-중량", field: "work_sum_weight_percent", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "달성률-통수", field: "work_sum_tong_percent", sorter: "string", hozAlign: "center", headerSort: false }
+                	  { title: "관리기준 C/T(초)", field: "e", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "실제생산 C/T(초)", field: "f", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "CAPA(통)", field: "h", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "현 생산목표(통)", field: "i", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "현 생산실적(통)", field: "j", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "가동시간", field: "k", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "비가동 시간(분)", field: "l", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "생산 톤수(ton)", field: "m", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "손실 톤수(ton)", field: "n", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "현재 달성률(%)", field: "o", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "월 생산 톤수(ton)", field: "weight_sum", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "월 생산 통수(통)", field: "tong_sum", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "월 손실 톤수(ton)", field: "work_sum_weight_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "월 손실 통수(통)", field: "work_sum_ton_bujok", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "월 달성률(ton)", field: "work_sum_weight_percent", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "월 달성률(통)", field: "work_sum_tong_percent", sorter: "string", hozAlign: "center", headerSort: false }
                 	],
 
             });

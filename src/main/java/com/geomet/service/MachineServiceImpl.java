@@ -139,4 +139,10 @@ public class MachineServiceImpl implements MachineService {
 	      public void deleteFacility(Machine machine) {
 	           machineDao.deleteFacility(machine); 	   
 	      }
+	      
+	      
+	      @Override
+	      public List<Machine> getdetailMonitoring(Machine machine) {
+	           return machineDao.getdetailMonitoring(machine); 	   
+	      }
 }

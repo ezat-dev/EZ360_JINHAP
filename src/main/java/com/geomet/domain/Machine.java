@@ -1,6 +1,35 @@
 package com.geomet.domain;
 
 public class Machine {
+	
+	private String mach_cod;
+	private String target;
+	private String prodqty;
+	private String rate;
+	private String n_rate;
+	private String c_rate;
+
+
+	private String d;
+	private String e;
+	private String f;
+	private String g;
+	private String h;
+	private String i;
+	private String j;
+	private String k;
+	private String l;
+	private String m;
+	private String n;
+	private String o;
+
+
+	
+	
+	private String work_hour;
+	
+	
+	
 	//tb_check_plan
 	private String id;
 	private String start_time_formatted;
@@ -161,6 +190,160 @@ public class Machine {
     private String facility_yn;
     private Integer ch_idx;
     
+
+    
+    
+	public String getMach_cod() {
+		return mach_cod;
+	}
+
+	public void setMach_cod(String mach_cod) {
+		this.mach_cod = mach_cod;
+	}
+
+	public String getTarget() {
+		return target;
+	}
+
+	public void setTarget(String target) {
+		this.target = target;
+	}
+
+	public String getProdqty() {
+		return prodqty;
+	}
+
+	public void setProdqty(String prodqty) {
+		this.prodqty = prodqty;
+	}
+
+	public String getRate() {
+		return rate;
+	}
+
+	public void setRate(String rate) {
+		this.rate = rate;
+	}
+
+	public String getN_rate() {
+		return n_rate;
+	}
+
+	public void setN_rate(String n_rate) {
+		this.n_rate = n_rate;
+	}
+
+	public String getC_rate() {
+		return c_rate;
+	}
+
+	public void setC_rate(String c_rate) {
+		this.c_rate = c_rate;
+	}
+
+	public String getD() {
+		return d;
+	}
+
+	public void setD(String d) {
+		this.d = d;
+	}
+
+	public String getE() {
+		return e;
+	}
+
+	public void setE(String e) {
+		this.e = e;
+	}
+
+	public String getF() {
+		return f;
+	}
+
+	public void setF(String f) {
+		this.f = f;
+	}
+
+	public String getG() {
+		return g;
+	}
+
+	public void setG(String g) {
+		this.g = g;
+	}
+
+	public String getH() {
+		return h;
+	}
+
+	public void setH(String h) {
+		this.h = h;
+	}
+
+	public String getI() {
+		return i;
+	}
+
+	public void setI(String i) {
+		this.i = i;
+	}
+
+	public String getJ() {
+		return j;
+	}
+
+	public void setJ(String j) {
+		this.j = j;
+	}
+
+	public String getK() {
+		return k;
+	}
+
+	public void setK(String k) {
+		this.k = k;
+	}
+
+	public String getL() {
+		return l;
+	}
+
+	public void setL(String l) {
+		this.l = l;
+	}
+
+	public String getM() {
+		return m;
+	}
+
+	public void setM(String m) {
+		this.m = m;
+	}
+
+	public String getN() {
+		return n;
+	}
+
+	public void setN(String n) {
+		this.n = n;
+	}
+
+	public String getO() {
+		return o;
+	}
+
+	public void setO(String o) {
+		this.o = o;
+	}
+
+	public String getWork_hour() {
+		return work_hour;
+	}
+
+	public void setWork_hour(String work_hour) {
+		this.work_hour = work_hour;
+	}
 
 	public Integer getFacility_code() {
 		return facility_code;

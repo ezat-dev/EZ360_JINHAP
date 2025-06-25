@@ -59,4 +59,7 @@ public interface MachineDao {
 		List<Machine> getFacilityList(Machine machine);
 		void insertFacility(Machine machine); 
 		void deleteFacility(Machine machine);
+		
+		//설비별 모니터링
+		List<Machine> getdetailMonitoring(Machine machine);
 }

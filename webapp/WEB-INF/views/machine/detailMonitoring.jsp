@@ -30,6 +30,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            margin-top:10px;
         }
         .modal {
             display: none;
@@ -160,7 +161,7 @@
 .legend {
   position: absolute;
   top: 20px;
-  right: 40px;
+  right: 190px;
   background: #fff;
   border: 1px solid #ccc;
   border-radius: 6px;
@@ -208,7 +209,7 @@
       background: #f0f0f0;
       border-radius: 4px;
       overflow: hidden;
-      height: 22px;
+      height: 27px;
       position: relative;
       box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
     }
@@ -226,12 +227,12 @@
       position: absolute;
       width: 100%;
       text-align: center;
-      font-size: 15px;
+      font-size: 17px;
       font-weight: bold;
       color: #333;
       top: 0;
       left: 0;
-      line-height: 16px;
+      line-height: 19px;
     }
     </style>
 </head>
@@ -281,13 +282,13 @@
     	    const style = document.createElement('style');
     	    style.id = 'progress-styles';
     	    style.innerHTML = `
-    	      .custom-progress { background: #f0f0f0; border-radius: 4px; overflow: hidden; height: 22px; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+    	      .custom-progress { background: #f0f0f0; border-radius: 4px; overflow: hidden; height: 27px; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
     	      .custom-progress .bar { height: 100%; border-radius: 4px; transition: width 0.5s ease-in-out; }
     	      .bar.color-red { background: #e74c3c; }
     	      .bar.color-orange { background: #e67e22; }
     	      .bar.color-yellow { background: #f1c40f; }
     	      .bar.color-lightgreen { background: #2ecc71; }
-    	      .custom-progress .label { position: absolute; width: 100%; text-align: center; font-size: 12px; font-weight: bold; color: #333; top: 0; left: 0; line-height: 16px; }
+    	      .custom-progress .label { position: absolute; width: 100%; text-align: center; font-size: 16px; font-weight: bold; color: #333; top: -4; left: 0; line-height: 16px; }
     	    `;
     	    document.head.appendChild(style);
     	  }
@@ -319,52 +320,37 @@
     	  dataTable = new Tabulator('#dataList', {
     	    height: '760px',
     	    layout: 'fitColumns',
-    	    rowHeight: 44,
-    	    selectable: true,
-    	    tooltips: true,
-    	    selectableRangeMode: 'click',
-    	    reactiveData: true,
-    	    headerHozAlign: 'center',
-    	    ajaxConfig: 'POST',
-    	    columnHeaderVertAlign: 'middle',
-    	    rowVertAlign: 'middle',
-    	    ajaxLoader: false,
-    	    ajaxURL: '/geomet/quality/tustest/selectList',
-    	    ajaxProgressiveLoad: 'scroll',
-    	    ajaxParams: {},
+    	    rowHeight: '220px',
+    	    layout: 'fitDataFill',
+    	      headerSort: false,
+    	      reactiveData: true,
+    	      columnHeaderVertAlign: "middle",
+    	      rowVertAlign: "middle",
+    	      headerHozAlign: 'center',
+    	      fontsize:'19px',
+    	      ajaxParams: {},
+    	      ajaxConfig: { method: 'POST' },
+    	    ajaxURL: '/geomet/machine/detailMonitoring/list',
+   
+ 
     	    placeholder: '조회된 데이터가 없습니다.',
-    	    paginationSize: 20,
+
     	    ajaxResponse: function(url, params, response) {
-    	      document.querySelectorAll('#dataList .tabulator-col.tabulator-sortable').forEach(el => el.style.height = '29px');
+
     	      return response;
     	    },
     	    columns: [
     	      {
+        	      
     	        title: '일일 생산 현황', hozAlign: 'center', headerSort: false, colspan: 6,
     	        columns: [
-    	          { title: '설비명', field: 'field1', hozAlign: 'center', width: 110 },
-    	          { title: '목표 생산량', field: 'field2', hozAlign: 'center', width: 120 },
-    	          { title: '현재 생산량', field: 'field3', hozAlign: 'center', width: 120 },
-    	          { title: '진도율%', field: 'field4', formatter: percentFormatter, width: 200 },
-    	          { title: '달성률%', field: 'field5', formatter: percentFormatter, width: 200 },
-    	          { title: '버스켓효율%', field: 'field6', formatter: percentFormatter, width: 200 },
-    	        ]
-    	      },
-    	      {
-    	        title: '제품 투입', hozAlign: 'center', headerSort: false, colspan: 3,
-    	        columns: [
-    	          { title: '바코드', field: 'field7', hozAlign: 'center', width: 130 },
-    	          { title: '투입 시간', field: 'field8', hozAlign: 'center', width: 160 },
-    	          { title: '기준 장입량', field: 'field9', hozAlign: 'center', width: 120 },
-    	        ]
-    	      },
-    	      {
-    	        title: '제품 퇴출', hozAlign: 'center', headerSort: false, colspan: 4,
-    	        columns: [
-    	          { title: '분할 기준량', field: 'field10', hozAlign: 'center', width: 130 },
-    	          { title: '바코드(퇴출)', field: 'field11', hozAlign: 'center', width: 130 },
-    	          { title: '코팅횟수', field: 'field12', hozAlign: 'center', width: 95 },
-    	          { title: '합 중량', field: 'field13', hozAlign: 'center', width: 90 },
+    	          { title: '설비명', field: 'mach_code', hozAlign: 'center', width: 250, headerSort: false },
+    	          { title: '목표 생산량', field: 'target', hozAlign: 'center', width: 180, headerSort: false },
+    	          { title: '현재 생산량', field: 'prodqty', hozAlign: 'center', width: 180 , headerSort: false},
+    	       
+    	          { title: '달성률%', field: 'rate', formatter: percentFormatter, width: 300, headerSort: false },
+    	          { title: '진도율%', field: 'n_rate', formatter: percentFormatter, width: 300, headerSort: false },
+    	          { title: '버스켓효율%', field: 'c_rate', formatter: percentFormatter, width: 300 , headerSort: false},
     	        ]
     	      }
     	    ],
@@ -373,36 +359,8 @@
                 row.getElement().style.fontWeight = "700";
                 row.getElement().style.backgroundColor = "#FFFFFF";
             },
-            rowClick: function(e, row) {
-                $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                    if ($(this).hasClass("row_select")) {
-                        $(this).removeClass('row_select');
-                        row.getElement().className += " row_select";
-                    } else {
-                        $("#dataList div.row_select").removeClass("row_select");
-                        row.getElement().className += " row_select";
-                    }
-                });
-            },
-            data: [
-                { field1: "세척1호기", field2: 100, field3: 950, field4: 45, field5: 90, field6: 92, field7: "123456", field8: "2025-05-01 10:00", field9: 500, field10: 200, field11: "654321", field12: 3, field13: 200 },
-                { field1: "세척2호기", field2: 110, field3: 1050, field4: 87, field5: 91, field6: 85, field7: "234567", field8: "2025-05-01 11:00", field9: 600, field10: 250, field11: "765432", field12: 4, field13: 220 },
-                { field1: "쇼트1호기", field2: 90, field3: 1180, field4: 20, field5: 85, field6: 95, field7: "345678", field8: "2025-05-01 12:00", field9: 700, field10: 300, field11: "876543", field12: 2, field13: 240 },
-                { field1: "쇼트2호기", field2: 120, field3: 1280, field4: 78, field5: 93, field6: 87, field7: "456789", field8: "2025-05-01 13:00", field9: 800, field10: 350, field11: "987654", field12: 5, field13: 260 },
-                { field1: "쇼트3호기", field2: 75, field3: 1370, field4: 82, field5: 88, field6: 90, field7: "567890", field8: "2025-05-01 14:00", field9: 900, field10: 400, field11: "109876", field12: 6, field13: 280 },
-                { field1: "쇼트4호기", field2: 95, field3: 1400, field4: 92, field5: 91, field6: 44, field7: "678901", field8: "2025-05-01 15:00", field9: 950, field10: 450, field11: "210987", field12: 7, field13: 300 },
-                { field1: "쇼트5호기", field2: 80, field3: 1480, field4: 70, field5: 84, field6: 55, field7: "789012", field8: "2025-05-01 16:00", field9: 1000, field10: 500, field11: "321098", field12: 8, field13: 320 },
-                { field1: "쇼트6호기", field2: 90, field3: 1560, field4: 85, field5: 92, field6: 37, field7: "890123", field8: "2025-05-01 17:00", field9: 1050, field10: 550, field11: "432109", field12: 9, field13: 340 },
-             
-                { field1: "G-800", field2: 85, field3: 1750, field4: 93, field5: 89, field6: 97, field7: "112233", field8: "2025-05-01 19:00", field9: 1150, field10: 650, field11: "654321", field12: 11, field13: 380 },
-                { field1: "G-600", field2: 105, field3: 1850, field4: 97, field5: 90, field6: 93, field7: "223344", field8: "2025-05-01 20:00", field9: 1200, field10: 700, field11: "765432", field12: 12, field13: 400 },
-                { field1: "PLUS", field2: 70, field3: 1300, field4: 83, field5: 88, field6: 92, field7: "334455", field8: "2025-05-01 21:00", field9: 1300, field10: 750, field11: "876543", field12: 13, field13: 420 },
-                { field1: "ML", field2: 60, field3: 1400, field4: 89, field5: 95, field6: 94, field7: "445566", field8: "2025-05-01 22:00", field9: 1400, field10: 800, field11: "987654", field12: 14, field13: 440 },
-                { field1: "K-BLACK", field2: 95, field3: 1500, field4: 92, field5: 97, field6: 90, field7: "556677", field8: "2025-05-01 23:00", field9: 1500, field10: 850, field11: "109876", field12: 15, field13: 460 },
-               
-                { field1: "방청", field2: 90, field3: 1800, field4: 85, field5: 89, field6: 90, field7: "889900", field8: "2025-05-02 02:00", field9: 1800, field10: 1000, field11: "432109", field12: 18, field13: 520 }
-                
-            ]
+
+
         });
     }
 </script>

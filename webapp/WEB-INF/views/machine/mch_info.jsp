@@ -290,16 +290,16 @@ $(function() {
     	    title: 'NO', 
     		formatter: "rownum", 
     		hozAlign: 'center', 
-    		width: 120 
+    		width: 80 
     	  },
-    	  { title: 'no', field: 'facility_code', hozAlign: 'center',visible: false   },
+    	  { title: 'no', field: 'facility_code',width: 80, hozAlign: 'center',visible: false   },
     	  { title: '설비명', field: 'facility_name', width: 250, hozAlign: 'left' },
     	  { title: '설비코드', field: 'facility_mach_code', width: 250, hozAlign: 'left' },
     	  { title: '설비 표현 순서', field: 'ch_idx', width: 150, hozAlign: 'center' },
     	  { title: 'C_T', field: 'c_t', width: 150, hozAlign: 'center' },
     	  { title: 'CAPA', field: 'capa', width: 150, hozAlign: 'center' },
     	  { title: '표준 중량', field: 'std_weight', width: 150, hozAlign: 'center' },
-    	  { title: '설비 특이사항', field: 'facility_comment', width: 380, hozAlign: 'center' }
+    	  { title: '설비 특이사항', field: 'facility_comment', width: 350, hozAlign: 'center' }
     	],
     rowClick: function(e, row) {
       $('#dataTable .tabulator-row').removeClass('row_select');
@@ -317,6 +317,7 @@ $(function() {
     	  $('input[name="ch_idx"]').val(d.ch_idx);
     	  $('input[name="c_t"]').val(d.c_t);
     	  $('input[name="capa"]').val(d.capa);
+    	  $('input[name="std_weight"]').val(d.std_weight);
     	  $('textarea[name="facility_comment"]').val(d.facility_comment);
 
     	  $('#modalContainer').show().addClass('show');

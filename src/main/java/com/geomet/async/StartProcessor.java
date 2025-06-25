@@ -4,7 +4,7 @@ import com.geomet.service.StartProcessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-
+import com.geomet.service.ReportExService;
 @Component
 public class StartProcessor {
 
@@ -16,4 +16,21 @@ public class StartProcessor {
     public void runTaskEverySecond() {
         startProcessorService.insertTempDataEvery();
     }
+    
+    
+    @Autowired
+    private ReportExService reportExService;
+    
+    @Scheduled(cron = "0 14 17 * * *")
+    public void reportEx() {
+        try {
+            reportExService.generateDailyReport();
+            
+            
+            System.out.println("[Schedule] 작업일보 엑셀 생성 완료: " + java.time.LocalDateTime.now());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
+

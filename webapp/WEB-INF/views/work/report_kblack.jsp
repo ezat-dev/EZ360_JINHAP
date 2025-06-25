@@ -191,6 +191,67 @@
         .row_select {
 	    background-color: #ffeeba !important;
 	    }
+	       	    	@media (max-width: 600px) {
+	  .form-row {
+	    flex-direction: column;
+	    align-items: stretch;
+	  }
+	  .form-label {
+	    margin-bottom: 4px;
+	  }
+	}
+	
+	.excel-import-button:hover {
+	    background-color: #f0f0f0;
+	}
+	
+	#excelOverlay {
+	  display: none;
+	  position: fixed;
+	  top: 0;
+	  left: 0;
+	  width: 100%;
+	  height: 100%;
+	  background-color: rgba(0,0,0,0.4);
+	  z-index: 9998;
+	}
+	
+	/* 로딩 박스 */
+	#excelLoading {
+	  display: none;
+	  position: fixed;
+	  top: 50%;
+	  left: 50%;
+	  transform: translate(-50%, -50%);
+	  background-color: white;
+	  padding: 20px 30px;
+	  border-radius: 10px;
+	  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+	  font-size: 16px;
+	  font-weight: bold;
+	  z-index: 9999;
+	  text-align: center;
+	}
+	
+	/* 로딩 스피너 */
+	#excelLoading::before {
+	  content: "";
+	  display: block;
+	  margin: 0 auto 10px;
+	  width: 30px;
+	  height: 30px;
+	  border: 4px solid #ccc;
+	  border-top: 4px solid #4caf50;
+	  border-radius: 50%;
+	  animation: spin 1s linear infinite;
+	}
+	
+	/* 애니메이션 */
+	@keyframes spin {
+	  0% { transform: rotate(0deg); }
+	  100% { transform: rotate(360deg); }
+	} 
+	    
 </style>
 
 
@@ -213,6 +274,9 @@
                       <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
+				 <button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
+                </button>
 	    </div>
 	    <div id="m_code">G04-GG05</div>
 	</div>
@@ -499,6 +563,63 @@
     initTables();
     loadWorkDailyData();
   });
+
+
+  $(".excel-button").on("click", function () {
+	    $("#excelOverlay, #excelLoading").show();
+
+	    // 1) 파라미터 준비
+	    let s_time = $("#s_time").val().replaceAll("-", "");
+	    let e_time = s_time;
+	    let m_code = $("#m_code").text().trim();
+	    let ex_mch_name  = "GEOMET K-BLACK 작업일보";
+
+	    console.log("▶ 엑셀 생성 요청 파라미터:", { s_time, e_time, m_code, ex_mch_name });
+
+	    // 2) AJAX 호출
+	    $.ajax({
+	        url: "/geomet/work/workDailyReport_common/excel",
+	        method: "POST",
+	        contentType: "application/json",
+	        data: JSON.stringify({ s_time, e_time, m_code, ex_mch_name }),
+	        dataType: "json",
+
+	        success: function (result) {
+	            console.log("▶ 서버가 돌려준 result:", result);
+
+	            if (result && result.downloadPath) {
+	                // 서버에서 완성된 downloadPath 를 그대로 사용
+	                const downloadUrl = result.downloadPath;
+	                console.log("▶ 다운로드 URL:", downloadUrl);
+
+	                const a = document.createElement('a');
+	                a.href = downloadUrl;
+	                a.style.display = 'none';
+	                document.body.appendChild(a);
+	                a.click();
+	                document.body.removeChild(a);
+
+	                alert("작업일보 엑셀 저장 완료되었습니다.");
+	            } else {
+	                console.warn("✋ downloadPath 키가 없습니다!", result);
+	                alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
+	            }
+	        },
+
+	        error: function (xhr, status, error) {
+	            console.error("▶ 엑셀 생성/다운로드 중 오류:", {
+	                status: status,
+	                error: error,
+	                responseText: xhr.responseText
+	            });
+	            alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+	        },
+
+	        complete: function () {
+	            $("#excelOverlay, #excelLoading").hide();
+	        }
+	    });
+	});
 </script>
 </body>
 </html>

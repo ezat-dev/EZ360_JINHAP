@@ -307,10 +307,10 @@ function loadWorkDailyData() {
     	            title: "진도일(율) 대비 생산실적<br>(ton)",
     	            columns: [
     	                { title: "CAPA_월", field: "capa_month", hozAlign: "center", headerSort: false },
-    	                { title: "누적<br>capa", field: "capa_sum", hozAlign: "center", headerSort: false },
-    	                { title: "누적<br>생산실적", field: "cc", hozAlign: "center", headerSort: false },
-    	                { title: "달성율", field: "dd", hozAlign: "center", headerSort: false },
-    	                { title: "누적<br>과부족량", field: "ee", hozAlign: "center", headerSort: false }
+    	                { title: "누적<br>capa", field: "capa_now_month", hozAlign: "center", headerSort: false },
+    	                { title: "누적<br>생산실적", field: "month_ton", hozAlign: "center", headerSort: false },
+    	                { title: "달성율", field: "percent_month", hozAlign: "center", headerSort: false },
+    	                { title: "누적<br>과부족량", field: "bujok_month", hozAlign: "center", headerSort: false }
     	            ]
     	        }
     	    ]
@@ -322,46 +322,49 @@ function loadWorkDailyData() {
     	table3 = new Tabulator("#table3", {
     	    height: "400px",
     	    layout: "fitColumns",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
     	    headerHozAlign: "center",
 
     	    columns: [
     	        {
     	            title: "목표",
     	            columns: [
-    	            	{ title: "설비", field: "facility_name", hozAlign: "center", headerSort: false },
-    	    	        
-    	                { title: "가동시간", field: "work_time",hozAlign: "center", headerSort: false },
-    	                { title: "통/HR", field: "tong",hozAlign: "center", headerSort: false },
-    	                { title: "통/Shift", field: "a1",hozAlign: "center", headerSort: false },
-    	                { title: "계획량/일", field: "a2",hozAlign: "center", headerSort: false }
+    	                { title: "설비", field: "facility_name", hozAlign: "center", headerSort: false,rowVertAlign: "middle" },
+    	                { title: "실 가동시간", field: "work_time", hozAlign: "center", headerSort: false },
+    	                { title: "시간당<br/>생산량(통)", field: "tong", hozAlign: "center", headerSort: false },
+    	                { title: "조별 생산<br/>CAPA(통)", field: "a1", hozAlign: "center", headerSort: false },
+    	                { title: "일 CAPA(통)", field: "a2", hozAlign: "center", headerSort: false }
     	            ]
     	        },
     	        {
     	            title: "운영계획</br>(실제 가동시간 기준)",
     	            columns: [
-    	                { title: "비가동시간", field: "a3",hozAlign: "center", headerSort: false },
+    	                
     	                { title: "실 가동시간", field: "a4",hozAlign: "center", headerSort: false },
-    	                { title: "목표", field: "a5",hozAlign: "center", headerSort: false }
+
+    	                { title: "비가동시간", field: "a3",hozAlign: "center", headerSort: false },
+    	                { title: "목표<br/>생산량(통)", field: "a5",hozAlign: "center", headerSort: false }
     	            ]
     	        },
     	        {
     	            title: "실적(통)",
     	            columns: [
-    	                { title: "주간", field: "tong_day",hozAlign: "center", headerSort: false },
-    	                { title: "야간", field: "tong_night",hozAlign: "center", headerSort: false },
-    	                { title: "합계", field: "tong_sum",hozAlign: "center", headerSort: false },
+    	                { title: "주간<br/>생산실적", field: "tong_day",hozAlign: "center", headerSort: false },
+    	                { title:"야간<br/>생산실적", field: "tong_night",hozAlign: "center", headerSort: false },
+    	                { title: "일 생산<br/>실적(통)", field: "tong_sum",hozAlign: "center", headerSort: false },
     	                {
     	                    title: "달성율",
     	                    columns: [
-    	                        { title: "목표", field: "a6",hozAlign: "center", headerSort: false },
-    	                        { title: "운영계획", field: "a7",hozAlign: "center", headerSort: false }
+    	                        { title: "운영 계획<br/>달성률", field: "a6",hozAlign: "center", headerSort: false },
+    	                        { title: "일 계획<br/>달성률", field: "a7",hozAlign: "center", headerSort: false }
     	                    ]
     	                },
     	                {
     	                    title: "과부족",
     	                    columns: [
-    	                        { title: "목표", field: "a8",hozAlign: "center", headerSort: false },
-    	                        { title: "운영계획", field: "a9",hozAlign: "center", headerSort: false }
+    	                        { title: "CAPA 대비<br/>부족 통수", field: "a8",hozAlign: "center", headerSort: false },
+    	                        { title: "운영게획<br/>부족 통수", field: "a9",hozAlign: "center", headerSort: false }
     	                    ]
     	                }
     	            ]
@@ -369,16 +372,18 @@ function loadWorkDailyData() {
     	        {
     	            title: "손실(운영계획 대비)",
     	            columns: [
-    	                { title: "통", field: "a10",hozAlign: "center", headerSort: false },
-    	                { title: "중량(톤)", field: "a11", headerSort: false },
+    	                // { title: "통", field: "a10",hozAlign: "center", headerSort: false },
+    	                { title: "손실<br/>톤수(톤)", field: "a11", headerSort: false },
     	                {
     	                    title: "손실시간",
     	                    columns: [
     	                        { title: "시간", field: "a12", headerSort: false },
-    	                        { title: "분", field: "a13", headerSort: false }
+    	                        { title: "분",   field: "a13", headerSort: false }
     	                    ]
-    	                }
+    	                },  
+    	                { title: "손실률", field: "a14", headerSort: false }
     	            ]
+
     	        }
     	    ]
     	});
