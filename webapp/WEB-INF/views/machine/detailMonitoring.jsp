@@ -345,8 +345,8 @@
     	        title: '일일 생산 현황', hozAlign: 'center', headerSort: false, colspan: 6,
     	        columns: [
     	          { title: '설비명', field: 'mach_code', hozAlign: 'center', width: 250, headerSort: false },
-    	          { title: '목표 생산량', field: 'target', hozAlign: 'center', width: 180, headerSort: false },
-    	          { title: '현재 생산량', field: 'prodqty', hozAlign: 'center', width: 180 , headerSort: false},
+    	          { title: '목표 생산량(ton)', field: 'target', hozAlign: 'center', width: 180, headerSort: false },
+    	          { title: '현재 생산량(ton)', field: 'prodqty', hozAlign: 'center', width: 180 , headerSort: false},
     	       
     	          { title: '달성률%', field: 'rate', formatter: percentFormatter, width: 300, headerSort: false },
     	          { title: '진도율%', field: 'n_rate', formatter: percentFormatter, width: 300, headerSort: false },

@@ -248,6 +248,13 @@
       <input type="text"name="std_weight">
       
 
+<label>목표 가동시간</label>
+<input type="time" name="work_time" step="60">
+
+<label>비가동 시간</label>
+<input type="time" name="non_time" step="60">
+
+
 
       <label>설비 특이사항</label>
       <textarea name="facility_comment" rows="3"></textarea>
@@ -293,13 +300,17 @@ $(function() {
     		width: 80 
     	  },
     	  { title: 'no', field: 'facility_code',width: 80, hozAlign: 'center',visible: false   },
-    	  { title: '설비명', field: 'facility_name', width: 250, hozAlign: 'left' },
-    	  { title: '설비코드', field: 'facility_mach_code', width: 250, hozAlign: 'left' },
+    	  { title: '설비명', field: 'facility_name', width: 170, hozAlign: 'left' },
+    	  { title: '설비코드', field: 'facility_mach_code', width: 170, hozAlign: 'left' },
     	  { title: '설비 표현 순서', field: 'ch_idx', width: 150, hozAlign: 'center' },
     	  { title: 'C_T', field: 'c_t', width: 150, hozAlign: 'center' },
     	  { title: 'CAPA', field: 'capa', width: 150, hozAlign: 'center' },
     	  { title: '표준 중량', field: 'std_weight', width: 150, hozAlign: 'center' },
-    	  { title: '설비 특이사항', field: 'facility_comment', width: 350, hozAlign: 'center' }
+
+    	  { title: '목표가동 시간', field: 'work_time', width: 150, hozAlign: 'center' },
+    	  { title: '비가동 시간', field: 'non_time', width: 150, hozAlign: 'center' },
+    	  
+    	  { title: '설비 특이사항', field: 'facility_comment', width: 300, hozAlign: 'center' }
     	],
     rowClick: function(e, row) {
       $('#dataTable .tabulator-row').removeClass('row_select');
@@ -318,7 +329,11 @@ $(function() {
     	  $('input[name="c_t"]').val(d.c_t);
     	  $('input[name="capa"]').val(d.capa);
     	  $('input[name="std_weight"]').val(d.std_weight);
-    	  $('textarea[name="facility_comment"]').val(d.facility_comment);
+
+    	  $('input[name="non_time"]').val(d.non_time);
+    	  $('input[name="work_time"]').val(d.work_time);
+
+      	  $('textarea[name="facility_comment"]').val(d.facility_comment);
 
     	  $('#modalContainer').show().addClass('show');
     	}

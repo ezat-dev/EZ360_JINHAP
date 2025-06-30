@@ -1085,24 +1085,26 @@ public class WorkController {
 
         DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
 
-         String sTimeWithOffset = work.getS_time() + "080000";
+     // 시작일 08시
+     String sTimeWithOffset = work.getS_time() + " 08:00:00";
 
-        LocalDate eDate = LocalDate.parse(work.getE_time(), fmt).plusDays(1);
-        String eTimeWithOffset = eDate.format(fmt) + "080000";
+     // 시작일 기준 하루 뒤 08시 → 하루 간격
+     LocalDate eDate = LocalDate.parse(work.getS_time(), fmt).plusDays(1);
+     String eTimeWithOffset = eDate.format(fmt) + " 08:00:00";
 
+     // yyyyMM
+     String yyyyMM = work.getS_time().substring(0, 6);
+     String startMonth = yyyyMM;
 
-        
-        String yyyyMM = work.getS_time().substring(0, 6);
-        String startMonth = yyyyMM + "01080000";
+     // 설정
+     work.setS_time(sTimeWithOffset);
+     work.setE_time(eTimeWithOffset);
+     work.setStart_month(startMonth);
 
-        
-        work.setS_time(sTimeWithOffset);
-        work.setE_time(eTimeWithOffset);
-        work.setStart_month(startMonth);
         System.out.println("==[ 변환 모니터링 현황 ]==");
         System.out.println("s_time: " + work.getS_time());
         System.out.println("e_time: " + work.getE_time());
-        System.out.println("m_time: " + work.getStart_month());
+        System.out.println("getStart_month: " + work.getStart_month());
         
 
       

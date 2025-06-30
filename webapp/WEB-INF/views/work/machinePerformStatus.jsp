@@ -201,7 +201,6 @@
    		
         
 
-
   
      <div class="tab">
 	     <h2>설비별 생산실적</h2>
@@ -225,23 +224,17 @@
     </main>
     
 
-
-
 <script>
 let now_page_code = "b01";
 
-
 function loadWorkDailyData() {
-    let selectedDate = $('#s_time').val(); // yyyy-mm-dd 형식
+    let selectedDate = $('#s_time').val();
     if (!selectedDate) {
         alert("날짜를 선택해주세요.");
         return;
     }
 
-    // 날짜에서 하이픈 제거: yyyyMMdd 형식
     let s_time = selectedDate.replace(/-/g, "");
-
-    // 다음 날 계산
     let dateObj = new Date(selectedDate);
     dateObj.setDate(dateObj.getDate() + 1);
     let nextDate = dateObj.toISOString().split('T')[0].replace(/-/g, "");
@@ -264,138 +257,162 @@ function loadWorkDailyData() {
     });
 }
 
+function customRedFormatter(cell) {
+    let value = cell.getValue();
+    if (value == null || value === "") return "";
+    const strVal = String(value);
+    if (strVal.includes("-")) {
+        return "<span style='color:red'>" + strVal.replace("-", "") + "</span>";
+    }
+    return strVal;
+}
 
-    $(function() {
-        const today = new Date().toISOString().split('T')[0];
-        $('#s_time').val(today);
-        initTables();
-        loadWorkDailyData();
+function initTables() {
+    table2 = new Tabulator("#table2", {
+        height: "390px",
+        layout: "fitColumns",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        headerHozAlign: "center",
+        columns: [
+            { title: "설비", field: "facility_name", hozAlign: "center", headerSort: false },
+            { title: "설비코드", field: "mach_code", hozAlign: "center", headerSort: false },
+            { title: "표준중량", field: "std_weight", hozAlign: "center", headerSort: false },
+            { title: "C/T", field: "c_t", hozAlign: "center", headerSort: false },
+            { title: "분할<br>횟수", field: "aa", hozAlign: "center", headerSort: false },
+            { title: "작업횟수<br>(코팅)", field: "bb", hozAlign: "center", headerSort: false },
+            { title: "가동일수", field: "work_day", hozAlign: "center", headerSort: false },
+            { title: "부여시간<br>(hr)", field: "set_hr", hozAlign: "center", headerSort: false },
+            { title: "목표 가동시간", field: "mok_hr", hozAlign: "center", headerSort: false },
+            {
+                title: "일 생산실적 현황",
+                columns: [
+                    { title: "CAPA_일</br>(ton)", field: "capa_day", hozAlign: "center", headerSort: false },
+                    { title: "생산실적</br>(ton)", field: "day_ton", hozAlign: "center", headerSort: false },
+                    { title: "달성율</br>(%)", field: "percent_day", hozAlign: "center", headerSort: false },
+                    { title: "과부족량</br>(ton)", field: "bujok_day", hozAlign: "center", headerSort: false, formatter: customRedFormatter }
+                ]
+            },
+            {
+                title: "진도일(율) 대비 생산실적",
+                columns: [
+                    { title: "CAPA_월</br>(ton)", field: "capa_month", hozAlign: "center", headerSort: false,formatter: customRedFormatter },
+                    { title: "누적<br>capa</br>(ton)", field: "capa_sum", hozAlign: "center", headerSort: false,formatter: customRedFormatter },
+                    { title: "누적<br>생산실적</br>(ton)", field: "month_ton", hozAlign: "center", headerSort: false,formatter: customRedFormatter },
+                    { title: "달성율</br>(%)", field: "percent_month", hozAlign: "center", headerSort: false,formatter: customRedFormatter },
+                    { title: "누적<br>과부족량</br>(ton)", field: "bujok_month", hozAlign: "center", headerSort: false,formatter: customRedFormatter }
+                ]
+            }
+        ]
     });
 
+    table3 = new Tabulator("#table3", {
+        height: "400px",
+        layout: "fitColumns",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        headerHozAlign: "center",
+        columns: [
+            {
+                title: "목표",
+                columns: [
+                    { title: "설비", field: "facility_name", hozAlign: "center", headerSort: false, rowVertAlign: "middle" },
+                    { title: "목표 가동시간", field: "c_min", hozAlign: "center", headerSort: false },
+                    { title: "시간당<br/>생산량(통)", field: "d", hozAlign: "center", headerSort: false },
+                    { title: "조별 생산<br/>CAPA(통)", field: "e", hozAlign: "center", headerSort: false },
+                    { title: "일 CAPA(통)", field: "f", hozAlign: "center", headerSort: false }
+                ]
+            },
+            {
+                title: "운영계획</br>(실제 가동시간 기준)",
+                columns: [
+                    { title: "실 가동시간", field: "h_min", hozAlign: "center", headerSort: false },
+                    { title: "비가동시간", field: "g", hozAlign: "center", headerSort: false },
+                    { title: "목표<br/>생산량(통)", field: "i", hozAlign: "center", headerSort: false }
+                ]
+            },
+            {
+                title: "실적(통)",
+                columns: [
+                    { title: "주간<br/>생산실적", field: "j", hozAlign: "center", headerSort: false },
+                    { title: "야간<br/>생산실적", field: "k", hozAlign: "center", headerSort: false },
+                    { title: "일 생산<br/>실적(통)", field: "l", hozAlign: "center", headerSort: false },
+                    {
+                        title: "달성율",
+                        columns: [
+                            { title: "운영 계획<br/>달성률", field: "m", hozAlign: "center", headerSort: false },
+                            { title: "일 계획<br/>달성률", field: "n", hozAlign: "center", headerSort: false }
+                        ]
+                    },
+                    {
+                        title: "과부족",
+                        columns: [
+                            {
+                                title: "CAPA 대비<br/>부족 통수",
+                                field: "o",
+                                hozAlign: "center",
+                                headerSort: false,
+                                formatter: customRedFormatter
+                            },
+                            {
+                                title: "운영게획<br/>부족 통수",
+                                field: "p",
+                                hozAlign: "center",
+                                headerSort: false,
+                                formatter: customRedFormatter
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                title: "손실(운영계획 대비)",
+                columns: [
+                    {
+                        title: "손실<br/>톤수(톤)",
+                        field: "r",
+                        hozAlign: "center",
+                        headerSort: false,
+                        formatter: customRedFormatter
+                    },
+                    {
+                        title: "손실시간",
+                        columns: [
+                            {
+                                title: "시간",
+                                field: "s",
+                                hozAlign: "center",
+                                headerSort: false,
+                                formatter: customRedFormatter
+                            },
+                            {
+                                title: "분",
+                                field: "t",
+                                hozAlign: "center",
+                                headerSort: false,
+                                formatter: customRedFormatter
+                            }
+                        ]
+                    },
+                    {
+                        title: "손실률%",
+                        field: "u",
+                        hozAlign: "center",
+                        headerSort: false,
+                        formatter: customRedFormatter
+                    }
+                ]
+            }
+        ]
+    });
+}
 
-    function initTables() {
-    	 
-
-
-    	table2 = new Tabulator("#table2", {
-    	    height: "390px",
-    	    layout: "fitColumns",
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
-    	    headerHozAlign: "center",
-
-    	    columns: [
-    	        { title: "설비", field: "facility_name", hozAlign: "center", headerSort: false },
-    	        { title: "설비코드", field: "mach_code", hozAlign: "center", headerSort: false },
-    	        { title: "표준중량", field: "std_weight", hozAlign: "center", headerSort: false },
-    	        { title: "C/T", field: "c_t", hozAlign: "center", headerSort: false },
-    	        { title: "분할<br>횟수", field: "aa", hozAlign: "center", headerSort: false },
-    	        { title: "작업횟수<br>(코팅)", field: "bb", hozAlign: "center", headerSort: false },
-    	        { title: "가동일수", field: "work_day", hozAlign: "center", headerSort: false },
-    	        { title: "부여시간<br>(hr)", field: "set_hr", hozAlign: "center", headerSort: false },
-    	        { title: "목표 가동시간", field: "mok_hr", hozAlign: "center", headerSort: false },
-    	        {
-    	            title: "일 생산실적 현황<br>(ton)",
-    	            columns: [
-    	                { title: "CAPA_일", field: "capa_day", hozAlign: "center", headerSort: false },
-    	                { title: "생산실적", field: "day_ton", hozAlign: "center", headerSort: false },
-    	                { title: "달성율", field: "percent_day", hozAlign: "center", headerSort: false },
-    	                { title: "과부족량", field: "bujok_day", hozAlign: "center", headerSort: false }
-    	            ]
-    	        },
-    	        {
-    	            title: "진도일(율) 대비 생산실적<br>(ton)",
-    	            columns: [
-    	                { title: "CAPA_월", field: "capa_month", hozAlign: "center", headerSort: false },
-    	                { title: "누적<br>capa", field: "capa_now_month", hozAlign: "center", headerSort: false },
-    	                { title: "누적<br>생산실적", field: "month_ton", hozAlign: "center", headerSort: false },
-    	                { title: "달성율", field: "percent_month", hozAlign: "center", headerSort: false },
-    	                { title: "누적<br>과부족량", field: "bujok_month", hozAlign: "center", headerSort: false }
-    	            ]
-    	        }
-    	    ]
-    	});
-
-
-
-    	
-    	table3 = new Tabulator("#table3", {
-    	    height: "400px",
-    	    layout: "fitColumns",
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
-    	    headerHozAlign: "center",
-
-    	    columns: [
-    	        {
-    	            title: "목표",
-    	            columns: [
-    	                { title: "설비", field: "facility_name", hozAlign: "center", headerSort: false,rowVertAlign: "middle" },
-    	                { title: "실 가동시간", field: "work_time", hozAlign: "center", headerSort: false },
-    	                { title: "시간당<br/>생산량(통)", field: "tong", hozAlign: "center", headerSort: false },
-    	                { title: "조별 생산<br/>CAPA(통)", field: "a1", hozAlign: "center", headerSort: false },
-    	                { title: "일 CAPA(통)", field: "a2", hozAlign: "center", headerSort: false }
-    	            ]
-    	        },
-    	        {
-    	            title: "운영계획</br>(실제 가동시간 기준)",
-    	            columns: [
-    	                
-    	                { title: "실 가동시간", field: "a4",hozAlign: "center", headerSort: false },
-
-    	                { title: "비가동시간", field: "a3",hozAlign: "center", headerSort: false },
-    	                { title: "목표<br/>생산량(통)", field: "a5",hozAlign: "center", headerSort: false }
-    	            ]
-    	        },
-    	        {
-    	            title: "실적(통)",
-    	            columns: [
-    	                { title: "주간<br/>생산실적", field: "tong_day",hozAlign: "center", headerSort: false },
-    	                { title:"야간<br/>생산실적", field: "tong_night",hozAlign: "center", headerSort: false },
-    	                { title: "일 생산<br/>실적(통)", field: "tong_sum",hozAlign: "center", headerSort: false },
-    	                {
-    	                    title: "달성율",
-    	                    columns: [
-    	                        { title: "운영 계획<br/>달성률", field: "a6",hozAlign: "center", headerSort: false },
-    	                        { title: "일 계획<br/>달성률", field: "a7",hozAlign: "center", headerSort: false }
-    	                    ]
-    	                },
-    	                {
-    	                    title: "과부족",
-    	                    columns: [
-    	                        { title: "CAPA 대비<br/>부족 통수", field: "a8",hozAlign: "center", headerSort: false },
-    	                        { title: "운영게획<br/>부족 통수", field: "a9",hozAlign: "center", headerSort: false }
-    	                    ]
-    	                }
-    	            ]
-    	        },
-    	        {
-    	            title: "손실(운영계획 대비)",
-    	            columns: [
-    	                // { title: "통", field: "a10",hozAlign: "center", headerSort: false },
-    	                { title: "손실<br/>톤수(톤)", field: "a11", headerSort: false },
-    	                {
-    	                    title: "손실시간",
-    	                    columns: [
-    	                        { title: "시간", field: "a12", headerSort: false },
-    	                        { title: "분",   field: "a13", headerSort: false }
-    	                    ]
-    	                },  
-    	                { title: "손실률", field: "a14", headerSort: false }
-    	            ]
-
-    	        }
-    	    ]
-    	});
-    } 
-
-  $(function() {
+// ✅ 최종 한 번만 호출
+$(function() {
     $('#s_time').val(new Date().toISOString().split('T')[0]);
     initTables();
     loadWorkDailyData();
-  });
-
-
+});
 </script>
 
 </body>

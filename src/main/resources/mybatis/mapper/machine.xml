@@ -514,6 +514,8 @@ SELECT * FROM v_moniteolingling
         c_t,
         capa,
         std_weight,
+        non_time,
+        work_time,
         facility_yn,
         ch_idx
     FROM tb_facility
@@ -528,7 +530,6 @@ SELECT * FROM v_moniteolingling
     WHERE facility_code = #{facility_code}
 </delete>
  
-  
 <insert id="insertFacility" parameterType="Machine">
     INSERT INTO tb_facility (
         facility_code,
@@ -538,6 +539,8 @@ SELECT * FROM v_moniteolingling
         c_t,
         capa,
         std_weight,
+        non_time,
+        work_time,
         facility_yn,
         ch_idx
     )
@@ -549,6 +552,8 @@ SELECT * FROM v_moniteolingling
         #{c_t},
         #{capa},
         #{std_weight},
+        #{non_time},
+        #{work_time},
         #{facility_yn},
         #{ch_idx}
     )
@@ -559,9 +564,12 @@ SELECT * FROM v_moniteolingling
         c_t = VALUES(c_t),
         capa = VALUES(capa),
         std_weight = VALUES(std_weight),
+        non_time = VALUES(non_time),
+        work_time = VALUES(work_time),
         facility_yn = VALUES(facility_yn),
         ch_idx = VALUES(ch_idx)
 </insert>
+
 
 
 

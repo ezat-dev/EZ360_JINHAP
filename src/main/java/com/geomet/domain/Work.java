@@ -50,10 +50,37 @@ public class Work {
     
     //설비효율 관리
     private String facility_name;
+    private String c_min;
+    private String h_min;
+	/*
+	 * private String a; private String b; private String c; private String d;
+	 */
     private String a;
     private String b;
     private String c;
     private String d;
+
+	/*
+	 * private String e; private String f;
+	 */
+    private String g;
+    private String h;
+    private String k;
+    private String l;
+    private String j;
+    private String i;
+    private String m;
+    private String n;
+    private String o;
+    private String p;
+    private String r;
+    private String s;
+    private String t;
+    private String u;
+    private String q;
+
+
+    
     private String weight;
     private String weight_wr;
     
@@ -151,6 +178,133 @@ public class Work {
     
     
 
+
+	public String getL() {
+		return l;
+	}
+	public void setL(String l) {
+		this.l = l;
+	}
+	public String getJ() {
+		return j;
+	}
+	public void setJ(String j) {
+		this.j = j;
+	}
+	public String getC_min() {
+		return c_min;
+	}
+	public void setC_min(String c_min) {
+		this.c_min = c_min;
+	}
+	public String getH_min() {
+		return h_min;
+	}
+	public void setH_min(String h_min) {
+		this.h_min = h_min;
+	}
+	public String getA() {
+		return a;
+	}
+	public void setA(String a) {
+		this.a = a;
+	}
+	public String getB() {
+		return b;
+	}
+	public void setB(String b) {
+		this.b = b;
+	}
+	public String getC() {
+		return c;
+	}
+	public void setC(String c) {
+		this.c = c;
+	}
+	public String getD() {
+		return d;
+	}
+	public void setD(String d) {
+		this.d = d;
+	}
+	public String getG() {
+		return g;
+	}
+	public void setG(String g) {
+		this.g = g;
+	}
+	public String getH() {
+		return h;
+	}
+	public void setH(String h) {
+		this.h = h;
+	}
+	public String getK() {
+		return k;
+	}
+	public void setK(String k) {
+		this.k = k;
+	}
+	public String getI() {
+		return i;
+	}
+	public void setI(String i) {
+		this.i = i;
+	}
+	public String getM() {
+		return m;
+	}
+	public void setM(String m) {
+		this.m = m;
+	}
+	public String getN() {
+		return n;
+	}
+	public void setN(String n) {
+		this.n = n;
+	}
+	public String getO() {
+		return o;
+	}
+	public void setO(String o) {
+		this.o = o;
+	}
+	public String getP() {
+		return p;
+	}
+	public void setP(String p) {
+		this.p = p;
+	}
+	public String getR() {
+		return r;
+	}
+	public void setR(String r) {
+		this.r = r;
+	}
+	public String getS() {
+		return s;
+	}
+	public void setS(String s) {
+		this.s = s;
+	}
+	public String getT() {
+		return t;
+	}
+	public void setT(String t) {
+		this.t = t;
+	}
+	public String getU() {
+		return u;
+	}
+	public void setU(String u) {
+		this.u = u;
+	}
+	public String getQ() {
+		return q;
+	}
+	public void setQ(String q) {
+		this.q = q;
+	}
 	public String getStart_month() {
 		return start_month;
 	}
@@ -619,30 +773,7 @@ public class Work {
 	public void setFacility_name(String facility_name) {
 		this.facility_name = facility_name;
 	}
-	public String getA() {
-		return a;
-	}
-	public void setA(String a) {
-		this.a = a;
-	}
-	public String getB() {
-		return b;
-	}
-	public void setB(String b) {
-		this.b = b;
-	}
-	public String getC() {
-		return c;
-	}
-	public void setC(String c) {
-		this.c = c;
-	}
-	public String getD() {
-		return d;
-	}
-	public void setD(String d) {
-		this.d = d;
-	}
+
 	public String getWeight() {
 		return weight;
 	}

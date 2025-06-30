@@ -228,7 +228,7 @@
         columns: [
           { title: "일 작업통수", field: "tong_day",headerSort: false },
           { title: "생산량", field: "weight_day",headerSort: false },
-          { title: "평균생산중량", field: "avg_day" ,headerSort: false},
+          { title: "표준중량", field: "avg_day" ,headerSort: false},
           { title: "누적 생산통수", field: "tong_sum" ,headerSort: false},
           { title: "누적 생산량", field: "weight_sum" ,headerSort: false},
           { title: "평균중량", field: "avg_sum" ,headerSort: false},

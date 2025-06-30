@@ -104,17 +104,26 @@
       item_nm,
       item_cd,
       next_facility,
-      '' AS a, /*분할횟수*/
+	  CASE WHEN division_weight = 0 THEN 0
+		   ELSE
+				CASE WHEN (weight_day / division_weight) > 1 THEN FLOOR((weight_day / division_weight)) + 1
+			         ELSE 1 END
+	  END AS a, /*분할횟수*/
       '' AS b, /*검사항목(내용)*/
       '' AS c,/*검사항목(파일)*/      
       '' AS d,/*검사항목(합부판정)*/
       '' AS e,/*구분(신규/재작업)*/
       '' AS f/*비고*/      
     FROM (
-      SELECT
-        *,
-        LEAD(facility_name) OVER(PARTITION BY barcode_no ORDER BY start_time) AS next_facility
-      FROM (
+	     SELECT 
+	        mach_code, end_time, start_time, tong_day, weight_day,
+	        aa.item_cd, aa.item_nm,
+	        ab.coating_nm AS next_facility,
+			CASE WHEN aa.mach_code = ab.mach_main THEN mach_main_weight
+				 WHEN aa.mach_code = ab.mach_sub THEN mach_sub_weight
+				 ELSE 0
+			END division_weight
+	  FROM (
         SELECT
           mach_code,
           barcode_no,
@@ -144,6 +153,9 @@
           AND start_time IS NOT NULL
           AND end_time IS NOT NULL
       ) AS aa
+	  INNER JOIN
+	  	pwo_geo_division_data AS ab
+	  ON aa.item_cd = ab.item_cd
     ) AS bb
     <where>
       <if test="m_code != null">
@@ -313,9 +325,8 @@
   
   
 <select id="MonitoringStatusList" parameterType="Work" resultType="Work">
-
-  <![CDATA[
-  SELECT 
+<![CDATA[
+SELECT 
   facility_name,
   mach_code,
   std_weight,
@@ -326,25 +337,21 @@
   set_hr,
   mok_hr,
   capa_day,
-
- 
+  -- 일별 tong 기준 지표
   ROUND((tong * std_weight) / 1000, 1) AS day_ton,
   ROUND((((tong * std_weight) / 1000) / capa_day) * 100, 1) AS percent_day,
   ROUND((tong * std_weight) / 1000 - capa_day, 1) AS bujok_day,
-
-  ROUND((work_month * capa_day), 1) AS capa_month,
-  ROUND(DAY(CURDATE()) * capa_day, 1) AS capa_now_month,
-
-  ROUND((m_tong * std_weight) / 1000, 1) AS month_ton,
-  -- 
-  ROUND((((m_tong * std_weight) / 1000) / (work_month * capa_day)) * 100, 1) AS percent_month,
-  -- 부족 케파
-  ROUND((m_tong * std_weight) / 1000 - (work_month * capa_day), 1) AS bujok_month,
-  -- ROUND(((capa_day * std_weight) / 1000) * DAY(CURDATE()), 1) AS p,
-  -- ROUND(((capa_day * std_weight) / 1000) * DAY(LAST_DAY(NOW())), 1) AS q,
+  -- 월별 기준 지표 추가
+  ROUND((work_month * capa_day), 1) AS capa_month, --
+  ROUND((m_tong * std_weight) / 1000, 1) AS month_ton, --
+  ROUND((((m_tong * std_weight) / 1000) / (work_month * capa_day)) * 100, 1) AS percent_month, --
+  ROUND((m_tong * std_weight) / 1000 - (work_month * capa_day), 1) AS bujok_month, --
+  ROUND((work_day / capa_day) * 1000,1) AS capa_sum,
+  '1' AS cc,
+  '1' AS dd,
+  '1' AS ee,
   tong,
   m_tong
-
 FROM (
   SELECT 
     mach_code,
@@ -357,11 +364,10 @@ FROM (
     work_month,
     work_day * 24 AS set_hr,
     work_day * 24 AS mok_hr,
-    (capa * std_weight) / 1000 AS capa_day,
+    ROUND((capa * std_weight) / 1000,1) AS capa_day,
     division,
     tong,
     m_tong
-
   FROM (
     SELECT 
       mach_code,
@@ -369,144 +375,163 @@ FROM (
       SUM(CASE WHEN start_time >= start_time_day THEN 1 ELSE 0 END) AS tong,     -- 일 tong
       COUNT(*) AS m_tong,                                                        -- 월 tong
       ROUND(SUM(weight), 0) AS weight,
-      DAY(LAST_DAY(NOW())) AS work_day,
-      DAY(LAST_DAY(NOW())) AS work_month,
-      ROUND((weight), 0) AS weight_day,
+      work_day,
+      work_month,
+      ROUND(SUM(weight), 0) AS weight_day,
       MAX(work_time) AS work_time,
       MAX(c_t) AS c_t,
       MAX(capa) AS capa,
       MAX(std_weight) AS std_weight,
       MAX(division) AS division
-
     FROM (
-      SELECT *,
+      SELECT 
+        *,
         LEAD(start_time) OVER (PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time,
         1 AS tong,
-        CASE 
-          WHEN CAST(TIMESTAMPDIFF(HOUR, 
-              STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
-              NOW()) AS SIGNED) = 0 
-          THEN 1 
-          ELSE CAST(TIMESTAMPDIFF(HOUR, 
-              STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
-              NOW()) AS SIGNED) 
-        END AS work_time,
-      
-        DAY(LAST_DAY(NOW())) AS work_day,
-        DAY(LAST_DAY(NOW())) AS work_month
-
+		CASE WHEN DATE_FORMAT(SUBSTR(#{s_time},1,8),'%Y-%m-%d') = CURDATE() THEN  
+			TIMESTAMPDIFF(HOUR,CONCAT(DATE_FORMAT(LEFT(#{s_time},8), '%Y-%m-%d'),' 08:00:00'), NOW())
+		ELSE  
+			24
+		END AS work_time,
+        DAY(LAST_DAY(CONCAT(DATE_FORMAT(LEFT(#{s_time},8),'%Y-%m-%d'),' 08:00:00'))) AS work_day,
+        DAY(LAST_DAY(CONCAT(DATE_FORMAT(LEFT(#{s_time},8),'%Y-%m-%d'),' 08:00:00'))) AS work_month
       FROM tb_lowdata_save AS A
-
-      LEFT OUTER JOIN (
+      LEFT JOIN (
         SELECT 
           'JH_KR_01' AS plac_cd_t, 
           '02' AS plnt_cd_t,
-
-     
+          -- 오늘 08시
           CASE 
-            WHEN CAST(LEFT(CURTIME(),2) AS UNSIGNED) < 8 
-            THEN DATE_FORMAT(DATE_SUB(NOW(), INTERVAL 1 DAY), '%Y%m%d080000')
-            ELSE DATE_FORMAT(NOW(), '%Y%m%d080000')
+            WHEN CAST(LEFT(#{s_time}, 2) AS UNSIGNED) < 8 
+            THEN CONCAT(DATE_FORMAT(DATE_SUB(STR_TO_DATE(#{s_time}, '%Y%m%d%H%i%s'), INTERVAL 1 DAY), '%Y%m%d'),'080000')
+            ELSE CONCAT(SUBSTR(#{s_time},1,8),'080000')
           END AS start_time_day,
-
           -- 월 1일 08시
-          DATE_FORMAT(CONCAT(LEFT(#{s_time},6), '01080000'), '%Y%m%d%H%i%s') AS start_time_month
---          DATE_FORMAT(CONCAT(DATE_FORMAT(NOW(), '%Y%m'), '01080000'), '%Y%m%d%H%i%s') AS start_time_month
-
+          CONCAT(#{start_month}, '01', '080000') AS start_time_month
         FROM dual
-      ) AS B
-      ON A.plac_cd = B.plac_cd_t
-      AND A.plnt_cd = B.plnt_cd_t
-
-      LEFT OUTER JOIN (
-        SELECT *
-        FROM tb_facility
-        WHERE ch_idx < 30
-      ) AS C
-      ON A.mach_code = C.facility_mach_code
-      WHERE A.start_time >= B.start_time_month
-
-    ) AS A
-
+      ) B
+        ON A.plac_cd = B.plac_cd_t
+       AND A.plnt_cd = B.plnt_cd_t
+      LEFT JOIN tb_facility C
+        ON A.mach_code = C.facility_mach_code
+      WHERE A.start_time >= CONCAT(#{start_month}, '01', '080000')
+    ) A
+    WHERE next_start_time IS NULL
     GROUP BY mach_code
-  ) AS AA
-) AS BB;
-
-  ]]>
+  ) AA
+) BB;
+]]>
 </select>
 
 
-<select id="MonitoringStatusList2" resultType="Work">
-    <![CDATA[
-    SELECT work_time,
-           tong,
-           (work_time * tong) / 2 AS a1,
-           (work_time * tong) AS a2,
-           non_time AS a3,
-           (work_time - non_time) AS a4,
-           (tong * (work_time - non_time)) AS a5,
-           tong_day,
-           tong_night,
-           (tong_day + tong_night) AS tong_sum,
-           ((tong_day + tong_night) / (work_time * tong)) AS a6,
-           ((tong_day + tong_night) / (tong * (work_time - non_time))) AS a7,
-           ((tong_day + tong_night) - (work_time * tong)) AS a8,
-           ((tong_day + tong_night) - (tong * (work_time - non_time))) AS a9,
-           ((tong_day + tong_night) - (tong * (work_time - non_time))) AS a10,
-           (((tong_day + tong_night) - (tong * (work_time - non_time))) * std_weight / 1000) AS a10,
-           (((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) AS a11,
-           (((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) / 60 AS a12,
-           ((((tong_day + tong_night) - (tong * (work_time - non_time))) / tong) / 60) / ((work_time - non_time) * 60) AS a13,
-           facility_name
-    FROM (
-        SELECT mach_code, MAX(facility_name) AS facility_name,
-               SUM(tong) AS tong,
-               ROUND(SUM(weight), 0) AS weight,
-               SUM(tong_day) AS tong_day, SUM(tong_night) AS tong_night, MAX(work_day) AS work_day,
-               ROUND(SUM(weight_day), 0) AS weight_day, MAX(work_time) AS work_time,
-               MAX(c_t) AS c_t, MAX(capa) AS capa, MAX(std_weight) AS std_weight,
-               1 AS non_time
-        FROM (
-            SELECT *
-            FROM (
-                SELECT mach_code, weight, 1 AS tong,
-                       (CASE WHEN 1 = 1
-                            AND end_time >= #{s_time}
-                            AND end_time <= #{e_time} THEN 1 ELSE 0 END) AS tong_day,
-                       (CASE WHEN 1 = 1
-                            AND end_time >= #{s_time}
-                            AND end_time <= #{e_time} THEN 1 ELSE 0 END) AS tong_night,
-                       (CASE WHEN 1 = 1
-                            AND end_time >= #{s_time}
-                            AND end_time <= #{e_time} THEN weight ELSE 0 END) AS weight_day,
-                       CASE WHEN CAST(TIMESTAMPDIFF(HOUR,
-                            STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
-                            NOW()) AS INTEGER) = 0 THEN 1
-                            ELSE CAST(TIMESTAMPDIFF(HOUR,
-                            STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
-                            NOW()) AS INTEGER) END AS work_time,
-                       CAST(TIMESTAMPDIFF(DAY,
-                            STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m01080000'), '%Y%m%d%H%i%s'),
-                            NOW()) AS INTEGER) AS work_day,
-                       fac.c_t, fac.capa, fac.std_weight, fac.facility_name,
-                       LEAD(start_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time
-                FROM tb_lowdata_save AS lows
-                INNER JOIN
-                    tb_facility AS fac
-                ON lows.mach_code = fac.facility_mach_code
-                WHERE 1 = 1
-                AND end_time >= #{s_time}
-                AND end_time <= #{e_time}
-                AND weight IS NOT NULL
-                AND start_time IS NOT NULL
-                AND end_time IS NOT NULL
-            ) AS A
-            WHERE next_start_time IS NULL
-        ) AS low
-        GROUP BY mach_code
-    ) AS B;
-    ]]>
+
+
+<select id="MonitoringStatusList2" parameterType="Work" resultType="Work">
+<![CDATA[
+
+SELECT 
+     AAA.ch_idx,
+     AAA.facility_name,
+     AAA.C,
+     AAA.C_min,
+     AAA.D,
+     AAA.E,
+     AAA.F,
+     AAA.G,
+     AAA.H,
+     AAA.H_min,
+     AAA.I,
+     BBB.J,
+     BBB.K,	
+     BBB.L,
+     ROUND(BBB.L / AAA.F, 1) * 100 AS M,
+     ROUND(BBB.L / AAA.I, 1) * 100 AS N,
+     L - F AS O,
+     L - I AS P,
+     Q AS Q,
+     ROUND(((L - I) * 170) / 1000,1) AS R,
+     ROUND((L - I) / D, 1) AS S,
+     ROUND((L - I) / D, 1) * 60 AS T,
+    ROUND((ROUND(D / NULLIF((L - I), 0), 1) * 60 / (H_min * 60)) * 100, 1) AS U
+
+
+
+FROM (
+	SELECT 
+		facility_code, facility_name, facility_mach_code,
+		facility_comment, c_t, capa, c_t_hour,
+		std_weight, ch_idx, division,
+	    facility_name AS B,
+	    -- CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END AS C,  -- 실 가동 시간 (분)    
+	    CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END AS C,  -- 실 가동 시간 (분)    
+	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * 60), '%H:%i') AS C_min, -- 시:분   
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) AS D,  -- 시간당 생산량 (통)    
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END)  / 60,1) 	    	* 
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) AS E, -- 조별 생산
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) / 60,1) 	    	* 
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) * 2 AS F, -- 일 CAPA통,	    
+	    '01:20' AS G,  -- 실가동 시간
+	    ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END - TIME_TO_SEC('01:20')/60)/60),0) AS H,    
+	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END - TIME_TO_SEC('01:20')/60)*60),'%H:%i') AS H_min,
+	    ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END - TIME_TO_SEC('01:20')/60)/60),0) * 
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) AS I,
+	    "없음" AS Q,
+		work_time, work_gb
+	FROM (
+		SELECT *, 'Z' AS Z
+	  FROM tb_facility
+	  WHERE ch_idx != 9999
+	) AS fac
+  LEFT OUTER JOIN
+  (
+  	SELECT
+  	'Z' AS ZZ,
+	CASE WHEN DATE_FORMAT(SUBSTR(#{s_time},1,8),'%Y-%m-%d') = CURDATE() THEN  
+		TIMESTAMPDIFF(HOUR,CONCAT(DATE_FORMAT(LEFT(#{s_time},8), '%Y-%m-%d'),' 08:00:00'), NOW())
+	ELSE  
+		24
+	END AS work_time,
+	CASE WHEN DATE_FORMAT(SUBSTR(#{s_time},1,8),'%Y-%m-%d') = CURDATE() THEN 0 ELSE 1 END work_gb
+  ) AS du
+  ON fac.Z = du.ZZ
+) AS AAA
+INNER JOIN (
+  SELECT
+    mach_code,
+    
+    -- 전체 범위 내 개수
+    SUM(CASE
+      WHEN end_time >= #{s_time} AND end_time < #{e_time}
+      THEN 1 ELSE 0 END) AS L,
+
+    -- 주간조: 당일 08:00:00 ~ 당일 20:00:00
+    SUM(CASE
+      WHEN end_time >= CONCAT(SUBSTR(#{s_time}, 1, 8), '080000')
+       AND end_time <  CONCAT(SUBSTR(#{s_time}, 1, 8), '200000')
+      THEN 1 ELSE 0 END) AS J,
+
+    -- 야간조: 전날 20:00:00 ~ 당일 08:00:00
+    SUM(CASE
+      WHEN end_time >= CONCAT(DATE_FORMAT(DATE_SUB(STR_TO_DATE(SUBSTR(#{s_time}, 1, 8), '%Y%m%d'), INTERVAL 1 DAY), '%Y%m%d'), '200000')
+       AND end_time <  CONCAT(SUBSTR(#{s_time}, 1, 8), '080000')
+      THEN 1 ELSE 0 END) AS K
+
+  FROM tb_lowdata_save
+  WHERE start_time IS NOT NULL
+    AND end_time IS NOT NULL
+    AND end_time >= #{s_time}
+    AND end_time <  #{e_time}
+  GROUP BY mach_code
+) AS BBB
+
+ON AAA.facility_mach_code = BBB.mach_code
+ORDER BY AAA.ch_idx;
+
+
+
+]]>
 </select>
+
 
 </mapper>
 

@@ -10,6 +10,8 @@ public class Machine {
 	private String c_rate;
 
 
+	private String non_time;
+	
 	private String d;
 	private String e;
 	private String f;
@@ -193,6 +195,14 @@ public class Machine {
 
     
     
+	public String getNon_time() {
+		return non_time;
+	}
+
+	public void setNon_time(String non_time) {
+		this.non_time = non_time;
+	}
+
 	public String getMach_cod() {
 		return mach_cod;
 	}
