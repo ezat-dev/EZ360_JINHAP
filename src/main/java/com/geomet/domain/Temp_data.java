@@ -3,7 +3,7 @@ package com.geomet.domain;
 public class Temp_data {
 	
 	private String temp_time;
-
+	private String mch_code;
 
     private Integer t_600_d12000;
     private Integer t_600_d12001;
@@ -20,6 +20,12 @@ public class Temp_data {
     private String timestamp;
     
     
+	public String getMch_code() {
+		return mch_code;
+	}
+	public void setMch_code(String mch_code) {
+		this.mch_code = mch_code;
+	}
 	public Integer getBlk_d12001() {
 		return blk_d12001;
 	}

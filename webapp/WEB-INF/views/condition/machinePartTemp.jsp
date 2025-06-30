@@ -183,7 +183,9 @@
 
     <main class="main">
         <div class="tab">
-        
+        <button class="pCodeBtn" data-pcode="p_1">P1</button>
+		<button class="pCodeBtn" data-pcode="p_2">P2</button>
+		<button class="pCodeBtn" data-pcode="p_3">P3</button>
 
             <div class="button-container">
             
@@ -267,6 +269,42 @@ let now_page_code = "c02";
     getDataList(yearMonth);
   });
 
+
+  $('.pCodeBtn').click(function(){
+	  var p_code = $(this).data('pcode');
+	  var startDate = $('#startDate').val();
+	  var mch_code = $('.mch_code').val();
+
+	  console.log(' p_code:', p_code);
+	  console.log(' startDate:', startDate);
+	  console.log(' mch_code:', mch_code);
+
+	  if(!startDate){
+	    alert('날짜를 선택하세요');
+	    return;
+	  }
+
+	  $.ajax({
+	    url: '/geomet/condition/machinePartTemp/list',  
+	    method: 'POST',
+	    data: {
+	      startDate: startDate,
+	      mch_code: mch_code,
+	      p_code: p_code
+	    },
+	    success: function(data){
+	      console.log('서버 응답 데이터:', data);
+	      dataTable.setData(data);
+	    },
+	    error: function(){
+	        alert('데이터 조회 중 오류 발생');
+	      }
+	    });
+  });
+
+
+
+  
   var defaultColumns = [
 
 /* 	  tank_temp: 38°C 초과 시 빨간색

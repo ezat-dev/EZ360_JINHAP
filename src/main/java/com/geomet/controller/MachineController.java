@@ -110,19 +110,26 @@ public class MachineController {
     @RequestMapping(value = "/machine/tempMonitoring/list", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> getTempMonitoringList(@RequestParam(required = false) String startDate,
-                                                     @RequestParam(required = false) String endDate) {
+                                                     @RequestParam(required = false) String endDate,
+                                                     @RequestParam(required = false) String mch_code) {
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-            //System.out.println("startDate = " + startDate);
-            //System.out.println("endDate = " + endDate);
-
+			/*
+			 * // ✅ 전달받은 파라미터 확인용 로그 System.out.println("📅 startDate: " + startDate);
+			 * System.out.println("📅 endDate: " + endDate);
+			 * System.out.println("🛠️ mch_code: " + mch_code);
+			 */
             Temp_data temp = new Temp_data();
             if (startDate != null && !startDate.isEmpty()) temp.setStartDate(startDate);
             if (endDate != null && !endDate.isEmpty()) temp.setEndDate(endDate);
+            if (mch_code != null && !mch_code.isEmpty()) temp.setMch_code(mch_code);  // ✅ 이 부분도 꼭 필요
 
             List<Temp_data> tempList = machineService.getTempDataList(temp);
 
+			/*
+			 * // ✅ 결과 로그 System.out.println("✅ 조회된 데이터 수: " + tempList.size());
+			 */
             rtnMap.put("status", "success");
             rtnMap.put("data", tempList);
             rtnMap.put("count", tempList.size());
@@ -135,6 +142,7 @@ public class MachineController {
 
         return rtnMap;
     }
+
 
 
     

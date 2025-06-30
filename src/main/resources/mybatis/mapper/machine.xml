@@ -53,16 +53,34 @@
 
 
 
-<select id="getTempDataList" parameterType="temp_data" resultType="temp_data">
-    SELECT * 
-    FROM tb_temp_data
-    <where>
-        <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
-            temp_time BETWEEN #{startDate} AND #{endDate}
-        </if>
-    </where>
-    ORDER BY temp_time
+<select id="getTempDataList" parameterType="temp_data" resultType="map">
+  SELECT temp_time,
+  <choose>
+    <when test="mch_code == 'T_600'">
+      T_600_D12000, T_600_D12001
+    </when>
+    <when test="mch_code == 'T_800'">
+      T_800_D12000, T_800_D12001
+    </when>
+    <when test="mch_code == 'BLK'">
+      BLK_D12000, BLK_D12001
+    </when>
+    <when test="mch_code == 'MLPL'">
+      MLPL_D12000, MLPL_D12001
+    </when>
+    <otherwise>
+      NULL AS temp1, NULL AS temp2
+    </otherwise>
+  </choose>
+  FROM tb_temp_data
+  <where>
+    <if test="startDate != null and endDate != null and startDate != '' and endDate != ''">
+      temp_time BETWEEN #{startDate} AND #{endDate}
+    </if>
+  </where>
+  ORDER BY temp_time
 </select>
+
 
 
 <select id="getAllDataList" parameterType="machine" resultType="machine">
