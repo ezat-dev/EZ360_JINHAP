@@ -346,15 +346,62 @@
   </select>
 
   <!-- 업데이트 -->
-  <update id="divisionWashingUpdate"
-          parameterType="Condition">
-    UPDATE PWO_BAS_CD
-    SET
-      option02 = #{option02},
-      option03 = #{option03}
-    WHERE
-      GROUP_CODE = 'EZ001'
-      AND code_name = #{code_name}
-  </update>
+<update id="divisionWashingUpdate"
+        parameterType="Condition">
+  UPDATE PWO_BAS_CD
+  SET
+    option02 = #{option02, jdbcType=VARCHAR},
+    option03 = #{option03, jdbcType=VARCHAR}
+  WHERE
+    GROUP_CODE = 'EZ001'
+    AND code_name = #{code_name, jdbcType=VARCHAR}
+</update>
+
+<insert id="divisionWashingLog" parameterType="Condition">
+    INSERT INTO divisionwashing_log (
+        code_name,
+        option02,
+        option03,
+        op2_old,
+        op3_old,
+        user_id,
+        upd_dt,
+        log_dt
+    )
+    VALUES (
+        #{code_name},
+        #{option02},
+        #{option03},
+        #{op2_old},
+        #{op3_old},
+        #{user_id},
+        #{upd_dt},
+        NOW()
+    )
+</insert>
+
+
+<select id="divisionWashingLogList" parameterType="Condition" resultType="Condition">
+    SELECT 
+        id,
+        code_name,
+        option02,
+        option03,
+        CASE 
+            WHEN op2_old IS NULL THEN '변경사항 없음'
+            ELSE op2_old
+        END AS op2_old,
+        CASE 
+            WHEN op3_old IS NULL THEN '변경사항 없음'
+            ELSE op3_old
+        END AS op3_old,
+        user_id,
+        upd_dt,
+        log_dt
+    FROM 
+        divisionwashing_log
+    ORDER BY log_dt DESC
+</select>
+
 	
 </mapper>

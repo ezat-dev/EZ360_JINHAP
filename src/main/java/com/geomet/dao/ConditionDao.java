@@ -48,4 +48,6 @@ public interface ConditionDao {
 	    List<Condition> divisionWashingList(Condition condition); 
 	    void divisionWashingUpdate(Condition condition); 
 	    
+	    void divisionWashingLog(Condition condition); 
+	    List<Condition> divisionWashingLogList(Condition condition); 
 }

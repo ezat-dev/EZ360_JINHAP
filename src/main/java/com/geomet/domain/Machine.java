@@ -1,7 +1,7 @@
 package com.geomet.domain;
 
 public class Machine {
-	
+	private String work_time2;
 	private String mach_cod;
 	private String target;
 	private String prodqty;
@@ -194,7 +194,16 @@ public class Machine {
     
 
     
-    
+
+
+	public String getWork_time2() {
+		return work_time2;
+	}
+
+	public void setWork_time2(String work_time2) {
+		this.work_time2 = work_time2;
+	}
+
 	public String getNon_time() {
 		return non_time;
 	}

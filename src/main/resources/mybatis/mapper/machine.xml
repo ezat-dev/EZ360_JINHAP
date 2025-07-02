@@ -533,7 +533,7 @@ SELECT * FROM v_moniteolingling
         capa,
         std_weight,
         non_time,
-        work_time,
+        work_time2,
         facility_yn,
         ch_idx
     FROM tb_facility

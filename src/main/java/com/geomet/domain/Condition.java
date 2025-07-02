@@ -1,14 +1,14 @@
 package com.geomet.domain;
 
 public class Condition {
-	
-	
+		private String op2_old;
+		private String op3_old;
 		private String option01;
 		private String option02;
 		private String option03;
 		private String code_name;
 		private String sum_val;
-	
+		private String log_dt;
 		private String user_name;
 		private String upd_dt;
 		private String user_id;
@@ -125,6 +125,24 @@ public class Condition {
 
 
 
+		public String getLog_dt() {
+			return log_dt;
+		}
+		public void setLog_dt(String log_dt) {
+			this.log_dt = log_dt;
+		}
+		public String getOp2_old() {
+			return op2_old;
+		}
+		public void setOp2_old(String op2_old) {
+			this.op2_old = op2_old;
+		}
+		public String getOp3_old() {
+			return op3_old;
+		}
+		public void setOp3_old(String op3_old) {
+			this.op3_old = op3_old;
+		}
 		public String getOption01() {
 			return option01;
 		}

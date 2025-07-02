@@ -103,4 +103,13 @@ private ConditionDao conditionDao;
 					public void divisionWashingUpdate(Condition condition) {
 						conditionDao.divisionWashingUpdate(condition);
 					 }
+					
+					@Override
+					public void divisionWashingLog(Condition condition) {
+						conditionDao.divisionWashingLog(condition);
+					 }
+					@Override
+					public List<Condition> divisionWashingLogList(Condition condition){
+						return conditionDao.divisionWashingLogList(condition);
+					}
 }

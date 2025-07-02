@@ -810,8 +810,28 @@ public class ConditionController {
 
     	    try {
     	        for (Condition condition : conditionList) {
-    	            conditionService.divisionWashingUpdate(condition);  
+    	            condition.setUser_id(UserController.USER_NAME);
+
+    	            String nowTime = java.time.LocalDateTime.now().format(
+    	                java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmm")
+    	            );
+    	            condition.setUpd_dt(nowTime);
+
+    	            // 🔽 이전 값도 함께 출력
+    	            System.out.println("📝 세척변경 정보 확인");
+    	            System.out.println("  ▶ code_name : " + condition.getCode_name());
+    	            System.out.println("  ▶ option02  : " + condition.getOption02());
+    	            System.out.println("  ▶ option03  : " + condition.getOption03());
+    	            System.out.println("  ▶ op2_old   : " + condition.getOp2_old());
+    	            System.out.println("  ▶ op3_old   : " + condition.getOp3_old());
+    	            System.out.println("  ▶ USER_ID   : " + condition.getUser_id());
+    	            System.out.println("  ▶ UPD_DT    : " + condition.getUpd_dt());
+    	            System.out.println("----------------------------------------");
+
+    	            conditionService.divisionWashingUpdate(condition); // 실제 업데이트
+    	            conditionService.divisionWashingLog(condition);
     	        }
+
     	        rtnMap.put("status", "success");
     	    } catch (Exception e) {
     	        rtnMap.put("status", "fail");
@@ -820,6 +840,17 @@ public class ConditionController {
 
     	    return rtnMap;
     	}
+
+    // 세척관리
+    @RequestMapping(value = "/condition/divisionWashing/log", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> divisionWashingLogList(Condition condition) {
+        List<Condition> list = conditionService.divisionWashingLogList(condition);
+        Map<String,Object> rtn = new HashMap<>();
+        rtn.put("status", "success");
+        rtn.put("data", list);
+        return rtn;
+    }
 
     
 }

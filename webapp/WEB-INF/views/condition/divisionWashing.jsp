@@ -23,6 +23,11 @@
             justify-content: center;
             margin-top: 1%;
         }
+        .view2 {
+            display: flex;
+            justify-content: center;
+            margin-top: 1%;
+        }
         .tab {
             width: 100%;
             margin-bottom: 37px;
@@ -347,8 +352,7 @@
             
   			<div class="box1">
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-        
-        
+
        			 </div>
 				
 
@@ -359,7 +363,6 @@
 		    <strong>※ 입력 유의사항</strong><br>
 		    • <b>투입비중</b>: NO 2~7의 합계는 <span class="highlight">100 이하</span><br>
 		    • <b>투입제한</b>: NO 3~5의 합계는 <span class="highlight">136 이하</span>
-		      <!-- <b></b><span class="highlight"></span> -->
 		</div>
 		
         		<button class="insert-button">
@@ -367,81 +370,13 @@
                 </button>
         <div class="view">
             <div id="dataList"></div>
+         
         </div>
+           <div class="view2">
+           <div id="dataListLog"></div>
+           </div>
     </main>
 	
-	<div id="modalContainer" class="modal" >
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>기준 정보 등록</h2>
-        <form id="corrForm" autocomplete="off">
-        	<input type="text" name="plac_cd" placeholder="" value="JH_KR_01" style="display:none;">
-        	<input type="text" name="plnt_cd" placeholder="" value="02" style="display:none;">
-            <label>그룹ID</label>
-            <input type="text" name="group_id" placeholder="">
-        
-            <label>도금 품번</label>
-            <input type="text" name="item_cd" placeholder="">
-           
-            <label>품명</label>
-            <input type="text" name="item_nm" placeholder="">
-           
-            <label>메인설비</label>
-            <input type="text" name="mach_main" placeholder="">
-            
-            <label>메인 장입기준 (kg)</label>
-            <input type="text" name="mach_main_weight" placeholder="">
-            
-             <label>표면처리 사양</label>
-            <input type="text" name="coating_nm" placeholder="">
-            
-            
-            <label>보조 설비</label>
-            <input type="text" name="mach_sub" placeholder="">
-            
-          <label for="mach_sub_weight">보조 장입기준 (kg)</label>
-		  <input
-		    type="text"
-		    id="mach_sub_weight"
-		    name="mach_sub_weight"
-		    placeholder="예: 100"
-		    pattern="\d{3}"
-		    maxlength="3"
-		    inputmode="numeric"
-		    title="3자리 숫자를 입력하세요"
-		    required
-		  >
-		
-		  <label for="mlpl_weight">공용설비 (kg)</label>
-		  <input
-		    type="text"
-		    id="mlpl_weight"
-		    name="mlpl_weight"
-		    placeholder="예: 200"
-		    pattern="\d{3}"
-		    maxlength="3"
-		    inputmode="numeric"
-		    title="3자리 숫자를 입력하세요"
-		    required
-		  >
-		
-		  <label for="kblack_weight">K-BLACK (kg)</label>
-		  <input
-		    type="text"
-		    id="kblack_weight"
-		    name="kblack_weight"
-		    placeholder="예: 300"
-		    pattern="\d{3}"
-		    maxlength="3"
-		    inputmode="numeric"
-		    title="3자리 숫자를 입력하세요"
-		    required
-		  >
-            <button type="submit" id="saveCorrStatus">저장</button>
-            <button type="button" id="closeModal">닫기</button>
-        </form>
-    </div>
-</div>
 
 
 
@@ -450,22 +385,27 @@
 <script>
 let now_page_code = "c06";
 let dataTable;
+let logTable;
 let selectedRow = null;
-let updatedRows = [];  // 수정된 행 누적 저장
+let updatedRows = [];
 
 $(document).ready(function () {
     initDataTable();
+    initLogTable();
     loadData();
-    $(".select-button").click(loadData);
+    loadLogData();
 
-    // 저장 버튼 클릭 시 업데이트
+    $(".select-button").click(function () {
+        loadData();
+        loadLogData();
+    });
+
     $(".insert-button").click(function () {
         if (updatedRows.length === 0) {
             alert("변경된 데이터가 없습니다.");
             return;
         }
 
-        // 중복 제거 (code_name 기준)
         const uniquePayload = Object.values(
             updatedRows.reduce((acc, cur) => {
                 acc[cur.code_name] = cur;
@@ -482,8 +422,9 @@ $(document).ready(function () {
             success: function (res) {
                 if (res.status === "success") {
                     alert("저장되었습니다.");
-                    updatedRows = []; // 초기화
+                    updatedRows = [];
                     loadData();
+                    loadLogData();
                 } else {
                     console.error("저장 실패:", res.message);
                 }
@@ -497,7 +438,7 @@ $(document).ready(function () {
 
 function initDataTable() {
     dataTable = new Tabulator("#dataList", {
-        height: "500px",
+        height: "300px",
         layout: "fitColumns",
         reactiveData: true,
         selectable: 1,
@@ -509,19 +450,18 @@ function initDataTable() {
         headerHozAlign: "center",
         columns: [
             { title: 'NO', formatter: 'rownum', width: 60, hozAlign: 'center' },
-            { title: "설비코드", field: "option01", sorter: "string", width: 160, hozAlign: "center" },
-            { title: "설비명", field: "code_name", sorter: "string", width: 160, hozAlign: "center" },
+            { title: "설비코드", field: "option01", width: 160, hozAlign: "center" },
+            { title: "설비명", field: "code_name", width: 160, hozAlign: "center" },
             {
-                title: "투입비중", field: "option02", sorter: "string", width: 180,
+                title: "투입비중", field: "option02", width: 180,
                 hozAlign: "center", editor: "input"
             },
             {
-                title: "투입제한", field: "option03", sorter: "string", width: 360,
+                title: "투입제한", field: "option03", width: 360,
                 hozAlign: "center", editor: "input"
             },
-            { title: "투입제한 합계", field: "sum_val", sorter: "string", width: 360, hozAlign: "center" }
+            { title: "투입제한 합계", field: "sum_val", width: 360, hozAlign: "center" }
         ],
-
         cellEditing: function(cell) {
             const field = cell.getField();
             const value = cell.getRow().getData()[field];
@@ -530,13 +470,12 @@ function initDataTable() {
                 return false;
             }
         },
-
         cellEdited: function(cell) {
             const field = cell.getField();
             const rowData = cell.getRow().getData();
             const allRows = dataTable.getRows();
+            const oldValue = cell.getOldValue();
 
-            // 투입비중 총합 검사 (NO 2~7 = index 1~6)
             if (field === "option02") {
                 let total = 0;
                 for (let i = 1; i <= 6; i++) {
@@ -550,7 +489,6 @@ function initDataTable() {
                 }
             }
 
-            // 투입제한 총합 검사 (NO 3~5 = index 2~4)
             if (field === "option03") {
                 let total = 0;
                 for (let i = 2; i <= 4; i++) {
@@ -564,15 +502,21 @@ function initDataTable() {
                 }
             }
 
-            // 중복 방지 위해 code_name 기준으로 수정 목록 유지
             const existingIndex = updatedRows.findIndex(row => row.code_name === rowData.code_name);
             if (existingIndex !== -1) {
-                updatedRows[existingIndex] = { ...rowData };
+                updatedRows[existingIndex] = {
+                    ...rowData,
+                    op2_old: field === 'option02' ? oldValue : updatedRows[existingIndex].op2_old,
+                    op3_old: field === 'option03' ? oldValue : updatedRows[existingIndex].op3_old
+                };
             } else {
-                updatedRows.push({ ...rowData });
+                updatedRows.push({
+                    ...rowData,
+                    op2_old: field === 'option02' ? oldValue : null,
+                    op3_old: field === 'option03' ? oldValue : null
+                });
             }
         },
-
         rowSelected: function(row) {
             selectedRow = row;
         },
@@ -590,7 +534,7 @@ function loadData() {
         success: function(data) {
             if (data.status === "success") {
                 dataTable.replaceData(data.data);
-                updatedRows = []; // 데이터 다시 불러오면 초기화
+                updatedRows = [];
             } else {
                 alert("데이터 조회 실패: " + data.message);
             }
@@ -600,8 +544,44 @@ function loadData() {
         }
     });
 }
-</script>
 
+function initLogTable() {
+    logTable = new Tabulator("#dataListLog", {
+        height: "300px",
+        layout: "fitColumns",
+        placeholder: "로그 내역이 없습니다.",
+        paginationSize: 10,
+        columns: [
+            { title: "ID", field: "id", width: 70, hozAlign: "center", headerHozAlign: "center" },
+            { title: "설비명", field: "code_name", width: 160, hozAlign: "center", headerHozAlign: "center" },
+            { title: "투입비중", field: "option02", width: 160, hozAlign: "center", headerHozAlign: "center" },
+            { title: "변경 전 비중", field: "op2_old", width: 160, hozAlign: "center", headerHozAlign: "center" },
+            { title: "투입제한", field: "option03", width: 180, hozAlign: "center", headerHozAlign: "center" },
+            { title: "변경 전 투입제한", field: "op3_old", width: 180, hozAlign: "center", headerHozAlign: "center" },
+            { title: "수정자", field: "user_id", width: 180, hozAlign: "center", headerHozAlign: "center" },
+            { title: "수정일시", field: "log_dt", width: 190, hozAlign: "center", headerHozAlign: "center" }
+        ]
+    });
+}
+
+function loadLogData() {
+    $.ajax({
+        url: "/geomet/condition/divisionWashing/log",
+        type: "POST",
+        dataType: "json",
+        success: function(res) {
+            if (res.status === "success") {
+                logTable.setData(res.data);
+            } else {
+                console.error("로그 데이터 조회 실패:", res.message);
+            }
+        },
+        error: function() {
+            console.error("로그 데이터 조회 실패 (통신 오류)");
+        }
+    });
+}
+</script>
 
 </body>
 </html>

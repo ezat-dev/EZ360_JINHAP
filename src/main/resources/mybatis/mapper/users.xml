@@ -621,4 +621,27 @@
     )
   </insert>
     
+    
+    <insert id="divisionWashingLog" parameterType="Condition">
+    INSERT INTO divisionwashing_log (
+        code_name,
+        option02,
+        option03,
+        op2_old,
+        op3_old,
+        user_id,
+        upd_dt,
+        log_dt
+    )
+    VALUES (
+        #{code_name},
+        #{option02},
+        #{option03},
+        #{op2_old},
+        #{op3_old},
+        #{user_id},
+        #{upd_dt},
+        NOW()
+    )
+</insert>
 </mapper>

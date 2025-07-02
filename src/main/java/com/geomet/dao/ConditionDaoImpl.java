@@ -104,4 +104,13 @@ public class ConditionDaoImpl implements ConditionDao {
 		public void divisionWashingUpdate(Condition condition) {
 			sessionOrcle.update("condition.divisionWashingUpdate",condition);
 		}
+		
+		@Override
+		public void divisionWashingLog(Condition condition) {
+			sqlSession.insert("users.divisionWashingLog",condition);
+		}
+		@Override
+		public List<Condition> divisionWashingLogList(Condition condition) {
+			return sqlSession.selectList("condition.divisionWashingLogList",condition);
+		}
 }
