@@ -781,7 +781,45 @@ public class ConditionController {
         return rtnMap;
     }
 
+  // 세척관리
+    @RequestMapping(value= "/condition/divisionWashing", method = RequestMethod.GET)
+    public String divisionWashing(Model model) {
+        return "/condition/divisionWashing.jsp"; // 
+    }
+    // 세척관리
+    @RequestMapping(value = "/condition/divisionWashing/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> divisionWashingList(Condition condition) {
+        List<Condition> list = conditionService.divisionWashingList(condition);
+        Map<String,Object> rtn = new HashMap<>();
+        rtn.put("status", "success");
+        rtn.put("data", list);
+        return rtn;
+    }
 
-    
+    //세척관리
+    @RequestMapping(
+    	    value = "/condition/divisionWashing/updateBatch",
+    	    method = RequestMethod.POST,
+    	    consumes = "application/json",
+    	    produces = "application/json"
+    	)
+    	@ResponseBody
+    	public Map<String, Object> divisionWashingUpdateBatch(@RequestBody List<Condition> conditionList) {
+    	    Map<String, Object> rtnMap = new HashMap<>();
+
+    	    try {
+    	        for (Condition condition : conditionList) {
+    	            conditionService.divisionWashingUpdate(condition);  
+    	        }
+    	        rtnMap.put("status", "success");
+    	    } catch (Exception e) {
+    	        rtnMap.put("status", "fail");
+    	        rtnMap.put("message", e.getMessage());
+    	    }
+
+    	    return rtnMap;
+    	}
+
     
 }

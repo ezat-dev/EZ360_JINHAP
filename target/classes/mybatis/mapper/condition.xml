@@ -110,8 +110,8 @@
 	    WHERE no = #{no}
 	</update>
 	
-	<!--조건관리  -->
-	<select id="getconditionList" parameterType="Condition" resultType="Condition">
+   <!--조건관리  -->
+   <select id="getconditionList" parameterType="Condition" resultType="Condition">
     SELECT *
     FROM tb_part_temp
     WHERE 1 = 1
@@ -121,7 +121,11 @@
     <if test="mch_code != null and mch_code != ''">
         AND mch_code = #{mch_code}
     </if>
-	</select>
+        <if test="p_code != null and p_code != ''">
+        AND p_code = #{p_code}
+    </if>
+   </select>
+   
 	
 	
 <update id="machinePartTempUpdate" parameterType="Condition">
@@ -321,5 +325,36 @@
     WHERE id = #{id}
 </delete>
 
+
+
+  <!-- 리스트 조회 -->
+  <select id="divisionWashingList"
+          parameterType="Condition"
+          resultType="Condition">
+    SELECT
+      option01,
+      code_name,
+      option02,
+      option03,
+      (
+        SELECT SUM(NVL(TO_NUMBER(option03), 0))
+        FROM pwo_bas_cd
+        WHERE GROUP_CODE = 'EZ001'
+      ) AS sum_val
+    FROM PWO_BAS_CD
+    WHERE GROUP_CODE = 'EZ001'
+  </select>
+
+  <!-- 업데이트 -->
+  <update id="divisionWashingUpdate"
+          parameterType="Condition">
+    UPDATE PWO_BAS_CD
+    SET
+      option02 = #{option02},
+      option03 = #{option03}
+    WHERE
+      GROUP_CODE = 'EZ001'
+      AND code_name = #{code_name}
+  </update>
 	
 </mapper>

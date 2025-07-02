@@ -93,4 +93,14 @@ private ConditionDao conditionDao;
 				     conditionDao.deleteMachineliquidmanage2(condition);
 				 }
  
+				 
+					@Override
+					public List<Condition> divisionWashingList(Condition condition){
+						return conditionDao.divisionWashingList(condition);
+					}
+					
+					@Override
+					public void divisionWashingUpdate(Condition condition) {
+						conditionDao.divisionWashingUpdate(condition);
+					 }
 }

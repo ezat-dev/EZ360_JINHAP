@@ -22,7 +22,7 @@
             margin-top: 1%;
         }
         .tab {
-            width: 95%;
+            width: 30%;
             margin-bottom: 37px;
             margin-top: 5px;
             height: 45px;
@@ -41,21 +41,21 @@
             background-color: rgba(0, 0, 0, 0.5);
             transition: opacity 0.3s ease-in-out;
         }
-	    .modal-content {
-	        background: white;
-	        width: 24%;
-	        max-width: 500px;
-	        height: 47vh; 
-	        overflow-y: auto; 
-	        margin: 6% auto 0;
-	        padding: 20px;
-	        border-radius: 10px;
-	        position: relative;
-	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-	        transform: scale(0.8);
-	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-	        opacity: 0;
-	    }
+       .modal-content {
+           background: white;
+           width: 24%;
+           max-width: 500px;
+           height: 47vh; 
+           overflow-y: auto; 
+           margin: 6% auto 0;
+           padding: 20px;
+           border-radius: 10px;
+           position: relative;
+           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+           transform: scale(0.8);
+           transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+           opacity: 0;
+       }
         .modal.show {
             display: block;
             opacity: 1;
@@ -109,28 +109,29 @@
             background-color: #a9a9a9;
         }
         .button-container {
-    		display: flex;
-		    gap: 10px;
-		    margin-left: auto;
-		    margin-right: 10px;
-		    margin-top: 40px;
-		}
-		.box1 {
-		    display: flex;
-		    justify-content: right;
-		    align-items: center;
-		    width: 800px;
-		    margin-right: 20px;
-		    margin-top:4px;
-		}
+          display: flex;
+          gap: 10px;
+          margin-left: auto;
+          margin-right: 10px;
+          margin-top: 40px;
+      }
+      .box1 {
+          display: flex;
+          justify-content: right;
+          align-items: center;
+          width: 1500px;
+          margin-right: 20px;
+          margin-top:4px;
+          margin-left: 140px;
+      }
         .mch_code {
-            width: 30%;
+            width: 15%;
             text-align: center;
             font-size: 15px;
         }
         .daySet {
-        	width: 20%;
-      		text-align: center;
+           width: 20%;
+            text-align: center;
             height: 16px;
             padding: 8px;
             margin-bottom: 10px;
@@ -149,11 +150,11 @@
         }
          .mid{
         margin-right: 9px;
-	    font-size: 20px;
-	    font-weight: bold;
-	
-	    height: 42px;
-	    margin-left: 9px;
+       font-size: 20px;
+       font-weight: bold;
+   
+       height: 42px;
+       margin-left: 9px;
         }
            .monthselect {
         width: 20%;
@@ -161,7 +162,7 @@
         font-size: 15px;
     }
     .monthSet {
-        width: 20%;
+        width: 14%;
         text-align: center;
         height: 16px;
         padding: 8px;
@@ -176,43 +177,100 @@
         font-size: 18px;
         margin-left: 20px;
     }
+	#pCodeButtonContainer {
+	    margin-left: 20px;
+	    margin-top: 26px;
+	    display: flex;
+	    gap: 8px;
+	}
+
+.pCodeBtn {
+  padding: 8px 16px;
+  border: 1px solid #ccc;
+  background-color: #f8f8f8;
+  color: #333;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.pCodeBtn:hover {
+  background-color: #e6e6e6;
+  border-color: #999;
+}
+
+.pCodeBtn:active {
+  background-color: #ddd;
+  border-color: #888;
+}
+
+.excel-button {
+    width: 96px;
+    height: 40px;
+    padding: 0 19px;
+    border: 1px solid rgb(53, 53, 53);
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: 14px;
+    margin-left: 15px;
+    font-size: 14px;
+}
     </style>
 </head>
 
 <body>
 
     <main class="main">
-        <div class="tab">
-        <button class="pCodeBtn" data-pcode="p_1">P1</button>
-		<button class="pCodeBtn" data-pcode="p_2">P2</button>
-		<button class="pCodeBtn" data-pcode="p_3">P3</button>
+        <div class="tab">        
 
             <div class="button-container">
             
                <div class="box1">
-	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-	           <label class="monthlabel">조건관리 :</label>
-				<input type="text"autocomplete="off" class="monthSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+               
+              <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+              <label class="monthlabel">조건관리 :</label>
+            <input type="text"autocomplete="off" class="monthSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 
-	            <label class="daylabel">설비명 :</label>
-	        <select id="mch_code" class="mch_code">
+               <label class="daylabel">설비명 :</label>
+           <select id="mch_code" class="mch_code">
              
                 <option value="G03-GG01">G800조건관리</option>
                 <option value="G03-GG03">G600조건관리</option>
-                <option value="PL">PLUS조건관리</option>
-                <option value="ML">ML조건관리</option>
+                <option value="PL">공용관리</option>
                 <option value="G04-GG05">K-BLACK조건관리</option>
 
             </select>
-			</div>
-				<button type="button" class="select-button">
-				    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-				</button>
+            
+                             <div class="tab" id="pCodeButtonContainer">
+               <button class="pCodeBtn" data-pcode="p_1">
+               <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">액탱크1</button>
+               <button class="pCodeBtn" data-pcode="p_2">
+               <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">액탱크2</button>
+               <button class="pCodeBtn" data-pcode="p_3">
+               <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">액탱크3</button>
+               <button class="pCodeBtn" data-pcode="p_4">
+               <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">액탱크4</button>
+             
+             
+             
+	          <!--    <button type="button" class="select-button"  style="display: none;">
+	                <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+	            </button> -->
 
                 
-                <button class="excel-button">
+             
+             
+              </div>
+                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
+              
+         </div>
+
              
             </div>
         </div>
@@ -221,32 +279,32 @@
             <div id="dataTable"></div>
         </div>
     </main>
-	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>조건관리 일지</h2>
-	        <form id="corrForm"autocomplete="off">
-	
-				<label>일자</label>
-				<input type="text" name="date" placeholder="일자 선택" style="text-align: left;" autocomplete="off"readonly>
-				
-				
-	             <label>점검 항목</label>
-	             <input type="text" name="filed" placeholder="filed" style="text-align: left; display: none;" autocomplete="off" readonly>
+   
+      <div id="modalContainer" class="modal">
+       <div class="modal-content">
+           <span class="close">&times;</span>
+           <h2>조건관리 일지</h2>
+           <form id="corrForm"autocomplete="off">
+   
+            <label>일자</label>
+            <input type="text" name="date" placeholder="일자 선택" style="text-align: left;" autocomplete="off"readonly>
+            
+            
+                <label>점검 항목</label>
+                <input type="text" name="filed" placeholder="filed" style="text-align: left; display: none;" autocomplete="off" readonly>
 
-	             <input type="text"name="title" placeholder="title" style="text-align: left;" autocomplete="off"readonly>
-	       
-				<label>내용</label>
-			    <input type="text" name="value" >
- 				<input type="text" name="id"readonly style="display: none;">
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
-
+                <input type="text"name="title" placeholder="title" style="text-align: left;" autocomplete="off"readonly>
+          
+            <label>내용</label>
+             <input type="text" name="value" >
+             <input type="text" name="id"readonly style="display: none;">
+   
+               <button type="submit" id="saveCorrStatus">저장</button>
+               <button type="button" id="closeModal">닫기</button>
+           </form>
+       </div>
+   </div>
+   
 
 <script>
 let now_page_code = "c02";
@@ -268,278 +326,281 @@ let now_page_code = "c02";
 
     getDataList(yearMonth);
   });
-
-
-  $('.pCodeBtn').click(function(){
-	  var p_code = $(this).data('pcode');
-	  var startDate = $('#startDate').val();
-	  var mch_code = $('.mch_code').val();
-
-	  console.log(' p_code:', p_code);
-	  console.log(' startDate:', startDate);
-	  console.log(' mch_code:', mch_code);
-
-	  if(!startDate){
-	    alert('날짜를 선택하세요');
-	    return;
-	  }
-
-	  $.ajax({
-	    url: '/geomet/condition/machinePartTemp/list',  
-	    method: 'POST',
-	    data: {
-	      startDate: startDate,
-	      mch_code: mch_code,
-	      p_code: p_code
-	    },
-	    success: function(data){
-	      console.log('서버 응답 데이터:', data);
-	      dataTable.setData(data);
-	    },
-	    error: function(){
-	        alert('데이터 조회 중 오류 발생');
-	      }
-	    });
-  });
-
-
-
   
+  var p_code;   //최근에 누른 버튼 번호 저장
+  
+  //버튼 눌러서 데이터 가져오기
+  $('.pCodeBtn').click(function(){
+        p_code = $(this).data('pcode');
+        var startDate = $('#startDate').val();
+        var mch_code = $('.mch_code').val();
+
+        console.log(' p_code:', p_code);
+        console.log(' startDate:', startDate);
+        console.log(' mch_code:', mch_code);
+
+        if(!startDate){
+          alert('날짜를 선택하세요');
+          return;
+        }
+
+        $.ajax({
+          url: '/geomet/condition/machinePartTemp/list',  
+          method: 'POST',
+          data: {
+            startDate: startDate,
+            mch_code: mch_code,
+            p_code: p_code
+          },
+          success: function(data){
+            console.log('서버 응답 데이터:', data);
+            dataTable.setData(data);
+          },
+          error: function(){
+              alert('데이터 조회 중 오류 발생');
+            }
+          });
+     });
+
   var defaultColumns = [
 
-/* 	  tank_temp: 38°C 초과 시 빨간색
+/*      tank_temp: 38°C 초과 시 빨간색
 
-	  visocosity: 30초 미만 또는 50초 초과 시 빨간색 (기준: 40±10초)
+     visocosity: 30초 미만 또는 50초 초과 시 빨간색 (기준: 40±10초)
 
-	  specific_gravity: 1.38 미만 또는 1.48 초과 시 빨간색 (기준: 1.43±0.05)
+     specific_gravity: 1.38 미만 또는 1.48 초과 시 빨간색 (기준: 1.43±0.05)
 
-	  chiller_temp: 8 미만 또는 12 초과 시 빨간색 (기준: 10±2℃)
+     chiller_temp: 8 미만 또는 12 초과 시 빨간색 (기준: 10±2℃)
  */
-	  
-	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     
+     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     { title: '오전/오후', field: 'b_a', width: 200, hozAlign: 'center' },
 
-	  { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value > 38) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value > 38) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '점도(40±10초)', field: 'visocosity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 30 || value > 50) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '점도(40±10초)', field: 'visocosity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 30 || value > 50) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '비중(1.43±0.05)', field: 'specific_gravity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 1.38 || value > 1.48) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '비중(1.43±0.05)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 1.38 || value > 1.48) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '칠러 온도(10±2℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 8 || value > 12) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '칠러 온도(10±2℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 8 || value > 12) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-	];
+     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+   ];
 
 
   var plColumns = [
-	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     { title: '오전/오후', field: 'b_a', width: 200, hozAlign: 'center' },
 
-	  { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 10 || value > 30) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      }
-	      return value;
-	    }
-	  },
+     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 10 || value > 30) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         }
+         return value;
+       }
+     },
 
-	  { title: '점도(25±5초)', field: 'visocosity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 20 || value > 30) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      }
-	      return value;
-	    }
-	  },
+     { title: '점도(25±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 20 || value > 30) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         }
+         return value;
+       }
+     },
 
-	  { title: '비중(1.075~0.075)', field: 'specific_gravity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 1.000 || value > 1.150) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      }
-	      return value;
-	    }
-	  },
+     { title: '비중(1.075~0.075)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 1.000 || value > 1.150) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         }
+         return value;
+       }
+     },
 
-	  { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 13.5 || value > 16.5) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      }
-	      return value;
-	    }
-	  },
+     { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 13.5 || value > 16.5) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         }
+         return value;
+       }
+     },
 
-	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-	];
+     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+   ];
 
 
   var mlColumns = [
 
-	/*   tank_temp: 10℃ 미만 또는 30℃ 초과일 때 빨간색 (기준: 20±10℃)
-	
-	  visocosity: 30초 미만 또는 40초 초과일 때 빨간색 (기준: 35±5초)
-	
-	  specific_gravity: 1.0 미만 또는 1.15 초과일 때 빨간색 (기준: 1.075±0.075)
-	
-	  chiller_temp: 13.5℃ 미만 또는 16.5℃ 초과일 때 빨간색 (기준: 15±1.5℃) */
+   /*   tank_temp: 10℃ 미만 또는 30℃ 초과일 때 빨간색 (기준: 20±10℃)
+   
+     visocosity: 30초 미만 또는 40초 초과일 때 빨간색 (기준: 35±5초)
+   
+     specific_gravity: 1.0 미만 또는 1.15 초과일 때 빨간색 (기준: 1.075±0.075)
+   
+     chiller_temp: 13.5℃ 미만 또는 16.5℃ 초과일 때 빨간색 (기준: 15±1.5℃) */
 
-	  
-	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     
+     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     { title: '오전/오후', field: 'b_a', width: 200, hozAlign: 'center' },
 
-	  { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 10 || value > 30) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 10 || value > 30) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '점도(35±5초)', field: 'visocosity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 30 || value > 40) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '점도(35±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 30 || value > 40) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '비중(1.075±0.075)', field: 'specific_gravity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 1.0 || value > 1.15) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '비중(1.075±0.075)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 1.0 || value > 1.15) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 13.5 || value > 16.5) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 13.5 || value > 16.5) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-	];
+     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+   ];
 
 
   var g04Columns = [
 
-/* 	  tank_temp: 10℃ 미만 또는 30℃ 초과 시 빨간색 (20±10℃)
+/*      tank_temp: 10℃ 미만 또는 30℃ 초과 시 빨간색 (20±10℃)
 
-	  visocosity: 43초 미만 또는 53초 초과 시 빨간색 (48±5초)
-	
-	  specific_gravity: 1.050 미만 또는 1.150 초과 시 빨간색 (1.050~1.150)
-	
-	  chiller_temp: 20℃ 초과 시 빨간색 (최대 20℃) */
-	  
-	  { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     visocosity: 43초 미만 또는 53초 초과 시 빨간색 (48±5초)
+   
+     specific_gravity: 1.050 미만 또는 1.150 초과 시 빨간색 (1.050~1.150)
+   
+     chiller_temp: 20℃ 초과 시 빨간색 (최대 20℃) */
+     
+     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+     { title: '오전/오후', field: 'b_a', width: 200, hozAlign: 'center' },
+     
+     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 10 || value > 30) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 10 || value > 30) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '점도(48±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 43 || value > 53) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '점도(48±5초)', field: 'visocosity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 43 || value > 53) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '비중(1.050~1.150)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value < 1.050 || value > 1.150) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '비중(1.050~1.150)', field: 'specific_gravity', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value < 1.050 || value > 1.150) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
+     { title: '칠러 온도(Max 20℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+       formatter: function(cell) {
+         var value = parseFloat(cell.getValue());
+         if (value > 20) {
+           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+         } else {
+           return value;
+         }
+       }
+     },
 
-	  { title: '칠러 온도(Max 20℃)', field: 'chiller_temp', width: 340, hozAlign: 'center',
-	    formatter: function(cell) {
-	      var value = parseFloat(cell.getValue());
-	      if (value > 20) {
-	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	      } else {
-	        return value;
-	      }
-	    }
-	  },
-
-	  { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-	  { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-	  { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-	];
+     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+   ];
 
 
   var dataTable;
@@ -565,7 +626,7 @@ let now_page_code = "c02";
         headerHozAlign: 'center',
         ajaxConfig: { method: 'POST' },
         ajaxURL: '/geomet/condition/machinePartTemp/list',
-        ajaxParams: { startDate: startDate, mch_code: mch_code },
+        ajaxParams: { startDate: startDate, mch_code: mch_code, p_code: 'p_1'},//페이지 로딩될 때 액탱크1 조회됨
         placeholder: '조회된 데이터가 없습니다.',
         paginationSize: false,
         ajaxResponse: function(url, params, response){ return response; },
@@ -605,6 +666,28 @@ let now_page_code = "c02";
     }
   }
 
+//Ajax로 데이터만 교체
+  function loadData() {
+   console.log("데이터만 교체할 때 p_code:", p_code);
+      $.ajax({
+          url: "/geomet/condition/machinePartTemp/list",
+          type: "POST",
+          dataType: "json",
+          data: {
+              startdate: $("#startdate").val() || "",
+              mch_code: $("#mch_code").val() || "",
+              p_code: p_code
+          },
+          success: function (data) {
+                  dataTable.replaceData(data); // ✅ 배열만 넘김
+          },
+          error: function () {
+              alert("데이터 조회 실패");
+          }
+      });
+  }
+  
+  
   function handleSelectButtonClick() {
     var startDate = $('#startDate').val() || '';
     if (startDate.length >= 7) { startDate = startDate.substring(0, 7); }
@@ -625,30 +708,73 @@ let now_page_code = "c02";
   }
 
   function handleFormSubmit(event) {
-	    event.preventDefault();
-	    
-	    var corrForm = new FormData($('#corrForm')[0]);
-	    corrForm.forEach(function(v, k){ 
-	        console.log(k + ' = ' + v); 
-	    });
+       event.preventDefault();
+       
+       var corrForm = new FormData($('#corrForm')[0]);
+       corrForm.forEach(function(v, k){ 
+           console.log(k + ' = ' + v); 
+       });
 
-	    $.ajax({
-	        url: '/geomet/condition/machinePartTemp/update', 
-	        type: 'POST',
-	        data: corrForm,
-	        dataType: 'json',
-	        processData: false,
-	        contentType: false,
-	        success: function(response) {
-	            alert(response.data);
-	            toggleModal(false);
-	            handleSelectButtonClick();
-	        },
-	        error: function() {
-	            alert('오류가 발생했습니다. 다시 시도해주세요.');
-	        }
-	    });
-	}
+
+        var startDate = $('#startDate').val();
+        var mch_code = $('#mch_code').val();
+
+       $.ajax({
+           url: '/geomet/condition/machinePartTemp/update', 
+           type: 'POST',
+           data: corrForm,
+           dataType: 'json',
+           processData: false,
+           contentType: false,
+           success: function(response) {
+               alert(response.data);
+               toggleModal(false);
+               //handleSelectButtonClick();
+               //dataTable.setData(data);
+               loadData(); // 데이터 리플레이스
+
+           },
+           error: function() {
+               alert('오류가 발생했습니다. 다시 시도해주세요.');
+           }
+       });
+   }
+  
+  //설비명에 다라 버튼 개수 조정
+  $(document).ready(function () {
+     function updatePCodeButtons(mchCode) {
+       // 일단 전체 버튼 숨김
+       $(".pCodeBtn").hide();
+
+       if (mchCode === "G03-GG01") {
+          console.log("g800")
+         //G800
+         $(".pCodeBtn[data-pcode='p_1']").show();
+         $(".pCodeBtn[data-pcode='p_2']").show();
+         $(".pCodeBtn[data-pcode='p_3']").show();
+         $(".pCodeBtn[data-pcode='p_4']").show();
+       } else if (mchCode === "G03-GG03") {
+         //G600
+         $(".pCodeBtn[data-pcode='p_1']").show();
+         $(".pCodeBtn[data-pcode='p_2']").show();
+         $(".pCodeBtn[data-pcode='p_3']").show();
+       } else {
+         //나머지
+         $(".pCodeBtn[data-pcode='p_1']").show();
+         $(".pCodeBtn[data-pcode='p_2']").show();
+       }
+     }
+
+     // 페이지 로드 시 초기 상태 설정
+     const defaultCode = $("#mch_code").val();
+     updatePCodeButtons(defaultCode);
+
+     // 설비명 드롭다운 변경 시 버튼 갱신
+     $("#mch_code").on("change", function () {
+       const selectedCode = $(this).val();
+       updatePCodeButtons(selectedCode);
+     });
+   });
 
 </script>
 

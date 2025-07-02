@@ -93,4 +93,15 @@ public class ConditionDaoImpl implements ConditionDao {
 		public void deleteMachineliquidmanage2(Condition condition) {
 			sqlSession.update("condition.deleteMachineliquidmanage2",condition);
 		}
+		
+		
+		//조건관리
+		@Override
+		public List<Condition> divisionWashingList(Condition condition) {
+			return sessionOrcle.selectList("condition.divisionWashingList",condition);
+		}
+		@Override
+		public void divisionWashingUpdate(Condition condition) {
+			sessionOrcle.update("condition.divisionWashingUpdate",condition);
+		}
 }

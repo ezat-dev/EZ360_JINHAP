@@ -410,9 +410,14 @@ FROM (
           CONCAT(#{start_month}, '01', '080000') AS start_time_month
         FROM dual
       ) B
-        ON A.plac_cd = B.plac_cd_t
-       AND A.plnt_cd = B.plnt_cd_t
-      LEFT JOIN tb_facility C
+      ON A.plac_cd = B.plac_cd_t
+      AND A.plnt_cd = B.plnt_cd_t
+      LEFT JOIN 
+      (SELECT 
+       facility_mach_code, facility_name,
+       c_t, capa, std_weight, division, work_time2
+       FROM tb_facility 
+      ) AS C
         ON A.mach_code = C.facility_mach_code
       WHERE A.start_time >= CONCAT(#{start_month}, '01', '080000')
     ) A
@@ -453,77 +458,69 @@ SELECT
      ROUND((L - I) / D, 1) AS S,
      ROUND((L - I) / D, 1) * 60 AS T,
     ROUND((ROUND(D / NULLIF((L - I), 0), 1) * 60 / (H_min * 60)) * 100, 1) AS U
-
-
-
 FROM (
 	SELECT 
 		facility_code, facility_name, facility_mach_code,
 		facility_comment, c_t, capa, c_t_hour,
 		std_weight, ch_idx, division,
 	    facility_name AS B,
-	    -- CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END AS C,  -- 실 가동 시간 (분)    
-	    CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END AS C,  -- 실 가동 시간 (분)    
-	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * 60), '%H:%i') AS C_min, -- 시:분   
-	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) AS D,  -- 시간당 생산량 (통)    
-	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END)  / 60,1) 	    	* 
-	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) AS E, -- 조별 생산
-	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) / 60,1) 	    	* 
-	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) * 2 AS F, -- 일 CAPA통,	    
+	    -- CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END AS C,  -- 실 가동 시간 (분)    
+	    CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END AS C,  -- 실 가동 시간 (분)    
+	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END) * 60), '%H:%i') AS C_min, -- 시:분   
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END) * (c_t_hour / 60), 1) AS D,  -- 시간당 생산량 (통)    
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END)  / 60,1) 	    	* 
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END) * (c_t_hour / 60), 1) AS E, -- 조별 생산
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END) / 60,1) 	    	* 
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END) * (c_t_hour / 60), 1) * 2 AS F, -- 일 CAPA통,	    
 	    '01:20' AS G,  -- 실가동 시간
-	    ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END - TIME_TO_SEC('01:20')/60)/60),0) AS H,    
-	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END - TIME_TO_SEC('01:20')/60)*60),'%H:%i') AS H_min,
-	    ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END - TIME_TO_SEC('01:20')/60)/60),0) * 
-	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (work_time*60) END) * (c_t_hour / 60), 1) AS I,
+	    ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END - TIME_TO_SEC('01:20')/60)/60),0) AS H,    
+	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END - TIME_TO_SEC('01:20')/60)*60),'%H:%i') AS H_min,
+	    ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END - TIME_TO_SEC('01:20')/60)/60),0) * 
+	    ROUND((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END) * (c_t_hour / 60), 1) AS I,
 	    "없음" AS Q,
-		work_time, work_gb
+		du.work_time, work_gb
 	FROM (
 		SELECT *, 'Z' AS Z
-	  FROM tb_facility
-	  WHERE ch_idx != 9999
+		FROM tb_facility
+		WHERE ch_idx != 9999
 	) AS fac
-  LEFT OUTER JOIN
-  (
-  	SELECT
-  	'Z' AS ZZ,
-	CASE WHEN DATE_FORMAT(SUBSTR(#{s_time},1,8),'%Y-%m-%d') = CURDATE() THEN  
-		TIMESTAMPDIFF(HOUR,CONCAT(DATE_FORMAT(LEFT(#{s_time},8), '%Y-%m-%d'),' 08:00:00'), NOW())
-	ELSE  
-		24
-	END AS work_time,
-	CASE WHEN DATE_FORMAT(SUBSTR(#{s_time},1,8),'%Y-%m-%d') = CURDATE() THEN 0 ELSE 1 END work_gb
-  ) AS du
-  ON fac.Z = du.ZZ
+	LEFT OUTER JOIN
+	(
+	  	SELECT
+	  	'Z' AS ZZ,
+		CASE WHEN DATE_FORMAT(SUBSTR(#{s_time},1,8),'%Y-%m-%d') = CURDATE() THEN  
+			TIMESTAMPDIFF(HOUR,CONCAT(DATE_FORMAT(LEFT(#{s_time},8), '%Y-%m-%d'),' 08:00:00'), NOW())
+		ELSE  
+			24
+		END AS work_time,
+		CASE WHEN DATE_FORMAT(SUBSTR(#{s_time},1,8),'%Y-%m-%d') = CURDATE() THEN 0 ELSE 1 END work_gb
+	) AS du
+	ON fac.Z = du.ZZ
 ) AS AAA
 INNER JOIN (
-  SELECT
-    mach_code,
-    
-    -- 전체 범위 내 개수
-    SUM(CASE
-      WHEN end_time >= #{s_time} AND end_time < #{e_time}
-      THEN 1 ELSE 0 END) AS L,
-
-    -- 주간조: 당일 08:00:00 ~ 당일 20:00:00
-    SUM(CASE
-      WHEN end_time >= CONCAT(SUBSTR(#{s_time}, 1, 8), '080000')
-       AND end_time <  CONCAT(SUBSTR(#{s_time}, 1, 8), '200000')
-      THEN 1 ELSE 0 END) AS J,
-
-    -- 야간조: 전날 20:00:00 ~ 당일 08:00:00
-    SUM(CASE
-      WHEN end_time >= CONCAT(DATE_FORMAT(DATE_SUB(STR_TO_DATE(SUBSTR(#{s_time}, 1, 8), '%Y%m%d'), INTERVAL 1 DAY), '%Y%m%d'), '200000')
-       AND end_time <  CONCAT(SUBSTR(#{s_time}, 1, 8), '080000')
-      THEN 1 ELSE 0 END) AS K
-
-  FROM tb_lowdata_save
-  WHERE start_time IS NOT NULL
+	SELECT
+		mach_code,
+		-- 전체 범위 내 개수
+	    SUM(CASE
+	      WHEN end_time >= #{s_time} AND end_time < #{e_time}
+	      THEN 1 ELSE 0 END) AS L,
+	    -- 주간조: 당일 08:00:00 ~ 당일 20:00:00
+	    SUM(CASE
+	      WHEN end_time >= CONCAT(SUBSTR(#{s_time}, 1, 8), '080000')
+	       AND end_time <  CONCAT(SUBSTR(#{s_time}, 1, 8), '200000')
+	      THEN 1 ELSE 0 END) AS J,
+	    -- 야간조: 전날 20:00:00 ~ 당일 08:00:00
+	    SUM(CASE
+	      WHEN end_time >= CONCAT(DATE_FORMAT(DATE_SUB(STR_TO_DATE(SUBSTR(#{s_time}, 1, 8), '%Y%m%d'), INTERVAL 1 DAY), '%Y%m%d'), '200000')
+	       AND end_time <  CONCAT(SUBSTR(#{s_time}, 1, 8), '080000')
+	      THEN 1 ELSE 0 END) AS K
+	FROM tb_lowdata_save
+	WHERE start_time IS NOT NULL
     AND end_time IS NOT NULL
     AND end_time >= #{s_time}
     AND end_time <  #{e_time}
-  GROUP BY mach_code
+	GROUP BY mach_code
 ) AS BBB
-
 ON AAA.facility_mach_code = BBB.mach_code
 ORDER BY AAA.ch_idx;
 

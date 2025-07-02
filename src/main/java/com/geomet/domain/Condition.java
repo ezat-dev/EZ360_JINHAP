@@ -1,10 +1,20 @@
 package com.geomet.domain;
 
 public class Condition {
+	
+	
+		private String option01;
+		private String option02;
+		private String option03;
+		private String code_name;
+		private String sum_val;
+	
 		private String user_name;
 		private String upd_dt;
 		private String user_id;
-	
+		
+		private String b_a;
+		private String p_code;
 	
 	 	private String plating_no;      // 도금품번 (기준값)
 	    private String material_no;     // 자재품번
@@ -115,6 +125,48 @@ public class Condition {
 
 
 
+		public String getOption01() {
+			return option01;
+		}
+		public void setOption01(String option01) {
+			this.option01 = option01;
+		}
+		public String getOption02() {
+			return option02;
+		}
+		public void setOption02(String option02) {
+			this.option02 = option02;
+		}
+		public String getOption03() {
+			return option03;
+		}
+		public void setOption03(String option03) {
+			this.option03 = option03;
+		}
+		public String getCode_name() {
+			return code_name;
+		}
+		public void setCode_name(String code_name) {
+			this.code_name = code_name;
+		}
+		public String getSum_val() {
+			return sum_val;
+		}
+		public void setSum_val(String sum_val) {
+			this.sum_val = sum_val;
+		}
+		public String getB_a() {
+			return b_a;
+		}
+		public void setB_a(String b_a) {
+			this.b_a = b_a;
+		}
+		public String getP_code() {
+			return p_code;
+		}
+		public void setP_code(String p_code) {
+			this.p_code = p_code;
+		}
 		public String getUser_id() {
 			return user_id;
 		}

@@ -247,11 +247,11 @@
 			    <label class="hName2">-상태-</label>
 			    <input type="text"  name="status" readonly placeholder="(변수)월 정검일" >
 				
-				<label>이월 수량</label>
+	<!-- 			<label>이월 수량</label>
 			    <input type="text" name="next_month" >
 			
 				<label>입고량</label>
-			    <input type="text" name="stock_cnt" >
+			    <input type="text" name="stock_cnt" > -->
 			
 				
 				<label>내용</label>
@@ -375,8 +375,8 @@ let now_page_code = "b05";
 		      { title: "id", field: "id", visible: false },
 		      { title: "날짜", field: "date", hozAlign: "center", minWidth: 110 },
 		      { title: "주간 야간 재고", field: "status", hozAlign: "center", minWidth: 110 },
-		      { title: "이월 수량", field: "next_month", hozAlign: "center", minWidth: 110 },
-		      { title: "입고 수량", field: "stock_cnt", hozAlign: "center", minWidth: 120 },
+		      { title: "이월 수량", field: "next_month", hozAlign: "center", minWidth: 110, visible: false },
+		      { title: "입고 수량", field: "stock_cnt", hozAlign: "center", minWidth: 120, visible: false },
 		      { title: "GEOMET G1", field: "geomet_g1", hozAlign: "center", minWidth: 130 },
 		      { title: "GEOMET G2", field: "geomet_g2", hozAlign: "center", minWidth: 130 },
 		      { title: "지오메트 첨가제", field: "geomet_adding", hozAlign: "center", minWidth: 140 },

@@ -43,4 +43,9 @@ public interface ConditionDao {
 	    void deleteMachineliquidmanage2(Condition condition); 
 	    
 
+	    
+	    //세척
+	    List<Condition> divisionWashingList(Condition condition); 
+	    void divisionWashingUpdate(Condition condition); 
+	    
 }
