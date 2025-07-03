@@ -5,10 +5,155 @@
 <mapper namespace="work">
 
 
-<select id="getInventoryStatusList" parameterType="Work" resultType="Work">
-    SELECT * FROM tb_medication_situation
-    WHERE date >= #{startDate}
-</select>
+
+
+   <select id="getInventoryStatusList" parameterType="Work" resultType="Work">
+      SELECT * FROM tb_medication_situation
+      WHERE `date` LIKE CONCAT(#{startDate}, '%')
+   </select>
+
+
+   <!-- 재고관리 업데이트 -->
+   <update id="inventoryStatusUpdate" parameterType="Work">
+     UPDATE tb_medication_situation
+  <set>
+    <if test="capa_now_month != null and capa_now_month != ''">capa_now_month = #{capa_now_month},</if>
+    <if test="month_ton != null and month_ton != ''">month_ton = #{month_ton},</if>
+    <if test="percent_month != null and percent_month != ''">percent_month = #{percent_month},</if>
+    <if test="bujok_month != null and bujok_month != ''">bujok_month = #{bujok_month},</if>
+    <if test="start_month != null and start_month != ''">start_month = #{start_month},</if>
+
+    <if test="m_code2 != null and m_code2 != ''">m_code2 = #{m_code2},</if>
+    <if test="ex_mch_name != null and ex_mch_name != ''">ex_mch_name = #{ex_mch_name},</if>
+    <if test="drug_name != null and drug_name != ''">drug_name = #{drug_name},</if>
+    <if test="startDate != null and startDate != ''">startDate = #{startDate},</if>
+    <if test="id != null and id != ''">id = #{id},</if>
+    <if test="date != null and date != ''">date = #{date},</if>
+    <if test="unit != null and unit != ''">unit = #{unit},</if>
+    <if test="next_month != null and next_month != ''">next_month = #{next_month},</if>
+    <if test="stock_cnt != null and stock_cnt != ''">stock_cnt = #{stock_cnt},</if>
+    <if test="geomet_g1 != null and geomet_g1 != ''">geomet_g1 = #{geomet_g1},</if>
+    <if test="geomet_g2 != null and geomet_g2 != ''">geomet_g2 = #{geomet_g2},</if>
+    <if test="geomet_adding != null and geomet_adding != ''">geomet_adding = #{geomet_adding},</if>
+    <if test="pluse != null and pluse != ''">pluse = #{pluse},</if>
+    <if test="ml_h != null and ml_h != ''">ml_h = #{ml_h},</if>
+    <if test="ml_g != null and ml_g != ''">ml_g = #{ml_g},</if>
+    <if test="k_black != null and k_black != ''">k_black = #{k_black},</if>
+    <if test="naoh_99 != null and naoh_99 != ''">naoh_99 = #{naoh_99},</if>
+    <if test="sc_300a != null and sc_300a != ''">sc_300a = #{sc_300a},</if>
+    <if test="sc330b_3x != null and sc330b_3x != ''">sc330b_3x = #{sc330b_3x},</if>
+    <if test="sc330_liquid != null and sc330_liquid != ''">sc330_liquid = #{sc330_liquid},</if>
+    <if test="geomet_sus != null and geomet_sus != ''">geomet_sus = #{geomet_sus},</if>
+    <if test="ed2800_a_black != null and ed2800_a_black != ''">ed2800_a_black = #{ed2800_a_black},</if>
+    <if test="ed2800_b != null and ed2800_b != ''">ed2800_b = #{ed2800_b},</if>
+    <if test="geomet_005 != null and geomet_005 != ''">geomet_005 = #{geomet_005},</if>
+    <if test="geomet_069 != null and geomet_069 != ''">geomet_069 = #{geomet_069},</if>
+    <if test="geomet_p_210 != null and geomet_p_210 != ''">geomet_p_210 = #{geomet_p_210},</if>
+    <if test="geomet_sq_70 != null and geomet_sq_70 != ''">geomet_sq_70 = #{geomet_sq_70},</if>
+    <if test="created_at != null and created_at != ''">created_at = #{created_at},</if>
+    <if test="status != null and status != ''">status = #{status},</if>
+    <if test="nextMonth != null and nextMonth != ''">nextMonth = #{nextMonth},</if>
+    <if test="filed_name != null and filed_name != ''">filed_name = #{filed_name},</if>
+    <if test="facility_name != null and facility_name != ''">facility_name = #{facility_name},</if>
+    <if test="c_min != null and c_min != ''">c_min = #{c_min},</if>
+    <if test="h_min != null and h_min != ''">h_min = #{h_min},</if>
+    <if test="a != null and a != ''">a = #{a},</if>
+    <if test="b != null and b != ''">b = #{b},</if>
+    <if test="c != null and c != ''">c = #{c},</if>
+    <if test="d != null and d != ''">d = #{d},</if>
+    <if test="g != null and g != ''">g = #{g},</if>
+    <if test="h != null and h != ''">h = #{h},</if>
+    <if test="k != null and k != ''">k = #{k},</if>
+    <if test="l != null and l != ''">l = #{l},</if>
+    <if test="j != null and j != ''">j = #{j},</if>
+    <if test="i != null and i != ''">i = #{i},</if>
+    <if test="m != null and m != ''">m = #{m},</if>
+    <if test="n != null and n != ''">n = #{n},</if>
+    <if test="o != null and o != ''">o = #{o},</if>
+    <if test="p != null and p != ''">p = #{p},</if>
+    <if test="r != null and r != ''">r = #{r},</if>
+    <if test="s != null and s != ''">s = #{s},</if>
+    <if test="t != null and t != ''">t = #{t},</if>
+    <if test="u != null and u != ''">u = #{u},</if>
+    <if test="q != null and q != ''">q = #{q},</if>
+    <if test="weight != null and weight != ''">weight = #{weight},</if>
+    <if test="weight_wr != null and weight_wr != ''">weight_wr = #{weight_wr},</if>
+    <if test="r_num != null and r_num != ''">r_num = #{r_num},</if>
+    <if test="start_time != null and start_time != ''">start_time = #{start_time},</if>
+    <if test="end_time != null and end_time != ''">end_time = #{end_time},</if>
+    <if test="tong_day != null and tong_day != ''">tong_day = #{tong_day},</if>
+    <if test="weight_day != null and weight_day != ''">weight_day = #{weight_day},</if>
+    <if test="item_nm != null and item_nm != ''">item_nm = #{item_nm},</if>
+    <if test="item_cd != null and item_cd != ''">item_cd = #{item_cd},</if>
+    <if test="next_facility != null and next_facility != ''">next_facility = #{next_facility},</if>
+    <if test="e != null and e != ''">e = #{e},</if>
+    <if test="f != null and f != ''">f = #{f},</if>
+    <if test="s_time != null and s_time != ''">s_time = #{s_time},</if>
+    <if test="e_time != null and e_time != ''">e_time = #{e_time},</if>
+    <if test="m_code != null and m_code != ''">m_code = #{m_code},</if>
+    <if test="mach_code != null and mach_code != ''">mach_code = #{mach_code},</if>
+    <if test="tong_sum != null and tong_sum != ''">tong_sum = #{tong_sum},</if>
+    <if test="weight_sum != null and weight_sum != ''">weight_sum = #{weight_sum},</if>
+    <if test="work_time != null and work_time != ''">work_time = #{work_time},</if>
+    <if test="work_hour != null and work_hour != ''">work_hour = #{work_hour},</if>
+    <if test="work_percent != null and work_percent != ''">work_percent = #{work_percent},</if>
+    <if test="sum_time != null and sum_time != ''">sum_time = #{sum_time},</if>
+    <if test="sum_percent != null and sum_percent != ''">sum_percent = #{sum_percent},</if>
+    <if test="avg_day != null and avg_day != ''">avg_day = #{avg_day},</if>
+    <if test="avg_sum != null and avg_sum != ''">avg_sum = #{avg_sum},</if>
+    <if test="uph != null and uph != ''">uph = #{uph},</if>
+    <if test="uph_sum != null and uph_sum != ''">uph_sum = #{uph_sum},</if>
+    <if test="idx != null and idx != ''">idx = #{idx},</if>
+    <if test="mch_code != null and mch_code != ''">mch_code = #{mch_code},</if>
+    <if test="mch_name != null and mch_name != ''">mch_name = #{mch_name},</if>
+    <if test="gb != null and gb != ''">gb = #{gb},</if>
+    <if test="visc != null and visc != ''">visc = #{visc},</if>
+    <if test="pre_temp != null and pre_temp != ''">pre_temp = #{pre_temp},</if>
+    <if test="heat_temp != null and heat_temp != ''">heat_temp = #{heat_temp},</if>
+    <if test="liq_temp != null and liq_temp != ''">liq_temp = #{liq_temp},</if>
+    <if test="sg != null and sg != ''">sg = #{sg},</if>
+    <if test="input_date != null and input_date != ''">input_date = #{input_date},</if>
+    <if test="no != null and no != ''">no = #{no},</if>
+    <if test="std_weight != null and std_weight != ''">std_weight = #{std_weight},</if>
+    <if test="c_t != null and c_t != ''">c_t = #{c_t},</if>
+    <if test="aa != null and aa != ''">aa = #{aa},</if>
+    <if test="bb != null and bb != ''">bb = #{bb},</if>
+    <if test="work_day != null and work_day != ''">work_day = #{work_day},</if>
+    <if test="set_hr != null and set_hr != ''">set_hr = #{set_hr},</if>
+    <if test="mok_hr != null and mok_hr != ''">mok_hr = #{mok_hr},</if>
+    <if test="capa_day != null and capa_day != ''">capa_day = #{capa_day},</if>
+    <if test="day_ton != null and day_ton != ''">day_ton = #{day_ton},</if>
+    <if test="percent_day != null and percent_day != ''">percent_day = #{percent_day},</if>
+    <if test="bujok_day != null and bujok_day != ''">bujok_day = #{bujok_day},</if>
+    <if test="capa_month != null and capa_month != ''">capa_month = #{capa_month},</if>
+    <if test="capa_sum != null and capa_sum != ''">capa_sum = #{capa_sum},</if>
+    <if test="cc != null and cc != ''">cc = #{cc},</if>
+    <if test="dd != null and dd != ''">dd = #{dd},</if>
+    <if test="ee != null and ee != ''">ee = #{ee},</if>
+    <if test="tong != null and tong != ''">tong = #{tong},</if>
+    <if test="tong_night != null and tong_night != ''">tong_night = #{tong_night},</if>
+    <if test="a1 != null and a1 != ''">a1 = #{a1},</if>
+    <if test="a2 != null and a2 != ''">a2 = #{a2},</if>
+    <if test="a3 != null and a3 != ''">a3 = #{a3},</if>
+    <if test="a4 != null and a4 != ''">a4 = #{a4},</if>
+    <if test="a5 != null and a5 != ''">a5 = #{a5},</if>
+    <if test="a6 != null and a6 != ''">a6 = #{a6},</if>
+    <if test="a7 != null and a7 != ''">a7 = #{a7},</if>
+    <if test="a8 != null and a8 != ''">a8 = #{a8},</if>
+    <if test="a9 != null and a9 != ''">a9 = #{a9},</if>
+    <if test="a10 != null and a10 != ''">a10 = #{a10},</if>
+    <if test="a11 != null and a11 != ''">a11 = #{a11},</if>
+    <if test="a12 != null and a12 != ''">a12 = #{a12},</if>
+    <if test="a13 != null and a13 != ''">a13 = #{a13},</if>
+    <if test="inventory_type != null and inventory_type != ''">inventory_type = #{inventory_type},</if>
+    <if test="getmet != null">getmet = #{getmet},</if>
+    <if test="ml != null">ml = #{ml},</if>
+    <if test="plus != null">plus = #{plus},</if>
+  </set>
+  WHERE id = #{id}
+   </update>
+
+
 
 
 

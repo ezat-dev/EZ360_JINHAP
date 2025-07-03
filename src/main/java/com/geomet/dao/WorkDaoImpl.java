@@ -24,7 +24,14 @@ public class WorkDaoImpl implements WorkDao {
     public void insertinventoryStatus(Work work) {
            sqlSession.insert("work.insertinventoryStatus", work);
     }
-    
+    @Override
+    public boolean inventoryStatusUpdate(Work work) {
+       int result = sqlSession.update("work.inventoryStatusUpdate", work);
+       if(result <= 0) {
+          return false;
+       }
+       return true;
+    }
     
     @Override
     public List<Work> getMachineEfficStatusList(Work work) {

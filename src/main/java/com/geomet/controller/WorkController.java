@@ -124,17 +124,26 @@ public class WorkController {
         return "/work/inventoryStatus.jsp"; // 
     }	
     
- // 재고관리(약품) 조절 리스트
+    // 재고관리(약품) 조절 리스트
     @RequestMapping(value = "/work/inventoryStatus/list", method = RequestMethod.POST)
     @ResponseBody
     public List<Work> getInventoryStatusList(@RequestParam(required = false) String startDate) {
-    	System.out.println(">>> startDate: " + startDate);
-    	Work work = new Work();
+       System.out.println(">>> startDate: " + startDate);
+       Work work = new Work();
         work.setStartDate(startDate == null || startDate.isEmpty() ? null : startDate);
+        System.out.println("work.getStartDate(): " + work.getStartDate());
         return workService.getInventoryStatusList(work);
     }
     
-    
+    //재고관리 업데이트
+    @RequestMapping(value = "/work/inventoryStatus/update", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean inventoryStatusUpdate(@RequestBody Work work) {
+       System.out.println("inventoryStatusUpdate 컨트롤러 도착 ");
+       System.out.println("work.getId: " + work.getId());
+       System.out.println("work.getNext_month: " + work.getNext_month());
+        return workService.inventoryStatusUpdate(work);
+    }
     
     
     @RequestMapping(value = "/work/inventoryStatus/insert", method = RequestMethod.POST)

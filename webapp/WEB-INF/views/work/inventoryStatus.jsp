@@ -186,11 +186,11 @@
     }
      .mid{
         margin-right: 9px;
-	    font-size: 20px;
-	    font-weight: bold;
-	
-	    height: 42px;
-	    margin-left: 9px;
+       font-size: 20px;
+       font-weight: bold;
+   
+       height: 42px;
+       margin-left: 9px;
         }
 </style>
 
@@ -207,9 +207,9 @@
             <div class="box1">
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
            <label class="monthlabel">약품 및 부자재 월 선택 :</label>
-			<input type="text"autocomplete="off" class="monthSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+         <input type="text"autocomplete="off" class="monthSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 
-			</div>
+         </div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
@@ -222,243 +222,277 @@
         </div>
 
         <div class="view">
-		<div id="dataTable" style="width: 96%;"></div>
+      <div id="dataTable" style="width: 96%;"></div>
 
         </div>
     </main>
-	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	               
-			<form id="corrForm" enctype="multipart/form-data" autocomplete="off">
-			 <h2 class="hName">약품 및 부자재</h2>	
-			 
-			 
-			    <label>약품명</label>
-			    <input type="text" name="drug_name" readonly>
-			
-			    
-			    <label>최근 점검일</label>
-			    <div class="checkbox-container">
-			        <input type="text" class="daySet" name="date" placeholder="점검일 선택" style="text-align: left;"readonly>
-			    </div>
-			
-			    <label class="hName2">-상태-</label>
-			    <input type="text"  name="status" readonly placeholder="(변수)월 정검일" >
-				
-	<!-- 			<label>이월 수량</label>
-			    <input type="text" name="next_month" >
-			
-				<label>입고량</label>
-			    <input type="text" name="stock_cnt" > -->
-			
-				
-				<label>내용</label>
-			    <input type="text" name="filed_name">
-			
-			 	<label style="display: none;">숨길 id</label>
-				<input type="text" name="id" readonly style="display: none;">
+   
+      <div id="modalContainer" class="modal">
+       <div class="modal-content">
+           <span class="close">&times;</span>
+                  
+         <form id="corrForm" enctype="multipart/form-data" autocomplete="off">
+          <h2 class="hName">약품 및 부자재</h2>   
+          
+          
+             <label>약품명</label>
+             <input type="text" name="drug_name" readonly>
+         
+             
+             <label>최근 점검일</label>
+             <div class="checkbox-container">
+                 <input type="text" class="daySet" name="date" placeholder="점검일 선택" style="text-align: left;"readonly>
+             </div>
+         
+             <label class="hName2">-상태-</label>
+             <input type="text"  name="status" readonly placeholder="(변수)월 정검일" >
+            
+            <label>이월 수량</label>
+             <input type="text" name="next_month" >
+         
+            <label>입고량</label>
+             <input type="text" name="stock_cnt" >
+         
+            
+            <label>내용</label>
+             <input type="text" name="filed_name">
+         
+             <label style="display: none;">숨길 id</label>
+            <input type="text" name="id" readonly style="display: none;">
 
-			
-			
-			    <button type="submit" id="saveCorrStatus" style="font-weight: bold;">저장</button>
-			    <button type="button" id="closeModal" style="font-weight: bold;">닫기</button>
-			</form>
+         
+         
+             <button type="submit" id="saveCorrStatus" style="font-weight: bold;">저장</button>
+             <button type="button" id="closeModal" style="font-weight: bold;">닫기</button>
+         </form>
 
 
-	    </div>
-	</div>
+       </div>
+   </div>
 
 <script>
 let now_page_code = "b05";
-	$(document).ready(function () {
+   $(document).ready(function () {
 
-	  $(".headerP").text("생산관리 - 재고관리");
+     $(".headerP").text("생산관리 - 재고관리");
 
-	  const now = new Date();
-	  const yearMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
+     const now = new Date();
+     const yearMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
 
-	  $(".insert-button").click(function () {
-	    let modal = $("#modalContainer");
-	    modal.show(); 
-	    modal.addClass("show");
-	  });
+     $(".insert-button").click(function () {
+       let modal = $("#modalContainer");
+       modal.show(); 
+       modal.addClass("show");
+     });
 
-	  // 모달 닫기 버튼 이벤트
-	  $(".close, #closeModal").click(function () {
-	    let modal = $("#modalContainer");
-	    modal.removeClass("show").hide(); 
-	  });
+     // 모달 닫기 버튼 이벤트
+     $(".close, #closeModal").click(function () {
+       let modal = $("#modalContainer");
+       modal.removeClass("show").hide(); 
+     });
 
-	  $("#startDate")
-	    .val(yearMonth)
-	    .attr("placeholder", yearMonth);
+     $("#startDate")
+       .val(yearMonth)
+       .attr("placeholder", yearMonth);
 
-	  getDataList();
-	  handleSelectButtonClick();
-	});
-
-
-	function handleSelectButtonClick() {
-	    let startDate = $("#startDate").val() || "";
-
-	    console.log("검색 요청 값 =>", {
-	        startDate: startDate
-	    });
-
-	    // 날짜가 없으면 현재 년-월로 기본 설정
-	    if (!startDate || startDate.trim() === "") {
-	        const today = new Date();
-	        const year = today.getFullYear();
-	        const month = String(today.getMonth() + 1).padStart(2, "0"); // 0부터 시작하므로 +1
-	        startDate = `${year}-${month}`;
-	    }
-
-	    dataTable.setData("/geomet/work/inventoryStatus/list", {
-	        "startDate": startDate,
-	    });
-	}
-
-	// 클릭 이벤트 연결
-	$(".select-button").click(handleSelectButtonClick);
+     getDataList();
+     handleSelectButtonClick();
+   });
 
 
+   function handleSelectButtonClick() {
+       let startDate = $("#startDate").val() || "";
+
+       console.log("검색 요청 값 =>", {
+           startDate: startDate
+       });
+
+       // 날짜가 없으면 현재 년-월로 기본 설정
+       if (!startDate || startDate.trim() === "") {
+           const today = new Date();
+           const year = today.getFullYear();
+           const month = String(today.getMonth() + 1).padStart(2, "0"); // 0부터 시작하므로 +1
+           startDate = `${year}-${month}`;
+       }
+
+       dataTable.setData("/geomet/work/inventoryStatus/list", {
+           "startDate": startDate,
+       });
+   }
+
+   // 클릭 이벤트 연결
+   $(".select-button").click(handleSelectButtonClick);
 
 
 
 
-	
-	function getDataList() {
-		  dataTable = new Tabulator("#dataTable", {
-		    height: "830px",
-		    layout: "fitDataFill",
-		    layoutColumnsOnNewData: true,
-		    headerSort: false,
-		    selectable: true,
-		    tooltips: true,
+
+
+   
+   function getDataList() {
+        dataTable = new Tabulator("#dataTable", {
+          height: "830px",
+          layout: "fitDataFill",
+          layoutColumnsOnNewData: true,
+          headerSort: false,
+          selectable: true,
+          tooltips: true,
             columnHeaderVertAlign: "middle",
             rowVertAlign: "middle",
-		    selectableRangeMode: "click",
-		    reactiveData: true,
-		    headerHozAlign: "center",
+          selectableRangeMode: "click",
+          reactiveData: true,
+          headerHozAlign: "center",
 
-		    ajaxConfig: "POST",
-		    ajaxLoader: false,
-		    ajaxURL: "/geomet/work/inventoryStatus/list",
-		    ajaxProgressiveLoad: false,
-		    ajaxParams: {
-		      startDate: (() => {
-		        const v = $("#startDate").val();
-		        return v ? v + "-01" : "";
-		      })(),
-		    },
+          ajaxConfig: "POST",
+          ajaxLoader: false,
+          ajaxURL: "/geomet/work/inventoryStatus/list",
+          ajaxProgressiveLoad: false,
+          ajaxParams: {
+            startDate: (() => {
+              const v = $("#startDate").val();
+              return v ? v + "-01" : "";
+            })(),
+          },
 
-		    placeholder: "조회된 데이터가 없습니다.",
-		    paginationSize: false,
+          placeholder: "조회된 데이터가 없습니다.",
+          paginationSize: false,
 
-		    groupBy: "date",
-		    groupStartOpen: true,
-		    groupHeader: function (value, count) {
-		      return `<strong>${value}</strong>`;
-		    },
+          groupBy: "date",
+          groupStartOpen: true,
+          groupHeader: function (value, count) {
+            return `<strong>${value}</strong>`;
+          },
 
-		    ajaxResponse: function (url, params, response) {
-		      return response;
-		    },
+          ajaxResponse: function (url, params, response) {
+            return response;
+          },
 
-		    dataLoaded: function (data) {
-		      $("#dataTable .tabulator-col.tabulator-sortable").css("height", "29px");
-		    },
+          dataLoaded: function (data) {
+            $("#dataTable .tabulator-col.tabulator-sortable").css("height", "29px");
+          },
 
-		    columns: [
-		      { title: "id", field: "id", visible: false },
-		      { title: "날짜", field: "date", hozAlign: "center", minWidth: 110 },
-		      { title: "주간 야간 재고", field: "status", hozAlign: "center", minWidth: 110 },
-		      { title: "이월 수량", field: "next_month", hozAlign: "center", minWidth: 110, visible: false },
-		      { title: "입고 수량", field: "stock_cnt", hozAlign: "center", minWidth: 120, visible: false },
-		      { title: "GEOMET G1", field: "geomet_g1", hozAlign: "center", minWidth: 130 },
-		      { title: "GEOMET G2", field: "geomet_g2", hozAlign: "center", minWidth: 130 },
-		      { title: "지오메트 첨가제", field: "geomet_adding", hozAlign: "center", minWidth: 140 },
-		      { title: "PLUS", field: "pluse", hozAlign: "center", minWidth: 110 },
-		      { title: "ML(H)", field: "ml_h", hozAlign: "center", minWidth: 110 },
-		      { title: "ML(G)", field: "ml_g", hozAlign: "center", minWidth: 110 },
-		      { title: "K-BLACK", field: "k_black", hozAlign: "center", minWidth: 130 },
-		      { title: "NaOH 99%", field: "naoh_99", hozAlign: "center", minWidth: 130 },
-		      { title: "SC-300A", field: "sc_300a", hozAlign: "center", minWidth: 130 },
-		      { title: "SC330B 3X", field: "sc330b_3x", hozAlign: "center", minWidth: 140 },
-		      { title: "SC330농축액", field: "sc330_liquid", hozAlign: "center", minWidth: 150 },
-		      { title: "쇼트볼(SUS)", field: "geomet_sus", hozAlign: "center", minWidth: 150 },
-		      { title: "도료ED2800-A-BACK(E)", field: "ed2800_a_black", hozAlign: "center", minWidth: 180 },
-		      { title: "수지ED2800-B(E)", field: "ed2800_b", hozAlign: "center", minWidth: 180 },
-		      { title: "신 나 (005)", field: "geomet_005", hozAlign: "center", minWidth: 150 },
-		      { title: "중화제 (069)", field: "geomet_069", hozAlign: "center", minWidth: 150 },
-		      { title: "방 청 유(P-210)", field: "geomet_p_210", hozAlign: "center", minWidth: 160 },
-		      { title: "열처리유(SQ-70)", field: "geomet_sq_70", hozAlign: "center", minWidth: 160 }
-		    ],
+          columns: [
+            { title: "id", field: "id", visible: false },
+            { title: "날짜", field: "date", hozAlign: "center", minWidth: 110 },
+            { title: "주간 야간 재고", field: "status", hozAlign: "center", minWidth: 110 },
+            { title: "이월 수량", field: "next_month", hozAlign: "center", editor: "input", minWidth: 110 },
+            { title: "입고 수량", field: "stock_cnt", hozAlign: "center", editor: "input",  minWidth: 120 },
+            { title: "GEOMET G1", field: "geomet_g1", hozAlign: "center", editor: "input",  minWidth: 130 },
+            { title: "GEOMET G2", field: "geomet_g2", hozAlign: "center", editor: "input",  minWidth: 130 },
+            { title: "지오메트 첨가제", field: "geomet_adding", hozAlign: "center", editor: "input",  minWidth: 140 },
+            { title: "PLUS", field: "pluse", hozAlign: "center", editor: "input",  minWidth: 110 },
+            { title: "ML(H)", field: "ml_h", hozAlign: "center", editor: "input",  minWidth: 110 },
+            { title: "ML(G)", field: "ml_g", hozAlign: "center", editor: "input",  minWidth: 110 },
+            { title: "K-BLACK", field: "k_black", hozAlign: "center", editor: "input",  minWidth: 130 },
+            { title: "NaOH 99%", field: "naoh_99", hozAlign: "center", editor: "input",  minWidth: 130 },
+            { title: "SC-300A", field: "sc_300a", hozAlign: "center", editor: "input",  minWidth: 130 },
+            { title: "SC330B 3X", field: "sc330b_3x", hozAlign: "center", editor: "input",  minWidth: 140 },
+            { title: "SC330농축액", field: "sc330_liquid", hozAlign: "center", editor: "input",  minWidth: 150 },
+            { title: "쇼트볼(SUS)", field: "geomet_sus", hozAlign: "center", editor: "input",  minWidth: 150 },
+            { title: "도료ED2800-A-BACK(E)", field: "ed2800_a_black", hozAlign: "center", editor: "input",  minWidth: 180 },
+            { title: "수지ED2800-B(E)", field: "ed2800_b", hozAlign: "center", editor: "input",  minWidth: 180 },
+            { title: "신 나 (005)", field: "geomet_005", hozAlign: "center", editor: "input",  minWidth: 150 },
+            { title: "중화제 (069)", field: "geomet_069", hozAlign: "center", editor: "input",  minWidth: 150 },
+            { title: "방 청 유(P-210)", field: "geomet_p_210", hozAlign: "center", editor: "input",  minWidth: 160 },
+            { title: "열처리유(SQ-70)", field: "geomet_sq_70", hozAlign: "center", editor: "input",  minWidth: 160 }
+          ],
+/*
+          cellClick: function (e, cell) {
+            // 클릭 이벤트
+          },
 
-		    cellClick: function (e, cell) {
-		      // 클릭 이벤트
-		    },
+          cellDblClick: function (e, cell) {
+              const rowData = cell.getRow().getData();
+              const modal = $("#modalContainer");
+              const form = $("#corrForm");
 
-		    cellDblClick: function (e, cell) {
-		        const rowData = cell.getRow().getData();
-		        const modal = $("#modalContainer");
-		        const form = $("#corrForm");
+           
+              const columnTitle = cell.getColumn().getDefinition().title;
+              const fieldName = cell.getField();
 
-		     
-		        const columnTitle = cell.getColumn().getDefinition().title;
-		        const fieldName = cell.getField();
+        
+              modal.show().addClass("show");
 
-		  
-		        modal.show().addClass("show");
+       
+              form.find("input[name='drug_name']").val(columnTitle);
 
-		 
-		        form.find("input[name='drug_name']").val(columnTitle);
+              form.find("input[name='date']").val(rowData.date);
+              form.find("input[name='status']").val(rowData.status);
+              form.find("input[name='next_month']").val(rowData.next_month);
+              form.find("input[name='stock_cnt']").val(rowData.stock_cnt);
+              form.find("input[name='id']").val(rowData.id);
+              const cellValue = cell.getValue();
+              form.find("input[name='filed_name']").val(cellValue);
 
-		        form.find("input[name='date']").val(rowData.date);
-		        form.find("input[name='status']").val(rowData.status);
-		        form.find("input[name='next_month']").val(rowData.next_month);
-		        form.find("input[name='stock_cnt']").val(rowData.stock_cnt);
-		        form.find("input[name='id']").val(rowData.id);
-		        const cellValue = cell.getValue();
-		        form.find("input[name='filed_name']").val(cellValue);
+          } */
+          
+          //셀 수정 후 즉시 업데이트
+          cellEdited: function(cell){
+             const row = cell.getRow().getData();
+             const field = cell.getField();
+             const newValue = cell.getValue();
+             
+             console.log("수정된 셀:",{
+                  id: row.id,
+                  field: field,
+                  value: newValue
+             }),
+             
+              $.ajax({
+                  url: "/geomet/work/inventoryStatus/update",
+                  type: "POST",
+                  contentType: "application/json",
+                  data: JSON.stringify({ id: row.id,
+                  [field]: newValue }),
+                  success: function (res) {
+                      if (res === true) {
+                          console.log("업데이트 성공");
+                      } else {
+                          alert("업데이트 실패: " + res.message);
+                          cell.restoreOldValue();
+                      }
+                  },
+                  error: function () {
+                      alert("서버 오류");
+                      cell.restoreOldValue();
+                  }
+              });
+          }
+        }); 
+      }
 
-		    }
+   $('#saveCorrStatus').click(function(event){
+        event.preventDefault();
 
-		  }); 
-		}
+        // 폼 데이터를 직접 객체로 구성해서 쉼표 제거 부분 삭제
+        var data = {};
+        $('#corrForm').serializeArray().forEach(function(field){
+          // stock_cnt의 쉼표 제거 없이 그대로 전송
+          data[field.name] = field.value;
+        });
 
-	$('#saveCorrStatus').click(function(event){
-		  event.preventDefault();
+        console.log("전송 데이터:", data);
 
-		  // 폼 데이터를 직접 객체로 구성해서 쉼표 제거 부분 삭제
-		  var data = {};
-		  $('#corrForm').serializeArray().forEach(function(field){
-		    // stock_cnt의 쉼표 제거 없이 그대로 전송
-		    data[field.name] = field.value;
-		  });
+        $.ajax({
+           url: "/geomet/work/inventoryStatus/insert",
+           type: "POST",
+           contentType: "application/json",
+           data: JSON.stringify(data),
+           success: function(){
+             alert("저장되었습니다!");
+             $('#modalContainer').hide();
+             // 요청이 완료된 후에 테이블 데이터 갱신
+             var currentFilter = $('.dayselect').val() || 'ALL';
+             dataTable.setData("/geomet/work/inventoryStatus/list", { startDate: currentFilter });
+           },
+           error: function(){
+             alert('저장 중 오류가 발생했습니다.');
+           }
+         });
 
-		  console.log("전송 데이터:", data);
+      });
+   
 
-		  $.ajax({
-			  url: "/geomet/work/inventoryStatus/insert",
-			  type: "POST",
-			  contentType: "application/json",
-			  data: JSON.stringify(data),
-			  success: function(){
-			    alert("저장되었습니다!");
-			    $('#modalContainer').hide();
-			    // 요청이 완료된 후에 테이블 데이터 갱신
-			    var currentFilter = $('.dayselect').val() || 'ALL';
-			    dataTable.setData("/geomet/work/inventoryStatus/list", { startDate: currentFilter });
-			  },
-			  error: function(){
-			    alert('저장 중 오류가 발생했습니다.');
-			  }
-			});
-
-		});
 
 </script>
 

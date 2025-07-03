@@ -10,8 +10,9 @@ public interface WorkService {
 	//재고관리
 	List<Work> getInventoryStatusList(Work work);
 	
-	void insertinventoryStatus(Work work);
-	
+	void insertinventoryStatus(Work work);	
+
+    boolean inventoryStatusUpdate(Work work);
 	//생산현황
 	List<Work> getMachineEfficStatusList(Work work);
 	

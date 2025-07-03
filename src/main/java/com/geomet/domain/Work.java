@@ -1,5 +1,4 @@
 package com.geomet.domain;
-
 import java.util.List;
 
 public class Work {
@@ -10,7 +9,11 @@ public class Work {
 	private String bujok_month;
 	private String start_month;
 	
-	
+    private String inventory_type;
+    private Float getmet;
+    private Integer ml;
+    private Integer plus;
+
 	
 	private String m_code2;
 	private String ex_mch_name;
@@ -179,6 +182,30 @@ public class Work {
     
 
 
+	public String getInventory_type() {
+		return inventory_type;
+	}
+	public void setInventory_type(String inventory_type) {
+		this.inventory_type = inventory_type;
+	}
+	public Float getGetmet() {
+		return getmet;
+	}
+	public void setGetmet(Float getmet) {
+		this.getmet = getmet;
+	}
+	public Integer getMl() {
+		return ml;
+	}
+	public void setMl(Integer ml) {
+		this.ml = ml;
+	}
+	public Integer getPlus() {
+		return plus;
+	}
+	public void setPlus(Integer plus) {
+		this.plus = plus;
+	}
 	public String getL() {
 		return l;
 	}

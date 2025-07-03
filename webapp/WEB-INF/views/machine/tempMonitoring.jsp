@@ -93,7 +93,7 @@
                         <option value="T_600">G-600</option>
                         <option value="T_800">G-800</option>
                         <option value="BLK">K-BLACK</option>
-                        <option value="MLPL">PL/ML</option>
+                        <option value="MLPL">공용설비</option>
                     </select>
 
                     <label class="daylabel">검색일자 :</label>
@@ -112,10 +112,10 @@
 
             </div>
         </div>
-
-        <div id="chartWrapper" style="height: 90vh;">
-            <div id="chartContainer" style="width:100%; height:calc(100vh - 100px);"></div>
-        </div>
+ 		<div id="chartContainer" style="width:100%; height:calc(100vh - 100px);"></div>
+       <!--  <div id="chartWrapper" style="height: 90vh;">
+           
+        </div> -->
     </main>
 
 <script>
@@ -128,7 +128,7 @@ function paddingZero(num) {
 
 // 초 단위 timestamp → "yyyy-MM-dd HH:mm" 문자열 변환 함수
 function cursorSetDateTime(t) {
-    var date = new Date(t);  // 초 → 밀리초 변환
+    var date = new Date(t); 
     var year = date.getFullYear();
     var month = paddingZero(date.getMonth() + 1);
     var day = paddingZero(date.getDate());
@@ -138,16 +138,11 @@ function cursorSetDateTime(t) {
 }
 
 function unix_timestamp(t) {
-	console.log(t);	
-
-    var date = new Date(t*1000);
-    var year = date.getFullYear();
-
-    var month = paddingZero(date.getMonth()+1);
+    var date = new Date(t * 1000);
+    var month = paddingZero(date.getMonth() + 1);
     var day = paddingZero(date.getDate());
     var hour = paddingZero(date.getHours());
     var minute = paddingZero(date.getMinutes());
-    
     return month + "-" + day + "<br/> " + hour + ":" + minute;
 }
 
@@ -196,9 +191,8 @@ $(document).ready(function () {
                     alert("데이터 로딩 실패: " + data.message);
                     return;
                 }
-                
+
                 const raw = data.data;
-                console.log("ㄷㅇ:", raw);
                 if (!raw || !raw.length) {
                     alert("데이터가 없습니다.");
                     return;
@@ -210,26 +204,18 @@ $(document).ready(function () {
                 const preheatPlotLines = [];
                 const mainheatPlotLines = [];
 
-                // 차트 타이틀용 텍스트 생성
                 const titleText = (seriesInfo[0] && seriesInfo[0].label)
                     ? seriesInfo[0].label.split(' ')[0] + " 온도 경향 모니터링"
                     : "온도 경향 모니터링";
 
                 seriesInfo.forEach(info => {
-                	const seriesData = raw.map(item => {
-                    	console.log("test : "+item.temp_time, cursorSetDateTime(item.temp_time));
-//              	    const tStr = cursorSetDateTime(item.temp_time);
-//              	    const dateObj = new Date(tStr);
-//                	    const t = dateObj.getTime();
-						const t = Math.round(item.temp_time/1000);
+                    const seriesData = raw.map(item => {
+                        const t = Math.round(item.temp_time / 1000);
+                        const v = item[info.key];
+                        return [t, v != null ? Number(v) : null];
+                    });
 
-                	   
-                	    const v = item[info.key];
-                	    return [t, v != null ? Number(v) : null];
-                	});
-
-
-                    const axisIndex = info.type === "pre" ? 0 : 1;
+                    const axisIndex = info.type === "pre" ? 1 : 0; // ✅ 위치 변경에 따라 index도 반전
                     const seriesItem = {
                         name: info.label,
                         data: seriesData,
@@ -275,38 +261,37 @@ $(document).ready(function () {
                     exporting: { enabled: false },
                     xAxis: {
                         labels: {
-                            formatter: function() {
+                            formatter: function () {
                                 return unix_timestamp(this.value);
                             },
                             style: {
                                 fontSize: "11pt"
                             }
-                        },
-
+                        }
                     },
                     yAxis: [
                         {
-                            title: { text: '예열 온도 (℃)' },
+                            title: { text: '가열 온도 (℃)' }, // ✅ 가열이 위
                             height: '50%',
                             top: '0%',
-                            offset: 0,
-                            min: 40,
-                            max: 160,
-                            tickInterval: 20,
-                            plotLines: preheatPlotLines
-                        },
-                        {
-                            title: { text: '가열 온도 (℃)' },
-                            top: '55%',
-                            height: '45%',
                             offset: 0,
                             min: (mch_code === "BLK" || mch_code === "MLPL") ? 140 : 340,
                             max: (mch_code === "BLK" || mch_code === "MLPL") ? 200 : 400,
                             tickInterval: 20,
                             plotLines: mainheatPlotLines
+                        },
+                        {
+                            title: { text: '예열 온도 (℃)' }, // ✅ 예열이 아래
+                            top: '55%',
+                            height: '45%',
+                            offset: 0,
+                            min: 40,
+                            max: 160,
+                            tickInterval: 20,
+                            plotLines: preheatPlotLines
                         }
                     ],
-                    series: [...preheatSeries, ...mainheatSeries]
+                    series: [...mainheatSeries, ...preheatSeries] // ✅ 순서 바꿈
                 });
             },
             error: function (xhr, status, error) {
@@ -317,8 +302,8 @@ $(document).ready(function () {
 
     $(".select-button").click(function () {
         const startDate = $("#startDate").val() || "";
-        const endDate   = $("#endDate").val()   || "";
-        const mch_code  = $("#mch_code").val()  || "";
+        const endDate = $("#endDate").val() || "";
+        const mch_code = $("#mch_code").val() || "";
         loadChart(startDate, endDate, mch_code);
     });
 
@@ -340,8 +325,7 @@ $(document).ready(function () {
 
     loadChart(sd, ed, mc);
 
-    // 인쇄 버튼 클릭 이벤트
-    $("#printBtn").click(function() {
+    $("#printBtn").click(function () {
         window.print();
     });
 });

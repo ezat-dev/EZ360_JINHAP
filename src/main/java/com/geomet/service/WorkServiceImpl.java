@@ -25,7 +25,10 @@ public class WorkServiceImpl implements WorkService {
 		workDao.insertinventoryStatus(work); 	   
     }
 	
-	
+    @Override
+    public boolean inventoryStatusUpdate(Work work) {
+       return workDao.inventoryStatusUpdate(work);
+    }
 	//생산관리
 	@Override
 	public List<Work> getMachineEfficStatusList(Work work){

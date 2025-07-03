@@ -309,7 +309,6 @@
 	  .tabulator .tabulator-row.tabulator-selected {
     background-color: #e6f7ff !important;
   }
-  
 .info-box {
     display: flex;
     justify-content: space-between;
@@ -322,46 +321,43 @@
     color: #333;
     line-height: 1.6;
     border-radius: 4px;
-    width: 80%;
+    width: 90%;
     max-width: 1220px;
+    gap: 30px; /* 유의사항과 표 사이 간격 */
 }
 
-/* 왼쪽 안내문 */
 .info-left {
     flex: 1;
+    min-width: 280px;
+    font-size: 17px;
+    margin-top: 3px;
 }
 
 /* 우측 표 */
 .info-right {
     flex-shrink: 0;
-    margin-left: 40px;
 }
 
-.ratio-table {
+.info-table {
     border-collapse: collapse;
-    width: 160px;
-    font-size: 14px;
-    background-color: #ffffff;
+    font-size: 13px;
+    background-color: white;
+    min-width: 480px;
 }
 
-.ratio-table th {
+.info-table th,
+.info-table td {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+    text-align: center;
+}
+
+.info-table th {
     background-color: #5b9bd5;
     color: white;
-    text-align: center;
-    padding: 6px;
-    border: 1px solid #ccc;
-}
-
-.ratio-table td {
-    padding: 6px 10px;
-    border: 1px solid #ccc;
-    text-align: center;
-}
-
-.info-box .highlight {
-    color: #d9534f;
     font-weight: bold;
 }
+
 .insert-button {
     margin-top: 13px;
     margin-left: 83%;
@@ -374,29 +370,65 @@
     display: flex;
     align-items: center;
 }
+.text-red {
+    color: red;
+    font-weight: bold;
+}
     </style>
 </head>
 
 <body>
     <main class="main">
 
-        <div class="tab">
-            <div class="button-container">
-                <div class="box1">
-                    <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-                </div>
-            </div>
-        </div>
+        
+		<div class="info-box">
+	    <!-- 좌측: 유의사항 -->
+	    <div class="info-left">
+	        <strong>※ 입력 유의사항</strong><br>
+	       • <b>투입비중</b>: NO 2~7의 합계는 <span class="text-red">100</span> 이하<br>
+    	   • <b>투입제한</b>: NO 3~5의 합계는 <span class="text-red">136</span> 이하<br>
+    	   • <b>수정 후 저장 버튼 눌러주세요.</b>
+	    </div>
 
-       		<div class="info-box">
-			    <div class="info-left">
-			        <strong>※ 입력 유의사항</strong><br>
-			        • <b>투입비중</b>: NO 2~7의 합계는 <span class="highlight">100 이하</span><br>
-			        • <b>투입제한</b>: NO 3~5의 합계는 <span class="highlight">136 이하</span>
-			    </div>
-			
-			    
-			</div>
+		    <!-- 우측: 표 -->
+		    <div class="info-right">
+		        <table class="info-table">
+		            <thead>
+		                <tr>
+		                    <th colspan="4">최초 투입비중</th>
+		                    <th colspan="2">최초 투입제한</th>
+		                </tr>
+		            </thead>
+		            <tbody>
+		                <tr>
+		                    <td>방청</td>
+		                    <td>3%</td>
+		                    <td>KB</td>
+		                    <td>30%</td>
+		                    <td>KB</td>
+		                    <td>48</td>
+		                </tr>
+		                <tr>
+		                    <td>은백</td>
+		                    <td>3%</td>
+		                    <td>ML</td>
+		                    <td>30%</td>
+		                    <td>ML</td>
+		                    <td>44</td>
+		                </tr>
+		                <tr>
+		                    <td>일반세척</td>
+		                    <td>10%</td>
+		                    <td>PL</td>
+		                    <td>24%</td>
+		                    <td>PL</td>
+		                    <td>44</td>
+		                </tr>
+		            </tbody>
+		        </table>
+		    </div>
+		</div>
+
 				
 
         <button class="insert-button">
