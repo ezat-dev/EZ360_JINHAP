@@ -128,21 +128,21 @@ function paddingZero(num) {
 
 // 초 단위 timestamp → "yyyy-MM-dd HH:mm" 문자열 변환 함수
 function cursorSetDateTime(t) {
-    var date = new Date(t); 
-    var year = date.getFullYear();
-    var month = paddingZero(date.getMonth() + 1);
-    var day = paddingZero(date.getDate());
-    var hour = paddingZero(date.getHours());
-    var minute = paddingZero(date.getMinutes());
+    const date = new Date(t);
+    const year = date.getFullYear();
+    const month = paddingZero(date.getMonth() + 1);
+    const day = paddingZero(date.getDate());
+    const hour = paddingZero(date.getHours());
+    const minute = paddingZero(date.getMinutes());
     return year + "-" + month + "-" + day + " " + hour + ":" + minute;
 }
 
 function unix_timestamp(t) {
-    var date = new Date(t * 1000);
-    var month = paddingZero(date.getMonth() + 1);
-    var day = paddingZero(date.getDate());
-    var hour = paddingZero(date.getHours());
-    var minute = paddingZero(date.getMinutes());
+    const date = new Date(t * 1000);
+    const month = paddingZero(date.getMonth() + 1);
+    const day = paddingZero(date.getDate());
+    const hour = paddingZero(date.getHours());
+    const minute = paddingZero(date.getMinutes());
     return month + "-" + day + "<br/> " + hour + ":" + minute;
 }
 
@@ -178,9 +178,6 @@ $(document).ready(function () {
     };
 
     function loadChart(startDate, endDate, mch_code) {
-        console.log("📅 검색 기간:", startDate, "~", endDate);
-        console.log("🛠️ 설비 코드:", mch_code);
-
         $.ajax({
             type: "POST",
             url: "/geomet/machine/tempMonitoring/list",
@@ -215,7 +212,7 @@ $(document).ready(function () {
                         return [t, v != null ? Number(v) : null];
                     });
 
-                    const axisIndex = info.type === "pre" ? 1 : 0; // ✅ 위치 변경에 따라 index도 반전
+                    const axisIndex = info.type === "pre" ? 1 : 0;
                     const seriesItem = {
                         name: info.label,
                         data: seriesData,
@@ -253,7 +250,39 @@ $(document).ready(function () {
                 });
 
                 Highcharts.chart('chartContainer', {
-                    chart: { type: 'line' },
+                    chart: {
+                        type: 'line',
+                        events: {
+                            load: function () {
+                                const chart = this;
+                                // 예열 차트 테두리
+                                chart.renderer.rect(
+                                    chart.plotLeft,
+                                    chart.plotTop + chart.plotHeight * 0.55,
+                                    chart.plotWidth,
+                                    chart.plotHeight * 0.45,
+                                    0
+                                ).attr({
+                                	stroke: '#ddd',
+                                    'stroke-width': 1,
+                                    zIndex: 5
+                                }).add();
+
+                                // 가열 차트 테두리
+                                chart.renderer.rect(
+                                    chart.plotLeft,
+                                    chart.plotTop,
+                                    chart.plotWidth,
+                                    chart.plotHeight * 0.50,
+                                    0
+                                ).attr({
+                                	stroke: '#ddd',
+                                    'stroke-width': 1,
+                                    zIndex: 5
+                                }).add();
+                            }
+                        }
+                    },
                     title: {
                         text: titleText,
                         style: { fontSize: '18px', fontWeight: 'bold' }
@@ -264,34 +293,37 @@ $(document).ready(function () {
                             formatter: function () {
                                 return unix_timestamp(this.value);
                             },
-                            style: {
-                                fontSize: "11pt"
-                            }
+                            style: { fontSize: "11pt" }
                         }
                     },
                     yAxis: [
+                    	{
+                    	    title: { text: '가열 온도 (℃)' },
+                    	    height: '50%',
+                    	    top: '0%',
+                    	    offset: 0,
+                    	    min: (mch_code === "T_600") ? 360 :
+                    	         (mch_code === "T_800") ? 340 :
+                    	         (mch_code === "BLK")   ? 160 :
+                    	         (mch_code === "MLPL")  ? 150 : 0,
+                    	    max: (mch_code === "T_600" || mch_code === "T_800") ? 400 : 200,
+                    	    tickInterval: 20,
+                    	    plotLines: mainheatPlotLines
+                    	},
+
                         {
-                            title: { text: '가열 온도 (℃)' }, // ✅ 가열이 위
-                            height: '50%',
-                            top: '0%',
-                            offset: 0,
-                            min: (mch_code === "BLK" || mch_code === "MLPL") ? 140 : 340,
-                            max: (mch_code === "BLK" || mch_code === "MLPL") ? 200 : 400,
-                            tickInterval: 20,
-                            plotLines: mainheatPlotLines
-                        },
-                        {
-                            title: { text: '예열 온도 (℃)' }, // ✅ 예열이 아래
+                            title: { text: '예열 온도 (℃)' },
                             top: '55%',
                             height: '45%',
                             offset: 0,
-                            min: 40,
-                            max: 160,
+                            min: (mch_code === "T_600" || mch_code === "T_800") ? 60 : 40,
+                            max: (mch_code === "T_600" || mch_code === "T_800") ? 140 : 
+                                 (mch_code === "BLK") ? 160 : 140,
                             tickInterval: 20,
                             plotLines: preheatPlotLines
                         }
                     ],
-                    series: [...mainheatSeries, ...preheatSeries] // ✅ 순서 바꿈
+                    series: [...mainheatSeries, ...preheatSeries]
                 });
             },
             error: function (xhr, status, error) {
