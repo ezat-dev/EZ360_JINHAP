@@ -558,7 +558,7 @@ SELECT * FROM v_moniteolingling
         capa,
         std_weight,
         non_time,
-        work_time,
+        work_time2,
         facility_yn,
         ch_idx
     )
@@ -571,7 +571,7 @@ SELECT * FROM v_moniteolingling
         #{capa},
         #{std_weight},
         #{non_time},
-        #{work_time},
+        #{work_time2},
         #{facility_yn},
         #{ch_idx}
     )
@@ -583,7 +583,7 @@ SELECT * FROM v_moniteolingling
         capa = VALUES(capa),
         std_weight = VALUES(std_weight),
         non_time = VALUES(non_time),
-        work_time = VALUES(work_time),
+        work_time2 = VALUES(work_time2),
         facility_yn = VALUES(facility_yn),
         ch_idx = VALUES(ch_idx)
 </insert>

@@ -89,7 +89,7 @@
                     <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
   
                     <label for="machineCode" style="margin-bottom:15px;margin-right:13px;font-size: 18px; ">설비 선택:</label>
-                    <select id="mch_code" style="font-size: 18px;height: 30px; margin-bottom:10px;">
+                    <select id="mch_code" style="font-size: 18px;height: 30px; margin-bottom:10px; width:200px;">
                         <option value="T_600">G-600</option>
                         <option value="T_800">G-800</option>
                         <option value="BLK">K-BLACK</option>
@@ -104,11 +104,12 @@
                     <input type="text" class="datetimeSet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
                 </div>
 
-                <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-                </button>
-                
-                <button class="select-button" style="margin-left:10px;">프린트</button>
+   <button class="select-button" style="width:90px;">
+    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+</button>
+
+<button id="printBtn" style="width:90px; margin-bottom:10px;">전체 인쇄</button>
+
             </div>
         </div>
 
@@ -120,41 +121,67 @@
 <script>
 let now_page_code = "a05";
 
-// 헤더 텍스트 세팅
+// 0 붙여주는 함수
+function paddingZero(num) {
+    return num < 10 ? "0" + num : num;
+}
+
+// 초 단위 timestamp → "yyyy-MM-dd HH:mm" 문자열 변환 함수
+function cursorSetDateTime(t) {
+    var date = new Date(t);  // 초 → 밀리초 변환
+    var year = date.getFullYear();
+    var month = paddingZero(date.getMonth() + 1);
+    var day = paddingZero(date.getDate());
+    var hour = paddingZero(date.getHours());
+    var minute = paddingZero(date.getMinutes());
+    return year + "-" + month + "-" + day + " " + hour + ":" + minute;
+}
+
+function unix_timestamp(t) {
+	console.log(t);	
+
+    var date = new Date(t*1000);
+    var year = date.getFullYear();
+
+    var month = paddingZero(date.getMonth()+1);
+    var day = paddingZero(date.getDate());
+    var hour = paddingZero(date.getHours());
+    var minute = paddingZero(date.getMinutes());
+    
+    return month + "-" + day + "<br/> " + hour + ":" + minute;
+}
+
 $(function () {
     $(".headerP").text("모니터링 - 온도경향 모니터링");
 });
 
 $(document).ready(function () {
-    // (1) 설비별 라벨 & axis 맵
     const labelMap = {
         T_600: [
-            { key: "T_600_D12000", label: "t_600 예열", code: "D12000" },
-            { key: "T_600_D12001", label: "t_600 가열", code: "D12001" }
+            { key: "T_600_D12000", label: "G_600 예열", code: "D12000", type: "pre" },
+            { key: "T_600_D12001", label: "G_600 가열", code: "D12001", type: "main" }
         ],
         T_800: [
-            { key: "T_800_D12000", label: "t_800 예열", code: "D12000" },
-            { key: "T_800_D12001", label: "t_800 가열", code: "D12001" }
+            { key: "T_800_D12000", label: "G_800 예열", code: "D12000", type: "pre" },
+            { key: "T_800_D12001", label: "G_800 가열", code: "D12001", type: "main" }
         ],
         BLK: [
-            { key: "BLK_D12000", label: "K-BLACK 예열", code: "D12000" },
-            { key: "BLK_D12001", label: "K-BLACK 가열", code: "D12001" }
+            { key: "BLK_D12000", label: "K-BLACK 예열", code: "D12000", type: "pre" },
+            { key: "BLK_D12001", label: "K-BLACK 가열", code: "D12001", type: "main" }
         ],
         MLPL: [
-            { key: "MLPL_D12000", label: "공용설비 예열", code: "D12000" },
-            { key: "MLPL_D12001", label: "공용설비 가열", code: "D12001" }
+            { key: "MLPL_D12000", label: "공용설비 예열", code: "D12000", type: "pre" },
+            { key: "MLPL_D12001", label: "공용설비 가열", code: "D12001", type: "main" }
         ]
     };
 
-    // (2) 기준값(base) & 허용오차(tolerance) 맵
     const thresholdMap = {
-        T_600: { D12000: { base: 100, tol: 10 }, D12001: { base: 370, tol: 10 } },
-        T_800: { D12000: { base: 100, tol: 10 }, D12001: { base: 380, tol: 10 } },
+        T_600: { D12000: { base: 100, tol: 10 }, D12001: { base: 380, tol: 10 } },
+        T_800: { D12000: { base: 100, tol: 10 }, D12001: { base: 370, tol: 10 } },
         BLK:   { D12000: { base: 100, tol: 40 }, D12001: { base: 180, tol: 10 } },
         MLPL:  { D12000: { base: 85,  tol: 20 }, D12001: { base: 175, tol: 10 } },
     };
 
-    // (3) 차트 로드 함수
     function loadChart(startDate, endDate, mch_code) {
         console.log("📅 검색 기간:", startDate, "~", endDate);
         console.log("🛠️ 설비 코드:", mch_code);
@@ -169,30 +196,51 @@ $(document).ready(function () {
                     alert("데이터 로딩 실패: " + data.message);
                     return;
                 }
+                
                 const raw = data.data;
+                console.log("ㄷㅇ:", raw);
                 if (!raw || !raw.length) {
                     alert("데이터가 없습니다.");
                     return;
                 }
 
-                // (4) 시리즈 생성
                 const seriesInfo = labelMap[mch_code] || [];
-                const series = seriesInfo.map(info => ({
-                    name: info.label,
-                    data: raw.map(item => {
-                        const t = Number(item.temp_time);
-                        const v = item[info.key];
-                        return [t, v != null ? Number(v) : null];
-                    })
-                }));
+                const preheatSeries = [];
+                const mainheatSeries = [];
+                const preheatPlotLines = [];
+                const mainheatPlotLines = [];
 
-                // (5) 플롯라인 설정
-                const plotLines = [];
+                // 차트 타이틀용 텍스트 생성
+                const titleText = (seriesInfo[0] && seriesInfo[0].label)
+                    ? seriesInfo[0].label.split(' ')[0] + " 온도 경향 모니터링"
+                    : "온도 경향 모니터링";
+
                 seriesInfo.forEach(info => {
+                	const seriesData = raw.map(item => {
+                    	console.log("test : "+item.temp_time, cursorSetDateTime(item.temp_time));
+//              	    const tStr = cursorSetDateTime(item.temp_time);
+//              	    const dateObj = new Date(tStr);
+//                	    const t = dateObj.getTime();
+						const t = Math.round(item.temp_time/1000);
+
+                	   
+                	    const v = item[info.key];
+                	    return [t, v != null ? Number(v) : null];
+                	});
+
+
+                    const axisIndex = info.type === "pre" ? 0 : 1;
+                    const seriesItem = {
+                        name: info.label,
+                        data: seriesData,
+                        yAxis: axisIndex
+                    };
+
                     const cfg = thresholdMap[mch_code][info.code];
-                    const low  = cfg.base - cfg.tol;
+                    const low = cfg.base - cfg.tol;
                     const high = cfg.base + cfg.tol;
-                    plotLines.push(
+
+                    const plotLines = [
                         {
                             value: low,
                             color: 'red',
@@ -207,44 +255,58 @@ $(document).ready(function () {
                             width: 2,
                             label: { text: `상한(${high}℃)`, align: 'right', x: -5 }
                         }
-                    );
+                    ];
+
+                    if (info.type === "pre") {
+                        preheatSeries.push(seriesItem);
+                        preheatPlotLines.push(...plotLines);
+                    } else {
+                        mainheatSeries.push(seriesItem);
+                        mainheatPlotLines.push(...plotLines);
+                    }
                 });
 
-                // (6) Highcharts 렌더링
                 Highcharts.chart('chartContainer', {
                     chart: { type: 'line' },
                     title: {
-                        text: '온도 경향 모니터링',
+                        text: titleText,
                         style: { fontSize: '18px', fontWeight: 'bold' }
                     },
                     exporting: { enabled: false },
                     xAxis: {
-                        type: 'datetime',
-                        tickInterval: 3600 * 1000,
-                        dateTimeLabelFormats: {
-                            hour: '%H:%M',
-                            minute: '%H:%M'
-                        }
-                    },
-                    yAxis: [{
-                        title: { text: '온도 (℃)' },
-                        min: 40,
-                        max: 440,
-                        tickPositioner: function () {
-                            const ticks = [];
-                            // 40 ~ 140 구간: 20 단위 눈금
-                            for (let v = 40; v <= 140; v += 20) {
-                                ticks.push(v);
+                        labels: {
+                            formatter: function() {
+                                return unix_timestamp(this.value);
+                            },
+                            style: {
+                                fontSize: "11pt"
                             }
-                            // 320 ~ 440 구간: 20 단위 눈금
-                            for (let v = 320; v <= 440; v += 20) {
-                                ticks.push(v);
-                            }
-                            return ticks;
                         },
-                        plotLines: plotLines
-                    }],
-                    series: series
+
+                    },
+                    yAxis: [
+                        {
+                            title: { text: '예열 온도 (℃)' },
+                            height: '50%',
+                            top: '0%',
+                            offset: 0,
+                            min: 40,
+                            max: 160,
+                            tickInterval: 20,
+                            plotLines: preheatPlotLines
+                        },
+                        {
+                            title: { text: '가열 온도 (℃)' },
+                            top: '55%',
+                            height: '45%',
+                            offset: 0,
+                            min: (mch_code === "BLK" || mch_code === "MLPL") ? 140 : 340,
+                            max: (mch_code === "BLK" || mch_code === "MLPL") ? 200 : 400,
+                            tickInterval: 20,
+                            plotLines: mainheatPlotLines
+                        }
+                    ],
+                    series: [...preheatSeries, ...mainheatSeries]
                 });
             },
             error: function (xhr, status, error) {
@@ -253,7 +315,6 @@ $(document).ready(function () {
         });
     }
 
-    // (7) 버튼 클릭 이벤트
     $(".select-button").click(function () {
         const startDate = $("#startDate").val() || "";
         const endDate   = $("#endDate").val()   || "";
@@ -261,12 +322,12 @@ $(document).ready(function () {
         loadChart(startDate, endDate, mch_code);
     });
 
-    // (8) 초기 날짜·시간 세팅
     function formatDate(date) {
         const offset = date.getTimezoneOffset() * 60000;
         const localDate = new Date(date.getTime() - offset);
-        return localDate.toISOString().slice(0, 16); // 'yyyy-MM-ddTHH:mm'
+        return localDate.toISOString().slice(0, 16);
     }
+
     const now = new Date();
     const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 8, 0);
     const sd = formatDate(todayStart);
@@ -277,10 +338,15 @@ $(document).ready(function () {
     $("#endDate").val(ed);
     $("#mch_code").val(mc);
 
-    // (9) 초기 차트 로드
     loadChart(sd, ed, mc);
+
+    // 인쇄 버튼 클릭 이벤트
+    $("#printBtn").click(function() {
+        window.print();
+    });
 });
 </script>
+
 
 </body>
 

@@ -3,9 +3,11 @@ package com.geomet.domain;
 public class Condition {
 		private String op2_old;
 		private String op3_old;
+		private String op5_old;
 		private String option01;
 		private String option02;
 		private String option03;
+		private String option05;
 		private String code_name;
 		private String sum_val;
 		private String log_dt;
@@ -125,6 +127,18 @@ public class Condition {
 
 
 
+		public String getOp5_old() {
+			return op5_old;
+		}
+		public void setOp5_old(String op5_old) {
+			this.op5_old = op5_old;
+		}
+		public String getOption05() {
+			return option05;
+		}
+		public void setOption05(String option05) {
+			this.option05 = option05;
+		}
 		public String getLog_dt() {
 			return log_dt;
 		}

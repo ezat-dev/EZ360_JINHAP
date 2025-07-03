@@ -76,6 +76,8 @@
       <div class="control"><label for="c03">관리일지</label><select id="c03" name="c03"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
       <div class="control"><label for="c04">일상점검</label><select id="c04" name="c04"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
       <div class="control"><label for="c05">기준정보</label><select id="c05" name="c05"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      
+        <div class="control"><label for="c05">세척 기준정보</label><select id="c06" name="c06"><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
     </div>
     <div class="section">
       <h3>품질관리</h3>

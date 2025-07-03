@@ -627,8 +627,10 @@
         code_name,
         option02,
         option03,
+        option05,
         op2_old,
         op3_old,
+        op5_old,
         user_id,
         upd_dt,
         log_dt
@@ -637,8 +639,10 @@
         #{code_name},
         #{option02},
         #{option03},
+        #{option05},
         #{op2_old},
         #{op3_old},
+        #{op5_old},
         #{user_id},
         #{upd_dt},
         NOW()

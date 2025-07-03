@@ -67,7 +67,6 @@ public class MachineController {
             rtnMap.put("status", "success");
             rtnMap.put("data", allList);
             rtnMap.put("count", allList.size());
-
         } catch (Exception e) {
             e.printStackTrace();
             rtnMap.put("status", "error");
@@ -115,21 +114,18 @@ public class MachineController {
         Map<String, Object> rtnMap = new HashMap<>();
 
         try {
-			/*
-			 * // ✅ 전달받은 파라미터 확인용 로그 System.out.println("📅 startDate: " + startDate);
-			 * System.out.println("📅 endDate: " + endDate);
-			 * System.out.println("🛠️ mch_code: " + mch_code);
-			 */
+
             Temp_data temp = new Temp_data();
             if (startDate != null && !startDate.isEmpty()) temp.setStartDate(startDate);
             if (endDate != null && !endDate.isEmpty()) temp.setEndDate(endDate);
             if (mch_code != null && !mch_code.isEmpty()) temp.setMch_code(mch_code);  // ✅ 이 부분도 꼭 필요
 
             List<Temp_data> tempList = machineService.getTempDataList(temp);
-
-			/*
-			 * // ✅ 결과 로그 System.out.println("✅ 조회된 데이터 수: " + tempList.size());
-			 */
+/*
+            for(Temp_data tt : tempList) {
+            	System.out.println(tt.getTemp_time());
+            }
+ */           
             rtnMap.put("status", "success");
             rtnMap.put("data", tempList);
             rtnMap.put("count", tempList.size());

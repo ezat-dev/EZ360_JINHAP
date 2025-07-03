@@ -336,6 +336,7 @@
       code_name,
       option02,
       option03,
+      option05,
       (
         SELECT SUM(NVL(TO_NUMBER(option03), 0))
         FROM pwo_bas_cd
@@ -351,7 +352,8 @@
   UPDATE PWO_BAS_CD
   SET
     option02 = #{option02, jdbcType=VARCHAR},
-    option03 = #{option03, jdbcType=VARCHAR}
+    option03 = #{option03, jdbcType=VARCHAR},
+    option05 = #{option05, jdbcType=VARCHAR}
   WHERE
     GROUP_CODE = 'EZ001'
     AND code_name = #{code_name, jdbcType=VARCHAR}
@@ -362,8 +364,10 @@
         code_name,
         option02,
         option03,
+        option05,
         op2_old,
         op3_old,
+        op5_old,
         user_id,
         upd_dt,
         log_dt
@@ -372,8 +376,10 @@
         #{code_name},
         #{option02},
         #{option03},
+        #{option05},
         #{op2_old},
         #{op3_old},
+        #{op5_old},
         #{user_id},
         #{upd_dt},
         NOW()
@@ -386,15 +392,20 @@
         id,
         code_name,
         option02,
-        option03,
+        option03,       
+        option05,
         CASE 
-            WHEN op2_old IS NULL THEN '변경사항 없음'
+            WHEN op2_old IS NULL THEN '""'
             ELSE op2_old
         END AS op2_old,
         CASE 
-            WHEN op3_old IS NULL THEN '변경사항 없음'
+            WHEN op3_old IS NULL THEN '""'
             ELSE op3_old
         END AS op3_old,
+        CASE 
+            WHEN op5_old IS NULL THEN '""'
+            ELSE op5_old
+        END AS op5_old,
         user_id,
         upd_dt,
         log_dt

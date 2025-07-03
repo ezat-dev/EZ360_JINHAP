@@ -308,7 +308,7 @@
 <body>
 
     <main class="main">
-    <h3>표 우측에 (삭제 수정 추가) id와 시간 표기 했습니다</h3>
+    <h3></h3>
         <div class="tab">
         
 

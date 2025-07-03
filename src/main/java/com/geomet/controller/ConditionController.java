@@ -820,10 +820,12 @@ public class ConditionController {
     	            // 🔽 이전 값도 함께 출력
     	            System.out.println("📝 세척변경 정보 확인");
     	            System.out.println("  ▶ code_name : " + condition.getCode_name());
-    	            System.out.println("  ▶ option02  : " + condition.getOption02());
-    	            System.out.println("  ▶ option03  : " + condition.getOption03());
+    	            System.out.println("  ▶ option02  : " + condition.getOption02());    	       
     	            System.out.println("  ▶ op2_old   : " + condition.getOp2_old());
+    	            System.out.println("  ▶ option03  : " + condition.getOption03());
     	            System.out.println("  ▶ op3_old   : " + condition.getOp3_old());
+    	            System.out.println("  ▶ option05  : " + condition.getOption05());
+    	            System.out.println("  ▶ op5_old   : " + condition.getOp5_old());
     	            System.out.println("  ▶ USER_ID   : " + condition.getUser_id());
     	            System.out.println("  ▶ UPD_DT    : " + condition.getUpd_dt());
     	            System.out.println("----------------------------------------");

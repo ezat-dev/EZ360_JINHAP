@@ -313,22 +313,23 @@
 .info-box {
     background-color: #f1f1f1;
     padding: 12px 20px;
-    margin: 15px 20px 5px 20px;
+    margin: 15px auto 5px auto;  /* 가운데 정렬 */
     border-left: 5px solid #5b9bd5;
     font-size: 14px;
     color: #333;
     line-height: 1.6;
     border-radius: 4px;
-    width: 1230px;
-    margin-left: 190px;
+    width: 80%;  /* 퍼센트 단위 너비 */
+    max-width: 1220px; /* 너무 커지지 않게 제한 */
 }
+
 .info-box .highlight {
     color: #d9534f;
     font-weight: bold;
 }
 .insert-button {
     margin-top: 13px;
-    margin-left: 1400px;
+    margin-left: 83%;
     height: 40px;
     padding: 0 11px;
     border: 1px solid rgb(53, 53, 53);
@@ -342,45 +343,35 @@
 </head>
 
 <body>
-
     <main class="main">
-  
+
         <div class="tab">
-        
-
             <div class="button-container">
-            
-  			<div class="box1">
-           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-
-       			 </div>
-				
-
+                <div class="box1">
+                    <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+                </div>
             </div>
-            </div>
-      
-		<div class="info-box">
-		    <strong>※ 입력 유의사항</strong><br>
-		    • <b>투입비중</b>: NO 2~7의 합계는 <span class="highlight">100 이하</span><br>
-		    • <b>투입제한</b>: NO 3~5의 합계는 <span class="highlight">136 이하</span>
-		</div>
-		
-        		<button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">저장
-                </button>
+        </div>
+
+        <div class="info-box">
+            <strong>※ 입력 유의사항</strong><br>
+            • <b>투입비중</b>: NO 2~7의 합계는 <span class="highlight">100 이하</span><br>
+            • <b>투입제한</b>: NO 3~5의 합계는 <span class="highlight">136 이하</span>
+        </div>
+
+        <button class="insert-button">
+            <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">저장
+        </button>
+
         <div class="view">
             <div id="dataList"></div>
-         
         </div>
-           <div class="view2">
-           <div id="dataListLog"></div>
-           </div>
+
+        <div class="view2">
+            <div id="dataListLog" style="width: 1280px;"></div>
+        </div>
+
     </main>
-	
-
-
-
-
 
 <script>
 let now_page_code = "c06";
@@ -450,19 +441,26 @@ function initDataTable() {
         headerHozAlign: "center",
         columns: [
             { title: 'NO', formatter: 'rownum', width: 60, hozAlign: 'center' },
-            { title: "설비코드", field: "option01", width: 160, hozAlign: "center" },
-            { title: "설비명", field: "code_name", width: 160, hozAlign: "center" },
+            { title: "설비코드", field: "option01", width: 240, hozAlign: "center" },
+            { title: "설비명", field: "code_name", width: 240, hozAlign: "center" },
             {
-                title: "투입비중", field: "option02", width: 180,
+                title: "투입비중", field: "option02", width: 240,
                 hozAlign: "center", editor: "input"
             },
             {
-                title: "투입제한", field: "option03", width: 360,
+                title: "투입제한", field: "option03", width: 240,
                 hozAlign: "center", editor: "input"
             },
-            { title: "투입제한 합계", field: "sum_val", width: 360, hozAlign: "center" }
+            {
+                title: "설비 사용 유무", field: "option05", width: 235,
+                hozAlign: "center",
+                editor: "select",
+                editorParams: {
+                    values: { "N": "N", "Y": "Y" }
+                }
+            }
         ],
-        cellEditing: function(cell) {
+        cellEditing: function (cell) {
             const field = cell.getField();
             const value = cell.getRow().getData()[field];
             if ((field === "option02" || field === "option03") &&
@@ -470,7 +468,7 @@ function initDataTable() {
                 return false;
             }
         },
-        cellEdited: function(cell) {
+        cellEdited: function (cell) {
             const field = cell.getField();
             const rowData = cell.getRow().getData();
             const allRows = dataTable.getRows();
@@ -503,26 +501,26 @@ function initDataTable() {
             }
 
             const existingIndex = updatedRows.findIndex(row => row.code_name === rowData.code_name);
+            const oldObj = updatedRows[existingIndex] || {};
+            const updatedObj = {
+                ...rowData,
+                op2_old: field === 'option02' ? oldValue : oldObj.op2_old ?? null,
+                op3_old: field === 'option03' ? oldValue : oldObj.op3_old ?? null,
+                op5_old: field === 'option05' ? oldValue : oldObj.op5_old ?? null
+            };
+
             if (existingIndex !== -1) {
-                updatedRows[existingIndex] = {
-                    ...rowData,
-                    op2_old: field === 'option02' ? oldValue : updatedRows[existingIndex].op2_old,
-                    op3_old: field === 'option03' ? oldValue : updatedRows[existingIndex].op3_old
-                };
+                updatedRows[existingIndex] = updatedObj;
             } else {
-                updatedRows.push({
-                    ...rowData,
-                    op2_old: field === 'option02' ? oldValue : null,
-                    op3_old: field === 'option03' ? oldValue : null
-                });
+                updatedRows.push(updatedObj);
             }
         },
-        rowSelected: function(row) {
+        rowSelected: function (row) {
             selectedRow = row;
         },
-        rowDeselected: function(row) {
+        rowDeselected: function (row) {
             if (selectedRow === row) selectedRow = null;
-        },
+        }
     });
 }
 
@@ -531,7 +529,7 @@ function loadData() {
         url: "/geomet/condition/divisionWashing/list",
         type: "POST",
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data.status === "success") {
                 dataTable.replaceData(data.data);
                 updatedRows = [];
@@ -539,7 +537,7 @@ function loadData() {
                 alert("데이터 조회 실패: " + data.message);
             }
         },
-        error: function() {
+        error: function () {
             alert("데이터 조회 실패");
         }
     });
@@ -552,31 +550,34 @@ function initLogTable() {
         placeholder: "로그 내역이 없습니다.",
         paginationSize: 10,
         columns: [
-            { title: "ID", field: "id", width: 70, hozAlign: "center", headerHozAlign: "center" },
-            { title: "설비명", field: "code_name", width: 160, hozAlign: "center", headerHozAlign: "center" },
-            { title: "투입비중", field: "option02", width: 160, hozAlign: "center", headerHozAlign: "center" },
-            { title: "변경 전 비중", field: "op2_old", width: 160, hozAlign: "center", headerHozAlign: "center" },
-            { title: "투입제한", field: "option03", width: 180, hozAlign: "center", headerHozAlign: "center" },
-            { title: "변경 전 투입제한", field: "op3_old", width: 180, hozAlign: "center", headerHozAlign: "center" },
-            { title: "수정자", field: "user_id", width: 180, hozAlign: "center", headerHozAlign: "center" },
-            { title: "수정일시", field: "log_dt", width: 190, hozAlign: "center", headerHozAlign: "center" }
+            { title: "ID", field: "id", width: 70, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "설비명", field: "code_name", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "투입비중", field: "option02", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "변경 전</br>투입비중", field: "op2_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "투입제한", field: "option03", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "변경 전</br>투입제한", field: "op3_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "설비 사용 유무", field: "option05", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "변경 전</br>설비 사용 유무", field: "op5_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "수정자", field: "user_id", width: 150, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "수정일시", field: "log_dt", width: 220, hozAlign: "center", headerHozAlign: "center", headerSort: false }
         ]
     });
 }
+
 
 function loadLogData() {
     $.ajax({
         url: "/geomet/condition/divisionWashing/log",
         type: "POST",
         dataType: "json",
-        success: function(res) {
+        success: function (res) {
             if (res.status === "success") {
                 logTable.setData(res.data);
             } else {
                 console.error("로그 데이터 조회 실패:", res.message);
             }
         },
-        error: function() {
+        error: function () {
             console.error("로그 데이터 조회 실패 (통신 오류)");
         }
     });
@@ -584,4 +585,5 @@ function loadLogData() {
 </script>
 
 </body>
+
 </html>

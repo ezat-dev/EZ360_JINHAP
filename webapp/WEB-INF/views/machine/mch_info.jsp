@@ -206,9 +206,9 @@
 				</button> -->
                 
                 
-                <button class="excel-button">
+              <!--   <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
+                </button> -->
                 
             </div>
         </div>
@@ -249,7 +249,7 @@
       
 
 <label>목표 가동시간</label>
-<input type="time" name="work_time" step="60">
+<input type="time" name="work_time2" step="60">
 
 <label>비가동 시간</label>
 <input type="time" name="non_time" step="60">
@@ -307,7 +307,7 @@ $(function() {
     	  { title: 'CAPA', field: 'capa', width: 150, hozAlign: 'center' },
     	  { title: '표준 중량', field: 'std_weight', width: 150, hozAlign: 'center' },
 
-    	  { title: '목표가동 시간', field: 'work_time', width: 150, hozAlign: 'center' },
+    	  { title: '목표가동 시간', field: 'work_time2', width: 150, hozAlign: 'center' },
     	  { title: '비가동 시간', field: 'non_time', width: 150, hozAlign: 'center' },
     	  
     	  { title: '설비 특이사항', field: 'facility_comment', width: 300, hozAlign: 'center' }
@@ -331,7 +331,7 @@ $(function() {
     	  $('input[name="std_weight"]').val(d.std_weight);
 
     	  $('input[name="non_time"]').val(d.non_time);
-    	  $('input[name="work_time"]').val(d.work_time);
+    	  $('input[name="work_time2"]').val(d.work_time2);
 
       	  $('textarea[name="facility_comment"]').val(d.facility_comment);
 
