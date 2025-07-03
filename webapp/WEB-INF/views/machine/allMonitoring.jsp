@@ -265,6 +265,16 @@
                
         });
 
+        function customRedFormatter(cell) {
+            let value = cell.getValue();
+            if (value == null || value === "") return "";
+            const strVal = String(value);
+            if (strVal.includes("-")) {
+                return "<span style='color:red'>" + strVal.replace("-", "") + "</span>";
+            }
+            return strVal;
+        }
+
         function getDataList() {
             dataTable = new Tabulator("#dataList", {
                 height: "660px",
@@ -329,14 +339,14 @@
                 	  { title: "가동시간", field: "k", sorter: "string", hozAlign: "center", headerSort: false },
                 	  { title: "비가동 시간(분)", field: "l", sorter: "string", hozAlign: "center", headerSort: false },
                 	  { title: "생산 톤수(ton)", field: "m", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "손실 톤수(ton)", field: "n", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "손실 톤수(ton)", field: "n", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
                 	  { title: "현재 달성률(%)", field: "o", sorter: "string", hozAlign: "center", headerSort: false },
                 	  { title: "월 생산 톤수(ton)", field: "p", sorter: "string", hozAlign: "center", headerSort: false },
                 	  { title: "월 생산 통수(통)", field: "q", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 손실 톤수(ton)", field: "r", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 손실 통수(통)", field: "s", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 달성률(ton)", field: "t", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 달성률(통)", field: "u", sorter: "string", hozAlign: "center", headerSort: false }
+                	  { title: "월 손실 톤수(ton)", field: "r", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
+                	  { title: "월 손실 통수(통)", field: "s", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
+                	  { title: "월 달성률(ton %)", field: "t", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "월 달성률(통 %)", field: "u", sorter: "string", hozAlign: "center", headerSort: false }
                 	],
 
             });

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>세척기준정보</title>
+    <title>세척 투입제어</title>
  
       <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
@@ -311,16 +311,51 @@
   }
   
 .info-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
     background-color: #f1f1f1;
     padding: 12px 20px;
-    margin: 15px auto 5px auto;  /* 가운데 정렬 */
+    margin: 15px auto 5px auto;
     border-left: 5px solid #5b9bd5;
     font-size: 14px;
     color: #333;
     line-height: 1.6;
     border-radius: 4px;
-    width: 80%;  /* 퍼센트 단위 너비 */
-    max-width: 1220px; /* 너무 커지지 않게 제한 */
+    width: 80%;
+    max-width: 1220px;
+}
+
+/* 왼쪽 안내문 */
+.info-left {
+    flex: 1;
+}
+
+/* 우측 표 */
+.info-right {
+    flex-shrink: 0;
+    margin-left: 40px;
+}
+
+.ratio-table {
+    border-collapse: collapse;
+    width: 160px;
+    font-size: 14px;
+    background-color: #ffffff;
+}
+
+.ratio-table th {
+    background-color: #5b9bd5;
+    color: white;
+    text-align: center;
+    padding: 6px;
+    border: 1px solid #ccc;
+}
+
+.ratio-table td {
+    padding: 6px 10px;
+    border: 1px solid #ccc;
+    text-align: center;
 }
 
 .info-box .highlight {
@@ -353,11 +388,16 @@
             </div>
         </div>
 
-        <div class="info-box">
-            <strong>※ 입력 유의사항</strong><br>
-            • <b>투입비중</b>: NO 2~7의 합계는 <span class="highlight">100 이하</span><br>
-            • <b>투입제한</b>: NO 3~5의 합계는 <span class="highlight">136 이하</span>
-        </div>
+       		<div class="info-box">
+			    <div class="info-left">
+			        <strong>※ 입력 유의사항</strong><br>
+			        • <b>투입비중</b>: NO 2~7의 합계는 <span class="highlight">100 이하</span><br>
+			        • <b>투입제한</b>: NO 3~5의 합계는 <span class="highlight">136 이하</span>
+			    </div>
+			
+			    
+			</div>
+				
 
         <button class="insert-button">
             <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">저장
@@ -558,8 +598,8 @@ function initLogTable() {
             { title: "변경 전</br>투입제한", field: "op3_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
             { title: "설비 사용 유무", field: "option05", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
             { title: "변경 전</br>설비 사용 유무", field: "op5_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
-            { title: "수정자", field: "user_id", width: 150, hozAlign: "center", headerHozAlign: "center", headerSort: false },
-            { title: "수정일시", field: "log_dt", width: 220, hozAlign: "center", headerHozAlign: "center", headerSort: false }
+            { title: "수정자", field: "user_id", width: 140, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "수정일시", field: "log_dt", width: 200, hozAlign: "center", headerHozAlign: "center", headerSort: false }
         ]
     });
 }
