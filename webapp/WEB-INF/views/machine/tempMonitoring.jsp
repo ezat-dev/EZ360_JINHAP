@@ -78,6 +78,32 @@
 	    margin-left: 9px;
         }
         
+        @media print {
+    body, html {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        overflow: visible;
+    }
+
+    body * {
+        visibility: hidden;
+    }
+
+    #chartContainer, #chartContainer * {
+        visibility: visible;
+    }
+
+    #chartContainer {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: auto;
+        height: auto; /* ✅ 100% → auto 로 변경 */
+        min-height: 100vh; /* ✅ 최소 높이 확보 */
+    }
+}
+        
 </style>
     
     
@@ -171,11 +197,12 @@ $(document).ready(function () {
     };
 
     const thresholdMap = {
-        T_600: { D12000: { base: 100, tol: 10 }, D12001: { base: 380, tol: 10 } },
-        T_800: { D12000: { base: 100, tol: 10 }, D12001: { base: 370, tol: 10 } },
-        BLK:   { D12000: { base: 100, tol: 40 }, D12001: { base: 180, tol: 10 } },
-        MLPL:  { D12000: { base: 85,  tol: 20 }, D12001: { base: 175, tol: 10 } },
-    };
+    	    T_600: { D12000: { base: 100, tol: 10 }, D12001: { base: 380, tol: 10 } },
+    	    T_800: { D12000: { base: 100, tol: 10 }, D12001: { base: 370, tol: 10 } },
+    	    BLK:   { D12000: { base: 90,  tol: 25 }, D12001: { base: 180, tol: 10 } }, 
+    	    MLPL:  { D12000: { base: 85,  tol: 20 }, D12001: { base: 175, tol: 10 } },
+    	};
+
 
     function loadChart(startDate, endDate, mch_code) {
         $.ajax({
@@ -307,21 +334,26 @@ $(document).ready(function () {
                     	         (mch_code === "BLK")   ? 160 :
                     	         (mch_code === "MLPL")  ? 150 : 0,
                     	    max: (mch_code === "T_600" || mch_code === "T_800") ? 400 : 200,
-                    	    tickInterval: 20,
+                    	    tickInterval: 10,
                     	    plotLines: mainheatPlotLines
                     	},
 
-                        {
-                            title: { text: '예열 온도 (℃)' },
-                            top: '55%',
-                            height: '45%',
-                            offset: 0,
-                            min: (mch_code === "T_600" || mch_code === "T_800") ? 60 : 40,
-                            max: (mch_code === "T_600" || mch_code === "T_800") ? 140 : 
-                                 (mch_code === "BLK") ? 160 : 140,
-                            tickInterval: 20,
-                            plotLines: preheatPlotLines
-                        }
+                    	{
+                    	    title: { text: '예열 온도 (℃)' },
+                    	    top: '55%',
+                    	    height: '45%',
+                    	    offset: 0,
+                    	    min: (mch_code === "T_600" || mch_code === "T_800") ? 80 :
+                    	         (mch_code === "BLK")   ? 55 :
+                    	         (mch_code === "MLPL")  ? 50 : 40,
+                    	    max: (mch_code === "T_600" || mch_code === "T_800") ? 120 :
+                    	         (mch_code === "BLK")   ? 125 :
+                    	         (mch_code === "MLPL")  ? 120 : 140,
+                    	    tickInterval: 10,
+                    	    plotLines: preheatPlotLines
+                    	}
+
+
                     ],
                     series: [...mainheatSeries, ...preheatSeries]
                 });
