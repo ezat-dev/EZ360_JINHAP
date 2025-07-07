@@ -54,7 +54,7 @@
 			<div class="login_box">
 				<div class="notice">
 					<div class="tit_bar">
-						<h2 class="tit">(TEXT)</h2>
+						<h2 class="tit"></h2>
 					</div>
 					<ul id="login_noticeCont_ul" class="bu_lst">
 					</ul>

@@ -224,7 +224,7 @@
 	
 	   <div id="modalContainer" class="modal">
 	    <div class="modal-content">
-	        <span class="close">&times;</span>
+	<!--         <span class="close">&times;</span> -->
 	        <h2>사용자 등록</h2>
 	        <form id="corrForm"autocomplete="off">
 	          
@@ -250,14 +250,10 @@
 	            
 	            
 	            
-	            <label>등급</label>
-	         
-	          	<select name="user_level" >
-	
-				    <option value="3">기본</option>
-				
-				</select>	
-	            	
+	        <select name="user_level" style="display: none;">
+			  <option value="3">기본</option>
+			</select>
+				            	
 	            	
 	            	            	
 	            <label>부서</label>
@@ -304,7 +300,8 @@ $(function() {
       { title: "성명", field: "user_name", sorter: "string", width: 240, hozAlign: "center" },
       { title: "입사일", field: "st_day", width: 140, hozAlign: "center" },
       { title: "전화번호", field: "user_phone", width: 140, hozAlign: "center" },
-      { title: "등급", field: "user_level", sorter: "string", width: 240, hozAlign: "center" },
+      { title: "등급", field: "user_level", sorter: "string", width: 240, hozAlign: "center", visible: false },
+
       { title: "부서", field: "user_busu", sorter: "string", width: 240, hozAlign: "center" },
       { title: "직책", field: "user_jick", sorter: "string", width: 240, hozAlign: "center" }
     ],
@@ -397,6 +394,10 @@ $(function() {
     if (selectedRowData && selectedRowData.user_code) {
       formData.append('user_code', selectedRowData.user_code);  // 수정 시 user_code 추가
     }
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+        
 
     $.ajax({
       url: "/geomet/user/userInsert/insert",

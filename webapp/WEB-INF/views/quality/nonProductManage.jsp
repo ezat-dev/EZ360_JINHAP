@@ -221,8 +221,23 @@
 			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
             <label class="daylabel">설비명 :</label>
-            <select class="dayselect equipment_name_select " id="equipment_name">
-
+            <select class="dayselect" id="equipment_name">
+            <option value="ALL">전체</option>
+    			<option value="세척 1호기">탈유탈지 1호기</option>
+			    <option value="세척 2호기"">탈유탈지 2호기</option>
+			    <option value="쇼트1호기">쇼트1호기</option>
+			    <option value="쇼트2호기">쇼트2호기</option>
+			    <option value="쇼트3호기">쇼트3호기</option>
+			    <option value="쇼트4호기">쇼트4호기</option>
+			    <option value="쇼트5호기">쇼트5호기</option>
+			    <option value="쇼트6호기">쇼트6호기</option>
+			    <option value="G-600">G-600</option>
+			    <option value="G-800">G-800</option>
+			    <option value="공용설비">공용설비</option>
+			    <option value="K-BLACK">K-BLACK</option>
+			    <option value="E코팅 1호기">E코팅 1호기</option>
+			    <option value="E코팅 2호기">E코팅 2호기</option>
+			    <option value="방청">방청</option>
             </select>
 			</div>
                 <button class="select-button">
@@ -271,8 +286,8 @@
 
             <label>발생설비</label>
 			<select name="equipment" >
-			    <option value="탈유탈지 1호기">탈유탈지 1호기</option>
-			    <option value="탈유탈지 2호기">탈유탈지 2호기</option>
+			    <option value="세척 1호기">탈유탈지 1호기</option>
+			    <option value="세척 2호기"">탈유탈지 2호기</option>
 			    <option value="쇼트1호기">쇼트1호기</option>
 			    <option value="쇼트2호기">쇼트2호기</option>
 			    <option value="쇼트3호기">쇼트3호기</option>

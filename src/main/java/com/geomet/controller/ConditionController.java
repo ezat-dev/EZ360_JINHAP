@@ -805,12 +805,12 @@ public class ConditionController {
     	    produces = "application/json"
     	)
     	@ResponseBody
-    	public Map<String, Object> divisionWashingUpdateBatch(@RequestBody List<Condition> conditionList) {
+    	public Map<String, Object> divisionWashingUpdateBatch(@RequestBody List<Condition> conditionList,  HttpServletRequest request) {
     	    Map<String, Object> rtnMap = new HashMap<>();
 
     	    try {
     	        for (Condition condition : conditionList) {
-    	            condition.setUser_id(UserController.USER_NAME);
+    	            condition.setUser_id(getSessionUser(request).getUser_name());
 
     	            String nowTime = java.time.LocalDateTime.now().format(
     	                java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmm")
@@ -853,6 +853,18 @@ public class ConditionController {
         rtn.put("data", list);
         return rtn;
     }
+    
+    public Users getSessionUser(HttpServletRequest request) {
+        Users u = null;
+        
+        if(request.getSession() != null){
+           HttpSession ss = request.getSession();
+           
+           u = (Users)ss.getAttribute("loginUser");
+        }
+         
+         return u;
+      }
 
     
 }

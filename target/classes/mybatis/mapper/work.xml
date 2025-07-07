@@ -614,7 +614,7 @@ FROM (
 	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END) * 60), '%H:%i') AS C_min, -- 시:분   
 	    c_t_hour AS D,  -- 시간당 생산량 (통)    
 	    ROUND((c_t_hour * 12), 0) AS E, -- 조별 생산
-	    c_t_hour * 2 AS F, -- 일 CAPA통,	    
+	    ROUND((c_t_hour * 12), 0) * 2 AS F, -- 일 CAPA통,	    
 	    '01:20' AS G,  -- 실가동 시간
 	    ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END - TIME_TO_SEC('01:20')/60)/60),0) AS H,    
 	    TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW()) ELSE (du.work_time*60) END - TIME_TO_SEC('01:20')/60)*60),'%H:%i') AS H_min,
