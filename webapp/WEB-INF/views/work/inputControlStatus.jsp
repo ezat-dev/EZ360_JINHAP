@@ -5,11 +5,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>투입제어 및 모니터링</title>
-<%@include file="../include/pluginpage.jsp" %>    
+    <title>설비 실시간정보</title>
+   
       <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
-<%@include file="../include/pluginpage.jsp" %>    
+
   <style>
         .container {
             display: flex;
@@ -84,7 +84,7 @@
             margin: 10px 0 5px;
         }
         .modal-content input, .modal-content textarea {
-            width: 97%;
+
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -157,6 +157,29 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
+        
+            /* 체크박스 스타일 */
+ /* 체크박스 스타일 */
+    .checkbox-group {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 10px;
+    }
+    .checkbox1{
+    margin-top:20px;
+    margin-right:10px;
+    
+    }
+
+    .checkbox-group label {
+        font-size: 16px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+        transform: scale(1.7); /* 체크박스 크기 키우기 */
+    }
+        
+        
     </style>
 </head>
 
@@ -217,6 +240,19 @@
 	        <span class="close">&times;</span>
 	        <h2>교체이력 등록</h2>
 	        <form id="corrForm">
+	        
+	        
+	        
+	        
+	         <label>구분</label>
+	            <select name="select1">
+	                <option value="1">전처리</option>
+	                <option value="2">후처리</option>
+	                
+	            </select>
+	            
+	            
+	            
 	            <label>설비명</label>
 	            <select name="equipmentName">
 	                <option value="G800">G800</option>
@@ -231,23 +267,24 @@
 	                <option value="세척 2호기">세척 2호기</option>
 	            </select>
 	
-	            <label>존 구분</label>
-	            <input type="text" name="location" value="소입1존">
-	
-	            <label>시리얼 번호</label>
-	            <input type="text" name="serialNumber" placeholder="시리얼 번호">
-	
-				<label>교체일자</label>
-				<input type="text" class="daySet" name="replacementDate" placeholder="조치완료일 선택" style="text-align: left;" autocomplete="off">
-				
-				<label>차기 교체일자</label>
-				<input type="text" class="daySet" name="nextDate" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
-				
-				<label>교체 주기</label>
-				<input type="text" class="daySet" name="replacementCycle" placeholder="교체 주기 선택" style="text-align: left;" autocomplete="off">
 
+	   		  <div class="checkbox-group">
+                <label>가동
+                    <input type="checkbox"class="checkbox1" name="status" value="가동">
+                </label>
+                <label>비가동
+                    <input type="checkbox"class="checkbox1" name="status" value="비가동">
+                </label>
+                <label>정지
+                    <input type="checkbox"class="checkbox1" name="status" value="정지">
+                </label>
+            </div>
+
+	         
+	
+	           
 	            <label>비고</label>
-	            <textarea name="remarks" rows="3"></textarea>
+	            <textarea name="remarks" rows="17"></textarea>
 	
 	            <button type="submit" id="saveCorrStatus">저장</button>
 	            <button type="button" id="closeModal">닫기</button>
@@ -257,9 +294,7 @@
 
 
     <script>
-
-    let now_page_code = "f01";
-
+    let now_page_code = "f02";
     
         $(function() {
 
@@ -275,10 +310,10 @@
                 layout: "fitColumns",
                 selectable: true,
                 tooltips: true,
-                columnHeaderVertAlign: "middle",
-                rowVertAlign: "middle",
                 selectableRangeMode: "click",
                 reactiveData: true,
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
                 headerHozAlign: "center",
                 ajaxConfig: "POST",
                 ajaxLoader: false,
@@ -292,19 +327,13 @@
                     return response;
                 },
                 columns: [
-                    {title: "투입대", field: "1", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "후처리 사양", field: "2", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-                    {title: "세척레일", field: "3", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "쇼트", field: "4", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "G800", field: "5", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "G600", field: "6", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "K-BLACK", field: "7", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "ML", field: "8", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "PLUS", field: "9", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "합계", field: "10", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "기준 관리 통수", field: "11", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "투입가능여부", field: "12", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
-                    {title: "제어기능", field: "13", sorter: "string", width: 120, hozAlign: "center", headerSort: false},
+                    {title: "구분", field: "1", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "설비", field: "2", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "가동", field: "3", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "비가동", field: "4", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "정지", field: "5", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "비고", field: "6", sorter: "string", width: 580, hozAlign: "center", headerSort: false},
+                  
                 ],
                 rowFormatter: function(row) {
                     var data = row.getData();

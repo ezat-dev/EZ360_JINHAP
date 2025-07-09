@@ -220,7 +220,7 @@
 	   <div id="modalContainer" class="modal">
 	    <div class="modal-content">
 	        <span class="close">&times;</span>
-	        <h2>부품교체 이력 등록</h2>
+	        <h2>설비 이력 등록</h2>
 	        <form id="corrForm"autocomplete="off">
 	            <label>설비명</label>
 	            <select name="mch_name">

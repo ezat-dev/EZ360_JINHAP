@@ -246,7 +246,7 @@
 	  <div id="modalContainer" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-    <h2>부품교체 이력 등록</h2>
+    <h2>공무일지 등록</h2>
     <form id="corrForm" autocomplete="off">
     
       <label>일자</label>

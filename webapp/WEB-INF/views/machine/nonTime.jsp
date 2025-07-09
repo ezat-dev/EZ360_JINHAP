@@ -186,9 +186,21 @@
 	
 	            <label class="daylabel">설비명 :</label>
              
-               	<select class="equipment_name_select" id="equipment_name">
-             
-           	 	</select>
+              		 <select name="equipment_name"id="equipment_name">
+			         <option value="ALL">전체</option>
+			        <option value="G800">G800</option>
+			        <option value="G600">G600</option>
+			        <option value="K-BLACK">K-BLACK</option>
+			        <option value="공용설비">공용설비</option>
+			        <option value="방청">방청</option>
+			        <option value="이코팅1호기">이코팅1호기</option>
+			        <option value="이코팅2호기">이코팅2호기</option>
+			        <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
+			        <option value="세척 1호기">세척 1호기</option>
+			        <option value="세척 2호기">세척 2호기</option>
+			  </select>
+
+
 
 			</div>
                 <button class="select-button">
@@ -222,9 +234,20 @@
 	        <h2>교체이력 등록</h2>
 	        <form id="corrForm"autocomplete="off">
 	            <label>설비명</label>
-            <select id="popup_equip" class="equipment_name_select" name="equipment_name" >
-             
-            </select>
+   
+
+			 <select name="equipment_name">
+			        <option value="G800">G800</option>
+			        <option value="G600">G600</option>
+			        <option value="K-BLACK">K-BLACK</option>
+			        <option value="공용설비">공용설비</option>
+			        <option value="방청">방청</option>
+			        <option value="이코팅1호기">이코팅1호기</option>
+			        <option value="이코팅2호기">이코팅2호기</option>
+			        <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
+			        <option value="세척 1호기">세척 1호기</option>
+			        <option value="세척 2호기">세척 2호기</option>
+			  </select>
 
 
 	            <label>정보LIST</label>
@@ -307,6 +330,12 @@ $(document).ready(function() {
         var equipment_name = $("#equipment_name").val();
         var startDate = $("#startDate").val();
         var endDate = $("#endDate").val();
+
+        console.log("서버로 보내는 데이터:", {
+            equipment_name: equipment_name,
+            startDate: startDate,
+            endDate: endDate
+        });
 
         // 두 개의 Tabulator 테이블에 데이터 로드
         dataListTable.setData("/geomet/machine/nonTime/list", {

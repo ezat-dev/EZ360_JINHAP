@@ -372,16 +372,16 @@
         	    },
         	    columns: [
         	        {title: "NO", field: "no", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-        	        {title: "설비명", field: "equipment_name", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+        	        {title: "설비명", field: "equipment_name", sorter: "string", width: 190, hozAlign: "center", headerSort: false},
         	        {title: "위치 구분", field: "location", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-        	        {title: "시리얼 번호", field: "serial_number", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+        	        {title: "시리얼 번호", field: "serial_number", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
         	       
-        	        {title: "교체일자", field: "replacement_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
+        	        {title: "교체일자", field: "replacement_date", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
         	     
         	        {title: "교체주기", field: "replacement_cycle", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
 
-        	        {title: "차기 교체일자", field: "next_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
-        	        {title: "비고", field: "remarks", sorter: "string", width: 350, hozAlign: "center", headerSort: false},
+        	        {title: "차기 교체일자", field: "next_date", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
+        	        {title: "비고", field: "remarks", sorter: "string", width: 250, hozAlign: "center", headerSort: false},
         	    ],
         	    rowClick: function(e, row) {
         	        $("#dataList .tabulator-row").removeClass("row_select");

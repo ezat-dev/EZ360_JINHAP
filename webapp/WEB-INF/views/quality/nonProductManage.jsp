@@ -266,7 +266,7 @@
 <div id="modalContainer" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>교체이력 등록</h2>
+        <h2>부적합품 등록</h2>
         <form  id="corrForm"  autocomplete="off">
             <label>발생일</label>
             <input type="text"name="defect_date"  class="daySet" placeholder="날짜 선택" style="text-align: left;">
