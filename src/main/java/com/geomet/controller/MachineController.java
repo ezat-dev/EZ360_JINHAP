@@ -230,7 +230,7 @@ public class MachineController {
         return rtnMap;
     }
     //파일 다운로드
-    @RequestMapping(value = "/download222", method = RequestMethod.GET)
+    @RequestMapping(value = "/downloadCk", method = RequestMethod.GET)
     public void downloadExcel(@RequestParam("filename") String filename,
                               HttpServletResponse response) throws IOException {
 
@@ -261,8 +261,11 @@ public class MachineController {
    
         String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
 
+        // 파일 다운로드 	
+        // response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
 
-        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+        //뷰어
+        response.setHeader("Content-Disposition", "inline; filename*=UTF-8''" + encodedFilename);
 
         try (FileInputStream fis = new FileInputStream(file);
              OutputStream os = response.getOutputStream()) {

@@ -49,7 +49,7 @@ public class Work {
     private String status;
     private String nextMonth;
     private String filed_name;
-    
+    private String s_time2;
     
     //설비효율 관리
     private String facility_name;
@@ -182,6 +182,12 @@ public class Work {
     
 
 
+	public String getS_time2() {
+		return s_time2;
+	}
+	public void setS_time2(String s_time2) {
+		this.s_time2 = s_time2;
+	}
 	public String getInventory_type() {
 		return inventory_type;
 	}

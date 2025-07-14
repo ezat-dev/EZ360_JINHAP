@@ -249,10 +249,10 @@
       
 
 <label>목표 가동시간</label>
-<input type="time" name="work_time2" step="60">
+<input type="text" name="work_time2" step="60">
 
 <label>비가동 시간</label>
-<input type="time" name="non_time" step="60">
+<input type="text" name="non_time" step="60">
 
 
 

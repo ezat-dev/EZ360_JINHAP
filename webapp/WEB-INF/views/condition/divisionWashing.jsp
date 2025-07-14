@@ -386,7 +386,7 @@
 	    <div class="info-left">
 	        <strong>※ 입력 유의사항</strong><br>
 	       • <b>투입비중</b>: NO 2~7의 합계는 <span class="text-red">100</span> 이하<br>
-    	   • <b>투입제한</b>: NO 3~5의 합계는 <span class="text-red">136</span> 이하<br>
+<!--     	   • <b>투입제한</b>: NO 3~5의 합계는 <span class="text-red">136</span> 이하<br> -->
     	   • <b>수정 후 저장 버튼 눌러주세요.</b>
 	    </div>
 
@@ -566,7 +566,7 @@ function initDataTable() {
                     if (!isNaN(val)) total += val;
                 }
                 if (total > 136) {
-                    alert("투입제한 총합이 136을 초과할 수 없습니다.");
+                    alert("투입제한 총합이 13600을 초과할 수 없습니다.");
                     cell.restoreOldValue();
                     return;
                 }

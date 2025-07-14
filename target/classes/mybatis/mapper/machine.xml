@@ -20,8 +20,28 @@
             AND YEAR(created_at) = #{startDate}
         </if>
     </where>
-    ORDER BY equipment_name DESC
+    ORDER BY 
+        FIELD(equipment_name,
+            '세척 1호기',
+            '세척 2호기',
+            '쇼트 1호기',
+            '쇼트 2호기',
+            '쇼트 3호기',
+            '쇼트 4호기',
+            '쇼트 5호기',
+            '쇼트 6호기',
+            'G600',
+            'G800',
+            'K-BLACK',
+            '공용설비'
+        ),
+        CASE item_type 
+            WHEN '계획' THEN 0
+            WHEN '실적' THEN 1
+            ELSE 2
+        END
 </select>
+
 
 
 <update id="updatecheckPlan" parameterType="machine">

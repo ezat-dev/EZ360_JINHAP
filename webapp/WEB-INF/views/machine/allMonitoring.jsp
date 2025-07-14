@@ -317,7 +317,7 @@
                 },
 
                 columns: [
-                	  { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false },
+                	  { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false, frozen: true },
 
                 	  { title: "설비상태", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
                 	    formatter: function(cell) {

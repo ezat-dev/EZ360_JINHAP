@@ -372,12 +372,12 @@ let now_page_code = "b05";
           },
 
           columns: [
-            { title: "id", field: "id", visible: false },
-            { title: "날짜", field: "date", hozAlign: "center", minWidth: 110 },
-            { title: "주간 야간 재고", field: "status", hozAlign: "center", minWidth: 110 },
-            { title: "이월 수량", field: "next_month", hozAlign: "center", editor: "input", minWidth: 110 },
-            { title: "입고 수량", field: "stock_cnt", hozAlign: "center", editor: "input",  minWidth: 120 },
-            { title: "GEOMET G1", field: "geomet_g1", hozAlign: "center", editor: "input",  minWidth: 130 },
+            { title: "id", field: "id", visible: false, frozen: true },
+            { title: "날짜", field: "date", hozAlign: "center", minWidth: 110, frozen: true },
+            { title: "주간 야간 재고", field: "status", hozAlign: "center", minWidth: 110, frozen: true },
+            { title: "이월 수량", field: "next_month", hozAlign: "center", editor: "input", minWidth: 110,visible: false, frozen: true  },
+            { title: "입고 수량", field: "stock_cnt", hozAlign: "center", editor: "input",  minWidth: 120,visible: false  },
+            { title: "GEOMET G1", field: "geomet_g1", hozAlign: "center", editor: "input",  minWidth: 130},
             { title: "GEOMET G2", field: "geomet_g2", hozAlign: "center", editor: "input",  minWidth: 130 },
             { title: "지오메트 첨가제", field: "geomet_adding", hozAlign: "center", editor: "input",  minWidth: 140 },
             { title: "PLUS", field: "pluse", hozAlign: "center", editor: "input",  minWidth: 110 },

@@ -312,69 +312,131 @@
   
   
  <select id="getWorkDailySum" parameterType="Work" resultType="Work">
-  SELECT
-    mach_code,
-    tong_day,
-    FORMAT((tong_day * std_weight), 0)          AS weight_day,
-    tong_sum,
-    FORMAT((tong_sum * std_weight), 0)          AS weight_sum,
-    CONCAT(
-      LPAD(FLOOR(work_minutes / 60), 2, '0'),
-      ':',
-      LPAD(work_minutes % 60,     2, '0')
-    )                                            AS work_time,
-    ROUND(work_minutes / (24 * 60), 1)           AS work_percent,
-    (diff_day * 24)                             AS sum_time,
-    ROUND((diff_day * 20) / (diff_day * 24), 4)  AS sum_percent,
-    FORMAT((tong_day * std_weight) / tong_day, 1) AS avg_day,
-    FORMAT((tong_sum * std_weight) / tong_sum, 1) AS avg_sum,
-    ROUND(work_minutes / 60 / tong_day, 2)       AS uph,
-    ROUND((diff_day * 24) / tong_sum, 2)         AS uph_sum
-  FROM (
-    SELECT
-      mach_code,
-      SUM(CASE WHEN end_time BETWEEN #{s_time} AND #{e_time} THEN 1 ELSE 0 END)   AS tong_day,
-      SUM(CASE WHEN end_time BETWEEN #{s_time} AND #{e_time} THEN weight ELSE 0 END) AS weight_day,
-      SUM(1)                             AS tong_sum,
-      SUM(weight)                        AS weight_sum,
-      MAX(
-        CASE
-          WHEN end_time BETWEEN #{s_time} AND #{e_time}
-          THEN GREATEST(
-                 TIMESTAMPDIFF(
-                   MINUTE,
-                   STR_TO_DATE(DATE_FORMAT(NOW(), '%Y%m%d080000'), '%Y%m%d%H%i%s'),
-                   NOW()
-                 ),
-                 1
-               )
-          ELSE 0
-        END
-      )                                   AS work_minutes,
-      TIMESTAMPDIFF(
-        DAY,
-        MIN(end_time),
-        MAX(end_time)
-      )                                   AS diff_day,
-      MAX(std_weight)                    AS std_weight
-    FROM tb_lowdata_save lows
-    INNER JOIN tb_facility fac
-      ON lows.mach_code = fac.facility_mach_code
-    WHERE 1=1
-      <if test="m_code != null">
-        AND mach_code = #{m_code}
-      </if>
-      <if test="s_time != null">
-        AND start_time &gt;= #{s_time}
-      </if>
-      <if test="e_time != null">
-        AND end_time &lt;= #{e_time}
-      </if>
-      AND weight IS NOT NULL
-      AND start_time IS NOT NULL
-      AND end_time IS NOT NULL
-    GROUP BY mach_code
-  ) AS agg
+ 
+ <![CDATA[
+SELECT 
+  mach_code, 
+  facility_name, 
+  tong_day,
+  weight_day,
+  w_seconds,
+  ROUND(weight_day / tong_day, 1) AS avg_day, -- 표준중량
+  TIME_FORMAT(SEC_TO_TIME(w_seconds), '%H:%i') AS work_time,
+  ROUND(w_seconds / 3600.0, 1) AS ex_uph_hours, 
+  ROUND(tong_day / NULLIF(ROUND(w_seconds / 3600.0, 1), 0), 1) AS uph,
+  TIME_FORMAT(SEC_TO_TIME(w_m_sec), '%H:%i') AS sum_time,
+  tong_month AS tong_sum, -- 월 생산 통수
+  weight_month AS weight_sum, -- 월 누적 생산중량
+  ROUND((tong_month * 3600) / NULLIF(w_m_sec, 0), 1) AS uph_sum,
+  ROUND((ROUND(c_t_hour * (w_seconds / 3600), 1) - tong_day) * c_t, 0) AS stop_seconds, -- 일 비가동
+  -- 비가동시간 포함된 가동효율 (순가동시간 / 가동시간)
+  ROUND(
+    ((w_seconds - ROUND((ROUND(c_t_hour * (w_seconds / 3600), 1) - tong_day) * c_t, 0)) / NULLIF(w_seconds, 0)) * 100, 1) AS work_percent,
+  w_m_sec,
+  ROUND((ROUND(c_t_hour * (w_m_sec / 3600), 1) - tong_day) * c_t, 0) AS stop_seconds_month, -- 월 비가동
+  ROUND(
+    ((w_m_sec - ROUND((ROUND(c_t_hour * (w_m_sec / 3600), 1) - tong_day) * c_t, 0)) / NULLIF(w_m_sec, 0)) * 100
+  , 1) AS sum_percent
+FROM (
+    SELECT 
+        mach_code,
+        facility_name,
+        SUM(tong_day) AS tong_day,
+        SUM(weight_day) AS weight_day,
+        MAX(w_hr) AS w_seconds,
+        SUM(weight_month) AS weight_month,
+        SUM(tong_month) AS tong_month,
+        MAX(c_t) AS c_t,
+        MAX(c_t_hour) AS c_t_hour,
+        MAX(capa) AS capa,
+        MAX(std_weight) AS std_weight,
+        MAX(ch_idx) AS ch_idx,
+        SUM(c_t_next) AS c_t_next,
+        ROUND((c_t_next), 0) AS c_t_avg_day,
+        MAX(end_time) AS max_end_time,
+        MAX(work_gb) AS work_gb,
+        MAX(w_cnt) AS w_cnt,
+        SUM(sss) AS sasdasd,
+        MAX(w_m_sec) AS w_m_sec
+
+    FROM (
+        SELECT *,
+            IFNULL(TIMESTAMPDIFF(SECOND,end_time, end_time_next), 0) AS c_t_next
+        FROM (
+            SELECT 
+                mach_code,
+                facility_name,
+                start_time,
+                end_time,
+                LEAD(end_time) OVER(PARTITION BY mach_code ORDER BY end_time) AS end_time_next,
+                CASE 
+                    WHEN end_time >= w_stime_day AND end_time <= w_etime_day THEN 1 
+                    ELSE 0 
+                END AS tong_day,
+                CASE 
+                    WHEN end_time >= w_stime_day AND end_time <= w_etime_day THEN ROUND(weight,1) 
+                    ELSE 0 
+                END AS weight_day,
+                CAST(ROUND(c_t,0) AS INT) AS c_t,
+                CAST(ROUND(capa,0) AS INT) AS capa,
+                std_weight,
+                ch_idx,
+                w_hr,
+                c_t_hour,
+                work_gb,
+                w_cnt,
+                w_m_sec,
+                CASE 
+                    WHEN end_time >= w_stime_month AND end_time <= w_etime_month THEN 1 
+                    ELSE 0 
+                END AS tong_month,
+                CASE 
+                    WHEN end_time >= w_stime_month AND end_time <= w_etime_month THEN ROUND(weight,1) 
+                    ELSE 0 
+                END AS weight_month,
+                CASE 
+                    WHEN end_time IS NOT NULL THEN TIMESTAMPDIFF(SECOND, start_time, end_time) 
+                    ELSE 0 
+                END AS sss
+            FROM tb_lowdata_save A
+            LEFT OUTER JOIN (
+                SELECT 
+                    'JH_KR_01' AS du_plac_cd,
+                    '02' AS du_plnt_cd,
+                    CASE WHEN #{s_time2} = CURDATE() THEN 1 ELSE 0 END AS work_gb,
+                    DATE_FORMAT(CASE WHEN #{s_time2} = CURDATE() 
+                        THEN CONCAT(CURDATE(),' 08:00:00') ELSE CONCAT(#{s_time2},' 08:00:00') END,'%Y%m%d%H%i%s') AS w_stime_day,
+                    DATE_FORMAT(DATE_ADD(CASE WHEN #{s_time2} = CURDATE() 
+                        THEN CONCAT(CURDATE(),' 08:00:00') ELSE CONCAT(#{s_time2},' 08:00:00') END, INTERVAL 1 DAY), '%Y%m%d%H%i%s') AS w_etime_day,
+                    DATE_FORMAT(CASE WHEN MONTH(#{s_time2}) = MONTH(CURDATE()) 
+                        THEN CONCAT(CURDATE(),' 08:00:00') ELSE CONCAT(#{s_time2},' 08:00:00') END,'%Y%m01%H%i%s') AS w_stime_month,
+                    DATE_FORMAT(DATE_ADD(CASE WHEN MONTH(#{s_time2}) = MONTH(CURDATE()) 
+                        THEN CONCAT(LAST_DAY(CURDATE()),' 08:00:00') ELSE CONCAT(LAST_DAY(#{s_time2}),' 08:00:00') END, INTERVAL 1 DAY), '%Y%m%d%H%i%s') AS w_etime_month,
+                    CASE 
+                        WHEN #{s_time2} = CURDATE() THEN TIMESTAMPDIFF(SECOND, CONCAT(CURDATE(),' 08:00:00'), NOW()) 
+                        ELSE 86400 
+                    END AS w_hr,
+                    CASE 
+                        WHEN #{s_time2} = CURDATE() THEN DAY(CURDATE()) 
+                        ELSE DAY(#{s_time2}) 
+                    END AS w_cnt,
+                    CASE 
+                        WHEN #{s_time2} = CURDATE() THEN TIMESTAMPDIFF(SECOND, DATE_FORMAT(#{s_time2},'%Y-%m-01 08:00:00'), DATE_ADD(NOW(), INTERVAL 1 DAY))
+                        ELSE TIMESTAMPDIFF(SECOND, DATE_FORMAT(#{s_time2},'%Y-%m-01 08:00:00'), CONCAT(DATE_ADD(#{s_time2}, INTERVAL 1 DAY),' 08:00:00'))
+                    END AS w_m_sec                    
+            ) B ON A.plac_cd = B.du_plac_cd AND A.plnt_cd = B.du_plnt_cd
+            LEFT OUTER JOIN (
+                SELECT * FROM tb_facility WHERE ch_idx < 30
+            ) C ON A.mach_code = C.facility_mach_code
+            WHERE A.mach_code =  #{m_code}
+              AND A.start_time >= B.w_stime_month
+              AND A.start_time <= B.w_etime_month
+        ) AA
+    ) BB
+    GROUP BY mach_code, facility_name
+) AS CC
+
+  ]]>
 </select>
 
   

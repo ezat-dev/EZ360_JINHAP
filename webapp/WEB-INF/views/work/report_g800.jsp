@@ -514,15 +514,17 @@
     	        { title: "일 작업통수", field: "tong_day", hozAlign: "center",headerSort: false  },
     	        { title: "생산량", field: "weight_day", hozAlign: "center",headerSort: false },
     	        { title: "표준중량", field: "avg_day", hozAlign: "center",headerSort: false },
-    	        { title: "누적 생산통수", field: "tong_sum", hozAlign: "center" ,headerSort: false},
-    	        { title: "누적 생산량", field: "weight_sum", hozAlign: "center",headerSort: false },
-    	        { title: "평균중량", field: "avg_sum", hozAlign: "center",headerSort: false },
+    	       
+    	      /*   { title: "평균중량", field: "avg_sum", hozAlign: "center",headerSort: false }, */
     	        { title: "가동시간", field: "work_time", hozAlign: "center",headerSort: false },
     	        { title: "가동률", field: "work_percent", hozAlign: "center" ,headerSort: false},
+    	        { title: "UPH", field: "uph", hozAlign: "center",headerSort: false },
     	        { title: "월누적", columns: [
+    	        	{ title: "누적 생산통수", field: "tong_sum", hozAlign: "center" ,headerSort: false},
+         	        { title: "누적 생산량", field: "weight_sum", hozAlign: "center",headerSort: false },
     	            { title: "가동시간", field: "sum_time", hozAlign: "center",headerSort: false },
     	            { title: "가동률", field: "sum_percent", hozAlign: "center",headerSort: false },
-    	            { title: "UPH", field: "uph", hozAlign: "center",headerSort: false },
+    	           
     	            { title: "UPH(월누적)", field: "uph_sum", hozAlign: "center",headerSort: false }
     	        ]}
     	    ]

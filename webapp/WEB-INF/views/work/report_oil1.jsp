@@ -174,7 +174,7 @@
         success: function(response) {
 //        	console.log(response);
 //        	console.log(response.table1);
-          table1.setData(response.table1);
+//          table1.setData(response.table1);
           table2.setData(response.table2);
           table3.setData(response.table3);
         },
@@ -230,15 +230,17 @@
           { title: "일 작업통수", field: "tong_day",headerSort: false },
           { title: "생산량", field: "weight_day",headerSort: false },
           { title: "표준중량", field: "avg_day" ,headerSort: false},
-          { title: "누적 생산통수", field: "tong_sum" ,headerSort: false},
-          { title: "누적 생산량", field: "weight_sum" ,headerSort: false},
-          { title: "평균중량", field: "avg_sum" ,headerSort: false},
+        
+        /*   { title: "평균중량", field: "avg_sum" ,headerSort: false}, */
           { title: "가동시간", field: "work_time" ,headerSort: false},
           { title: "가동률", field: "work_percent" ,headerSort: false},
+          { title: "UPH", field: "uph" },
           { title: "월누적", columns: [
+        	  { title: "누적 생산통수", field: "tong_sum" ,headerSort: false},
+              { title: "누적 생산량", field: "weight_sum" ,headerSort: false},
               { title: "가동시간", field: "sum_time" ,headerSort: false},
               { title: "가동율", field: "sum_percent" ,headerSort: false},
-              { title: "UPH", field: "uph" },
+
               { title: "UPH(월누적)", field: "uph_sum" ,headerSort: false}
             ]
           }

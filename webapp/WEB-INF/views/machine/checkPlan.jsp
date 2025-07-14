@@ -243,10 +243,10 @@
 			    <label>항목</label>
 			    <input type="text" name="item_type" readonly>
 			
-			    <label>최근 점검일</label>
+	<!-- 		    <label>최근 점검일</label>
 			    <div class="checkbox-container">
 			        <input type="text" class="daySet" name="updated_at" placeholder="점검일 선택" style="text-align: left;"readonly>
-			    </div>
+			    </div> -->
 			
 			    <label class="hName2">(변수)월 정검일</label>
 			    <input type="text" class="monthDaySet" name="0m"  placeholder="(변수)월 정검일" >
@@ -265,12 +265,19 @@
 
 	    </div>
 	</div>
-
+	
+	<!-- 모달 뷰어 -->
+	<div id="pdfModal" style="display:none; position:fixed; top:10%; left:10%; width:80%; height:80%; background:#fff; border:1px solid #ccc; z-index:10000; overflow:hidden; box-shadow:0 0 10px rgba(0,0,0,0.5);">
+	  <button id="closePdfModal" style="position:absolute; top:10px; right:10px; z-index:10001;">닫기</button>
+	  <iframe id="pdfFrame" style="width:100%; height:100%;" frameborder="0"></iframe>
+	</div>
 
      <script>
      let now_page_code = "h01";
-
-
+     <!-- 모달 뷰어 -->
+     document.getElementById('closePdfModal').addEventListener('click', function(){
+    	    closePdfModal();
+    	  });
      
     $(document).ready(function () {
 
@@ -352,54 +359,68 @@
 	    
 	    var selectedRow = null;
 
-	    function getDataList() {
-	        dataTable = new Tabulator("#dataList", {
-	            height: "830px",
-	            layout: "fitColumns",
-	            responsiveLayout: "collapse",
-	            selectable: true,
-	            tooltips: true,
-	            columnHeaderVertAlign: "middle",
-	            rowVertAlign: "middle",
-	            selectableRangeMode: "click",
-	            reactiveData: true,
-	            headerHozAlign: "center",
-	            ajaxConfig: "POST",
-	            ajaxLoader: false,
-	            headerSort:false,
-	            ajaxURL: "/geomet/machine/checkPlan/list",
-	            ajaxProgressiveLoad: "scroll",
-	            ajaxParams: {
-	                "startDate": $("#startDate").val() || "",
-	            },
-	            placeholder: "조회된 데이터가 없습니다.",
-	            paginationSize: 20,
-	            groupBy: "equipment_name",
-	            groupStartOpen: true,
-	            groupHeader: function(value, count, data) {
-	                return `<span style="font-weight:bold; font-size:16px;">${value}</span>`;
-	            },
-	            ajaxResponse: function(url, params, response) {
-	                $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-	                return response;
-	            },
-	            columns: [
-	                { title: "설비", field: "equipment_name", width: 130, hozAlign: "center" },
-	                { title: "점검일", field: "updated_at", width: 100, hozAlign: "center" },
-	                { title: "항목", field: "item_type", hozAlign: "center" },
-	                { title: "1월", field: "m1", hozAlign: "center" },
-	                { title: "2월", field: "m2", hozAlign: "center" },
-	                { title: "3월", field: "m3", hozAlign: "center" },
-	                { title: "4월", field: "m4", hozAlign: "center" },
-	                { title: "5월", field: "m5", hozAlign: "center" },
-	                { title: "6월", field: "m6", hozAlign: "center" },
-	                { title: "7월", field: "m7", hozAlign: "center" },
-	                { title: "8월", field: "m8", hozAlign: "center" },
-	                { title: "9월", field: "m9", hozAlign: "center" },
-	                { title: "10월", field: "m10", hozAlign: "center" },
-	                { title: "11월", field: "m11", hozAlign: "center" },
-	                { title: "12월", field: "m12", hozAlign: "center" },
-	                {
+	    function openPdfModal(url) {
+	    	  const modal = document.getElementById('pdfModal');
+	    	  const iframe = document.getElementById('pdfFrame');
+	    	  iframe.src = url;
+	    	  modal.style.display = 'block';
+	    	}
+
+	    	function closePdfModal() {
+	    	  const modal = document.getElementById('pdfModal');
+	    	  const iframe = document.getElementById('pdfFrame');
+	    	  iframe.src = '';
+	    	  modal.style.display = 'none';
+	    	}
+
+	    	function getDataList() {
+	    	  dataTable = new Tabulator("#dataList", {
+	    	    height: "830px",
+	    	    layout: "fitColumns",
+	    	    responsiveLayout: "collapse",
+	    	    selectable: true,
+	    	    tooltips: true,
+	    	    columnHeaderVertAlign: "middle",
+	    	    rowVertAlign: "middle",
+	    	    selectableRangeMode: "click",
+	    	    reactiveData: true,
+	    	    headerHozAlign: "center",
+	    	    ajaxConfig: "POST",
+	    	    ajaxLoader: false,
+	    	    headerSort:false,
+	    	    ajaxURL: "/geomet/machine/checkPlan/list",
+	    	    ajaxProgressiveLoad: "scroll",
+	    	    ajaxParams: {
+	    	      "startDate": $("#startDate").val() || "",
+	    	    },
+	    	    placeholder: "조회된 데이터가 없습니다.",
+	    	    paginationSize: 20,
+	    	    groupBy: "equipment_name",
+	    	    groupStartOpen: true,
+	    	    groupHeader: function(value, count, data) {
+	    	      return `<span style="font-weight:bold; font-size:16px;">${value}</span>`;
+	    	    },
+	    	    ajaxResponse: function(url, params, response) {
+	    	      $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+	    	      return response;
+	    	    },
+	    	    columns: [
+	    	      { title: "설비", field: "equipment_name", width: 130, hozAlign: "center" },
+	    	      { title: "점검일", field: "updated_at", width: 100, hozAlign: "center" },
+	    	      { title: "항목", field: "item_type", hozAlign: "center" },
+	    	      { title: "1월", field: "m1", hozAlign: "center" },
+	    	      { title: "2월", field: "m2", hozAlign: "center" },
+	    	      { title: "3월", field: "m3", hozAlign: "center" },
+	    	      { title: "4월", field: "m4", hozAlign: "center" },
+	    	      { title: "5월", field: "m5", hozAlign: "center" },
+	    	      { title: "6월", field: "m6", hozAlign: "center" },
+	    	      { title: "7월", field: "m7", hozAlign: "center" },
+	    	      { title: "8월", field: "m8", hozAlign: "center" },
+	    	      { title: "9월", field: "m9", hozAlign: "center" },
+	    	      { title: "10월", field: "m10", hozAlign: "center" },
+	    	      { title: "11월", field: "m11", hozAlign: "center" },
+	    	      { title: "12월", field: "m12", hozAlign: "center" },
+	    	      {
 	                    title: "첨부 파일",
 	                    field: "save_url",
 	                    hozAlign: "center",
@@ -407,50 +428,59 @@
 	                    formatter: function(cell, formatterParams, onRendered) {
 	                        const fileName = cell.getValue();
 	                        if (!fileName) return "";
-	                        return '<a href="/geomet/download?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+	                        return '<a href="/geomet/downloadCk?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
 	                    }
 
 	                },
-	                { title: "비고", field: "remark", hozAlign: "left", width: 320 },
-	            ],
-	            cellClick: function (e, cell) {
-	                const field = cell.getField();
-	                const value = cell.getValue();
-	                const rowData = cell.getRow().getData();
+	    	      { title: "비고", field: "remark", hozAlign: "left", width: 320 },
+	    	    ],
+	    	    cellClick: function (e, cell) {
+	    	      const field = cell.getField();
+	    	      const value = cell.getValue();
+	    	      const rowData = cell.getRow().getData();
 
-	                console.log("✅ 클릭한 필드명:", field);
-	                console.log("✅ 클릭한 값:", value);
-	                console.table(rowData);
-	            },
-	            cellDblClick: function(e, cell) {
-	                const field = cell.getField();
-	                const value = cell.getValue();
-	                const rowData = cell.getRow().getData();
-	                const monthNumber = field.replace("m", "");
+	    	      // 첨부 파일 칸 클릭시 모달 열기
+	    	      if (field === "save_url" && value) {
+	    	        e.preventDefault();
+	    	        const url = '/geomet/downloadCk?filename=' + encodeURIComponent(value);
+	    	        openPdfModal(url);
+	    	        return;
+	    	      }
 
-	                if (monthNumber >= 1 && monthNumber <= 12) {
-	                    const modal = $("#modalContainer");
-	                    modal.show().addClass("show");
+	    	      console.log("✅ 클릭한 필드명:", field);
+	    	      console.log("✅ 클릭한 값:", value);
+	    	      console.table(rowData);
+	    	    },
+	    	    cellDblClick: function(e, cell) {
+	    	      const field = cell.getField();
+	    	      const value = cell.getValue();
+	    	      const rowData = cell.getRow().getData();
+	    	      const monthNumber = field.replace("m", "");
 
-	                    $(".hName").text(monthNumber + "월 점검일 입력");
-	                    $(".hName2").text(monthNumber + "월 정검일");
+	    	      if (monthNumber >= 1 && monthNumber <= 12) {
+	    	        const modal = $("#modalContainer");
+	    	        modal.show().addClass("show");
 
-	                    const $monthInput = $(".monthDaySet");
-	                    const newName = "m" + monthNumber;
+	    	        $(".hName").text(monthNumber + "월 점검일 입력");
+	    	        $(".hName2").text(monthNumber + "월 정검일");
 
-	                    $monthInput.attr("name", newName);
-	                    $monthInput.attr("placeholder", `${monthNumber}월 정검일`);
-	                    $monthInput.val(value);
+	    	        const $monthInput = $(".monthDaySet");
+	    	        const newName = "m" + monthNumber;
 
-	                    $("input[name='equipment_name']").val(rowData.equipment_name);
-	                    $("input[name='item_type']").val(rowData.item_type);
-	                    $("input[name='updated_at']").val(rowData.updated_at);
-	                    $("input[name='save_url']").val(rowData.save_url);
-	                    $("textarea[name='remark']").val(rowData.remark);
-	                }
-	            }
-	        });
-	    }
+	    	        $monthInput.attr("name", newName);
+	    	        $monthInput.attr("placeholder", `${monthNumber}월 정검일`);
+	    	        $monthInput.val(value);
+
+	    	        $("input[name='equipment_name']").val(rowData.equipment_name);
+	    	        $("input[name='item_type']").val(rowData.item_type);
+	    	        $("input[name='updated_at']").val(rowData.updated_at);
+	    	        $("input[name='save_url']").val(rowData.save_url);
+	    	        $("textarea[name='remark']").val(rowData.remark);
+	    	      }
+	    	    }
+	    	  });
+	    	}
+
 
 
         $(document).ready(function () {
