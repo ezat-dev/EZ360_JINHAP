@@ -238,77 +238,88 @@
 
 
 
-
-  <select id="getWorkDailyList" parameterType="Work" resultType="Work">
+<select id="getWorkDailyList" parameterType="Work" resultType="Work">
+SELECT
+  ROW_NUMBER() OVER(ORDER BY end_time) AS r_num,
+  group_id,
+  start_time,
+  end_time,
+  tong_day,
+  weight_day,
+  item_nm,
+  item_cd,
+  next_facility,
+  CASE 
+    WHEN division_weight = 0 THEN 0
+    ELSE CASE 
+           WHEN (weight_day / division_weight) > 1 
+           THEN FLOOR((weight_day / division_weight)) + 1 
+           ELSE 1 
+         END
+  END AS a, /*분할횟수*/
+  '' AS b,
+  '' AS c,
+  '' AS d,
+  CASE 
+    WHEN bb.wrk_ord_no LIKE '%WR%' THEN '재작업'
+    ELSE '신규'
+  END AS e,  /*구분(신규/재작업)*/
+  '' AS f
+FROM (
+  SELECT 
+    aa.mach_code,
+    end_time,
+    start_time,
+    tong_day,
+    weight_day,
+    aa.item_cd,
+    aa.item_nm,
+    aa.wrk_ord_no,              
+    ab.coating_nm AS next_facility,
+    ab.group_id,
+    aa.std_weight AS division_weight  <!-- 여기 변경됨 -->
+  FROM (
     SELECT
-      ROW_NUMBER() OVER(ORDER BY end_time) AS r_num,
+      mach_code,
+      barcode_no,
+      ROUND(weight, 0) AS weight_day,
+      1 AS tong_day,
+      fac.facility_name,
+      fac.std_weight,
       start_time,
       end_time,
-      tong_day,
-      weight_day,
-      item_nm,
       item_cd,
-      next_facility,
-	  CASE WHEN division_weight = 0 THEN 0
-		   ELSE
-				CASE WHEN (weight_day / division_weight) > 1 THEN FLOOR((weight_day / division_weight)) + 1
-			         ELSE 1 END
-	  END AS a, /*분할횟수*/
-      '' AS b, /*검사항목(내용)*/
-      '' AS c,/*검사항목(파일)*/      
-      '' AS d,/*검사항목(합부판정)*/
-      '' AS e,/*구분(신규/재작업)*/
-      '' AS f/*비고*/      
-    FROM (
-	     SELECT 
-	        mach_code, end_time, start_time, tong_day, weight_day,
-	        aa.item_cd, aa.item_nm,
-	        ab.coating_nm AS next_facility,
-			CASE WHEN aa.mach_code = ab.mach_main THEN mach_main_weight
-				 WHEN aa.mach_code = ab.mach_sub THEN mach_sub_weight
-				 ELSE 0
-			END division_weight
-	  FROM (
-        SELECT
-          mach_code,
-          barcode_no,
-          weight AS weight_day,
-          1 AS tong_day,
-          fac.facility_name,
-          start_time,
-          end_time,
-          item_cd,
-          item_nm,
-          LEAD(start_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time
-        FROM tb_lowdata_save AS lows
-        INNER JOIN tb_facility AS fac
-          ON lows.mach_code = fac.facility_mach_code
-        WHERE 1=1
-          <if test="s_time != null">
-            AND start_time &gt;= #{s_time}
-          </if>
-          <if test="e_time != null">
-            AND end_time &lt;= #{e_time}
-          </if>
-		<if test="m_code2 != null and m_code2 != ''">
-		  AND mach_code IN (${m_code2})
-		</if>
-
-          AND weight IS NOT NULL
-          AND start_time IS NOT NULL
-          AND end_time IS NOT NULL
-      ) AS aa
-	  INNER JOIN
-	  	pwo_geo_division_data AS ab
-	  ON aa.item_cd = ab.item_cd
-    ) AS bb
-    <where>
-      <if test="m_code != null">
-        mach_code = #{m_code}
+      item_nm,
+      wrk_ord_no,
+      LEAD(start_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time
+    FROM tb_lowdata_save AS lows
+    INNER JOIN tb_facility AS fac
+      ON lows.mach_code = fac.facility_mach_code
+    WHERE 1=1
+      <if test="s_time != null">
+        AND start_time &gt;= #{s_time}
       </if>
-    </where>
-    ORDER BY end_time
-  </select>
+      <if test="e_time != null">
+        AND end_time &lt;= #{e_time}
+      </if>
+      <if test="m_code2 != null and m_code2 != ''">
+        AND mach_code IN (${m_code2})
+      </if>
+      AND weight IS NOT NULL
+      AND start_time IS NOT NULL
+      AND end_time IS NOT NULL
+  ) AS aa
+  INNER JOIN pwo_geo_division_data AS ab
+    ON aa.item_cd = ab.item_cd
+) AS bb
+<where>
+  <if test="m_code != null">
+    mach_code = #{m_code}
+  </if>
+</where>
+ORDER BY end_time;
+</select>
+
   
   
  <select id="getWorkDailySum" parameterType="Work" resultType="Work">
@@ -441,26 +452,42 @@ FROM (
 
   
 <select id="getReportInputLIst" parameterType="Work" resultType="Work">
-  SELECT
-    idx,
-    input_date,
-    mch_code,
-    mch_name,
-    gb,
-    visc,
-    pre_temp,
-    heat_temp,
-    liq_temp,
-    sg
-  FROM tb_report_input
-  WHERE 1=1
-    <if test="s_time != null and e_time != null">
-      AND input_date BETWEEN #{s_time} AND #{e_time}
-    </if>
-    <if test="m_code != null">
-      AND mch_code = #{m_code}
-    </if>
+  <![CDATA[
+SELECT *
+FROM (
+	SELECT *
+	FROM (
+		SELECT *,
+		CASE 
+			WHEN b_a = '주간' THEN CONCAT(date, ' 08:00:00')
+			ELSE CONCAT(date, ' 20:00:00') 
+		END AS dssa,
+		(tank_temp + visocosity + specific_gravity + chiller_temp) AS row_sum
+		FROM tb_part_temp
+	) AS A
+	WHERE date = #{s_time2}
+	  AND mch_code = #{m_code}
+	  AND row_sum <> 0
+) AS AA
+LEFT OUTER JOIN
+(
+	SELECT t.*
+	FROM tb_temp_data t
+	JOIN (
+	    -- HOUR = 8, 20 별로 가장 빠른
+	    SELECT 
+	      MIN(temp_time) AS tm
+	    FROM tb_temp_data
+	    WHERE DATE(temp_time) = #{s_time2}
+	      AND HOUR(temp_time) IN (8, 20)
+	    GROUP BY HOUR(temp_time)
+	) AS m
+	ON t.temp_time = m.tm
+) AS BB
+ON LEFT(dssa, 16) = LEFT(temp_time, 16);
+  ]]>
 </select>
+
 
   
   

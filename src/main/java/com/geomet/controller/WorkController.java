@@ -306,7 +306,7 @@ public class WorkController {
         System.out.println("▶ Received Work:");
         System.out.println("   s_time  = " + work.getS_time());
         System.out.println("   e_time  = " + work.getE_time());
-        System.out.println("   s_time2  = " + work.getM_code2());
+        System.out.println("   s_time2  = " + work.getS_time2());
         System.out.println("   m_code  = " + work.getM_code());
 
         String rawStart = work.getS_time();  // 예: "20250711"
@@ -410,17 +410,28 @@ public class WorkController {
     @RequestMapping(value = "/work/workDailyReport/excel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> exportWorkDailyReportExcel(@RequestBody Work work) throws Exception {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+    	 DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+         DateTimeFormatter fmt2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+         // ★ 받은 원본 파라미터 로그 출력
+         System.out.println("▶ Received Work:");
+         System.out.println("   s_time  = " + work.getS_time());
+         System.out.println("   e_time  = " + work.getE_time());
+         System.out.println("   s_time2  = " + work.getM_code2());
+         System.out.println("   m_code  = " + work.getM_code());
 
-        // 1) 원본 날짜 보관
-        String rawStart = work.getS_time();
-        String rawEnd   = work.getE_time();
+         String rawStart = work.getS_time();  // 예: "20250711"
+         String rawEnd   = work.getE_time();
 
-        // 2) 오프셋 처리
-        work.setS_time(rawStart + "0800");
-        LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
-        work.setE_time(eDate.format(fmt) + "0800");
+         // ▶ s_time2는 yyyy-MM-dd 형식으로 저장 (0800 없이)
+         String sTime2 = LocalDate.parse(rawStart, fmt).format(fmt2);
+         work.setS_time2(sTime2);
 
+         // ▶ s_time은 0800 붙여서 DB용으로
+         work.setS_time(rawStart + "0800");
+
+         // ▶ e_time도 +1일 후 0800 붙이기
+         LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
+         work.setE_time(eDate.format(fmt) + "0800");
         // 3) 데이터 조회
         List<Work> table1 = workService.getReportInputLIst(work);
         List<Work> table2 = workService.getWorkDailySum(work);
@@ -478,11 +489,9 @@ public class WorkController {
                 rowIdx++;
             }
 
-            // 8) table2 쓰기 (10행, A열부터)
-            rowIdx = 9;
+            rowIdx = 10;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
-                if (w.getAvg_sum() != null)      w.setAvg_sum(w.getAvg_sum() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
                 if (w.getSum_time() != null)     w.setSum_time(w.getSum_time() + "hr");
                 if (w.getWork_percent() != null) w.setWork_percent(w.getWork_percent() + "%");
@@ -491,27 +500,42 @@ public class WorkController {
                 Row r = sheet.getRow(rowIdx);
                 if (r == null) r = sheet.createRow(rowIdx);
                 int col = 0;
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());
-                // 테두리 스타일 적용
-                for (int c = 0; c < 12; c++) {
+                DecimalFormat commaFormat = new DecimalFormat("#,##0");
+                // ✅ Tabulator 컬럼 순서에 맞춘 셀 입력
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());      // 일 작업통수
+                // 작업중량(kg)
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getWeight_day() != null ? commaFormat.format(w.getWeight_day()) + "kg" : ""
+                );
+			   // 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());       // 표준중량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());     // 가동시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());  // 가동률
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());           // UPH
+                // 누적 생산통수
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getTong_sum() != null ? commaFormat.format(w.getTong_sum()) : ""
+                );
+
+                // 누적 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getWeight_sum() != null ? commaFormat.format(w.getWeight_sum()) : ""
+                );    // 누적 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());      // 누적 가동시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());   // 누적 가동률
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());       // 누적 UPH
+
+                // ✅ 테두리 스타일 11칸만 적용
+                for (int c = 0; c < 11; c++) {
                     getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
                 }
+
                 rowIdx++;
             }
 
+
             // 9) table3 쓰기 (13행, A열부터)
-            int rowIdx2 = 12;
+            int rowIdx2 = 13;
             for (Work w : table3) {
                 if (w.getStart_time() != null && w.getStart_time().length() == 14) {
                     w.setStart_time(
@@ -550,18 +574,19 @@ public class WorkController {
                 Row r = sheet.getRow(rowIdx2);
                 if (r == null) r = sheet.createRow(rowIdx2);
                 int col = 0;
-                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getA());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getE());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getF());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());           // 순서
+                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());      // 투입시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());        // 완료시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());        // 투입통수
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());      // 작업중량(kg)
+                getOrCreateCell.apply(r, col++).setCellValue(w.getA());               // 분할횟수
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());         // 품명
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());         // 품번
+                getOrCreateCell.apply(r, col++).setCellValue(w.getGroup_id());        // 그룹ID
+                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());   // 후처리 사양
+                getOrCreateCell.apply(r, col++).setCellValue(w.getE());               // 구분(신규/재작업)
+                col++;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getF());               // 비고
 
                 for (int c = 0; c < 12; c++) {
                     getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
@@ -621,16 +646,28 @@ public class WorkController {
     @RequestMapping(value = "/work/workDailyReport_common/excel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> exportWorkDaily_common_ReportExcel(@RequestBody Work work) throws Exception {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+    	 DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+         DateTimeFormatter fmt2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+         // ★ 받은 원본 파라미터 로그 출력
+         System.out.println("▶ Received Work:");
+         System.out.println("   s_time  = " + work.getS_time());
+         System.out.println("   e_time  = " + work.getE_time());
+         System.out.println("   s_time2  = " + work.getM_code2());
+         System.out.println("   m_code  = " + work.getM_code());
 
-        // 1) 원본 날짜 보관
-        String rawStart = work.getS_time();
-        String rawEnd   = work.getE_time();
+         String rawStart = work.getS_time();  // 예: "20250711"
+         String rawEnd   = work.getE_time();
 
-        // 2) 오프셋 처리
-        work.setS_time(rawStart + "0800");
-        LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
-        work.setE_time(eDate.format(fmt) + "0800");
+         // ▶ s_time2는 yyyy-MM-dd 형식으로 저장 (0800 없이)
+         String sTime2 = LocalDate.parse(rawStart, fmt).format(fmt2);
+         work.setS_time2(sTime2);
+
+         // ▶ s_time은 0800 붙여서 DB용으로
+         work.setS_time(rawStart + "0800");
+
+         // ▶ e_time도 +1일 후 0800 붙이기
+         LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
+         work.setE_time(eDate.format(fmt) + "0800");
 
         // 3) 데이터 조회
         List<Work> table1 = workService.getReportInputLIst(work);
@@ -690,11 +727,9 @@ public class WorkController {
                 rowIdx++;
             }
 
-            // 8) table2 쓰기 (10행, A열부터)
-            rowIdx = 9;
+            rowIdx = 10;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
-                if (w.getAvg_sum() != null)      w.setAvg_sum(w.getAvg_sum() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
                 if (w.getSum_time() != null)     w.setSum_time(w.getSum_time() + "hr");
                 if (w.getWork_percent() != null) w.setWork_percent(w.getWork_percent() + "%");
@@ -703,27 +738,43 @@ public class WorkController {
                 Row r = sheet.getRow(rowIdx);
                 if (r == null) r = sheet.createRow(rowIdx);
                 int col = 0;
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());
-                // 테두리 스타일 적용
-                for (int c = 0; c < 12; c++) {
+                DecimalFormat commaFormat = new DecimalFormat("#,##0");
+                // ✅ Tabulator 컬럼 순서에 맞춘 셀 입력
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());      // 일 작업통수
+             // 작업중량(kg)
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getWeight_day() != null ? commaFormat.format(w.getWeight_day()) + "kg" : ""
+                );
+                // 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());       // 표준중량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());     // 가동시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());  // 가동률
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());           // UPH
+                // 누적 생산통수
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getTong_sum() != null ? commaFormat.format(w.getTong_sum()) : ""
+                );
+
+                // 누적 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getWeight_sum() != null ? commaFormat.format(w.getWeight_sum()) : ""
+                );    // 누적 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());      // 누적 가동시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());   // 누적 가동률
+                col++;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());       // 누적 UPH
+
+                // ✅ 테두리 스타일 11칸만 적용
+                for (int c = 0; c < 11; c++) {
                     getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
                 }
+
                 rowIdx++;
             }
 
+
             // 9) table3 쓰기 (13행, A열부터)
-            int rowIdx2 = 12;
+            int rowIdx2 = 13;
             for (Work w : table3) {
                 if (w.getStart_time() != null && w.getStart_time().length() == 14) {
                     w.setStart_time(
@@ -762,18 +813,19 @@ public class WorkController {
                 Row r = sheet.getRow(rowIdx2);
                 if (r == null) r = sheet.createRow(rowIdx2);
                 int col = 0;
-                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getA());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getE());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getF());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());           // 순서
+                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());      // 투입시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());        // 완료시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());        // 투입통수
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());      // 작업중량(kg)
+                getOrCreateCell.apply(r, col++).setCellValue(w.getA());               // 분할횟수
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());         // 품명
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());         // 품번
+                getOrCreateCell.apply(r, col++).setCellValue(w.getGroup_id());        // 그룹ID
+                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());   // 후처리 사양
+                getOrCreateCell.apply(r, col++).setCellValue(w.getE());               // 구분(신규/재작업)
+                col++;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getF());               // 비고
 
                 for (int c = 0; c < 12; c++) {
                     getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
@@ -781,6 +833,7 @@ public class WorkController {
 
                 rowIdx2++;
             }
+
 
             // 10) 비고란 추가
             int remarkRowIdx = rowIdx2; // table3 끝난 다음 행에 바로
@@ -838,17 +891,28 @@ public class WorkController {
     @RequestMapping(value = "/work/workDailyReport_oil/excel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> exportWorkDaily_oil_ReportExcel(@RequestBody Work work) throws Exception {
-        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+    	 DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+         DateTimeFormatter fmt2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+         // ★ 받은 원본 파라미터 로그 출력
+         System.out.println("▶ Received Work:");
+         System.out.println("   s_time  = " + work.getS_time());
+         System.out.println("   e_time  = " + work.getE_time());
+         System.out.println("   s_time2  = " + work.getM_code2());
+         System.out.println("   m_code  = " + work.getM_code());
 
-        // 1) 원본 날짜 보관
-        String rawStart = work.getS_time();
-        String rawEnd   = work.getE_time();
+         String rawStart = work.getS_time();  // 예: "20250711"
+         String rawEnd   = work.getE_time();
 
-        // 2) 오프셋 처리
-        work.setS_time(rawStart + "0800");
-        LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
-        work.setE_time(eDate.format(fmt) + "0800");
+         // ▶ s_time2는 yyyy-MM-dd 형식으로 저장 (0800 없이)
+         String sTime2 = LocalDate.parse(rawStart, fmt).format(fmt2);
+         work.setS_time2(sTime2);
 
+         // ▶ s_time은 0800 붙여서 DB용으로
+         work.setS_time(rawStart + "0800");
+
+         // ▶ e_time도 +1일 후 0800 붙이기
+         LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
+         work.setE_time(eDate.format(fmt) + "0800");
         // 3) 데이터 조회
         List<Work> table1 = workService.getReportInputLIst(work);
         List<Work> table2 = workService.getWorkDailySum(work);
@@ -907,11 +971,9 @@ public class WorkController {
                 rowIdx++;
             }
 
-            // 8) table2 쓰기 (10행, A열부터)
-            rowIdx = 9;
+            rowIdx = 10;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
-                if (w.getAvg_sum() != null)      w.setAvg_sum(w.getAvg_sum() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
                 if (w.getSum_time() != null)     w.setSum_time(w.getSum_time() + "hr");
                 if (w.getWork_percent() != null) w.setWork_percent(w.getWork_percent() + "%");
@@ -920,27 +982,42 @@ public class WorkController {
                 Row r = sheet.getRow(rowIdx);
                 if (r == null) r = sheet.createRow(rowIdx);
                 int col = 0;
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_sum());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());
-                // 테두리 스타일 적용
-                for (int c = 0; c < 12; c++) {
+                DecimalFormat commaFormat = new DecimalFormat("#,##0");
+                // ✅ Tabulator 컬럼 순서에 맞춘 셀 입력
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());      // 일 작업통수
+                // 작업중량(kg)
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getWeight_day() != null ? commaFormat.format(w.getWeight_day()) + "kg" : ""
+                );   // 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getAvg_day());       // 표준중량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_time());     // 가동시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWork_percent());  // 가동률
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph());           // UPH
+                // 누적 생산통수
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getTong_sum() != null ? commaFormat.format(w.getTong_sum()) : ""
+                );
+
+                // 누적 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(
+                    w.getWeight_sum() != null ? commaFormat.format(w.getWeight_sum()) : ""
+                );   // 누적 생산량
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_time());      // 누적 가동시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getSum_percent());   // 누적 가동률
+                getOrCreateCell.apply(r, col++).setCellValue(w.getUph_sum());       // 누적 UPH
+                
+
+                // ✅ 테두리 스타일 11칸만 적용
+                for (int c = 0; c < 11; c++) {
                     getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
                 }
+
                 rowIdx++;
             }
 
+
             // 9) table3 쓰기 (13행, A열부터)
-            int rowIdx2 = 12;
+            int rowIdx2 = 13;
             for (Work w : table3) {
                 if (w.getStart_time() != null && w.getStart_time().length() == 14) {
                     w.setStart_time(
@@ -979,18 +1056,19 @@ public class WorkController {
                 Row r = sheet.getRow(rowIdx2);
                 if (r == null) r = sheet.createRow(rowIdx2);
                 int col = 0;
-                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getA());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getE());
-                getOrCreateCell.apply(r, col++).setCellValue(w.getF());
+                getOrCreateCell.apply(r, col++).setCellValue(w.getR_num());           // 순서
+                getOrCreateCell.apply(r, col++).setCellValue(w.getStart_time());      // 투입시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getEnd_time());        // 완료시간
+                getOrCreateCell.apply(r, col++).setCellValue(w.getTong_day());        // 투입통수
+                getOrCreateCell.apply(r, col++).setCellValue(w.getWeight_day());      // 작업중량(kg)
+                getOrCreateCell.apply(r, col++).setCellValue(w.getA());               // 분할횟수
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_nm());         // 품명
+                getOrCreateCell.apply(r, col++).setCellValue(w.getItem_cd());         // 품번
+                getOrCreateCell.apply(r, col++).setCellValue(w.getGroup_id());        // 그룹ID
+                getOrCreateCell.apply(r, col++).setCellValue(w.getNext_facility());   // 후처리 사양
+                getOrCreateCell.apply(r, col++).setCellValue(w.getE());               // 구분(신규/재작업)
+                col++;
+                getOrCreateCell.apply(r, col++).setCellValue(w.getF());               // 비고
 
                 for (int c = 0; c < 12; c++) {
                     getOrCreateCell.apply(r, c).setCellStyle(borderStyle);
@@ -998,6 +1076,7 @@ public class WorkController {
 
                 rowIdx2++;
             }
+
 
             // 10) 비고란 추가
             int remarkRowIdx = rowIdx2; // table3 끝난 다음 행에 바로

@@ -336,6 +336,7 @@
       code_name,
       option02,
       option03,
+      option04,
       option05,
       (
         SELECT SUM(NVL(TO_NUMBER(option03), 0))
@@ -353,6 +354,7 @@
   SET
     option02 = #{option02, jdbcType=VARCHAR},
     option03 = #{option03, jdbcType=VARCHAR},
+    option04 = #{option04, jdbcType=VARCHAR},
     option05 = #{option05, jdbcType=VARCHAR}
   WHERE
     GROUP_CODE = 'EZ001'
@@ -364,9 +366,11 @@
         code_name,
         option02,
         option03,
+        option04,
         option05,
         op2_old,
         op3_old,
+        op4_old,
         op5_old,
         user_id,
         upd_dt,
@@ -376,9 +380,11 @@
         #{code_name},
         #{option02},
         #{option03},
+        #{option04},
         #{option05},
         #{op2_old},
         #{op3_old},
+        #{op4_old},
         #{op5_old},
         #{user_id},
         #{upd_dt},
@@ -392,7 +398,8 @@
         id,
         code_name,
         option02,
-        option03,       
+        option03,
+        option04,        
         option05,
         CASE 
             WHEN op2_old IS NULL THEN '""'
@@ -402,6 +409,10 @@
             WHEN op3_old IS NULL THEN '""'
             ELSE op3_old
         END AS op3_old,
+         CASE 
+            WHEN op4_old IS NULL THEN '""'
+            ELSE op4_old
+        END AS op4_old,
         CASE 
             WHEN op5_old IS NULL THEN '""'
             ELSE op5_old

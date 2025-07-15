@@ -248,12 +248,12 @@
       <input type="text"name="std_weight">
       
 
-<label>목표 가동시간</label>
+<!-- <label>목표 가동시간</label>
 <input type="text" name="work_time2" step="60">
 
 <label>비가동 시간</label>
 <input type="text" name="non_time" step="60">
-
+ -->
 
 
       <label>설비 특이사항</label>
@@ -307,9 +307,9 @@ $(function() {
     	  { title: 'CAPA', field: 'capa', width: 150, hozAlign: 'center' },
     	  { title: '표준 중량', field: 'std_weight', width: 150, hozAlign: 'center' },
 
-    	  { title: '목표가동 시간', field: 'work_time2', width: 150, hozAlign: 'center' },
+ /*    	  { title: '목표가동 시간', field: 'work_time2', width: 150, hozAlign: 'center' },
     	  { title: '비가동 시간', field: 'non_time', width: 150, hozAlign: 'center' },
-    	  
+    	   */
     	  { title: '설비 특이사항', field: 'facility_comment', width: 300, hozAlign: 'center' }
     	],
     rowClick: function(e, row) {

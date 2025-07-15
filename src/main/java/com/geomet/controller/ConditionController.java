@@ -824,6 +824,8 @@ public class ConditionController {
     	            System.out.println("  ▶ op2_old   : " + condition.getOp2_old());
     	            System.out.println("  ▶ option03  : " + condition.getOption03());
     	            System.out.println("  ▶ op3_old   : " + condition.getOp3_old());
+    	            System.out.println("  ▶ option04  : " + condition.getOption04());
+    	            System.out.println("  ▶ op4_old   : " + condition.getOp4_old());
     	            System.out.println("  ▶ option05  : " + condition.getOption05());
     	            System.out.println("  ▶ op5_old   : " + condition.getOp5_old());
     	            System.out.println("  ▶ USER_ID   : " + condition.getUser_id());

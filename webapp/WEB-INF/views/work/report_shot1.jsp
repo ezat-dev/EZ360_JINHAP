@@ -219,7 +219,7 @@
         columns: [
             { title: "일 작업통수", field: "tong_day",headerSort: false },
             { title: "생산량", field: "weight_day",headerSort: false },
-            { title: "표준중량", field: "avg_day" ,headerSort: false},
+            { title: "평균중량", field: "avg_day" ,headerSort: false},
           
          /*    { title: "평균중량", field: "avg_sum" ,headerSort: false}, */
             { title: "가동시간", field: "work_time" ,headerSort: false},
@@ -243,19 +243,20 @@
         columnHeaderVertAlign: "middle",
         rowVertAlign: "middle",
         headerHozAlign: "center",
-        columns: [
-          { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },  
-          { title: "투입시간", field: "start_time",hozAlign: "center" },
-          { title: "완료시간", field: "end_time",hozAlign: "center" },
-          { title: "투입통수", field: "tong_day",hozAlign: "center" },
-          { title: "작업중량(kg)", field: "weight_day",hozAlign: "center" },
-      
-          { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 }, 
-          { title: "품번", field: "item_cd" },
-       
-          { title: "구분</br>(신규/재작업)", field: "e",hozAlign: "center" },
-          { title: "비고", field: "f" }
-        ]
+	    columns: [
+	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },       // 조금 줄임
+	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 190  },
+	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 190  },
+	        { title: "투입통수", field: "tong_day", hozAlign: "center", headerSort: false, width: 190 },
+	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center", headerSort: false, width: 190 },
+	   //     { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false },
+	        { title: "품명", field: "group_id", hozAlign: "left", headerSort: false, width: 210 },
+/*     	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 },   */// 넓힘
+	        { title: "품번", field: "item_cd", hozAlign: "left", headerSort: false, width: 210 },
+	       
+	        { title: "후처리 사양", field: "next_facility",  headerSort: false, width: 220 },
+	        { title: "구분</br>(신규/재작업)", field: "e", headerSort: false, width: 200 }
+	    ]
       });
     }
 

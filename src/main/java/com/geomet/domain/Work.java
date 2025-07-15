@@ -3,6 +3,23 @@ import java.util.List;
 
 public class Work {
 	
+	private String b_a;
+	private String p_code;
+	private String tank_temp;
+	private String visocosity;
+	private String specific_gravity;
+	private String chiller_temp;
+	private String t_600_d12000;
+	private String t_600_d12001;
+	private String t_800_d12000;
+	private String t_800_d12001;
+	private String blk_d12000;
+	private String blk_d12001;
+	private String mlpl_d12000;
+	private String mlpl_d12001;
+	
+	
+	
 	private String capa_now_month;
 	private String month_ton;
 	private String percent_month;
@@ -86,7 +103,7 @@ public class Work {
     
     private String weight;
     private String weight_wr;
-    
+    private String group_id;
     
     //작업일보
     private String r_num;
@@ -182,6 +199,97 @@ public class Work {
     
 
 
+	public String getT_600_d12000() {
+		return t_600_d12000;
+	}
+	public void setT_600_d12000(String t_600_d12000) {
+		this.t_600_d12000 = t_600_d12000;
+	}
+	public String getT_600_d12001() {
+		return t_600_d12001;
+	}
+	public void setT_600_d12001(String t_600_d12001) {
+		this.t_600_d12001 = t_600_d12001;
+	}
+	public String getT_800_d12000() {
+		return t_800_d12000;
+	}
+	public void setT_800_d12000(String t_800_d12000) {
+		this.t_800_d12000 = t_800_d12000;
+	}
+	public String getT_800_d12001() {
+		return t_800_d12001;
+	}
+	public void setT_800_d12001(String t_800_d12001) {
+		this.t_800_d12001 = t_800_d12001;
+	}
+	public String getBlk_d12000() {
+		return blk_d12000;
+	}
+	public void setBlk_d12000(String blk_d12000) {
+		this.blk_d12000 = blk_d12000;
+	}
+	public String getBlk_d12001() {
+		return blk_d12001;
+	}
+	public void setBlk_d12001(String blk_d12001) {
+		this.blk_d12001 = blk_d12001;
+	}
+	public String getMlpl_d12000() {
+		return mlpl_d12000;
+	}
+	public void setMlpl_d12000(String mlpl_d12000) {
+		this.mlpl_d12000 = mlpl_d12000;
+	}
+	public String getMlpl_d12001() {
+		return mlpl_d12001;
+	}
+	public void setMlpl_d12001(String mlpl_d12001) {
+		this.mlpl_d12001 = mlpl_d12001;
+	}
+	public String getB_a() {
+		return b_a;
+	}
+	public void setB_a(String b_a) {
+		this.b_a = b_a;
+	}
+	public String getP_code() {
+		return p_code;
+	}
+	public void setP_code(String p_code) {
+		this.p_code = p_code;
+	}
+	public String getTank_temp() {
+		return tank_temp;
+	}
+	public void setTank_temp(String tank_temp) {
+		this.tank_temp = tank_temp;
+	}
+	public String getVisocosity() {
+		return visocosity;
+	}
+	public void setVisocosity(String visocosity) {
+		this.visocosity = visocosity;
+	}
+	public String getSpecific_gravity() {
+		return specific_gravity;
+	}
+	public void setSpecific_gravity(String specific_gravity) {
+		this.specific_gravity = specific_gravity;
+	}
+	public String getChiller_temp() {
+		return chiller_temp;
+	}
+	public void setChiller_temp(String chiller_temp) {
+		this.chiller_temp = chiller_temp;
+	}
+
+	public String getGroup_id() {
+		return group_id;
+	}
+	public void setGroup_id(String group_id) {
+		this.group_id = group_id;
+	}
 	public String getS_time2() {
 		return s_time2;
 	}

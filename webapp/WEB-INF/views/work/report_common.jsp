@@ -488,10 +488,15 @@
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "주간/야간", field: "gb", headerSort: false,hozAlign: "center" },
-    	        { title: "점도</br>PLUS : 45±10초", field: "visc",hozAlign: "center", headerSort: false },
-    	        { title: "예열존온도</br>(설정값±10°C)", field: "pre_temp", hozAlign: "center", headerSort: false },
-    	        { title: "가열존온도</br>(설정값±10°C)", field: "heat_temp", hozAlign: "center", headerSort: false }
+    	        { title: "주간/야간", field: "b_a", headerSort: false,hozAlign: "center", width: 200  },
+    	      
+    	        { title: "예열존온도</br>(설정값±10°C)", field: "mlpl_d12000", hozAlign: "center", headerSort: false },
+    	        { title: "가열존온도</br>(설정값±10°C)", field: "mlpl_d12001", hozAlign: "center", headerSort: false },
+    	        { title: "액탱크 번호", field: "p_code", hozAlign: "center", headerSort: false },
+    	        { title: "액탱크 온도</br>(38°C 이하)", field: "tank_temp", hozAlign: "center", headerSort: false },
+    	        { title: "점도</br>PLUS : 45±10초", field: "visocosity",hozAlign: "center", headerSort: false },
+    	        { title: "비중</br>1.43±0.05)", field: "specific_gravity", hozAlign: "center", headerSort: false },
+    	        { title: "칠러 온도</br>1.10±2)", field: "chiller_temp", hozAlign: "center", headerSort: false }
     	    ],
     	    rowClick: function (e, row) {
     	        selectedRowData = row.getData();
@@ -529,7 +534,7 @@
     	    columns: [
     	        { title: "일 작업통수", field: "tong_day", hozAlign: "center",headerSort: false  },
     	        { title: "생산량", field: "weight_day", hozAlign: "center",headerSort: false },
-    	        { title: "표준중량", field: "avg_day", hozAlign: "center",headerSort: false },
+    	        { title: "평균중량", field: "avg_day", hozAlign: "center",headerSort: false },
     	      
     	      /*   { title: "평균중량", field: "avg_sum", hozAlign: "center",headerSort: false }, */
     	        { title: "가동시간", field: "work_time", hozAlign: "center",headerSort: false },
@@ -557,24 +562,20 @@
     	        hozAlign: "center",
     	        headerTooltip: false
     	    },
-    	    columns: [
-    	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },  
-    	        { title: "투입시간", field: "start_time", hozAlign: "center",headerSort: false },
-    	        { title: "완료시간", field: "end_time", hozAlign: "center",headerSort: false },
-    	        { title: "투입통수", field: "tong_day", hozAlign: "center",headerSort: false },
-    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center",headerSort: false },
-    	        { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false, visible: false },
-
-    	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 }, 
-    	        { title: "품번", field: "item_cd", hozAlign: "left",headerSort: false },
-    	        { title: "사양", field: "next_facility", hozAlign: "center",headerSort: false },
-/*     	        { title: "검사항목", columns: [
-    	            { title: "외관", field: "b", hozAlign: "center",headerSort: false },
-    	            { title: "밀착성 테스트", field: "c", hozAlign: "center", headerSort: false, visible: false },
-    	            { title: "합부판정", field: "d", hozAlign: "center" ,headerSort: false}
-    	        ]}, */
-    	        { title: "구분</br>(신규/재작업)", field: "e", hozAlign: "center",headerSort: false },
-    	        { title: "비고", field: "f", hozAlign: "center",headerSort: false }
+       	    columns: [
+    	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },       // 조금 줄임
+    	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 90  },
+    	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 90  },
+    	        { title: "투입통수", field: "tong_day", hozAlign: "center", headerSort: false, width: 90 },
+    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center", headerSort: false },
+    	        { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false },
+    	        { title: "품명", field: "group_id", hozAlign: "left", headerSort: false, width: 200 },
+/*     	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 },   */// 넓힘
+    	        { title: "품번", field: "item_cd", hozAlign: "left", headerSort: false, width: 200 },
+    	       
+    	        { title: "후처리 사양", field: "next_facility",  headerSort: false, width: 200 },
+    	        { title: "구분</br>(신규/재작업)", field: "e", headerSort: false }
+    	      
     	    ]
     	});
 

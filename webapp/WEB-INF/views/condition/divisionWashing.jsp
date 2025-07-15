@@ -513,18 +513,22 @@ function initDataTable() {
         headerHozAlign: "center",
         columns: [
             { title: 'NO', formatter: 'rownum', width: 60, hozAlign: 'center' },
-            { title: "설비코드", field: "option01", width: 240, hozAlign: "center" },
-            { title: "설비명", field: "code_name", width: 240, hozAlign: "center" },
+            { title: "설비코드", field: "option01", width: 190, hozAlign: "center" },
+            { title: "설비명", field: "code_name", width: 190, hozAlign: "center" },
             {
-                title: "투입비중", field: "option02", width: 240,
+                title: "투입비중", field: "option02", width: 190,
                 hozAlign: "center", editor: "input"
             },
             {
-                title: "투입제한", field: "option03", width: 240,
+                title: "투입제한", field: "option03", width: 190,
                 hozAlign: "center", editor: "input"
             },
             {
-                title: "설비 사용 유무", field: "option05", width: 235,
+                title: "가용 버퍼 수", field: "option04", width: 190,
+                hozAlign: "center", editor: "input"
+            }, 
+            {
+                title: "설비 사용 유무", field: "option05", width: 190,
                 hozAlign: "center",
                 editor: "select",
                 editorParams: {
@@ -565,8 +569,8 @@ function initDataTable() {
                     const val = parseFloat(allRows[i]?.getData().option03);
                     if (!isNaN(val)) total += val;
                 }
-                if (total > 136) {
-                    alert("투입제한 총합이 13600을 초과할 수 없습니다.");
+                if (total > 1360) {
+                    alert("투입제한 총합이 1000을 초과할 수 없습니다.");
                     cell.restoreOldValue();
                     return;
                 }
@@ -578,6 +582,7 @@ function initDataTable() {
                 ...rowData,
                 op2_old: field === 'option02' ? oldValue : oldObj.op2_old ?? null,
                 op3_old: field === 'option03' ? oldValue : oldObj.op3_old ?? null,
+                op4_old: field === 'option04' ? oldValue : oldObj.op4_old ?? null,
                 op5_old: field === 'option05' ? oldValue : oldObj.op5_old ?? null
             };
 
@@ -628,6 +633,9 @@ function initLogTable() {
             { title: "변경 전</br>투입비중", field: "op2_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
             { title: "투입제한", field: "option03", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
             { title: "변경 전</br>투입제한", field: "op3_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+
+             { title: "가용 버퍼 수", field: "option04", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
+            { title: "변경 전</br>가용 버퍼 수", field: "op4_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false }, 
             { title: "설비 사용 유무", field: "option05", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
             { title: "변경 전</br>설비 사용 유무", field: "op5_old", width: 120, hozAlign: "center", headerHozAlign: "center", headerSort: false },
             { title: "수정자", field: "user_id", width: 140, hozAlign: "center", headerHozAlign: "center", headerSort: false },

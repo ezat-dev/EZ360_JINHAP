@@ -45,11 +45,7 @@
 <body>
     <main class="main">
         <div class="btn-container">
-         	<button id="btn1">G600</button>
-            <button id="btn2">G800</button>
-           
-            <button id="btn3">공용설비</button>
-            <button id="btn4">K-BLACK</button>
+        
             <button id="btn5">세척 1호기</button>
             <button id="btn6">세척 2호기</button>
             <button id="btn7">쇼트1호기</button>
@@ -58,6 +54,14 @@
             <button id="btn10">쇼트4호기</button>
             <button id="btn11">쇼트5호기</button>
             <button id="btn12">쇼트6호기</button>
+         	
+         	<button id="btn1">G600</button>
+            <button id="btn2">G800</button>
+            <button id="btn4">K-BLACK</button>
+            <button id="btn3">공용설비</button>
+
+
+          
         </div>
         <jsp:include page="../include/tabBar.jsp"/>
         
@@ -92,7 +96,7 @@ $(function(){
         });
     });
     setTimeout(function(){
-        $("#btn1").click();
+        $("#btn5").click();
     }, 100);
 
 });
