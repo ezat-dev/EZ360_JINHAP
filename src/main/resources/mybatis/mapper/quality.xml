@@ -4,88 +4,259 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="quality">
 
-    <!--부적합품 리스트-->
-    
-	<select id="getNonProductManageList" parameterType="Quality" resultType="Quality">
-	    SELECT *
-	    FROM tb_non_product_manage
-	    <where>
-	       <if test="equipment_name != null and equipment_name != 'ALL'">
+	<!--부적합품 리스트 -->
 
-	            AND equipment = #{equipment_name}
-	        </if>
-	
-	        <if test="startDate != null and startDate != ''">
-	            AND action_date <![CDATA[>=]]> #{startDate}
-	        </if>
-	        <if test="endDate != null and endDate != ''">
-	            AND action_date <![CDATA[<=]]> #{endDate}
-	        </if>
-	    </where>
-	    ORDER BY action_date DESC
+	<select id="getNonProductManageList" parameterType="Quality"
+		resultType="Quality">
+		SELECT *
+		FROM tb_non_product_manage
+		<where>
+			<if test="equipment_name != null and equipment_name != 'ALL'">
+
+				AND equipment = #{equipment_name}
+			</if>
+
+			<if test="startDate != null and startDate != ''">
+				AND action_date <![CDATA[>=]]>
+				#{startDate}
+			</if>
+			<if test="endDate != null and endDate != ''">
+				AND action_date <![CDATA[<=]]>
+				#{endDate}
+			</if>
+		</where>
+		ORDER BY action_date DESC
 	</select>
 
 
-    <insert id="saveNonProductManage" parameterType="Quality">
-        INSERT INTO tb_non_product_manage (
-            no, defect_date, defect_type, equipment, product_no, product_name,
-            defect_lot, worker, action, selection_method, action_date,
-            defect_quantity, cause, improvement, yn_a, yn_b, start_date
-        )
-        VALUES (
-            #{no}, #{defect_date}, #{defect_type}, #{equipment}, #{product_no}, #{product_name},
-            #{defect_lot}, #{worker}, #{action}, #{selection_method}, #{action_date},
-            #{defect_quantity}, #{cause}, #{improvement}, #{yn_a}, #{yn_b}, #{start_date}  
-        )
-    </insert>
-    
-        
-        <delete id="delNonProductManage" parameterType="string">
-        DELETE FROM tb_non_product_manage 
-        WHERE no = #{no}
-    	</delete>
-    	
-    	
-    	
-    	
-      <select id="getqualityList" parameterType="Quality" resultType="Quality">
-        SELECT *
-        FROM tb_tustest
-        <where>
-            <if test="mch_name != null and mch_name != ''">
-                AND mch_name = #{mch_name}
-            </if>
-            <if test="t_year != null and t_year != ''">
-                AND t_year = #{t_year}
-            </if>
-        </where>
-        ORDER BY id DESC
-    </select>
-
-	<insert id="savetusTest" parameterType="Quality">
-	    INSERT INTO tb_tustest (
-	        id, mch_name, t_year, t_month, t_url, t_ok,
-	        t_gb, t_day, t_min, t_result
-	    ) VALUES (
-	        #{id}, #{mch_name}, #{t_year}, #{t_month}, #{t_url}, #{t_ok},
-	        #{t_gb}, #{t_day}, #{t_min}, #{t_result}
-	    )
-	    ON DUPLICATE KEY UPDATE
-	        mch_name = VALUES(mch_name),
-	        t_year = VALUES(t_year),
-	        t_month = VALUES(t_month),
-	        t_url = VALUES(t_url),
-	        t_ok = VALUES(t_ok),
-	        t_gb = VALUES(t_gb),
-	        t_day = VALUES(t_day),
-	        t_min = VALUES(t_min),
-	        t_result = VALUES(t_result)
+	<insert id="saveNonProductManage" parameterType="Quality">
+		INSERT INTO
+		tb_non_product_manage (
+		no, defect_date, defect_type, equipment,
+		product_no, product_name,
+		defect_lot, worker, action, selection_method,
+		action_date,
+		defect_quantity, cause, improvement, yn_a, yn_b,
+		start_date
+		)
+		VALUES (
+		#{no}, #{defect_date}, #{defect_type},
+		#{equipment}, #{product_no},
+		#{product_name},
+		#{defect_lot}, #{worker},
+		#{action}, #{selection_method}, #{action_date},
+		#{defect_quantity},
+		#{cause}, #{improvement}, #{yn_a}, #{yn_b},
+		#{start_date}
+		)
 	</insert>
 
 
-    <!-- 3. deltusTest: id 기준으로 삭제 -->
-    <delete id="deltusTest" parameterType="Quality">
-        DELETE FROM tb_tustest
-        WHERE id = #{id}
-    </delete>
+	<delete id="delNonProductManage" parameterType="string">
+		DELETE FROM
+		tb_non_product_manage
+		WHERE no = #{no}
+	</delete>
+
+
+
+
+	<select id="getqualityList" parameterType="Quality"
+		resultType="Quality">
+		SELECT *
+		FROM tb_tustest
+		<where>
+			<if test="mch_name != null and mch_name != ''">
+				AND mch_name = #{mch_name}
+			</if>
+			<if test="t_year != null and t_year != ''">
+				AND t_year = #{t_year}
+			</if>
+		</where>
+		ORDER BY id DESC
+	</select>
+
+	<insert id="savetusTest" parameterType="Quality">
+		INSERT INTO tb_tustest (
+		id, mch_name, t_year, t_month, t_url, t_ok,
+		t_gb, t_day, t_min,
+		t_result
+		) VALUES (
+		#{id}, #{mch_name}, #{t_year}, #{t_month}, #{t_url},
+		#{t_ok},
+		#{t_gb}, #{t_day}, #{t_min}, #{t_result}
+		)
+		ON DUPLICATE KEY
+		UPDATE
+		mch_name = VALUES(mch_name),
+		t_year = VALUES(t_year),
+		t_month =
+		VALUES(t_month),
+		t_url = VALUES(t_url),
+		t_ok = VALUES(t_ok),
+		t_gb =
+		VALUES(t_gb),
+		t_day = VALUES(t_day),
+		t_min = VALUES(t_min),
+		t_result =
+		VALUES(t_result)
+	</insert>
+
+
+	<!-- 3. deltusTest: id 기준으로 삭제 -->
+	<delete id="deltusTest" parameterType="Quality">
+		DELETE FROM tb_tustest
+		WHERE id = #{id}
+	</delete>
+
+	<!-- 수입검사 데이터 조회 -->
+	<select id="getIncomingTestList" parameterType="Quality"
+		resultType="Quality">
+		SELECT *
+		FROM tb_incoming_test
+		<where>
+			<if test="page != null and page != '제품 규격'">
+				AND page = #{page}
+			</if>
+			<if test="supplier != null and supplier != 'ALL'">
+				AND in_day LIKE CONCAT(#{in_day}, '%')
+			</if>
+		</where>
+	</select>
+
+	<!-- 수입검사 데이터 하나 조회 -->
+	<select id="getIncomingTest" parameterType="Quality"
+		resultType="Quality">
+		SELECT *
+		FROM tb_incoming_test
+		WHERE no = #{no}
+	</select>
+
+	<!-- 수입검사 추가 -->
+	<insert id="insertIncoming" parameterType="Quality">
+    INSERT INTO tb_incoming_test (
+        in_day,
+        page,
+        supplier,
+        medicine,
+        lot,
+        nv_1,
+        nv_2,
+        color_1,
+        color_2,
+        sensuality_1_1,
+        sensuality_1_2,
+        sensuality_2_1,
+        sensuality_2_2,
+        confirm,
+        file_name,
+        writer,
+        confirmer,
+        ph_1,
+        ph_2,
+        specific_gravity_1,
+        specific_gravity_2,
+        viscosity_1,
+        viscosity_2,
+        hardness_1,
+        hardness_2,
+        short_1,
+        short_2,
+        appearance_1,
+        appearance_2,
+        ex_1_1,
+        ex_1_2,
+        ex_2_1,
+        ex_2_2,
+        result,
+        update_id
+    )
+    VALUES (
+        #{in_day},
+        #{page},
+        #{supplier},
+        #{medicine},
+        #{lot},
+        #{nv_1},
+        #{nv_2},
+        #{color_1},
+        #{color_2},
+        #{sensuality_1_1},
+        #{sensuality_1_2},
+        #{sensuality_2_1},
+        #{sensuality_2_2},
+        #{confirm},
+        #{file_name},
+        #{writer},
+        #{confirmer},
+        #{ph_1},
+        #{ph_2},
+        #{specific_gravity_1},
+        #{specific_gravity_2},
+        #{viscosity_1},
+        #{viscosity_2},
+        #{hardness_1},
+        #{hardness_2},
+        #{short_1},
+        #{short_2},
+        #{appearance_1},
+        #{appearance_2},
+        #{ex_1_1},
+        #{ex_1_2},
+        #{ex_2_1},
+        #{ex_2_2},
+        #{result},
+        #{update_id}
+    )
+	</insert>
+
+	<!--수입검사 삭제 -->
+	<delete id="deleteIncoming" parameterType="quality">
+		DELETE FROM
+		tb_incoming_test
+		WHERE no = #{no}
+	</delete>
+
+	<!-- 수입검사 수정 -->
+	<update id="updateIncoming" parameterType="quality">
+    UPDATE tb_incoming_test
+    <set>
+        <if test="in_day != null and in_day != ''">in_day = #{in_day},</if>
+        <if test="page != null and page != ''">page = #{page},</if>
+        <if test="supplier != null and supplier != ''">supplier = #{supplier},</if>
+        <if test="medicine != null and medicine != ''">medicine = #{medicine},</if>
+        <if test="lot != null and lot != ''">lot = #{lot},</if>
+        <if test="nv_1 != null and nv_1 != ''">nv_1 = #{nv_1},</if>
+        <if test="nv_2 != null and nv_2 != ''">nv_2 = #{nv_2},</if>
+        <if test="color_1 != null and color_1 != ''">color_1 = #{color_1},</if>
+        <if test="color_2 != null and color_2 != ''">color_2 = #{color_2},</if>
+        <if test="sensuality_1_1 != null and sensuality_1_1 != ''">sensuality_1_1 = #{sensuality_1_1},</if>
+        <if test="sensuality_2_1 != null and sensuality_2_1 != ''">sensuality_2_1 = #{sensuality_2_1},</if>
+        <if test="sensuality_1_2 != null and sensuality_1_2 != ''">sensuality_1_2 = #{sensuality_1_2},</if>
+        <if test="sensuality_2_2 != null and sensuality_2_2 != ''">sensuality_2_2 = #{sensuality_2_2},</if>
+        <if test="confirm != null and confirm != ''">confirm = #{confirm},</if>
+        <if test="file_name != null and file_name != ''">file_name = #{file_name},</if>
+        <if test="writer != null and writer != ''">writer = #{writer},</if>
+        <if test="confirmer != null and confirmer != ''">confirmer = #{confirmer},</if>
+        <if test="ph_1 != null and ph_1 != ''">ph_1 = #{ph_1},</if>
+        <if test="ph_2 != null and ph_2 != ''">ph_2 = #{ph_2},</if>
+        <if test="specific_gravity_1 != null and specific_gravity_1 != ''">specific_gravity_1 = #{specific_gravity_1},</if>
+        <if test="specific_gravity_2 != null and specific_gravity_2 != ''">specific_gravity_2 = #{specific_gravity_2},</if>
+        <if test="viscosity_1 != null and viscosity_1 != ''">viscosity_1 = #{viscosity_1},</if>
+        <if test="viscosity_2 != null and viscosity_2 != ''">viscosity_2 = #{viscosity_2},</if>
+        <if test="hardness_1 != null and hardness_1 != ''">hardness_1 = #{hardness_1},</if>
+        <if test="hardness_2 != null and hardness_2 != ''">hardness_2 = #{hardness_2},</if>
+        <if test="short_1 != null and short_1 != ''">short_1 = #{short_1},</if>
+        <if test="short_2 != null and short_2 != ''">short_2 = #{short_2},</if>
+        <if test="appearance_1 != null and appearance_1 != ''">appearance_1 = #{appearance_1},</if>
+        <if test="appearance_2 != null and appearance_2 != ''">appearance_2 = #{appearance_2},</if>
+        <if test="ex_1_1 != null and ex_1_1 != ''">ex_1_1 = #{ex_1_1},</if>
+        <if test="ex_1_2 != null and ex_1_2 != ''">ex_1_2 = #{ex_1_2},</if>
+        <if test="ex_2_1 != null and ex_2_1 != ''">ex_2_1 = #{ex_2_1},</if>
+        <if test="ex_2_2 != null and ex_2_2 != ''">ex_2_2 = #{ex_2_2},</if>
+        <if test="result != null and result != ''">result = #{result},</if>
+        <if test="update_id != null and update_id != ''">update_id = #{update_id},</if>
+    </set>
+    WHERE no = #{no}
+	</update>
 </mapper>

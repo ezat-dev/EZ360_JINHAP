@@ -249,6 +249,7 @@ SELECT
   item_nm,
   item_cd,
   next_facility,
+  wrk_ord_no,
   CASE 
     WHEN division_weight = 0 THEN 0
     ELSE CASE 
@@ -291,25 +292,25 @@ FROM (
       item_cd,
       item_nm,
       wrk_ord_no,
-      LEAD(start_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY start_time DESC) AS next_start_time
+      LEAD(end_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY end_time DESC) AS next_start_time
     FROM tb_lowdata_save AS lows
     INNER JOIN tb_facility AS fac
       ON lows.mach_code = fac.facility_mach_code
     WHERE 1=1
       <if test="s_time != null">
-        AND start_time &gt;= #{s_time}
+        AND end_time &gt;= #{s_time}
       </if>
       <if test="e_time != null">
-        AND end_time &lt;= #{e_time}
+        AND end_time &lt; #{e_time}
       </if>
       <if test="m_code2 != null and m_code2 != ''">
         AND mach_code IN (${m_code2})
       </if>
       AND weight IS NOT NULL
-      AND start_time IS NOT NULL
-      AND end_time IS NOT NULL
+<!--       AND start_time IS NOT NULL
+      AND end_time IS NOT NULL -->
   ) AS aa
-  INNER JOIN pwo_geo_division_data AS ab
+  LEFT OUTER JOIN pwo_geo_division_data AS ab
     ON aa.item_cd = ab.item_cd
 ) AS bb
 <where>
@@ -440,8 +441,8 @@ FROM (
                 SELECT * FROM tb_facility WHERE ch_idx < 30
             ) C ON A.mach_code = C.facility_mach_code
             WHERE A.mach_code =  #{m_code}
-              AND A.start_time >= B.w_stime_month
-              AND A.start_time <= B.w_etime_month
+              AND A.end_time >= B.w_stime_month
+              AND A.end_time <= B.w_etime_month
         ) AA
     ) BB
     GROUP BY mach_code, facility_name
@@ -763,5 +764,3 @@ ORDER BY AAA.ch_idx;
 
 
 </mapper>
-
-

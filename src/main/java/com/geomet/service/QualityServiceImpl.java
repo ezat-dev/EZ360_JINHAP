@@ -44,4 +44,28 @@ public class QualityServiceImpl implements QualityService {
     public void deltusTest(Quality quality) {
 		qualityDao.deltusTest(quality);
     }
+	//수입검사 조회
+	@Override
+	public List<Quality> getIncomingTestList(Quality quality) {
+		return qualityDao.getIncomingTestList(quality);
+	}
+	//수입검사 추가
+	@Override
+	public boolean insertIncoming(Quality quality) {
+		return qualityDao.insertIncomingTest(quality);
+	}
+	//수입검사 삭제
+	@Override
+	public boolean deleteIncoming(Quality quality) {
+		return qualityDao.deleteIncoming(quality);
+	}
+	//수입삭제 수정
+	@Override
+	public boolean updateIncoming(Quality quality) {
+		return qualityDao.updateIncoming(quality);
+	}
+	@Override
+	public Quality getIncomingTest(Quality quality) {
+		return qualityDao.getIncomingTest(quality);
+	}
 }

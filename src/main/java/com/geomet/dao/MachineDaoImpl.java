@@ -173,6 +173,6 @@ public class MachineDaoImpl implements MachineDao{
     @Override
     public List<Machine> getdetailMonitoring(Machine machine) {
       
-        return sessionOrcle.selectList("machine.getdetailMonitoring", machine);
+        return sqlSession.selectList("machine.getdetailMonitoring", machine);
     }
 }

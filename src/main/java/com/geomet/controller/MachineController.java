@@ -13,13 +13,18 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BiFunction;
 
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
+import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -815,5 +820,219 @@ public class MachineController {
         return result;
     }
 
-    
+    // 통합모니터링 엑셀 다운로드
+    @RequestMapping(value = "/machine/allMonitoring/excel", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> allMonitoringExcel(Machine machine) {
+       System.out.println("통합모니터링 엑셀 다운로드 요청");
+       //System.out.println("startDate = " + startDate);
+
+       Map<String, Object> rtnMap = new HashMap<>();
+
+       // 현재 시간 기반으로 파일명 생성
+       SimpleDateFormat format = new SimpleDateFormat("'통합모니터링'_yyyyMMddHHmmss");
+       Date time = new Date();
+       String fileName = format.format(time) + ".xlsx";
+
+       FileOutputStream fos = null;
+       FileInputStream fis = null;
+
+       String openPath = "D:/GEOMET양식/통합모니터링_양식/"; //엑셀 템플릿 파일 위치
+       String savePath = "D:/GEOMET양식/통합모니터링/"; //엑셀 저장 위치
+
+       //데이터 조회
+       List<Machine> allList = machineService.getAllDataList(machine);
+
+       if (allList == null || allList.isEmpty()) {
+          System.out.println("allList = null");
+          rtnMap.put("error", "데이터 없음");
+          return rtnMap;
+       }
+          try {
+             //엑셀 템플릿 불러오기, 첫 번째 시트를 기준으로 작업
+             fis = new FileInputStream(openPath + "통합모니터링.xlsx");
+             XSSFWorkbook workbook = new XSSFWorkbook(fis);
+
+             //시트 
+             XSSFSheet sheet = workbook.getSheetAt(0);
+
+          /*
+           * //엑셀 스타일 정의(음수, 비가동 빨간색으로 입력) XSSFCellStyle redStyle =
+           * workbook.createCellStyle(); XSSFFont redFont = workbook.createFont();
+           * redFont.setColor(IndexedColors.RED.getIndex()); redStyle.setFont(redFont);
+           * 
+           * //설비상태 "가동"이면 초록색 XSSFCellStyle greenStyle = workbook.createCellStyle();
+           * XSSFFont greenFont = workbook.createFont();
+           * greenFont.setColor(IndexedColors.GREEN.getIndex());
+           * greenStyle.setFont(greenFont);
+           */
+
+             //셀 생성, 기존 셀이 없으면 새로 만들기
+             BiFunction<Row, Integer, Cell> getOrCreateCell = (r, c) -> {
+                Cell cell = r.getCell(c);
+                return (cell != null) ? cell : r.createCell(c);
+             };
+
+             // 날짜 오늘
+             String today = new SimpleDateFormat("yyyy-MM-dd-HH-mm").format(new Date());
+             
+             XSSFRow dateRow1 = sheet.getRow(5);
+             if (dateRow1 == null) dateRow1 = sheet.createRow(5);
+             getOrCreateCell.apply(dateRow1, 13).setCellValue(today);
+             getOrCreateCell.apply(dateRow1, 14).setCellValue(today);
+
+             // 엑셀에 삽입할 필드
+             String[] fields = {"facility_name", "d", "e", "f", "h", "i","j", "k", "l", "m", "n", "o","p", "q", "r", "s", "t", "u"};
+
+             int startRow = 8; // 10행부터 시작
+             int startCol = 0; // 첫 칼럼(A열)
+
+             //데이터 삽입
+             for (int i = 0; i < allList.size(); i++) {
+                Machine item = allList.get(i);
+                XSSFRow row = sheet.getRow(startRow + i);
+                if (row == null) row = sheet.createRow(startRow + i);
+
+                for (int j = 0; j < fields.length; j++) {
+
+                   //  셀 생성 유틸 적용 (이걸 써야 셀이 비어 있지 않음)
+                   XSSFCell cell = (XSSFCell) getOrCreateCell.apply(row, startCol + j);
+                   if (cell == null) cell = row.createCell(startCol + j);
+
+                   String value = "";
+                   try {
+                      //리플렉션으로 필드값 꺼내기
+                      Field field = Machine.class.getDeclaredField(fields[j]);
+                      field.setAccessible(true);
+                      Object fieldValue = field.get(item);
+                      value = (fieldValue != null) ? fieldValue.toString() : "";
+                   } catch (NoSuchFieldException | IllegalAccessException e) {
+                      value = "";
+                   }
+
+                   // 빈 문자열일 경우 "0"으로 대체
+                   if (value == null || value.trim().isEmpty()) {
+                      value = "0";
+                   }
+                /*
+                 * if (value.equals("비가동")) { XSSFCellStyle redMergedStyle =
+                 * workbook.createCellStyle();
+                 * redMergedStyle.cloneStyleFrom(cell.getCellStyle());
+                 * redMergedStyle.setFont(redFont); cell.setCellStyle(redMergedStyle);
+                 * cell.setCellValue(value); // 문자열 그대로 입력 continue; }else
+                 * if(value.equals("가동")) { // 기존 셀 스타일 가져오기 XSSFCellStyle originalStyle =
+                 * cell.getCellStyle();
+                 * 
+                 * // 새 스타일 생성 및 기존 스타일 복사 XSSFCellStyle greenMergedStyle =
+                 * workbook.createCellStyle(); greenMergedStyle.cloneStyleFrom(originalStyle);
+                 * // 테두리, 정렬 등 유지
+                 * 
+                 * // 초록색 글씨만 추가 greenMergedStyle.setFont(greenFont);
+                 * 
+                 * // 최종 스타일 적용 cell.setCellStyle(greenMergedStyle); continue; }
+                 */
+
+                /*
+                 * try { double numValue = Double.parseDouble(value);
+                 * 
+                 * if (numValue < 0) { // 기존 셀 스타일 가져오기 XSSFCellStyle originalStyle =
+                 * cell.getCellStyle();
+                 * 
+                 * // 새 스타일 생성 및 기존 스타일 복사 XSSFCellStyle redMergedStyle =
+                 * workbook.createCellStyle(); redMergedStyle.cloneStyleFrom(originalStyle); //
+                 * 테두리, 정렬 등 유지
+                 * 
+                 * // 빨간 글씨만 추가 redMergedStyle.setFont(redFont);
+                 * 
+                 * // 최종 스타일 적용 cell.setCellStyle(redMergedStyle);
+                 * 
+                 * // - 부호 제거 value = value.replace("-", ""); } } catch (NumberFormatException
+                 * ignored) { // 숫자가 아니면 스타일 적용 안 함 }
+                 */
+
+                   //셀에 값 입력(기존 스타일 유지됨)
+                   cell.setCellValue(value);
+                }
+             }
+             
+             //엑셀에 수식 있으면 다시 계산하도록 설정
+             workbook.setForceFormulaRecalculation(true);
+
+             // 파일 저장
+             File outFile = new File(savePath + fileName);
+             fos = new FileOutputStream(outFile);
+             workbook.write(fos);
+             workbook.close();
+             fos.flush();
+
+             // 클라이언트가 다운로드할 수 있도록 경로 반환
+             rtnMap.put("filename", fileName);
+             rtnMap.put("downloadPath",
+                   "/geomet/download_allMonitoring?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+
+          } catch (Exception e) {
+             e.printStackTrace();
+             rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+          } finally {
+             try {
+                if (fis != null) fis.close();
+                if (fos != null) fos.close();
+             } catch (IOException e) {
+                e.printStackTrace();
+             }
+          }
+       return rtnMap;
+    }
+
+ // 엑셀 다운로드
+ @RequestMapping(value = "/download_allMonitoring", method = RequestMethod.GET)
+ public void downloadExcel123(@RequestParam("filename") String filename, HttpServletResponse response)
+       throws IOException {
+
+    // 파일이 저장될 경로
+    String baseDir = "D:/GEOMET양식/통합모니터링/";
+
+    // System.out.println("다운 주소 filename: " + filename);
+
+    // 보안 체크
+    if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+       return;
+    }
+
+    // 다운로드할 파일 객체 생성
+    File file = new File(baseDir + filename);
+    System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+    // 파일이 존재하지 않으면 에러 반환
+    if (!file.exists()) {
+       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+       return;
+    }
+
+    // 파일 확장자 자동 추정
+    String mimeType = Files.probeContentType(file.toPath());
+    if (mimeType == null) {
+       mimeType = "application/octet-stream";
+    }
+    response.setContentType(mimeType);
+    response.setContentLengthLong(file.length());
+
+    // 파일명 인코딩
+    String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+    // 다운로드 되도록 브라우저에 알림
+    response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+    // 파일을 바이트 스트림으로 클라이언트에 전송
+    try (FileInputStream fis = new FileInputStream(file); OutputStream os = response.getOutputStream()) {
+       byte[] buffer = new byte[1024];
+       int len;
+       while ((len = fis.read(buffer)) != -1) {
+          os.write(buffer, 0, len);
+       }
+       os.flush();
+    }
+ }
 }

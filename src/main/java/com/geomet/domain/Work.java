@@ -2,7 +2,7 @@ package com.geomet.domain;
 import java.util.List;
 
 public class Work {
-	
+	private String wrk_ord_no;
 	private String b_a;
 	private String p_code;
 	private String tank_temp;
@@ -157,7 +157,13 @@ public class Work {
     
     
     
-    //생산모니터링
+    public String getWrk_ord_no() {
+		return wrk_ord_no;
+	}
+	public void setWrk_ord_no(String wrk_ord_no) {
+		this.wrk_ord_no = wrk_ord_no;
+	}
+	//생산모니터링
 	/*
 	 * public String facility_name; public String mach_code;
 	 */

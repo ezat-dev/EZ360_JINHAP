@@ -22,4 +22,19 @@ public interface QualityDao {
 	    void savetusTest(Quality quality);
 	    
 	    void deltusTest(Quality quality);
+	    
+	    //수입검사 조회
+	    List<Quality> getIncomingTestList(Quality quality);
+	    
+	    //수입검사 추가
+	    boolean insertIncomingTest(Quality quality);
+	    
+	    //수입검사 삭제
+	    boolean deleteIncoming(Quality quality);
+	    
+	    //수입검사 수정
+	    boolean updateIncoming(Quality quality);
+	    
+	    //수입검사 하나 조회
+	    Quality getIncomingTest(Quality quality);
 }

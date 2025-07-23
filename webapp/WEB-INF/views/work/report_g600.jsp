@@ -469,7 +469,7 @@
     function initTables() {
     	 
     	table1 = new Tabulator("#table1", {
-    	    height: "115px",
+    	    height: "145px",
     	    layout: "fitColumns",
             columnHeaderVertAlign: "middle",
             rowVertAlign: "middle",
@@ -483,7 +483,22 @@
     	      
     	        { title: "예열존온도</br>(설정값±10°C)", field: "t_600_d12000", hozAlign: "center", headerSort: false },
     	        { title: "가열존온도</br>(설정값±10°C)", field: "t_600_d12001", hozAlign: "center", headerSort: false },
-    	        { title: "액탱크 번호", field: "p_code", hozAlign: "center", headerSort: false },
+    	        { 
+    	            title: "액탱크 번호", 
+    	            field: "p_code", 
+    	            hozAlign: "center", 
+    	            headerSort: false,
+    	            formatter: function(cell) {
+    	                const val = cell.getValue();
+    	                const map = {
+    	                        "p_1": "액탱크1",
+        	                    "p_2": "액탱크2",
+        	                    "p_3": "액탱크3",
+        	                    "p_4": "액탱크4"
+    	                };
+    	                return map[val] || val;  // 매핑 없으면 원래 값 표시
+    	            }
+    	        },
     	        { title: "액탱크 온도</br>(38°C 이하)", field: "tank_temp", hozAlign: "center", headerSort: false },
     	        { title: "점도</br>PLUS : 45±10초", field: "visocosity",hozAlign: "center", headerSort: false },
     	        { title: "비중</br>1.43±0.05)", field: "specific_gravity", hozAlign: "center", headerSort: false },
@@ -495,7 +510,7 @@
     	        row.getElement().style.backgroundColor = "#d3d3d3"; // 클릭된 행 강조 (연회색)
     	    },
 
-    	    rowDblClick: function (e, row) {
+/*     	    rowDblClick: function (e, row) {
     	        const d = row.getData();
     	        $('#corrForm')[0].reset();
     	        $('input[name="mch_name"]').val(d.mch_name);
@@ -508,7 +523,7 @@
     	        $('input[name="liq_temp"]').val(d.liq_temp);
     	        $('input[name="sg"]').val(d.sg);
     	        $('#modalContainer').show().addClass('show');
-    	    }
+    	    } */
     	});
 
 
@@ -543,7 +558,7 @@
     	});
 
     	table3 = new Tabulator("#table3", {
-    	    height: "400px",
+    	    height: "370px",
     	    layout: "fitColumns",
     	    headerHozAlign: "center",
     	    columnHeaderVertAlign: "middle",
@@ -554,17 +569,17 @@
     	    },
     	    columns: [
     	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },       // 조금 줄임
-    	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 90  },
-    	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 90  },
-    	        { title: "투입통수", field: "tong_day", hozAlign: "center", headerSort: false, width: 90 },
-    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center", headerSort: false },
-    	        { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false },
-    	        { title: "품명", field: "group_id", hozAlign: "left", headerSort: false, width: 200 },
-/*     	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 },   */// 넓힘
-    	        { title: "품번", field: "item_cd", hozAlign: "left", headerSort: false, width: 200 },
-    	       
+    	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 150  },
+    	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 150  },
+    	        { title: "투입통수", field: "tong_day", hozAlign: "center", headerSort: false, width: 150 },
+    	        { title: "작업중량(kg)", field: "weight_day", hozAlign: "center", headerSort: false,width: 150  },
+    	        { title: "분할횟수", field: "a", hozAlign: "center", headerSort: false , width: 150 },
+    	        { title: "품번", field: "group_id", hozAlign: "left", headerSort: false, width: 200 },
+    	        { title: "작업오더", field: "wrk_ord_no", hozAlign: "left", headerSort: false, width: 200 },   
+    /*    	        { title: "품번", field: "item_cd", hozAlign: "left", headerSort: false, width: 200 }, */
+    	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 },
     	        { title: "후처리 사양", field: "next_facility",  headerSort: false, width: 200 },
-    	        { title: "구분</br>(신규/재작업)", field: "e", headerSort: false }
+    	        { title: "구분</br>(신규/재작업)", field: "e", headerSort: false, width: 185 }
     	      
     	    ]
     	});
@@ -596,7 +611,7 @@
 
 	    // 2) AJAX 호출
 	    $.ajax({
-	        url: "/geomet/work/workDailyReport/excel",
+	        url: "/geomet/work/workDailyReport_600/excel",
 	        method: "POST",
 	        contentType: "application/json",
 	        data: JSON.stringify({ s_time, e_time, m_code, ex_mch_name }),

@@ -240,11 +240,17 @@ function loadWorkDailyData() {
     let nextDate = dateObj.toISOString().split('T')[0].replace(/-/g, "");
     let e_time = nextDate;
 
+    // 보낼 데이터 구성
+    const payload = { s_time, e_time };
+
+    // 콘솔 출력
+    console.log("서버로 전송할 데이터:", payload);
+
     $.ajax({
         type: "POST",
         url: "/geomet/work/machinePerformStatus/list",
         contentType: "application/json",
-        data: JSON.stringify({ s_time, e_time }),
+        data: JSON.stringify(payload),
         success: function(response) {
             console.log("받아온 데이터:", response);
             table2.setData(response.table2);
@@ -256,6 +262,7 @@ function loadWorkDailyData() {
         }
     });
 }
+
 
 function customRedFormatter(cell) {
     let value = cell.getValue();
@@ -283,7 +290,7 @@ function initTables() {
             { title: "작업횟수<br>(코팅)", field: "bb", hozAlign: "center", headerSort: false },
             { title: "가동일수", field: "work_day", hozAlign: "center", headerSort: false },
             { title: "부여시간<br>(hr)", field: "set_hr", hozAlign: "center", headerSort: false },
-            { title: "목표 가동시간", field: "mok_hr", hozAlign: "center", headerSort: false },
+            { title: "목표<br>가동시간", field: "mok_hr", hozAlign: "center", headerSort: false },
             {
                 title: "일 생산실적 현황",
                 columns: [
@@ -317,16 +324,16 @@ function initTables() {
                 title: "목표",
                 columns: [
                     { title: "설비", field: "facility_name", hozAlign: "center", headerSort: false, rowVertAlign: "middle" },
-                    { title: "목표 가동시간", field: "c_min", hozAlign: "center", headerSort: false },
+                    { title: "목표<br/>가동시간", field: "c_min", hozAlign: "center", headerSort: false },
                     { title: "시간당<br/>생산량(통)", field: "d", hozAlign: "center", headerSort: false },
                     { title: "조별 생산<br/>CAPA(통)", field: "e", hozAlign: "center", headerSort: false },
-                    { title: "일 CAPA(통)", field: "f", hozAlign: "center", headerSort: false }
+                    { title: "일<br/>CAPA(통)", field: "f", hozAlign: "center", headerSort: false }
                 ]
             },
             {
                 title: "운영계획</br>(실제 가동시간 기준)",
                 columns: [
-                    { title: "실 가동시간", field: "h_min", hozAlign: "center", headerSort: false },
+                    { title: "실 가동시간", field: "h", hozAlign: "center", headerSort: false },
                     { title: "비가동시간", field: "g", hozAlign: "center", headerSort: false },
                     { title: "목표<br/>생산량(통)", field: "i", hozAlign: "center", headerSort: false }
                 ]

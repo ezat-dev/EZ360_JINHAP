@@ -615,7 +615,7 @@ SELECT * FROM v_moniteolingling
   SELECT
     *
   FROM
-    GEO_PRODMON_VIEW
+    v_geo_prodmon_view
 </select>
 
 </mapper>

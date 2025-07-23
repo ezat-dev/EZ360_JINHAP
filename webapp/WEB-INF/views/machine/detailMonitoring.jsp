@@ -350,7 +350,7 @@
     	       
     	          { title: '달성률%', field: 'rate', formatter: percentFormatter, width: 300, headerSort: false },
     	          { title: '진도율%', field: 'n_rate', formatter: percentFormatter, width: 300, headerSort: false },
-    	          { title: '버스켓효율%', field: 'c_rate', formatter: percentFormatter, width: 300 , headerSort: false},
+    	          { title: '바스켓효율%', field: 'c_rate', formatter: percentFormatter, width: 300 , headerSort: false},
     	        ]
     	      }
     	    ],

@@ -19,11 +19,11 @@
         }
         .view {
             flex-direction: column; /* 세로 배치 */
-		    align-items: center; /* 중앙 정렬 */
-		    margin-top: 1%;
+          align-items: center; /* 중앙 정렬 */
+          margin-top: 1%;
         }
         .tab {
-            width: 95%;
+            width: 100%;
             margin-bottom: 37px;
             margin-top: 35px;
             height: 45px;
@@ -42,21 +42,21 @@
             background-color: rgba(0, 0, 0, 0.5);
             transition: opacity 0.3s ease-in-out;
         }
-	    .modal-content {
-	        background: white;
-	        width: 24%;
-	        max-width: 500px;
-	        height: 80vh; 
-	        overflow-y: auto; 
-	        margin: 6% auto 0;
-	        padding: 20px;
-	        border-radius: 10px;
-	        position: relative;
-	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-	        transform: scale(0.8);
-	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-	        opacity: 0;
-	    }
+       .modal-content {
+           background: white;
+           width: 24%;
+           max-width: 500px;
+           height: 80vh; 
+           overflow-y: auto; 
+           margin: 6% auto 0;
+           padding: 20px;
+           border-radius: 10px;
+           position: relative;
+           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+           transform: scale(0.8);
+           transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+           opacity: 0;
+       }
         .modal.show {
             display: block;
             opacity: 1;
@@ -110,28 +110,28 @@
             background-color: #a9a9a9;
         }
         .button-container {
-    		display: flex;
-		    gap: 10px;
-		    margin-left: auto;
-		    margin-right: 10px;
-		    margin-top: 40px;
-		}
-		.box1 {
-		    display: flex;
-		    justify-content: right;
-		    align-items: center;
-		    width: 1000px;
-		    margin-right: -50px;
-		    margin-top:4px;
-		}
+          display: flex;
+          gap: 10px;
+          margin-left: auto;
+          margin-right: 10px;
+          margin-top: 40px;
+      }
+      .box1 {
+          display: flex;
+          justify-content: right;
+          align-items: center;
+          width: 1000px;
+          margin-right: 5px;
+          margin-top:4px;
+      }
         .dayselect {
             width: 20%;
             text-align: center;
             font-size: 15px;
         }
         .daySet {
-        	width: 20%;
-      		text-align: center;
+           width: 20%;
+            text-align: center;
             height: 16px;
             padding: 8px;
             margin-bottom: 10px;
@@ -150,56 +150,56 @@
         }
         .mid{
         margin-right: 9px;
-	    font-size: 20px;
-	    font-weight: bold;
-	
-	    height: 42px;
-	    margin-left: 9px;
+       font-size: 20px;
+       font-weight: bold;
+   
+       height: 42px;
+       margin-left: 9px;
         }
         
-		.status {
-		    display: flex;
-		    align-items: center;
-		    font-size: 18px; 
-		    margin-right: 15px;
-		    margin-bottom: 13px;
-		}
-		
-		.status span {
-		    width: 17px; 
-		    height: 17px; 
-		    border-radius: 50%;
-		    display: inline-block;
-		    margin-right: 8px;
-		   
-		}
-		.running {
-		    background-color: green;
-		}
-		
-		.changing {
-		    background-color: orange;
-		}
-		
-		.stopped {
-		    background-color: red;
-		}
-		
-		.unit {
-		    margin-left: 10px;
-		    font-size: 18px; 
-		    color: gray;
-		     margin-bottom: 17px;
-		}
-		
-		.tabulator-row .tabulator-cell {
+      .status {
+          display: flex;
+          align-items: center;
+          font-size: 18px; 
+          margin-right: 15px;
+          margin-bottom: 13px;
+      }
+      
+      .status span {
+          width: 17px; 
+          height: 17px; 
+          border-radius: 50%;
+          display: inline-block;
+          margin-right: 8px;
+         
+      }
+      .running {
+          background-color: green;
+      }
+      
+      .changing {
+          background-color: orange;
+      }
+      
+      .stopped {
+          background-color: red;
+      }
+      
+      .unit {
+          margin-left: 10px;
+          font-size: 18px; 
+          color: gray;
+           margin-bottom: 17px;
+      }
+      
+      .tabulator-row .tabulator-cell {
 
-	    padding: 11px;
+       padding: 11px;
 
-	}
-	#dataList{
-	marign-top:50px;
-	}
+   }
+   #dataList{
+   marign-top:50px;
+   }
     .tabulator .tabulator-header .tabulator-col {
         font-size: 16pt;
         font-weight: bold;
@@ -229,16 +229,20 @@
            
            
              <div class="status">
-		        <span class="running"></span> 가동
-		    </div>
-		    <div class="status">
-		        <span class="stopped"></span> 비가동
-		    </div>
-		    <div class="unit">단위: ton, %</div>
-         
-           
-			</div>
+              <span class="running"></span> 가동
+          </div>
+          <div class="status">
+              <span class="stopped"></span> 비가동
+          </div>
+          <div class="unit">단위: ton, %</div>
 
+           
+         </div>
+          
+          <button class="excel-button">
+               <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+            </button>
+         
             </div>
         </div>
 
@@ -248,8 +252,8 @@
             
         </div>
     </main>
-	
-	 
+   
+    
 
 
     <script>
@@ -317,40 +321,64 @@
                 },
 
                 columns: [
-                	  { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false, frozen: true },
+                     { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false, frozen: true },
 
-                	  { title: "설비상태", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
-                	    formatter: function(cell) {
-                	      const value = cell.getValue();
-                	      if (value === "가동") {
-                	        return "<span style='color:green; font-weight:bold;'>" + value + "</span>";
-                	      } else if (value === "비가동") {
-                	        return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-                	      }
-                	      return value;
-                	    }
-                	  },
+                     { title: "설비상태", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
+                       formatter: function(cell) {
+                         const value = cell.getValue();
+                         if (value === "가동") {
+                           return "<span style='color:green; font-weight:bold;'>" + value + "</span>";
+                         } else if (value === "비가동") {
+                           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+                         }
+                         return value;
+                       }
+                     },
 
-                	  { title: "관리기준 C/T(초)", field: "e", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "실제생산 C/T(초)", field: "f", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "CAPA(통)", field: "h", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "현 생산목표(통)", field: "i", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "현 생산실적(통)", field: "j", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "가동시간", field: "k", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "비가동 시간(분)", field: "l", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "생산 톤수(ton)", field: "m", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "손실 톤수(ton)", field: "n", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
-                	  { title: "현재 달성률(%)", field: "o", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 생산 톤수(ton)", field: "p", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 생산 통수(통)", field: "q", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 손실 톤수(ton)", field: "r", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
-                	  { title: "월 손실 통수(통)", field: "s", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
-                	  { title: "월 달성률(ton %)", field: "t", sorter: "string", hozAlign: "center", headerSort: false },
-                	  { title: "월 달성률(통 %)", field: "u", sorter: "string", hozAlign: "center", headerSort: false }
-                	],
+                     { title: "관리기준 C/T(초)", field: "e", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "실제생산 C/T(초)", field: "f", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "CAPA(통)", field: "h", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "현 생산목표(통)", field: "i", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "현 생산실적(통)", field: "j", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "가동시간", field: "k", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "비가동 시간(분)", field: "l", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "생산 톤수(ton)", field: "m", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "손실 톤수(ton)", field: "n", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
+                     { title: "현재 달성률(%)", field: "o", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "월 생산 톤수(ton)", field: "p", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "월 생산 통수(통)", field: "q", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "월 손실 톤수(ton)", field: "r", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
+                     { title: "월 손실 통수(통)", field: "s", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
+                     { title: "월 달성률(ton %)", field: "t", sorter: "string", hozAlign: "center", headerSort: false },
+                     { title: "월 달성률(통 %)", field: "u", sorter: "string", hozAlign: "center", headerSort: false }
+                   ],
 
             });
         }
+
+        // 엑셀 다운로드 버튼
+        $(".excel-button").on("click", function () {
+
+             const pages = ["G1", "G2", "ML(G)", "ML(H)", "PLUS", "K-BLACK"];
+             const in_day = $("#startDate").val();
+
+                     $.ajax({
+                         url: "/geomet/machine/allMonitoring/excel",
+                         method: "POST",
+                         contentType: "application/json",
+                         dataType: "json",
+                         success: function (result) {
+                             if (result && result.downloadPath) {
+                                 const a = document.createElement('a');
+                                 a.href = result.downloadPath;
+                                 a.style.display = 'none';
+                                 document.body.appendChild(a);
+                                 a.click();
+                                 document.body.removeChild(a);
+                             }
+                         }
+             });
+         });
 
 
         
