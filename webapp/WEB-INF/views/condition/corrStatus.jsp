@@ -371,7 +371,14 @@
         	        return response;
         	    },
         	    columns: [
-        	        {title: "NO", field: "no", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+        	        {title: "NO", field: "no", sorter: "string", width: 100, hozAlign: "center", headerSort: false,visible: false},
+        	        {
+        	            title: "순번", 
+        	            formatter: "rownum", 
+        	            hozAlign: "center", 
+        	            width: 80, 
+        	            headerSort: false  // ✅ 자동 순번 추가
+        	          },
         	        {title: "설비명", field: "equipment_name", sorter: "string", width: 190, hozAlign: "center", headerSort: false},
         	        {title: "위치 구분", field: "location", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
         	        {title: "시리얼 번호", field: "serial_number", sorter: "string", width: 230, hozAlign: "center", headerSort: false},

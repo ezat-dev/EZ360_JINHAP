@@ -346,6 +346,7 @@ public class WorkController {
         DecimalFormat df = new DecimalFormat("#,###");
         List<Work> table2Data = workService.getWorkDailySum(work);
         for (Work w : table2Data) {
+        	 if (w.getWeight_day()    != null) w.setWeight_day(w.getWeight_day() + "kg");
             if (w.getAvg_day()    != null) w.setAvg_day(w.getAvg_day() + "kg");
             if (w.getAvg_sum()    != null) w.setAvg_sum(w.getAvg_sum() + "kg");
             if (w.getWork_time()  != null) w.setWork_time(w.getWork_time() + "");
@@ -354,9 +355,10 @@ public class WorkController {
             if (w.getWork_percent()!=null) w.setWork_percent(w.getWork_percent() + "%");
        
         
-            if (w.getWeight_day() != null && !w.getWeight_day().isEmpty()) {
-                w.setWeight_day(df.format(Double.parseDouble(w.getWeight_day())));
-            }
+			/*
+			 * if (w.getWeight_day() != null && !w.getWeight_day().isEmpty()) {
+			 * w.setWeight_day(df.format(Double.parseDouble(w.getWeight_day()))); }
+			 */
 
             if (w.getTong_sum() != null && !w.getTong_sum().isEmpty()) {
                 w.setTong_sum(df.format(Double.parseDouble(w.getTong_sum())));
@@ -1175,15 +1177,15 @@ public class WorkController {
          work.setS_time2(sTime2);
 
       // s_time: 시작일 + "0800"
-         work.setS_time(rawStart + "0800");
+         work.setS_time(rawStart + "080000");
 
          // e_time: 종료일 + "0800" (1일 더하지 않음)
-         work.setE_time(rawEnd + "0800");
+         work.setE_time(rawEnd + "080000");
 
          // ★ 받은 원본 파라미터 로그 출력
-         //System.out.println("▶ Received Work:");
-         //System.out.println("   s_time  = " + work.getS_time());
-         //System.out.println("   e_time  = " + work.getE_time());
+         System.out.println("▶ 설비별 생산실적:");
+         System.out.println("   s_time  = " + work.getS_time());
+         System.out.println("   e_time  = " + work.getE_time());
          //System.out.println("   s_time2  = " + work.getS_time2());
    
         // 결과 반환

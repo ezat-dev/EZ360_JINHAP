@@ -626,15 +626,15 @@ select {
       $('#corrForm4')[0].reset();
       $('#corrForm5')[0].reset();
       if (currentPage === "GEOMET1") {
-           $("#modal1").show().addClass("show");
+           $("#modal1").show().addClass("hide");
          } else if (currentPage === "GEOMET2") {
-           $("#modal2").show().addClass("show");
+           $("#modal2").show().addClass("hide");
          }else if(currentPage === "지오메트 첨가제"){
-            $("#modal3").show().addClass("show");
+            $("#modal3").show().addClass("hide");
              }else if (currentPage === "ML(H),(G)" || currentPage === "PLUS" || currentPage === "K-BLACK") {
-           $("#modal4").show().addClass("show");
+           $("#modal4").show().addClass("hide");
          }else if(currentPage === "쇼트볼(SUS)"){
-            $("#modal5").show().addClass("show");
+            $("#modal5").show().addClass("hide");
              }
     });
 
@@ -877,7 +877,7 @@ $(document).on('click', '.saveCorrStatus', function (event) {
           ];
     }else if (pageValue === "제품 규격") {
         columns = [
-            { title: "시험항목", field: "page", width: 100, hozAlign: "center"},
+            { title: "시험항목", field: "page", width: 140, hozAlign: "center", frozen: true },
             {
                 title: "가열잔분(불휘발분)",
                 columns: [
@@ -952,7 +952,7 @@ $(document).on('click', '.saveCorrStatus', function (event) {
     }
 
     dataTable = new Tabulator("#dataTable", {
-      height: '790px',
+      height: '300px',
       layout: 'fitDataFill',
       headerSort: false,
       reactiveData: true,
@@ -960,7 +960,7 @@ $(document).on('click', '.saveCorrStatus', function (event) {
       rowVertAlign: "middle",
       headerHozAlign: 'center',
       ajaxConfig: { method: 'GET' },
-      ajaxURL: "/geomet/quality/g1/list",
+      ajaxURL: "/geomet/quality/g1/list새로추가",
       ajaxParams: { page: pageValue },
       placeholder: "조회된 데이터가 없습니다.",
       columns: columns,
@@ -969,59 +969,6 @@ $(document).on('click', '.saveCorrStatus', function (event) {
         $('#dataTable .tabulator-row').removeClass('row_select');
         row.getElement().classList.add('row_select');
         selectedRowData = row.getData();
-      },
-
-      rowDblClick: function (e, row) {
-        const d = row.getData();
-        selectedRowData = d;
-       console.log("no: ",d.no );
-        $('#corrForm1')[0].reset();
-        $('#corrForm2')[0].reset();
-        $('#corrForm3')[0].reset();
-        $('#corrForm4')[0].reset();
-        $('#corrForm5')[0].reset();
-        $('input[name="no"]').val(d.no);
-        $('input[name="in_day"]').val(d.in_day);
-        $('input[name="supplier"]').val(d.supplier);
-        $('input[name="medicine"]').val(d.medicine);
-        $('input[name="nv_1"]').val(d.nv_1);
-        $('input[name="nv_2"]').val(d.nv_2);
-        $('input[name="color_1"]').val(d.color_1);
-        $('input[name="color_2"]').val(d.color_2);
-        $('input[name="sensuality_1_1"]').val(d.sensuality_1_1);
-        $('input[name="sensuality_2_1"]').val(d.sensuality_2_1);
-        $('input[name="sensuality_1_2"]').val(d.sensuality_1_2);
-        $('input[name="sensuality_2_2"]').val(d.sensuality_2_2);
-        $('input[name="file_name"]').val(d.file_name);
-        $('input[name="confirm"]').val(d.confirm);
-        $('input[name="writer"]').val(d.writer);
-        $('input[name="ph_1"]').val(d.ph_1);
-        $('input[name="ph_2"]').val(d.ph_2);
-        $('input[name="specific_gravity_1"]').val(d.specific_gravity_1);
-        $('input[name="specific_gravity_2"]').val(d.specific_gravity_2);
-        $('input[name="viscosity_1"]').val(d.viscosity_1);
-        $('input[name="viscosity_2"]').val(d.viscosity_2);
-        $('input[name="hardness_1"]').val(d.hardness_1);
-        $('input[name="hardness_2"]').val(d.hardness_2);
-        $('input[name="short_1"]').val(d.short_1);
-        $('input[name="short_2"]').val(d.short_2);
-        $('input[name="appearance_1"]').val(d.appearance_1);
-        $('input[name="appearance_2"]').val(d.appearance_2);
-        $('input[name="result"]').val(d.result);
-        $('input[name="update_id"]').val(d.update_id);
-
-        //$('#modalContainer').show().addClass('show');
-            if (currentPage === "GEOMET1") {
-           $("#modal1").show().addClass("show");
-         } else if (currentPage === "GEOMET2") {
-           $("#modal2").show().addClass("show");
-         } else if (currentPage === "지오메트 첨가제") {
-           $("#modal3").show().addClass("show");
-         } else if (currentPage === "쇼트볼(SUS)") {
-           $("#modal5").show().addClass("show");
-         } else{
-           $("#modal4").show().addClass("show");
-         }
       },
 
       //셀 수정 후 즉시 업데이트
@@ -1100,6 +1047,142 @@ $(document).on('click', '.saveCorrStatus', function (event) {
    });
 
 
+
+
+
+  //  테이블 생성 함수
+  function createTable(pageValue) {
+    if (dataTable) dataTable.destroy();
+    if (pageValue === "제품 규격") {
+        columns = [
+            { title: "시험항목", field: "page", width: 140, hozAlign: "center", frozen: true },
+            {
+                title: "가열잔분(불휘발분)",
+                columns: [
+                  { title: "제품규격", field: "nv_1", width: 140, hozAlign: "center", editor: "input" },
+                  { title: "시험방법", field: "nv_2", width: 140, hozAlign: "center", editor: "input" }
+                ]
+              },
+              {
+                  title: "관능",
+                  columns: [
+                    { title: "제품규격", field: "sensuality_1_1", width: 140, hozAlign: "center", editor: "input"  },
+                    { title: "시험방법", field: "sensuality_1_2", width: 140, hozAlign: "center", editor: "input"  }
+                  ]
+                },
+                {
+                    title: "관능",
+                    columns: [
+                      { title: "제품규격", field: "sensuality_2_1", width: 140, hozAlign: "center", editor: "input"  },
+                      { title: "시험방법", field: "sensuality_2_2", width: 140, hozAlign: "center", editor: "input"  }
+                    ]
+                  },
+                  {
+                      title: "색상",
+                      columns: [
+                        { title: "제품규격", field: "color_1", width: 140, hozAlign: "center", editor: "input"  },
+                        { title: "시험방법", field: "color_2", width: 140, hozAlign: "center", editor: "input"  }
+                      ]
+                    },
+                    {
+                        title: "ph",
+                        columns: [
+                          { title: "제품규격", field: "ph_1", width: 140, hozAlign: "center", editor: "input"  },
+                          { title: "시험방법", field: "ph_2", width: 140, hozAlign: "center", editor: "input"  }
+                        ]
+                      },
+                      {
+                          title: "비중",
+                          columns: [
+                            { title: "제품규격", field: "specific_gravity_1", width: 140, hozAlign: "center", editor: "input"  },
+                            { title: "시험방법", field: "specific_gravity_2", width: 140, hozAlign: "center", editor: "input"  }
+                          ]
+                        },
+                        {
+                            title: "APPERANCE",
+                            columns: [
+                              { title: "제품규격", field: "apperance_1", width: 140, hozAlign: "center", editor: "input"  },
+                              { title: "시험방법", field: "apperance_2", width: 140, hozAlign: "center", editor: "input"  }
+                            ]
+                          },
+                          {
+                              title: "점도",
+                              columns: [
+                                { title: "제품규격", field: "viscosity_1", width: 140, hozAlign: "center", editor: "input"  },
+                                { title: "시험방법", field: "viscosity_2", width: 140, hozAlign: "center", editor: "input"  }
+                              ]
+                            },
+            {
+                title: "심부경도",
+                columns: [
+                  { title: "제품규격", field: "hardness_1", width: 140, hozAlign: "center", editor: "input"  },
+                  { title: "시험방법", field: "hardness_2", width: 140, hozAlign: "center", editor: "input"  }
+                ]
+              },
+              {
+                  title: "쇼트볼 넓이",
+                  columns: [
+                    { title: "제품규격", field: "short_1", width: 140, hozAlign: "center", editor: "input"  },
+                    { title: "시험방법", field: "short_2", width: 140, hozAlign: "center", editor: "input"  }
+                  ]
+                }
+          ];
+    }
+
+    dataTable = new Tabulator("#dataTable", {
+      height: '300px',
+      layout: 'fitDataFill',
+      headerSort: false,
+      reactiveData: true,
+      columnHeaderVertAlign: "middle",
+      rowVertAlign: "middle",
+      headerHozAlign: 'center',
+      ajaxConfig: { method: 'GET' },
+      ajaxURL: "/geomet/quality/g1/list",
+      ajaxParams: { page: pageValue },
+      placeholder: "조회된 데이터가 없습니다.",
+      columns: columns,
+
+      rowClick: function (e, row) {
+        $('#dataTable .tabulator-row').removeClass('row_select');
+        row.getElement().classList.add('row_select');
+        selectedRowData = row.getData();
+      },
+
+      //셀 수정 후 즉시 업데이트
+      cellEdited: function(cell){
+         const row = cell.getRow().getData();
+         const field = cell.getField();
+         const newValue = cell.getValue();
+         
+         console.log("수정된 셀:",{
+              no: row.no,
+              field: field,
+              value: newValue
+         }),
+         
+          $.ajax({
+              url: "/geomet/quality/inTest/update",
+              type: "POST",
+              contentType: "application/json",
+              data: JSON.stringify({ no: row.no,
+              [field]: newValue }),
+              success: function (res) {
+                  if (res === true) {
+                      console.log("업데이트 성공");
+                  } else {
+                      alert("업데이트 실패: " + res.message);
+                      cell.restoreOldValue();
+                  }
+              },
+              error: function () {
+                  alert("서버 오류");
+                  cell.restoreOldValue();
+              }
+          });
+      }
+    });
+  }
 
 
 </script>

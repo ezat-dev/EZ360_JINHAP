@@ -219,6 +219,11 @@
     margin-left: 15px;
     font-size: 14px;
 }
+
+  .pCodeBtn.active {
+    background-color: #ccc;  /* 진한 회색 */
+    font-weight: bold;
+  }
     </style>
 </head>
 
@@ -246,7 +251,7 @@
             </select>
             
                              <div class="tab" id="pCodeButtonContainer">
-               <button class="pCodeBtn" data-pcode="p_1">
+               <button class="pCodeBtn active" data-pcode="p_1">
                <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">액탱크1</button>
                <button class="pCodeBtn" data-pcode="p_2">
                <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">액탱크2</button>
@@ -330,37 +335,41 @@ let now_page_code = "c02";
   var p_code;   //최근에 누른 버튼 번호 저장
   
   //버튼 눌러서 데이터 가져오기
-  $('.pCodeBtn').click(function(){
-        p_code = $(this).data('pcode');
-        var startDate = $('#startDate').val();
-        var mch_code = $('.mch_code').val();
+$('.pCodeBtn').click(function () {
+    // 👉 버튼 스타일 토글
+    $('.pCodeBtn').removeClass('active');
+    $(this).addClass('active');
 
-        console.log(' p_code:', p_code);
-        console.log(' startDate:', startDate);
-        console.log(' mch_code:', mch_code);
+    p_code = $(this).data('pcode');
+    var startDate = $('#startDate').val();
+    var mch_code = $('.mch_code').val();
 
-        if(!startDate){
-          alert('날짜를 선택하세요');
-          return;
-        }
+    console.log(' p_code:', p_code);
+    console.log(' startDate:', startDate);
+    console.log(' mch_code:', mch_code);
 
-        $.ajax({
-          url: '/geomet/condition/machinePartTemp/list',  
-          method: 'POST',
-          data: {
+    if (!startDate) {
+        alert('날짜를 선택하세요');
+        return;
+    }
+
+    $.ajax({
+        url: '/geomet/condition/machinePartTemp/list',
+        method: 'POST',
+        data: {
             startDate: startDate,
             mch_code: mch_code,
             p_code: p_code
-          },
-          success: function(data){
+        },
+        success: function (data) {
             console.log('서버 응답 데이터:', data);
             dataTable.setData(data);
-          },
-          error: function(){
-              alert('데이터 조회 중 오류 발생');
-            }
-          });
-     });
+        },
+        error: function () {
+            alert('데이터 조회 중 오류 발생');
+        }
+    });
+});
 
   var defaultColumns = [
 

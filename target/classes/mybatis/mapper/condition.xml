@@ -73,23 +73,36 @@
     
     <!--TC조절  -->
     
-	<select id="getCorrStatusList" parameterType="map" resultType="Condition">
-	    SELECT *
-	    FROM tb_corr_status
-	    <where>
-	       <if test="equipment_name != null and equipment_name != ''">
-	            AND equipment_name = #{equipment_name}
-	        </if>
-	
-	        <if test="startDate != null and startDate != ''">
-	            AND replacement_date <![CDATA[>=]]> #{startDate}
-	        </if>
-	        <if test="endDate != null and endDate != ''">
-	            AND replacement_date <![CDATA[<=]]> #{endDate}
-	        </if>
-	    </where>
-	    ORDER BY tdatetime DESC
-	</select>
+<select id="getCorrStatusList" parameterType="map" resultType="Condition">
+    SELECT *
+    FROM tb_corr_status
+    <where>
+        <if test="equipment_name != null and equipment_name != ''">
+            AND equipment_name = #{equipment_name}
+        </if>
+
+        <if test="startDate != null and startDate != ''">
+            AND replacement_date <![CDATA[>=]]> #{startDate}
+        </if>
+        <if test="endDate != null and endDate != ''">
+            AND replacement_date <![CDATA[<=]]> #{endDate}
+        </if>
+    </where>
+    ORDER BY 
+        FIELD(equipment_name,
+            '세척 1호기',
+            '세척 2호기',
+            '세척 공통 (열병합)',
+            '이코팅1호기',
+            '이코팅2호기',
+            'G600',
+            'G800',
+            'K-BLACK',
+            '공용설비',
+            '방청'
+        ),
+        tdatetime DESC
+</select>
 
         <delete id="delCorrStatus" parameterType="string">
         DELETE FROM tb_corr_status 

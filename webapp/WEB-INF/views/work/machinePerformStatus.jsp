@@ -333,8 +333,8 @@ function initTables() {
             {
                 title: "운영계획</br>(실제 가동시간 기준)",
                 columns: [
-                    { title: "실 가동시간", field: "h", hozAlign: "center", headerSort: false },
-                    { title: "비가동시간", field: "g", hozAlign: "center", headerSort: false },
+                    { title: "실 가동시간", field: "h_min", hozAlign: "center", headerSort: false },
+                    //{ title: "비가동시간", field: "g", hozAlign: "center", headerSort: false },
                     { title: "목표<br/>생산량(통)", field: "i", hozAlign: "center", headerSort: false }
                 ]
             },
