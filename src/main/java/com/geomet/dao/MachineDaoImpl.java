@@ -151,6 +151,14 @@ public class MachineDaoImpl implements MachineDao{
     }
     
     
+    
+    @Override
+    public List<Machine> getErrAlarmRanking(Machine machine) {
+      
+        return sqlSession.selectList("machine.getErrAlarmRanking", machine);
+    }
+    
+    
     //설비 기준정보
     @Override
     public List<Machine> getFacilityList(Machine machine) {

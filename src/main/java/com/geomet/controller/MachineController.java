@@ -757,7 +757,34 @@ public class MachineController {
     }
 
 
-    
+    @RequestMapping(value = "/machine/getErrAlarmRanking/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Machine> getErrAlarmRanking(Machine machine) {
+        String start = machine.getStart_time();
+        String end = machine.getEnd_time();
+
+        if (start != null && !start.contains(":")) {
+            machine.setStart_time(start + " 00:00:00");
+        }
+
+        if (end != null && !end.contains(":")) {
+            machine.setEnd_time(end + " 23:59:59");
+        }
+
+        System.out.println("start_time : " + machine.getStart_time());
+        System.out.println("end_time   : " + machine.getEnd_time());
+        System.out.println("mach_code  : " + machine.getMach_code());
+
+        List<Machine> result = machineService.getErrAlarmRanking(machine);
+
+        System.out.println("조회된 getErrAlarmRanking 개수: " + (result != null ? result.size() : "null"));
+        if (result != null && !result.isEmpty()) {
+            System.out.println("첫번째 데이터: " + result.get(0).toString()); // toString() 오버라이딩 필요
+        }
+
+        return result;
+    }
+
 
     @RequestMapping(value= "/machine/mch_info", method = RequestMethod.GET)
     public String mch_info(Model model) {

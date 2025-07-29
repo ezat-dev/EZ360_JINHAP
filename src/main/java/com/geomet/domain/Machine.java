@@ -8,7 +8,9 @@ public class Machine {
 	private String rate;
 	private String n_rate;
 	private String c_rate;
+ 
 
+	private String alarm_count;
 
 	private String non_time;
 	
@@ -414,6 +416,17 @@ public class Machine {
 
 	public String getWork_hour() {
 		return work_hour;
+	}
+	
+	
+	
+
+	public String getAlarm_count() {
+		return alarm_count;
+	}
+
+	public void setAlarm_count(String alarm_count) {
+		this.alarm_count = alarm_count;
 	}
 
 	public void setWork_hour(String work_hour) {

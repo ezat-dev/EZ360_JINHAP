@@ -54,9 +54,9 @@ public interface MachineService {
 	void dellogStatus(Machine machine);
 
 	
-	
+	//경보
 	List<Machine> getErrDataList(Machine machine);
-	
+	List<Machine> getErrAlarmRanking(Machine machine);
 	
 	  //설비 기준 정보
 	List<Machine> getFacilityList(Machine machine);

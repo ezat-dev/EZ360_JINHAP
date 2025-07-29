@@ -17,6 +17,7 @@ import java.util.function.BiFunction;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -44,14 +45,21 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.geomet.domain.Machine;
 import com.geomet.domain.Quality;
+import com.geomet.domain.UserLog;
 import com.geomet.domain.Users;
+import com.geomet.service.ExcelService;
 import com.geomet.service.QualityService;
+import com.geomet.service.UserService;
 
 @Controller
 public class QualityController {
 
 	@Autowired
 	private QualityService qualityService;
+    @Autowired
+    private ExcelService excelService; 
+    @Autowired
+    private UserService UserService;
 
 	/*-----품질관리-----*/
 
@@ -119,7 +127,7 @@ public class QualityController {
 
 			List<Quality> getNonProductManageList = qualityService.getNonProductManageList(quality);
 
-			// System.out.println("getStandardInfoList Size: " +
+			// System.out.println("getqualityInfoList Size: " +
 			// getNonProductManageList.size());
 			rtnMap.put("status", "success");
 			rtnMap.put("last_page", 1);
@@ -1420,4 +1428,347 @@ public class QualityController {
        }
     }
 
+    
+    // 양산품 표면적 기준정보 -----------------0725
+    @RequestMapping(value= "/quality/test_info", method = RequestMethod.GET)
+    public String test_info(Model model) {
+        return "/quality/test_info.jsp"; // 
+    }	
+    //기준정보 리스트
+    @RequestMapping(value = "/quality/test_info/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> workDetailList(
+            @RequestParam String coating_nm,
+            @RequestParam String group_id,
+            @RequestParam String item_cd,
+            @RequestParam String item_nm
+    ) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        String now = java.time.LocalDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        System.out.println("기준정보 조회시간"+ now );
+        System.out.println("=================================");
+
+        try {
+            Quality qualityInfo = new Quality();
+
+            qualityInfo.setCoating_nm(coating_nm.isEmpty() ? null : coating_nm); 
+            qualityInfo.setGroup_id(group_id.isEmpty() ? null : group_id); 
+            qualityInfo.setItem_cd(item_cd.isEmpty() ? null : item_cd);        
+            qualityInfo.setItem_nm(item_nm.isEmpty() ? null : item_nm); 
+
+            List<Quality> test_infoList = qualityService.getTest_infoList(qualityInfo);
+
+            rtnMap.put("status", "success");
+            rtnMap.put("last_page", 1);
+            rtnMap.put("data", test_infoList);
+        } catch (Exception e) {
+            System.out.println("Error occurred: " + e.getMessage());
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+
+        return rtnMap;
+    }
+
+    
+    //기준정보 추가
+    @RequestMapping(value = "/quality/test_info/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> saveDivisionWeight(@ModelAttribute Quality quality) {
+
+        Map<String, Object> rtnMap = new HashMap<>();
+
+
+        // USER_NAME을 USER_ID에 저장
+        quality.setUser_id(UserController.USER_NAME);
+
+        // 현재 시간 (yyyyMMddHHmm 포맷) → UPD_DT에 저장
+        String nowTime = java.time.LocalDateTime.now().format(
+            java.time.format.DateTimeFormatter.ofPattern("yyyyMMddHHmm")
+        );
+        quality.setUpd_dt(nowTime);
+
+        // 유효성 검사
+        if (quality.getItem_cd() == null || quality.getItem_cd().trim().isEmpty()) {
+            rtnMap.put("success", false);
+            rtnMap.put("message", "도금 품번을 입력하시오!");
+            return rtnMap;
+        }
+
+        // 저장 수행
+        qualityService.saveTest_infoList(quality);
+
+        // 로그 설정 및 저장
+        UserLog userLog = new UserLog();
+        userLog.setUserCode(UserController.USER_CODE);
+        userLog.setPageCode("d06");
+        userLog.setWorkDesc("추가");
+        userLog.setWorkUrl("/quality/test_info/insert");
+        userLog.setFileName("없음");
+
+        // 올바른 서비스 객체 사용
+        UserService.insertUserLog(userLog); 
+
+        // 로그 출력
+        String now = java.time.LocalDateTime.now().format(
+            java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        );
+        System.out.println("========== [기준정보 추가 요청 시간: " + now + "] ==========");
+        System.out.println("USER_CODE  : " + UserController.USER_CODE);
+        System.out.println("USER_NAME  : " + UserController.USER_NAME);
+        System.out.println("WorkDesc   : " + userLog.getWorkDesc());
+
+        // 저장된 객체를 그대로 반환 (Tabulator에 추가하기 위해)
+        rtnMap.put("success", true);
+        // rtnMap.put("data", quality); // 필요 시 주석 해제
+
+        return rtnMap;
+    }
+
+
+
+    
+    @RequestMapping(value = "/quality/test_info/del", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> delTest_info(@RequestBody Quality quality) {
+        Map<String, Object> rtnMap = new HashMap<>();
+
+        if (quality.getItem_cd() == null) {
+            rtnMap.put("data", "행 선택하세요");
+            return rtnMap;
+        }
+
+        UserLog userLog = new UserLog();
+        userLog.setUserCode(UserController.USER_CODE);
+        userLog.setPageCode("c05");
+        userLog.setWorkDesc("삭제");
+        userLog.setWorkUrl("/quality/test_info/del");
+        userLog.setFileName("없음"); 
+        UserService.insertUserLog(userLog); 
+
+        qualityService.delTest_infoList(quality);
+        Quality standardInfo = new Quality();
+        List<Quality> test_infoList = qualityService.getTest_infoList(standardInfo);
+
+        rtnMap.put("status", "success");
+        rtnMap.put("last_page", 1);
+        rtnMap.put("data", test_infoList);
+        rtnMap.put("data", "success");
+        return rtnMap;
+    }
+
+    //기준정보 엑섹 저장
+    @RequestMapping(value = "/quality/test_info/excel", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> divisionWeightExcel(HttpServletRequest request) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        Quality qualityInfo = new Quality();
+
+		/*
+		 * SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
+		 * Date time = new Date(); String fileName = format.format(time) + ".xlsx";
+		 */
+   	 
+        
+        
+        
+        UserLog userLog = new UserLog();
+        userLog.setUserCode(UserController.USER_CODE);
+        userLog.setPageCode("d06");
+        userLog.setWorkDesc("엑셀저장");
+        userLog.setWorkUrl("/quality/test_info/excel");
+        userLog.setFileName("양산품_표면적_기준정보"); 
+        UserService.insertUserLog(userLog); 
+        
+        
+        
+        String fileName = "기준정보.xlsx";
+
+        
+        
+        FileOutputStream fos = null;
+        FileInputStream fis = null;
+        String openPath = "D:/GEOMET양식/";
+        String savePath = "D:/GEOMET양식/양산품_표면적_기준정보/";
+
+        List<Quality> test_infoList = qualityService.getTest_infoList(qualityInfo);
+
+		/*
+		 * // 받아온 데이터 개수 출력 //system.out.println("getquality Size: " +
+		 * (quality != null ? quality.size() : 0));
+		 */
+        if (test_infoList == null || test_infoList.isEmpty()) {
+            rtnMap.put("error", "데이터 없음");
+            return rtnMap;
+        }
+
+        try {
+            fis = new FileInputStream(openPath + "양산품_표면적_기준정보.xlsx");
+            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            XSSFSheet sheet = workbook.getSheetAt(0);
+
+            XSSFCellStyle styleCenterBorder = workbook.createCellStyle();
+            styleCenterBorder.setAlignment(HorizontalAlignment.CENTER);
+            styleCenterBorder.setBorderTop(BorderStyle.THIN);
+            styleCenterBorder.setBorderBottom(BorderStyle.THIN);
+            styleCenterBorder.setBorderLeft(BorderStyle.THIN);
+            styleCenterBorder.setBorderRight(BorderStyle.THIN);
+
+
+
+            String[] fields = {
+                "group_id",
+                "item_cd",
+                "item_nm",
+                "coating_nm",
+                "sample_f",
+                "area_g",
+                "total_area_h",
+
+            };
+
+
+            int startRow = 6;
+
+            for (int i = 0; i < test_infoList.size(); i++) {
+                Quality item = test_infoList.get(i);
+                XSSFRow row = sheet.createRow(startRow + i);
+
+                XSSFCell indexCell = row.createCell(0);
+                indexCell.setCellValue(i + 1);
+                indexCell.setCellStyle(styleCenterBorder);
+
+                StringBuilder logOutput = new StringBuilder("Row " + (i + 1) + " | ");
+
+                for (int j = 0; j < fields.length; j++) {
+                    XSSFCell cell = row.createCell(j + 1);
+
+                    String value = "";
+                    try {
+                        Field field = Quality.class.getDeclaredField(fields[j]);
+                        field.setAccessible(true);
+                        Object fieldValue = field.get(item);
+                        value = (fieldValue != null) ? fieldValue.toString() : "";
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        value = "";
+                    }
+
+                    cell.setCellValue(value);
+                    cell.setCellStyle(styleCenterBorder);
+
+                    // 로그 출력용 문자열 추가
+                    logOutput.append(fields[j]).append(": ").append(value).append(", ");
+                }
+                
+                // 각 행별 데이터 출력
+              //  //system.out.println(logOutput.toString());
+            }
+
+            workbook.setForceFormulaRecalculation(true);
+            fos = new FileOutputStream(savePath + fileName);
+            workbook.write(fos);
+            workbook.close();
+            fos.flush();
+
+            rtnMap.put("data", savePath + fileName);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+        } finally {
+            try {
+                if (fis != null) fis.close();
+                if (fos != null) fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return rtnMap;
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    @RequestMapping(value = "/download_infoList", method = RequestMethod.GET)
+    public void downloadExcel(HttpServletResponse response) throws IOException {
+        // 고정된 파일명과 경로
+        String baseDir = "D:/GEOMET양식/양산품_표면적_기준정보/";
+        String fileName = "양산품_표면적_기준정보.xlsx";
+
+        File file = new File(baseDir + fileName);
+
+        if (!file.exists()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        String mimeType = Files.probeContentType(file.toPath());
+        if (mimeType == null) {
+            mimeType = "application/octet-stream";
+        }
+        response.setContentType(mimeType);
+        response.setContentLengthLong(file.length());
+
+        String encodedFilename = URLEncoder.encode(fileName, "UTF-8").replaceAll("\\+", "%20");
+
+        response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+        try (FileInputStream fis = new FileInputStream(file);
+             OutputStream os = response.getOutputStream()) {
+            byte[] buffer = new byte[1024];
+            int len;
+            while ((len = fis.read(buffer)) != -1) {
+                os.write(buffer, 0, len);
+            }
+            os.flush();
+        }
+    }
+
+    
+    
+    
+	/*
+	 * // 기준정보 엑셀 인풋
+	 * 
+	 * @RequestMapping(value = "/quality/test_info/excelFileInput", method =
+	 * RequestMethod.POST)
+	 * 
+	 * @ResponseBody public Map<String, Object> importExcel(@RequestParam("file")
+	 * MultipartFile file) { Map<String, Object> rtnMap = new HashMap<>();
+	 * 
+	 * if (file.isEmpty()) { rtnMap.put("success", false); rtnMap.put("error",
+	 * "파일이 비어 있습니다."); return rtnMap; }
+	 * 
+	 * 
+	 * UserLog userLog = new UserLog();
+	 * userLog.setUserCode(UserController.USER_CODE); userLog.setPageCode("d06");
+	 * userLog.setWorkDesc("엑셀 업로드");
+	 * userLog.setWorkUrl("/quality/test_info/excelFileInput");
+	 * userLog.setFileName("양산품_표면적_기준정보"); UserService.insertUserLog(userLog);
+	 * 
+	 * try { // 엑셀 파싱 List<Quality> importedData =
+	 * excelService.parseExcelFile(file);
+	 * 
+	 * for (Quality quality : importedData) {
+	 * 
+	 * 
+	 * qualityService.saveDivisionWeight(quality); }
+	 * 
+	 * rtnMap.put("success", true); rtnMap.put("message",
+	 * "엑셀 데이터가 성공적으로 업로드되었습니다."); } catch (IllegalArgumentException e) { // ITEM_CD
+	 * 누락 등 사용자 입력 관련 오류 e.printStackTrace(); rtnMap.put("success", false);
+	 * rtnMap.put("error", e.getMessage()); } catch (Exception e) { // 기타 시스템 오류
+	 * e.printStackTrace(); rtnMap.put("success", false); rtnMap.put("error",
+	 * "엑셀 파일 처리 중 오류가 발생했습니다."); }
+	 * 
+	 * return rtnMap; }
+	 */
+    
 }

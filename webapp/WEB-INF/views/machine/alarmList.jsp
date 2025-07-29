@@ -8,7 +8,7 @@
     <title>경보 발생빈도</title>
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
-    <style>
+ <style>
         .container {
             display: flex;
             justify-content: space-between;
@@ -123,7 +123,7 @@
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
-        .dayselect {
+        .mach_code {
             width: 20%;
             text-align: center;
             font-size: 15px;
@@ -176,32 +176,34 @@
 				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 	
 	            <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
-             
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
+            <select class="mach_code">
+              	<option value="ALL">전체</option>
+               	<option value="G03-GG01">G800</option>
+				<option value="G03-GG03">G600</option>
+				<option value="G04-GG05">K-BLACK</option>
+				<option value="G04-GG07">공용설비</option>
+			
+				<option value="W0100">세척1호기</option>
+				<option value="W0200">세척2호기</option>
+				<option value="S0100">쇼트1호기</option>
+				<option value="S0200">쇼트2호기</option>
+				<option value="S0300">쇼트3호기</option>
+				<option value="S0400">쇼트4호기</option>
+				<option value="S0500">쇼트5호기</option>
+				<option value="S0600">쇼트6호기</option>
+<!-- 				<option value="PL">PLUS</option>
+				<option value="ML">ML</option> -->
+
             </select>
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+             
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+
             </div>
         </div>
 
@@ -210,189 +212,86 @@
         </div>
     </main>
 	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
-	            <label>설비명</label>
-				<select name="equipmentName">
-				   <option value="기타">기타(입력)</option>
-				    <option value="탈유탈지1">탈유탈지1</option>
-				    <option value="탈유탈지2">탈유탈지2</option>
-				    <option value="쇼트1">쇼트1</option>
-				    <option value="쇼트2">쇼트2</option>
-				    <option value="쇼트3">쇼트3</option>
-				    <option value="쇼트4">쇼트4</option>
-				    <option value="쇼트5">쇼트5</option>
-				    <option value="쇼트6">쇼트6</option>
-				    <option value="쇼트7">쇼트7</option>
-				    <option value="G-800">G-800</option>
-				    <option value="G-600">G-600</option>
-				    <option value="K-Black">K-Black</option>
-				    <option value="공용설비">공용설비</option>
-				    <option value="방청">방청</option>
-				    <option value="이코팅1">이코팅1</option>
-				    <option value="이코팅2">이코팅2</option>
-				</select>
-
-
-	            <label>정보LIST</label>
-			<select name="select2">
-				<option value="기타">기타(입력)</option>
-			    <option value="사각통 대기">사각통 대기</option>
-			    <option value="물량 부족">물량 부족</option>
-			    <option value="설비 고장">설비 고장</option>
-			    <option value="정기보수">정기보수</option>
-			    <option value="자동화 테스트">자동화 테스트</option>
-			    <option value="3정5행">3정5행</option>
-			    <option value="공정창고 고장">공정창고 고장</option>
-			    <option value="인력부족">인력부족</option>
-			    <option value="탱크 교환">탱크 교환</option>
-			    <option value="설비보전(청소)">설비보전(청소)</option>
-			    <option value="액탱크청소">액탱크청소</option>
-			    <option value="바스켓 청소">바스켓 청소</option>
-			    <option value="바스켓교체">바스켓교체</option>
-			    <option value="건욕">건욕</option>
-			    <option value="조회, 교육">조회, 교육</option>
-			    <option value="AGV에러">AGV에러</option>
-			    <option value="통신이상">통신이상</option>
-			    <option value="생산계획없음">생산계획없음</option>
-			    <option value="기타">기타</option>
-			    <option value="재고과잉">재고과잉</option>
-			    <option value="바코드에러">바코드에러</option>
-			</select>
-
-
-	
-	            <label>발생시간</label>
-	            <input type="text"class="timeSet" name="1" value="">
-	
-	            <label>조치시간</label>
-	            <input type="text" class="timeSet" name="2" placeholder="">
-	
-	            <label>일/발생 건수</label>
-	            <input type="text" name="replacementDate"  style="text-align: left;">
-
-	
-	            <label>월/발생 건수</label>
-	            <input type="text" name="4">
-	            
-	       
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
 
 
     <script>
-    let now_page_code = "a04";
-    
-        $(function() {
-            getDataList();
 
-            const today = new Date().toISOString().split('T')[0];
-            $('#startDate').val(today);
-            $('#endDate').val(today);
-        });
+    let now_page_code = "a03";
+    $(function() {
+        var today = new Date();
+        var yesterday = new Date(today);
+        yesterday.setDate(today.getDate() - 1);
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                columnHeaderVertAlign: "middle",
-                rowVertAlign: "middle",
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                   
-                    {title: "NO.", field: "2", sorter: "string", width: 80, hozAlign: "center", headerSort: false},
-                    {title: "설비명", field: "3", sorter: "string", width: 300, hozAlign: "center", headerSort: false},
-                    {title: "알람내용", field: "4", sorter: "string", width: 700, hozAlign: "center", headerSort: false},
-                    {title: "발생수", field: "5", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                 
-                  
-                ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
+        function formatDate(date) {
+            var year = date.getFullYear();
+            var month = ("0" + (date.getMonth() + 1)).slice(-2);
+            var day = ("0" + date.getDate()).slice(-2);
+            return year + "-" + month + "-" + day;
         }
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
-
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
+        $('#startDate').val(formatDate(yesterday));
+        $('#endDate').val(formatDate(today));
+        getDataList();
+    });
 
 
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
+    function getDataList() {
+        // 기존 dataTable이 있으면 데이터만 재설정
+        if (window.dataTable) {
+            dataTable.setData("/geomet/machine/getErrAlarmRanking/list", {
+                start_time: $('#startDate').val(),
+                end_time: $('#endDate').val(),
+                mach_code: $('.mach_code').val()
+            });
+            return;
+        }
+
+        dataTable = new Tabulator("#dataList", {
+            height: "780px",
+            layout: "fitColumns",
+            ajaxConfig: "POST",
+            ajaxURL: "/geomet/machine/getErrAlarmRanking/list",
+            columnHeaderVertAlign: "middle",
+            rowVertAlign: "middle",
+            headerHozAlign: "center",   // ← 이 옵션을 전역으로 추가
+            ajaxParams: {
+              start_time: $('#startDate').val(),
+              end_time:   $('#endDate').val(),
+              mach_code:  $('.mach_code').val()
+            },
+            placeholder: "조회된 데이터가 없습니다.",
+            ajaxResponse: function(url, params, response){
+              console.log("서버에서 받은 응답 데이터:", response);
+              return response;
+            },
+            columns: [
                 
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
-
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
-
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
-
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
+              	 {title: "NO.", field: "rowNumber", sorter: "number", width: 80, hozAlign: "center", headerSort: false, formatter: "rownum"},
+                  {title: "설비명", field: "facility_name", sorter: "string", width: 300, hozAlign: "center", headerSort: false},
+                  {title: "에러코드",   field: "err_code", hozAlign: "center", headerSort: false, width: 300},
+                  {title: "알람내용",     field: "err_name", hozAlign: "center", headerSort: false, width: 300},
+                   {title: "발생수", field: "alarm_count", sorter: "string", width: 300, hozAlign: "center", headerSort: false}
+               
+               
+                
+              ],
+            rowFormatter: function(row){
+              row.getElement().style.fontWeight = "700";
+              row.getElement().style.backgroundColor = "#FFFFFF";
+            },
+            rowClick: function(e, row){
+              $("#dataList .tabulator-row").removeClass("row_select");
+              row.getElement().classList.add("row_select");
+            },
         });
 
+    }
 
+   
+    $('.select-button').on('click', function() {
+        getDataList();
+    });
+        	
 
         
     </script>

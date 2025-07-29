@@ -223,7 +223,7 @@ function pageObject(paramKey){
 			"d03":["/geomet/quality/inTest","수입검사"],
 			"d04":["/geomet/quality/liquidAnalyze","액 분석 관리"],
 			"d05":["/geomet/quality/nonProductManage","부적합품 관리"],
-			"d06":"",
+			"d06":["/geomet/quality/test_info","양산품 표면적 기준정보"],
 			"d07":"",
 			"e01":["/geomet/user/planManage","자격인증관리"],
 			"e02":["/geomet/user/workerManage","작업자 근무현황"],

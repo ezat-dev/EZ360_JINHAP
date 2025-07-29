@@ -259,4 +259,70 @@
     </set>
     WHERE no = #{no}
 	</update>
+	
+	
+		<select id="getTest_infoList" parameterType="quality" resultType="quality">
+		 SELECT *
+		    FROM tb_test_info
+		    
+		    <where>
+		        <if test="coating_nm != null and coating_nm != ''">
+	            	AND COATING_NM LIKE '%'||#{coating_nm}||'%'
+		        </if>
+		    
+		    
+		    	<if test="group_id != null and group_id != ''">
+	            	AND GROUP_ID LIKE '%'||#{group_id}||'%'
+		        </if>
+		        <if test="item_cd != null and item_cd != ''">
+		            AND ITEM_CD LIKE '%'||#{item_cd}||'%'
+		        </if>
+		        <if test="item_nm != null and item_nm != ''">
+		            AND ITEM_NM LIKE '%'||#{item_nm}||'%'
+		        </if>
+		        
+
+	    </where>
+	</select>
+    
+	<insert id="saveTest_infoList" parameterType="condition">
+	  INSERT INTO tb_test_info (
+	    group_id,
+	    item_cd,
+	    item_nm,
+	    coating_nm,
+	    sample_f,
+	    area_g,
+	    total_area_h,
+	    user_id,
+	    upd_dt
+	  )
+	  VALUES (
+	    #{group_id},
+	    #{item_cd},
+	    #{item_nm},
+	    #{coating_nm},
+	    #{sample_f},
+	    #{area_g},
+	    #{total_area_h},
+	    #{user_id},
+	    #{upd_dt}
+	  )
+	  ON DUPLICATE KEY UPDATE
+	    group_id = VALUES(group_id),
+	    item_nm = VALUES(item_nm),
+	    coating_nm = VALUES(coating_nm),
+	    sample_f = VALUES(sample_f),
+	    area_g = VALUES(area_g),
+	    total_area_h = VALUES(total_area_h),
+	    user_id = VALUES(user_id),
+	    upd_dt = VALUES(upd_dt)
+	</insert>
+
+
+    
+        <delete id="delTest_infoList" parameterType="quality">
+        DELETE FROM tb_test_info 
+        WHERE item_cd = #{item_cd}
+    	</delete>
 </mapper>

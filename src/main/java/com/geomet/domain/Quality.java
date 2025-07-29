@@ -2,6 +2,18 @@ package com.geomet.domain;
 
 public class Quality {
 
+	
+
+		private String group_id;
+		private String item_cd;
+		private String item_nm;
+		private String coating_nm;
+		private String sample_f;
+		private String area_g;
+		private String total_area_h;
+		private String user_id;
+		private String upd_dt;
+		
 		private String no;
 	    private String startDate;
 	    private String Equipment_name;
@@ -71,6 +83,68 @@ public class Quality {
 	    private String ex_2_2;
 	    private String result; //판정결과
 	    private String update_id; //작성자
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+	    
+		public String getGroup_id() {
+			return group_id;
+		}
+		public void setGroup_id(String group_id) {
+			this.group_id = group_id;
+		}
+		public String getItem_cd() {
+			return item_cd;
+		}
+		public void setItem_cd(String item_cd) {
+			this.item_cd = item_cd;
+		}
+		public String getItem_nm() {
+			return item_nm;
+		}
+		public void setItem_nm(String item_nm) {
+			this.item_nm = item_nm;
+		}
+		public String getCoating_nm() {
+			return coating_nm;
+		}
+		public void setCoating_nm(String coating_nm) {
+			this.coating_nm = coating_nm;
+		}
+		public String getSample_f() {
+			return sample_f;
+		}
+		public void setSample_f(String sample_f) {
+			this.sample_f = sample_f;
+		}
+		public String getArea_g() {
+			return area_g;
+		}
+		public void setArea_g(String area_g) {
+			this.area_g = area_g;
+		}
+		public String getTotal_area_h() {
+			return total_area_h;
+		}
+		public void setTotal_area_h(String total_area_h) {
+			this.total_area_h = total_area_h;
+		}
+		public String getUser_id() {
+			return user_id;
+		}
+		public void setUser_id(String user_id) {
+			this.user_id = user_id;
+		}
+		public String getUpd_dt() {
+			return upd_dt;
+		}
+		public void setUpd_dt(String upd_dt) {
+			this.upd_dt = upd_dt;
+		}
 		public String getNo() {
 			return no;
 		}

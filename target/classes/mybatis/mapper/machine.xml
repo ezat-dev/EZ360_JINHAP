@@ -539,6 +539,28 @@ SELECT * FROM v_moniteolingling
 </select>
 
 
+<select id="getErrAlarmRanking" parameterType="Machine" resultType="Machine">
+  SELECT
+    e.mach_code,
+    e.facility_name,  <!-- 설비명 추가 -->
+    e.err_code,
+    e.err_name,
+    COUNT(*) AS alarm_count
+  FROM
+    v_errdata e
+  WHERE
+    1 = 1
+    <if test="mach_code != null and mach_code != 'ALL'">
+      AND e.mach_code = #{mach_code}
+    </if>
+    AND e.start_time_formatted <![CDATA[ >= ]]> #{start_time}
+    AND e.end_time_formatted <![CDATA[ <= ]]> #{end_time}
+  GROUP BY
+    e.mach_code, e.facility_name, e.err_code, e.err_name  <!-- group by에 추가 -->
+  ORDER BY
+    alarm_count DESC
+</select>
+
 
 
 

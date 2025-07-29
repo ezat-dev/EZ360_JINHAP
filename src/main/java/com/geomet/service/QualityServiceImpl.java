@@ -68,4 +68,20 @@ public class QualityServiceImpl implements QualityService {
 	public Quality getIncomingTest(Quality quality) {
 		return qualityDao.getIncomingTest(quality);
 	}
+	// 양상품
+	@Override
+	public List<Quality> getTest_infoList(Quality params) {
+		return qualityDao.getTest_infoList(params);
+	}
+
+	@Override
+	public void saveTest_infoList(Quality quality) {
+		qualityDao.saveTest_infoList(quality);
+	}
+
+	@Override
+	public void delTest_infoList(Quality quality) {
+	     qualityDao.delTest_infoList(quality); 
+	}
+
 }

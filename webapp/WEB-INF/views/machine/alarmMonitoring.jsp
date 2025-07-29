@@ -191,8 +191,8 @@
 				<option value="S0400">쇼트4호기</option>
 				<option value="S0500">쇼트5호기</option>
 				<option value="S0600">쇼트6호기</option>
-				<option value="PL">PLUS</option>
-				<option value="ML">ML</option>
+<!-- 				<option value="PL">PLUS</option>
+				<option value="ML">ML</option> -->
 
             </select>
 			</div>
@@ -270,7 +270,7 @@
               {title: "설비명",     field: "facility_name", hozAlign: "center", headerSort: false, width: 150},
               {title: "라인코드",   field: "line_cd", hozAlign: "center", headerSort: false, width: 130},
               {title: "에러코드",   field: "err_code", hozAlign: "center", headerSort: false, width: 130},
-              {title: "에러명",     field: "err_name", hozAlign: "center", headerSort: false, width: 300},
+              {title: "알람내용",     field: "err_name", hozAlign: "center", headerSort: false, width: 300},
               {title: "시작시간",   field: "start_time_formatted", hozAlign: "center", headerSort: false, width: 200},
               {title: "종료시간",   field: "end_time_formatted",   hozAlign: "center", headerSort: false, width: 200},
               {title: "비고",       field: "remark", hozAlign: "center", headerSort: false, width: 240}

@@ -126,6 +126,12 @@ public class MachineServiceImpl implements MachineService {
 	           return machineDao.getErrDataList(machine); 	   
 	      }
 	      
+	      @Override
+	      public List<Machine> getErrAlarmRanking(Machine machine) {
+	           return machineDao.getErrAlarmRanking(machine); 	   
+	      }
+	      
+	      
 	      
 	      @Override
 	      public List<Machine> getFacilityList(Machine machine) {

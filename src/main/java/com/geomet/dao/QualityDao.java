@@ -37,4 +37,12 @@ public interface QualityDao {
 	    
 	    //수입검사 하나 조회
 	    Quality getIncomingTest(Quality quality);
+	    
+	    
+		//양산품기준정보
+		List<Quality> getTest_infoList(Quality params); 
+	    
+	    void saveTest_infoList(Quality quality);
+	    
+	    void delTest_infoList(Quality quality);
 }

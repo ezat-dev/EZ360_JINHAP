@@ -87,5 +87,23 @@ public class QualityDaoImpl implements QualityDao {
 	public Quality getIncomingTest(Quality quality) {
 		return sqlSession.selectOne("quality.getIncomingTest", quality);
 	}
+	
+	
+    //기준정보
+    @Override
+    public List<Quality> getTest_infoList(Quality params) {
+      
+        return sqlSession.selectList("quality.getTest_infoList", params);
+    }
+    
+    @Override
+    public void saveTest_infoList(Quality quality) {
+    	sqlSession.insert("quality.saveTest_infoList",quality);
+    }
+    
+    @Override
+    public void delTest_infoList(Quality quality) {
+    	sqlSession.delete("quality.delTest_infoList",quality);
+    }
 }
 
