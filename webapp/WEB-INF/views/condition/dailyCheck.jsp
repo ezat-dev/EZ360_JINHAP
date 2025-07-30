@@ -36,24 +36,33 @@
 	    
 	    <!-- 화면표시 -->
 	    <div class="view">
-
+	    
+		<div class="search">
+            <button id="sendKakaoBtn" style="height:40px;">카카오톡 보내기</button>
+    	</div>
+    	
 	    </div>
 
 	</main>
 <script>
-	//전역변
-	  let now_page_code = "c04";
+$(function(){
+	$(".headerP").text("조건관리 - 일상점검일지");
 
-	//로드
-	$(function(){
-		$(".headerP").text("조건관리 - 일상점검일지");
-	});
-
-	//이벤트
-	
-	
-	//함수
-
+    // 버튼 클릭 이벤트
+    $('#sendKakaoBtn').click(function() {
+        $.ajax({
+            url: '/geomet/condition/kakao',
+            method: 'POST',
+            data: { message: '안녕하세요! 카카오톡 테스트 메시지입니다.' },
+            success: function(res) {
+                alert('카카오톡 메시지 전송 완료: ' + res);
+            },
+            error: function(xhr, status, error) {
+                alert('카카오톡 메시지 전송 실패: ' + error);
+            }
+        });
+    });
+});
 </script>
 
 </body>

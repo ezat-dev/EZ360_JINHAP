@@ -48,6 +48,7 @@ import com.geomet.domain.Quality;
 import com.geomet.domain.UserLog;
 import com.geomet.domain.Users;
 import com.geomet.service.ExcelService;
+import com.geomet.service.ExcelServiceTestInfo;
 import com.geomet.service.QualityService;
 import com.geomet.service.UserService;
 
@@ -57,7 +58,7 @@ public class QualityController {
 	@Autowired
 	private QualityService qualityService;
     @Autowired
-    private ExcelService excelService; 
+    private ExcelServiceTestInfo excelServiceTestInfo; 
     @Autowired
     private UserService UserService;
 
@@ -1472,7 +1473,7 @@ public class QualityController {
     }
 
     
-    //기준정보 추가
+    //양산품 기준정보 추가
     @RequestMapping(value = "/quality/test_info/insert", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> saveDivisionWeight(@ModelAttribute Quality quality) {
@@ -1514,7 +1515,7 @@ public class QualityController {
         String now = java.time.LocalDateTime.now().format(
             java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
         );
-        System.out.println("========== [기준정보 추가 요청 시간: " + now + "] ==========");
+        System.out.println("========== [양상품 기준정보 추가 요청 시간: " + now + "] ==========");
         System.out.println("USER_CODE  : " + UserController.USER_CODE);
         System.out.println("USER_NAME  : " + UserController.USER_NAME);
         System.out.println("WorkDesc   : " + userLog.getWorkDesc());
@@ -1559,31 +1560,24 @@ public class QualityController {
     }
 
     //기준정보 엑섹 저장
-    @RequestMapping(value = "/quality/test_info/excel", method = RequestMethod.POST)
+    @RequestMapping(value = "/quality/test_info/excel_out", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> divisionWeightExcel(HttpServletRequest request) {
         Map<String, Object> rtnMap = new HashMap<>();
         Quality qualityInfo = new Quality();
 
-		/*
-		 * SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_GEOMET양식_'HHmmss");
-		 * Date time = new Date(); String fileName = format.format(time) + ".xlsx";
-		 */
-   	 
-        
-        
-        
+
         UserLog userLog = new UserLog();
         userLog.setUserCode(UserController.USER_CODE);
         userLog.setPageCode("d06");
         userLog.setWorkDesc("엑셀저장");
-        userLog.setWorkUrl("/quality/test_info/excel");
+        userLog.setWorkUrl("/quality/test_info/excel_out");
         userLog.setFileName("양산품_표면적_기준정보"); 
         UserService.insertUserLog(userLog); 
         
         
         
-        String fileName = "기준정보.xlsx";
+        String fileName = "양산품_표면적_기준정보.xlsx";
 
         
         
@@ -1696,7 +1690,7 @@ public class QualityController {
     
     
     
-    @RequestMapping(value = "/download_infoList", method = RequestMethod.GET)
+    @RequestMapping(value = "/download_test_info", method = RequestMethod.GET)
     public void downloadExcel(HttpServletResponse response) throws IOException {
         // 고정된 파일명과 경로
         String baseDir = "D:/GEOMET양식/양산품_표면적_기준정보/";
@@ -1734,41 +1728,48 @@ public class QualityController {
     
     
     
-	/*
-	 * // 기준정보 엑셀 인풋
-	 * 
-	 * @RequestMapping(value = "/quality/test_info/excelFileInput", method =
-	 * RequestMethod.POST)
-	 * 
-	 * @ResponseBody public Map<String, Object> importExcel(@RequestParam("file")
-	 * MultipartFile file) { Map<String, Object> rtnMap = new HashMap<>();
-	 * 
-	 * if (file.isEmpty()) { rtnMap.put("success", false); rtnMap.put("error",
-	 * "파일이 비어 있습니다."); return rtnMap; }
-	 * 
-	 * 
-	 * UserLog userLog = new UserLog();
-	 * userLog.setUserCode(UserController.USER_CODE); userLog.setPageCode("d06");
-	 * userLog.setWorkDesc("엑셀 업로드");
-	 * userLog.setWorkUrl("/quality/test_info/excelFileInput");
-	 * userLog.setFileName("양산품_표면적_기준정보"); UserService.insertUserLog(userLog);
-	 * 
-	 * try { // 엑셀 파싱 List<Quality> importedData =
-	 * excelService.parseExcelFile(file);
-	 * 
-	 * for (Quality quality : importedData) {
-	 * 
-	 * 
-	 * qualityService.saveDivisionWeight(quality); }
-	 * 
-	 * rtnMap.put("success", true); rtnMap.put("message",
-	 * "엑셀 데이터가 성공적으로 업로드되었습니다."); } catch (IllegalArgumentException e) { // ITEM_CD
-	 * 누락 등 사용자 입력 관련 오류 e.printStackTrace(); rtnMap.put("success", false);
-	 * rtnMap.put("error", e.getMessage()); } catch (Exception e) { // 기타 시스템 오류
-	 * e.printStackTrace(); rtnMap.put("success", false); rtnMap.put("error",
-	 * "엑셀 파일 처리 중 오류가 발생했습니다."); }
-	 * 
-	 * return rtnMap; }
-	 */
+	
+	  // 기준정보 엑셀 인풋
+	  
+	  @RequestMapping(value = "/quality/test_info/excel_in", method =
+	  RequestMethod.POST)
+	  
+	  @ResponseBody public Map<String, Object> importExcel(@RequestParam("file")
+	  MultipartFile file) { Map<String, Object> rtnMap = new HashMap<>();
+	  
+	  if (file.isEmpty()) { rtnMap.put("success", false); rtnMap.put("error",
+	  "파일이 비어 있습니다."); return rtnMap; }
+	  
+	  
+	  UserLog userLog = new UserLog();
+	  userLog.setUserCode(UserController.USER_CODE); userLog.setPageCode("d06");
+	  userLog.setWorkDesc("엑셀 업로드");
+	  userLog.setWorkUrl("/quality/test_info/excelFileInput");
+	  userLog.setFileName("양산품_표면적_기준정보"); UserService.insertUserLog(userLog);
+	  
+	  try {
+	        List<Quality> importedData = excelServiceTestInfo.parseExcelFile(file);
+
+	        for (Quality quality : importedData) {
+	            qualityService.saveTest_infoList(quality);
+	        }
+
+	        rtnMap.put("success", true);
+	        rtnMap.put("message", "엑셀 데이터가 성공적으로 업로드되었습니다.");
+
+	    } catch (IllegalArgumentException e) {
+	        e.printStackTrace();
+	        rtnMap.put("success", false);
+	        rtnMap.put("error", e.getMessage());
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        rtnMap.put("success", false);
+	        rtnMap.put("error", "엑셀 파일 처리 중 오류가 발생했습니다.");
+	    }
+
+	    return rtnMap;
+	}
+	 
     
 }

@@ -283,6 +283,7 @@
 		        
 
 	    </where>
+	        ORDER BY UPD_DT DESC
 	</select>
     
 	<insert id="saveTest_infoList" parameterType="condition">
@@ -294,8 +295,7 @@
 	    sample_f,
 	    area_g,
 	    total_area_h,
-	    user_id,
-	    upd_dt
+	    user_id
 	  )
 	  VALUES (
 	    #{group_id},
@@ -305,8 +305,7 @@
 	    #{sample_f},
 	    #{area_g},
 	    #{total_area_h},
-	    #{user_id},
-	    #{upd_dt}
+	    #{user_id}
 	  )
 	  ON DUPLICATE KEY UPDATE
 	    group_id = VALUES(group_id),
@@ -315,8 +314,7 @@
 	    sample_f = VALUES(sample_f),
 	    area_g = VALUES(area_g),
 	    total_area_h = VALUES(total_area_h),
-	    user_id = VALUES(user_id),
-	    upd_dt = VALUES(upd_dt)
+	    user_id = VALUES(user_id)
 	</insert>
 
 

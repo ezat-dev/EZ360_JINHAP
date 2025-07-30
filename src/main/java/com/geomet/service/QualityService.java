@@ -44,4 +44,6 @@ public interface QualityService {
     void saveTest_infoList(Quality quality);
     
     void delTest_infoList(Quality quality);
+    
+    
 }

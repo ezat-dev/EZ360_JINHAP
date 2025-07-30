@@ -267,10 +267,10 @@
             columns: [
                 
               	 {title: "NO.", field: "rowNumber", sorter: "number", width: 80, hozAlign: "center", headerSort: false, formatter: "rownum"},
-                  {title: "설비명", field: "facility_name", sorter: "string", width: 300, hozAlign: "center", headerSort: false},
-                  {title: "에러코드",   field: "err_code", hozAlign: "center", headerSort: false, width: 300},
-                  {title: "알람내용",     field: "err_name", hozAlign: "center", headerSort: false, width: 300},
-                   {title: "발생수", field: "alarm_count", sorter: "string", width: 300, hozAlign: "center", headerSort: false}
+                  {title: "설비명", field: "facility_name", sorter: "string", width: 240, hozAlign: "center", headerSort: false},
+                  {title: "에러코드",   field: "err_code", hozAlign: "center", headerSort: false, width: 240},
+                  {title: "알람내용",     field: "err_name", hozAlign: "center", headerSort: false, width: 500},
+                   {title: "발생수", field: "alarm_count", sorter: "string", width: 240, hozAlign: "center", headerSort: false}
                
                
                 

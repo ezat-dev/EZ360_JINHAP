@@ -24,7 +24,7 @@
             margin-top: 1%;
         }
         .tab {
-            width: 100%;
+            width: 97%;
             margin-bottom: 37px;
             margin-top: 5px;
             height: 45px;
@@ -116,6 +116,7 @@
 		    margin-left: auto;
 		    margin-right: 10px;
 		    margin-top: 40px;
+		    margin-bottom: 20px;
 		}
 		
 
@@ -321,7 +322,7 @@
 				
 			<div class="form-row">
 			
-		      <label for="group_id" class="form-label">표면처리 사양 :</label>
+		    <!--   <label for="group_id" class="form-label">표면처리 사양 :</label>
 			  <input type="text" id="s_coating_nm" class="form-input" placeholder="표면처리 사양" autocomplete="off">
 			
 			
@@ -333,7 +334,7 @@
 			  <input type="text" id="s_item_cd" class="form-input" placeholder="품번" autocomplete="off">
 			
 			  <label for="item_nm" class="form-label">품명 :</label>
-			  <input type="text" id="s_item_nm" class="form-input" placeholder="품명" autocomplete="off">
+			  <input type="text" id="s_item_nm" class="form-input" placeholder="품명" autocomplete="off"> -->
 			</div>
 
 			
@@ -396,12 +397,18 @@
 	    <label>출하시험 총 표면적</label>
 	    <input type="text" name="total_area_h" placeholder="예: 77.5">
 	
-	    <label>ID</label>
-	    <input type="text" name="user_id" placeholder="입력자 ID">
-	
-	    <label>DATE</label>
-	    <input type="text" name="upd_dt" placeholder="YYYY-MM-DD HH:MM">
-	
+		<!-- ID 필드 숨기기 -->
+		<div style="display: none;">
+		    <label>ID</label>
+		    <input type="text" name="user_id" placeholder="입력자 ID">
+		</div>
+		
+		<!-- DATE 필드 숨기기 -->
+		<div style="display: none;">
+		    <label>DATE</label>
+		    <input type="text" name="upd_dt" placeholder="YYYY-MM-DD HH:MM">
+		</div>
+
 	    <!-- rownum 대응 (숨김 필드) -->
 	    <input type="hidden" name="no">
 	
@@ -500,19 +507,19 @@ $(document).ready(function () {
         });
     });
 
-    // 엑셀 다운로드
+  // 엑셀 다운로드
     $(".excel-button").on("click", function () {
         $("#excelOverlay").show();
         $("#excelLoading").show();
 
         $.ajax({
-            url: "/geomet/quality/divisionWeight/excel",
+            url: "/geomet/quality/test_info/excel_out",
             type: "post",
             dataType: "json",
             success: function (result) {
                 if (!result.error) {
                     const a = document.createElement('a');
-                    a.href = "/geomet/download_infoList?filename=기준정보.xlsx";
+                    a.href = "/geomet/download_test_info?filename=양산품_표면적_기준정보.xlsx";
                     a.style.display = 'none';
                     document.body.appendChild(a);
                     a.click();
@@ -532,6 +539,8 @@ $(document).ready(function () {
         });
     });
 
+
+ 
     // 엑셀 업로드
     $(".excel-import-button").on("click", function () {
         $("#fileInput").val("").click();
@@ -548,7 +557,7 @@ $(document).ready(function () {
         formData.append("file", file);
 
         $.ajax({
-            url: "/geomet/quality/test_info/excel",
+            url: "/geomet/quality/test_info/excel_in",
             type: "POST",
             data: formData,
             contentType: false,
@@ -585,17 +594,17 @@ function initDataTable() {
         headerHozAlign: "center",
         columns: [
             { title: 'NO', formatter: 'rownum', width: 60, hozAlign: 'center' },
-            { title: "그룹ID", field: "group_id", sorter: "string", width: 160, hozAlign: "center" },
-            { title: "도금품번", field: "item_cd", sorter: "string", width: 160, hozAlign: "center" },
-            { title: "품명", field: "item_nm", sorter: "string", width: 300, headerSort: false },    
-            { title: "표면처리 사양", field: "coating_nm", sorter: "string", width: 160,  headerSort: false },
+            { title: "그룹ID", field: "group_id", sorter: "string", width: 140,headerFilter: "input",  headerFilterPlaceholder: "" },
+            { title: "도금품번", field: "item_cd", sorter: "string", width: 140,headerFilter: "input",  headerFilterPlaceholder: "" },
+            { title: "품명", field: "item_nm", sorter: "string", width: 260, headerSort: false,headerFilter: "input",  headerFilterPlaceholder: "" },    
+            { title: "표면처리 사양", field: "coating_nm", sorter: "string", width: 240,  headerSort: false,headerFilter: "input",  headerFilterPlaceholder: "" },
 
-            { title: "시료수", field: "sample_f", sorter: "string", width: 160,  headerSort: false },
-            { title: "표면적</br>(1EA))", field: "area_g", sorter: "string", width: 160,  headerSort: false },
-            { title: "출하시험</br>총 표면적", field: "total_area_h", sorter: "string", width: 160,  headerSort: false },
+            { title: "시료수", field: "sample_f", sorter: "string", width: 110,  headerSort: false },
+            { title: "표면적</br>(1EA))", field: "area_g", sorter: "string", width: 110,  headerSort: false },
+            { title: "출하시험</br>총 표면적", field: "total_area_h", sorter: "string", width: 110,  headerSort: false },
             
-            { title: "ID", field: "user_id", sorter: "string", width: 120, hozAlign: "center", headerSort: false },
-            { title: "DATE", field: "upd_dt", sorter: "string", width: 120, hozAlign: "center"}
+            { title: "ID", field: "user_id", sorter: "string", width: 110, hozAlign: "center", headerSort: false },
+            { title: "DATE", field: "upd_dt", sorter: "string", width: 180, hozAlign: "center"}
         ],
         rowClick: function (e, row) {
             $("#dataList .tabulator-row").removeClass("row_select");
