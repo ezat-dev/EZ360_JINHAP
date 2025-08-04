@@ -165,7 +165,7 @@ public class ReportExService {
                     }
 
                     // table3 작성 (13행 A열)
-                    int idx2=12;
+                    int idx2=14;
                     for(Work w:table3) {
                         if(w.getStart_time()!=null && w.getStart_time().length()==14)
                             w.setStart_time(w.getStart_time().substring(8,10)+":"+w.getStart_time().substring(10,12)+":"+w.getStart_time().substring(12,14));

@@ -2,6 +2,22 @@ package com.geomet.domain;
 import java.util.List;
 
 public class Work {
+	private String barcode_no;
+
+	private String w_s;
+	private String w_e;
+	private String s_s;
+	private String s_e;
+	private String G03_s;
+	private String G03_e;
+	private String G04_s;
+	private String G04_e;
+	
+	//컬럼 파라미터 
+	
+
+	
+	
 	private String wrk_ord_no;
 	private String b_a;
 	private String p_code;
@@ -205,6 +221,60 @@ public class Work {
     
 
 
+	public String getBarcode_no() {
+		return barcode_no;
+	}
+	public void setBarcode_no(String barcode_no) {
+		this.barcode_no = barcode_no;
+	}
+	public String getW_s() {
+		return w_s;
+	}
+	public void setW_s(String w_s) {
+		this.w_s = w_s;
+	}
+	public String getW_e() {
+		return w_e;
+	}
+	public void setW_e(String w_e) {
+		this.w_e = w_e;
+	}
+	public String getS_s() {
+		return s_s;
+	}
+	public void setS_s(String s_s) {
+		this.s_s = s_s;
+	}
+	public String getS_e() {
+		return s_e;
+	}
+	public void setS_e(String s_e) {
+		this.s_e = s_e;
+	}
+	public String getG03_s() {
+		return G03_s;
+	}
+	public void setG03_s(String g03_s) {
+		G03_s = g03_s;
+	}
+	public String getG03_e() {
+		return G03_e;
+	}
+	public void setG03_e(String g03_e) {
+		G03_e = g03_e;
+	}
+	public String getG04_s() {
+		return G04_s;
+	}
+	public void setG04_s(String g04_s) {
+		G04_s = g04_s;
+	}
+	public String getG04_e() {
+		return G04_e;
+	}
+	public void setG04_e(String g04_e) {
+		G04_e = g04_e;
+	}
 	public String getT_600_d12000() {
 		return t_600_d12000;
 	}

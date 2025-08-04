@@ -769,4 +769,44 @@ ORDER BY AAA.ch_idx;
 </select>
 
 
+
+
+<select id="lotReportStatusList" parameterType="Work" resultType="Work">
+
+SELECT barcode_no,
+       MAX(item_cd) AS item_cd,
+       MAX(item_nm) AS item_nm,
+       GROUP_CONCAT(IF(mach_code LIKE 'W%', CONCAT(facility_name,' - ',start_time), NULL)) AS '세척 시작',
+       GROUP_CONCAT(IF(mach_code LIKE 'W%', CONCAT(facility_name,' - ',end_time), NULL)) AS '세척 종료',
+       GROUP_CONCAT(IF(mach_code LIKE 'S%', CONCAT(facility_name,' - ',start_time), NULL)) AS '쇼트 시작',
+       GROUP_CONCAT(IF(mach_code LIKE 'S%', CONCAT(facility_name,' - ',end_time), NULL)) AS '쇼트 종료',
+       GROUP_CONCAT(IF(mach_code LIKE 'G03-%', CONCAT(facility_name,' - ',start_time), NULL)) AS 'GEOMET 시작',
+       GROUP_CONCAT(IF(mach_code LIKE 'G03-%', CONCAT(facility_name,' - ',end_time), NULL)) AS 'GEOMET 종료',
+       GROUP_CONCAT(IF(mach_code LIKE 'G04-%', CONCAT(facility_name,' - ',start_time), NULL)) AS '공용설비 시작',
+       GROUP_CONCAT(IF(mach_code LIKE 'G04-%', CONCAT(facility_name,' - ',end_time), NULL)) AS '공용설비 종료'
+FROM (
+    SELECT A.barcode_no, 
+           DATE_FORMAT(A.start_time, '%Y-%m-%d %H:%i:%s') AS start_time, 
+           DATE_FORMAT(A.end_time, '%Y-%m-%d %H:%i:%s') AS end_time,
+           A.item_cd, A.item_nm, A.mach_code,
+           B.facility_name 
+    FROM tb_lowdata_save A
+    LEFT OUTER JOIN tb_facility B ON A.mach_code = B.facility_mach_code
+    WHERE 1=1
+      <if test="start_time != null and start_time != ''">
+        AND A.end_time &gt;= #{start_time}
+      </if>
+      <if test="end_time != null and end_time != ''">
+        AND A.end_time &lt;= #{end_time}
+      </if>
+      <if test="barcode_no != null and barcode_no != ''">
+        AND A.barcode_no = #{barcode_no}
+      </if>
+) AS AA
+GROUP BY barcode_no
+ORDER BY MAX(end_time) DESC;
+
+
+</select>
+
 </mapper>

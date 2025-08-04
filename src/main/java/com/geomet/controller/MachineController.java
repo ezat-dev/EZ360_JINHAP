@@ -1062,4 +1062,401 @@ public class MachineController {
        os.flush();
     }
  }
+	@RequestMapping(value = "/machine/alarmList/excel", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> alarmListExcel(@RequestBody Machine machine) {
+		System.out.println("경보발생빈도 엑셀 컨트롤러 도착");
+		System.out.println("machine.getStart_time()"+machine.getStart_time());
+		System.out.println("machine.getEnd_time()"+machine.getEnd_time());
+		String start = machine.getStart_time();
+		String end = machine.getEnd_time();
+
+		Map<String, Object> rtnMap = new HashMap<>();
+
+		// 날짜 및 파일명 생성
+		SimpleDateFormat format = new SimpleDateFormat("'경보발생빈도'_yyyyMMddHHmmss");
+		Date time = new Date();
+		String fileName = format.format(time) + ".xlsx";
+
+		FileOutputStream fos = null;
+		FileInputStream fis = null;
+		String openPath = "D:/GEOMET양식/";
+		String savePath = "D:/GEOMET양식/경보발생빈도/";
+
+		if (start != null && !start.contains(":")) {
+			machine.setStart_time(start + " 00:00:00");
+		}
+
+		if (end != null && !end.contains(":")) {
+			machine.setEnd_time(end + " 23:59:59");
+		}
+
+		System.out.println("start_time : " + machine.getStart_time());
+		System.out.println("end_time   : " + machine.getEnd_time());
+		System.out.println("mach_code  : " + machine.getMach_code());
+
+		List<Machine> machineList = machineService.getErrAlarmRanking(machine);
+
+		System.out.println("조회된 데이터 개수: " + (machineList != null ? machineList.size() : "null"));
+		if (machineList != null && !machineList.isEmpty()) {
+			System.out.println("첫번째 데이터: " + machineList.get(0).toString()); // toString() 오버라이딩 필요
+		}
+		if (machineList == null || machineList.isEmpty()) {
+			rtnMap.put("error", "데이터 없음");
+			return rtnMap;
+		}
+		
+		try {
+			fis = new FileInputStream(openPath + "경보발생빈도양식.xlsx");
+			XSSFWorkbook workbook = new XSSFWorkbook(fis);
+			XSSFSheet sheet = workbook.getSheetAt(0);
+
+			XSSFCellStyle styleCenterBorder = workbook.createCellStyle();
+			styleCenterBorder.setAlignment(HorizontalAlignment.CENTER);
+			styleCenterBorder.setBorderTop(BorderStyle.THIN);
+			styleCenterBorder.setBorderBottom(BorderStyle.THIN);
+			styleCenterBorder.setBorderLeft(BorderStyle.THIN);
+			styleCenterBorder.setBorderRight(BorderStyle.THIN);
+
+			String[] fields = {
+					"no", "facility_name", "err_code", "err_name", "alarm_count"};
+			String facility_n = "";
+			
+			//시작, 끝 날짜와 설비명 넣기
+		    Machine firstItem = machineList.get(0);  // 첫 번째 데이터 기준
+		    if(machine.getMach_code().equals("ALL")) {
+		    	facility_n = "전체";
+		    }else {
+		        facility_n = firstItem.getFacility_name(); // 실제 설비명
+		    }
+		    
+		    String startDate = machine.getStart_time();
+		    String endDate = machine.getEnd_time();
+
+		    // 시분초 제거 (예: "2025-07-28 00:00:00" → "2025-07-28")
+		    if (startDate != null && startDate.length() >= 10) {
+		        startDate = startDate.substring(0, 10);
+		    }
+		    if (endDate != null && endDate.length() >= 10) {
+		        endDate = endDate.substring(0, 10);
+		    }
+
+		    // G5 = 4행 6열 (인덱스 기준 0부터 시작)
+		    XSSFRow row5 = sheet.getRow(4);
+		    if (row5 == null) row5 = sheet.createRow(4);
+		    XSSFCell cellG5 = row5.getCell(3);
+		    if (cellG5 == null) cellG5 = row5.createCell(3);
+		    cellG5.setCellValue(startDate + " ~ " + endDate);
+
+		    // G6 = 5행 6열
+		    XSSFRow row6 = sheet.getRow(5);
+		    if (row6 == null) row6 = sheet.createRow(5);
+		    XSSFCell cellG6 = row6.getCell(3);
+		    if (cellG6 == null) cellG6 = row6.createCell(3);
+		    cellG6.setCellValue(facility_n);
+		    
+			int startRow = 7; // 8
+			int startCol = 0; // A
+
+			for (int i = 0; i < machineList.size(); i++) {
+				Machine item = machineList.get(i);
+				XSSFRow row = sheet.createRow(startRow + i);
+
+				for (int j = 0; j < fields.length; j++) {
+					XSSFCell cell = row.createCell(startCol + j);
+					String value = "";
+					 if ("no".equals(fields[j])) {
+				            value = String.valueOf(i + 1); // 행 번호 (1부터 시작)
+				        } else {
+					try {
+						Field field = Machine.class.getDeclaredField(fields[j]);
+						field.setAccessible(true);
+						Object fieldValue = field.get(item);
+						value = (fieldValue != null) ? fieldValue.toString() : "";
+					} catch (NoSuchFieldException | IllegalAccessException e) {
+						value = "";
+					}
+				        }
+
+					cell.setCellValue(value);
+					cell.setCellStyle(styleCenterBorder);
+				}
+			}
+
+			workbook.setForceFormulaRecalculation(true);
+			fos = new FileOutputStream(savePath + fileName);
+			workbook.write(fos);
+			workbook.close();
+			fos.flush();
+
+			// 클라이언트가 다운로드할 수 있도록 경로 반환
+			rtnMap.put("filename", fileName);
+			rtnMap.put("downloadPath",
+					"/geomet/download_alarmList?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+		} finally {
+			try {
+				if (fis != null) fis.close();
+				if (fos != null) fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rtnMap;
+	}
+	
+	//엑셀 다운로드
+	@RequestMapping(value = "/download_alarmList", method = RequestMethod.GET)
+	public void downloadExcelAlarmList(@RequestParam("filename") String filename,
+			HttpServletResponse response) throws IOException {
+
+		//파일이 저장될 경로
+		String baseDir = "D:/GEOMET양식/경보발생빈도/";
+
+		//System.out.println("다운 주소 filename: " + filename);
+
+		//보안 체크
+		if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		//다운로드할 파일 객체 생성
+		File file = new File(baseDir + filename);
+		System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+		//파일이 존재하지 않으면 에러 반환
+		if (!file.exists()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+
+		//파일 확장자 자동 추정
+		String mimeType = Files.probeContentType(file.toPath());
+		if (mimeType == null) {
+			mimeType = "application/octet-stream";
+		}
+		response.setContentType(mimeType);
+		response.setContentLengthLong(file.length());
+
+		//파일명 인코딩
+		String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+		//다운로드 되도록 브라우저에 알림
+		response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+		//파일을 바이트 스트림으로 클라이언트에 전송
+		try (FileInputStream fis = new FileInputStream(file);
+				OutputStream os = response.getOutputStream()) {
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = fis.read(buffer)) != -1) {
+				os.write(buffer, 0, len);
+			}
+			os.flush();
+		}
+	}
+	@RequestMapping(value = "/machine/alarmMonitoring/excel", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> alarmMonitoringExcel(@RequestBody Machine machine) {
+		System.out.println("경보모니터링 엑셀 컨트롤러 도착");
+		System.out.println("machine.getStart_time()"+machine.getStart_time());
+		System.out.println("machine.getEnd_time()"+machine.getEnd_time());
+		String start = machine.getStart_time();
+		String end = machine.getEnd_time();
+
+		Map<String, Object> rtnMap = new HashMap<>();
+
+		// 날짜 및 파일명 생성
+		SimpleDateFormat format = new SimpleDateFormat("'경보모니터링'_yyyyMMddHHmmss");
+		Date time = new Date();
+		String fileName = format.format(time) + ".xlsx";
+
+		FileOutputStream fos = null;
+		FileInputStream fis = null;
+		String openPath = "D:/GEOMET양식/";
+		String savePath = "D:/GEOMET양식/경보모니터링/";
+
+		if (start != null && !start.contains(":")) {
+			machine.setStart_time(start + " 00:00:00");
+		}
+
+		if (end != null && !end.contains(":")) {
+			machine.setEnd_time(end + " 23:59:59");
+		}
+
+		System.out.println("start_time : " + machine.getStart_time());
+		System.out.println("end_time   : " + machine.getEnd_time());
+		System.out.println("mach_code  : " + machine.getMach_code());
+
+		List<Machine> machineList = machineService.getErrDataList(machine);
+
+		System.out.println("조회된 데이터 개수: " + (machineList != null ? machineList.size() : "null"));
+		if (machineList != null && !machineList.isEmpty()) {
+			System.out.println("첫번째 데이터: " + machineList.get(0).toString()); // toString() 오버라이딩 필요
+		}
+		if (machineList == null || machineList.isEmpty()) {
+			rtnMap.put("error", "데이터 없음");
+			return rtnMap;
+		}
+		
+		try {
+			fis = new FileInputStream(openPath + "경보모니터링양식.xlsx");
+			XSSFWorkbook workbook = new XSSFWorkbook(fis);
+			XSSFSheet sheet = workbook.getSheetAt(0);
+
+			XSSFCellStyle styleCenterBorder = workbook.createCellStyle();
+			styleCenterBorder.setAlignment(HorizontalAlignment.CENTER);
+			styleCenterBorder.setBorderTop(BorderStyle.THIN);
+			styleCenterBorder.setBorderBottom(BorderStyle.THIN);
+			styleCenterBorder.setBorderLeft(BorderStyle.THIN);
+			styleCenterBorder.setBorderRight(BorderStyle.THIN);
+
+			String[] fields = {
+					"no", "mach_code", "facility_name", "line_cd", "err_code", "err_name",
+					"start_time_formatted", "end_time_formatted", "remark"
+			};
+			String facility_n = "";
+			//시작, 끝 날짜와 설비명 넣기
+		    Machine firstItem = machineList.get(0);  // 첫 번째 데이터 기준
+		    if(machine.getMach_code().equals("ALL")) {
+		    	facility_n = "전체";
+		    }else {
+		        facility_n = firstItem.getFacility_name(); // 실제 설비명
+		    }
+		    
+		    String startDate = machine.getStart_time();
+		    String endDate = machine.getEnd_time();
+
+		    // 시분초 제거 (예: "2025-07-28 00:00:00" → "2025-07-28")
+		    if (startDate != null && startDate.length() >= 10) {
+		        startDate = startDate.substring(0, 10);
+		    }
+		    if (endDate != null && endDate.length() >= 10) {
+		        endDate = endDate.substring(0, 10);
+		    }
+
+		    // G5 = 4행 6열 (인덱스 기준 0부터 시작)
+		    XSSFRow row5 = sheet.getRow(4);
+		    if (row5 == null) row5 = sheet.createRow(4);
+		    XSSFCell cellG5 = row5.getCell(8);
+		    if (cellG5 == null) cellG5 = row5.createCell(8);
+		    cellG5.setCellValue(startDate + " ~ " + endDate);
+
+		    // G6 = 5행 6열
+		    XSSFRow row6 = sheet.getRow(5);
+		    if (row6 == null) row6 = sheet.createRow(5);
+		    XSSFCell cellG6 = row6.getCell(8);
+		    if (cellG6 == null) cellG6 = row6.createCell(8);
+		    cellG6.setCellValue(facility_n);
+		    
+			int startRow = 7; // 8
+			int startCol = 0; // A
+
+			for (int i = 0; i < machineList.size(); i++) {
+				Machine item = machineList.get(i);
+				XSSFRow row = sheet.createRow(startRow + i);
+
+				for (int j = 0; j < fields.length; j++) {
+					XSSFCell cell = row.createCell(startCol + j);
+					String value = "";
+					 if ("no".equals(fields[j])) {
+				            value = String.valueOf(i + 1); // 행 번호 (1부터 시작)
+				        } else {
+					try {
+						Field field = Machine.class.getDeclaredField(fields[j]);
+						field.setAccessible(true);
+						Object fieldValue = field.get(item);
+						value = (fieldValue != null) ? fieldValue.toString() : "";
+					} catch (NoSuchFieldException | IllegalAccessException e) {
+						value = "";
+					}
+				        }
+
+					cell.setCellValue(value);
+					cell.setCellStyle(styleCenterBorder);
+				}
+			}
+
+			workbook.setForceFormulaRecalculation(true);
+			fos = new FileOutputStream(savePath + fileName);
+			workbook.write(fos);
+			workbook.close();
+			fos.flush();
+
+			// 클라이언트가 다운로드할 수 있도록 경로 반환
+			rtnMap.put("filename", fileName);
+			rtnMap.put("downloadPath",
+					"/geomet/download_alarmMonitoring?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+		} finally {
+			try {
+				if (fis != null) fis.close();
+				if (fos != null) fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rtnMap;
+	}
+	
+	//엑셀 다운로드
+	@RequestMapping(value = "/download_alarmMonitoring", method = RequestMethod.GET)
+	public void downloadExcelAlarm(@RequestParam("filename") String filename,
+			HttpServletResponse response) throws IOException {
+
+		//파일이 저장될 경로
+		String baseDir = "D:/GEOMET양식/경보모니터링/";
+
+		//System.out.println("다운 주소 filename: " + filename);
+
+		//보안 체크
+		if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
+		//다운로드할 파일 객체 생성
+		File file = new File(baseDir + filename);
+		System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+		//파일이 존재하지 않으면 에러 반환
+		if (!file.exists()) {
+			response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+			return;
+		}
+
+		//파일 확장자 자동 추정
+		String mimeType = Files.probeContentType(file.toPath());
+		if (mimeType == null) {
+			mimeType = "application/octet-stream";
+		}
+		response.setContentType(mimeType);
+		response.setContentLengthLong(file.length());
+
+		//파일명 인코딩
+		String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+		//다운로드 되도록 브라우저에 알림
+		response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+		//파일을 바이트 스트림으로 클라이언트에 전송
+		try (FileInputStream fis = new FileInputStream(file);
+				OutputStream os = response.getOutputStream()) {
+			byte[] buffer = new byte[1024];
+			int len;
+			while ((len = fis.read(buffer)) != -1) {
+				os.write(buffer, 0, len);
+			}
+			os.flush();
+		}
+	}
 }

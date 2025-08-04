@@ -292,7 +292,38 @@
         getDataList();
     });
         	
+    // 엑셀 다운로드 버튼
+    $(".excel-button").on("click", function () {
+         $("#excelOverlay, #excelLoading").show();
 
+         const start_time = $('#startDate').val();
+         const end_time =   $('#endDate').val();
+         const mach_code =  $('.mach_code').val();
+
+                 $.ajax({
+                     url: "/geomet/machine/alarmMonitoring/excel",
+                     method: "POST",
+                     contentType: "application/json",
+                     data: JSON.stringify({ start_time: start_time, end_time: end_time, mach_code: mach_code }), // 컨트롤러에서 데이터 조회
+                     dataType: "json",
+                      success: function (result) {
+                         if (result && result.downloadPath) {
+                             const a = document.createElement('a');
+                             a.href = result.downloadPath;
+                             a.style.display = 'none';
+                             document.body.appendChild(a);
+                             a.click();
+                             document.body.removeChild(a);
+                         }
+                          console.log(result);
+                          //alert("엑셀 저장 완료되었습니다.");
+                     },
+                     error: function (xhr, status, error) {
+                         alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
+                         console.error("Error:", error);
+                     } 
+         });
+     });
         
     </script>
 

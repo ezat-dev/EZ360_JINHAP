@@ -2003,4 +2003,26 @@ public class WorkController {
             return result;
         }
     }
+    @RequestMapping(value = "/work/workDaily/AllExcel", method = RequestMethod.GET)
+    @ResponseBody
+    public void download(@RequestParam String filename, HttpServletResponse response) throws IOException {
+    	System.out.println("filename: " + filename);
+        
+        String basePath = "D:/GEOMET양식/작업일보/";
+        File file = new File(basePath + filename);
+
+        if (!file.exists()) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+
+        String mimeType = Files.probeContentType(file.toPath());
+        if (mimeType == null) mimeType = "application/octet-stream";
+
+        response.setContentType(mimeType);
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + URLEncoder.encode(filename, "UTF-8") + "\"");
+        response.setContentLengthLong(file.length());
+
+        Files.copy(file.toPath(), response.getOutputStream());
+    }
 }

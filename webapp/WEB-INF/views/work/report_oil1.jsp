@@ -122,7 +122,160 @@
 	  0% { transform: rotate(0deg); }
 	  100% { transform: rotate(360deg); }
 	}
-	    
+	    .modal {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.4);
+}
+        /*모달css  */
+		   .modal {
+		    display: none;
+		    position: fixed;
+		    left: 0;
+		    top: 0;
+		    width: 100%;
+		    height: 100%;
+		    background-color: rgba(0, 0, 0, 0.5);
+		    transition: opacity 0.3s ease-in-out;
+		    overflow: auto;
+		}
+		.row_select {
+		    background-color: #d0d0d0 !important;
+		}
+		
+	  .modal-content {
+        background: white;
+        width: 27%;
+        max-width: 500px;
+        height: 81vh; 
+        overflow-y: auto; 
+        margin: 0% auto 0;
+        padding: 20px;
+        border-radius: 10px;
+        position: relative;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        transform: scale(0.8);
+        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+        opacity: 0;
+    }
+		
+	  .modal.show {
+        display: block;
+        opacity: 1;
+    }
+		
+		.modal.show .modal-content {
+		    transform: scale(1);
+		    opacity: 1;
+		}
+		
+ .close {
+        background-color: white;
+        position: absolute;
+        right: 15px;
+        top: 10px;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+    .modal-content form {
+        display: flex;
+        flex-direction: column;
+    }
+    .modal-content label {
+        font-weight: bold;
+        margin: 10px 0 5px;
+    }
+    .modal-content input, .modal-content textarea {
+        width: 25%;
+        padding: 8px;
+        margin-bottom: -9px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    select {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+    .modal-content button {
+        background-color: #d3d3d3;
+        color: black;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        margin-top: 10px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+    .modal-content button:hover {
+        background-color: #a9a9a9;
+    }
+    .button-container {
+        display: flex;
+        gap: 10px;
+        margin-left: auto;
+        margin-right: 10px;
+        margin-top: 40px;
+    }
+    .box1 {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        width: 800px;
+        margin-right: 20px;
+        margin-top: 4px;
+    }
+    .yearselect {
+        width: 20%;
+        text-align: center;
+        font-size: 15px;
+    }
+    .yearSet {
+        width: 20%;
+        text-align: center;
+        height: 16px;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 15px;
+    }
+    .yearlabel {
+        margin-right: 10px;
+        margin-bottom: 13px;
+        font-size: 18px;
+        margin-left: 20px;
+    }
+    button-container.button {
+        height: 16px;
+    }
+      #openModalBtn {
+    background-color: white;
+    border: 1px solid #666;         /* 더 진한 테두리 */
+    color: #222;                    /* 더 진한 글씨 */
+    font-weight: 500;				 /* 글씨 두께 추가 */
+    font-size: 13px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #openModalBtn:hover {
+    background-color: #f0f0f0;
+  }
+  
+  .day_s{
+    margin-top: 19px;
+  
+  }
+  
 </style>
 
 
@@ -137,6 +290,8 @@
      <div class="tab">
 	     <h2>세척(1호기)</h2>
 	    <div class="tab-controls">
+	    
+        <button id="openModalBtn">엑셀 전체 다운로드</button>
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
 	        <button class="select-button" onclick="loadWorkDailyData()">
@@ -155,8 +310,148 @@
             <div id="table3"></div>
         </div>
     </main>
+    
+    
+    
+<!--     <div id="modalContainer" class="modal">
+	    <div class="modal-content">
+	        <span class="close">&times;</span>
+	        
+	        <label>검색일자 :</label>
+	        <input type="text" id="modal_date" name="t_day" class="yearSet" placeholder="날짜 선택" style="text-align: left;">
+	        
+	        <form id="corrForm">
+	
+	            <button type="submit" id="saveCorrStatus">다운로드</button>
+	            <button type="button" id="closeModal">닫기</button>
+	        </form>
+	    </div>
+	</div> -->
+
+
+
+
+
+   <div id="modalContainer" class="modal">
+	    <div class="modal-content">
+	    <div>
+	      <span class="close">&times;</span>
+	    </div> 
+	        <div class="day_s">
+	        <label>검색일자 :</label>
+	        <input type="date" id="modal_date" name="t_day" placeholder="날짜 선택" style="text-align: left;">
+	      </div>
+	      				<!-- 날짜 선택 후 보여줄 영역 -->
+				<div id="fileNameList" style="margin-top: 10px;"></div>
+	        <form id="corrForm">
+	
+	            <button type="submit" id="saveCorrStatus">전체 다운로드</button>
+	            <button type="button" id="closeModal">닫기</button>
+	        </form>
+	    </div>
+	</div>
 
 <script>
+
+$("#openModalBtn").click(function () {
+	  //오늘날짜
+	  const today = new Date();
+	  const yyyy = today.getFullYear();
+	  const mm = String(today.getMonth() + 1).padStart(2, '0');
+	  const dd = String(today.getDate()).padStart(2, '0');
+	  const todayStr = `\${yyyy}-\${mm}-\${dd}`;
+
+	  // 어제 날짜
+	  today.setDate(today.getDate() - 1);
+	  const yyy = today.getFullYear();
+	  const mmm = String(today.getMonth() + 1).padStart(2, '0');
+	  const ddd = String(today.getDate()).padStart(2, '0');
+	  const yesterdayStr = `\${yyy}-\${mmm}-\${ddd}`;
+
+	  // 날짜 입력값에 설정
+	  $('#modal_date').val(yesterdayStr).trigger("change"); // 변경 이벤트도 같이 발생시켜서 파일명 뜨게 함
+	  $('#modal_date').attr('max', todayStr);      // 오늘까지만 선택 가능
+
+    // 폼 초기화
+    $("#corrForm")[0].reset(); 
+    $("#id").val(""); // 숨겨진 id 필드도 비워주기
+
+    let modal = $("#modalContainer");
+    modal.show();
+    modal.addClass("show");
+});
+$("#closeModal, .close").click(function () {
+ $("#modalContainer").hide();
+});
+
+$(document).ready(function () {
+	  // 날짜 선택 시 → 파일명 화면에 표시
+	  $('#modal_date').on('change', function () {
+		  console.log("날짜 선택됨");
+	    const selectedDate = $(this).val();
+	    console.log("selectedDate: ", typeof selectedDate);
+	    console.log("selectedDate: ", selectedDate);
+	    if (!selectedDate) return;
+
+	    const fileDate = selectedDate.replace(/-/g, "");
+	    
+	    filenames = [
+	        `작업일보_\${fileDate}_세척1호기.xlsx`,
+	        `작업일보_\${fileDate}_세척2호기.xlsx`,
+	        `작업일보_\${fileDate}_쇼트1호기.xlsx`,
+	        `작업일보_\${fileDate}_쇼트2호기.xlsx`,
+	        `작업일보_\${fileDate}_쇼트3호기.xlsx`,
+	        `작업일보_\${fileDate}_쇼트4호기.xlsx`,
+	        `작업일보_\${fileDate}_쇼트5호기.xlsx`,
+	        `작업일보_\${fileDate}_쇼트6호기.xlsx`,
+	        `작업일보_\${fileDate}_GEOMET600톤.xlsx`,
+	        `작업일보_\${fileDate}_GEOMET800톤.xlsx`,
+	        `작업일보_\${fileDate}_KBLACK.xlsx`,
+	        `작업일보_\${fileDate}_공용설비.xlsx`
+	      ];
+	    let html = "";
+	    filenames.forEach(f => {
+	      html += "<p>" + f + "</p>";
+	    });
+	    $('#fileNameList').html(html);
+	  });
+
+ 	  // 폼 제출 시 파일 다운로드
+	  $('#corrForm').submit(function (e) {
+	    e.preventDefault();
+
+	    const selectedDate = $('#modal_date').val();
+	    if (!selectedDate) {
+	      alert("날짜를 선택하세요.");
+	      return;
+	    }
+
+	    const firstHalf = filenames.slice(0, 6);   // 앞 6개
+	    const secondHalf = filenames.slice(6);     // 나머지 6개
+	    
+	    triggerDownloads(firstHalf);               // 먼저 6개 요청
+	    // 2초 뒤 나머지 6개 요청
+	    setTimeout(() => {
+	      triggerDownloads(secondHalf);
+	    }, 2000);
+	    
+	    function triggerDownloads(array) {
+	    	  array.forEach(filename => {
+	    	    if (!filename || filename.trim() === "") return;
+
+	    	    const encoded = encodeURIComponent(filename);
+	    	    const link = document.createElement("a");
+	    	    link.href = "/geomet/work/workDaily/AllExcel?filename=" + encoded;
+	    	    link.download = filename;
+	    	    document.body.appendChild(link);
+	    	    link.click();
+	    	    document.body.removeChild(link);
+	    	  });
+	    	}
+	    
+	  });
+});
+
     let table1, table2, table3;
     let now_page_code = "b04";
     function loadWorkDailyData() {

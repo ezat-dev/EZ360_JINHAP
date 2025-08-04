@@ -77,4 +77,7 @@
 <!--   
   <distributable/>
  -->  
+  <session-config>
+    <session-timeout>1440</session-timeout>
+  </session-config>
 </web-app>
