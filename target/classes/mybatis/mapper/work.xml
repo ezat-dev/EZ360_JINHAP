@@ -460,8 +460,9 @@ FROM (
 	FROM (
 		SELECT *,
 		CASE 
-			WHEN b_a = '주간' THEN CONCAT(date, ' 08:00:00')
-			ELSE CONCAT(date, ' 20:00:00') 
+			WHEN b_a = '오전' THEN CONCAT(date, ' 06:00:00')
+			WHEN b_a = '오후' THEN CONCAT(date, ' 15:00:00')
+			WHEN b_a = '야간' THEN CONCAT(date, ' 22:00:00')
 		END AS dssa,
 		(tank_temp + visocosity + specific_gravity + chiller_temp) AS row_sum
 		FROM tb_part_temp
@@ -475,12 +476,12 @@ LEFT OUTER JOIN
 	SELECT t.*
 	FROM tb_temp_data t
 	JOIN (
-	    -- HOUR = 8, 20 별로 가장 빠른
+	    -- HOUR = 6, 15, 22 별로 가장 빠른
 	    SELECT 
 	      MIN(temp_time) AS tm
 	    FROM tb_temp_data
 	    WHERE DATE(temp_time) = #{s_time2}
-	      AND HOUR(temp_time) IN (8, 20)
+	      AND HOUR(temp_time) IN (6, 15, 22)
 	    GROUP BY HOUR(temp_time)
 	) AS m
 	ON t.temp_time = m.tm
@@ -488,6 +489,7 @@ LEFT OUTER JOIN
 ON LEFT(dssa, 16) = LEFT(temp_time, 16);
   ]]>
 </select>
+
 
 
   
