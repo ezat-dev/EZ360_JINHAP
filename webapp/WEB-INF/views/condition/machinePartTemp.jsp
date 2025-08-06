@@ -717,37 +717,57 @@ $('.pCodeBtn').click(function () {
   }
 
   function handleFormSubmit(event) {
-       event.preventDefault();
-       
-       var corrForm = new FormData($('#corrForm')[0]);
-       corrForm.forEach(function(v, k){ 
-           console.log(k + ' = ' + v); 
-       });
+	    event.preventDefault();
 
+	    var corrForm = new FormData($('#corrForm')[0]);
+	    corrForm.forEach(function(v, k){ 
+	        console.log(k + ' = ' + v); 
+	    });
 
-        var startDate = $('#startDate').val();
-        var mch_code = $('#mch_code').val();
+	    var startDate = $('#startDate').val();
+	    var mch_code = $('#mch_code').val();
 
-       $.ajax({
-           url: '/geomet/condition/machinePartTemp/update', 
-           type: 'POST',
-           data: corrForm,
-           dataType: 'json',
-           processData: false,
-           contentType: false,
-           success: function(response) {
-               alert(response.data);
-               toggleModal(false);
-               //handleSelectButtonClick();
-               //dataTable.setData(data);
-               loadData(); // 데이터 리플레이스
+	    // 🔸 현재 스크롤 위치 저장
+	    const scrollTop = document.querySelector('#dataTable .tabulator-tableholder')?.scrollTop || 0;
 
-           },
-           error: function() {
-               alert('오류가 발생했습니다. 다시 시도해주세요.');
-           }
-       });
-   }
+	    // 🔸 선택된 행 ID 저장 (선택된 행이 있을 경우)
+	    const selectedRow = dataTable.getSelectedRows()[0];
+	    const selectedId = selectedRow ? selectedRow.getData().id : null;
+
+	    $.ajax({
+	        url: '/geomet/condition/machinePartTemp/update', 
+	        type: 'POST',
+	        data: corrForm,
+	        dataType: 'json',
+	        processData: false,
+	        contentType: false,
+	        success: function(response) {
+	            alert(response.data);
+	            toggleModal(false);
+
+	            // 🔸 데이터만 다시 불러오고, 완료 후 스크롤과 선택 복원
+	            dataTable.replaceData('/geomet/condition/machinePartTemp/list', {
+	                startDate: $("#startDate").val() || "",
+	                mch_code: $("#mch_code").val() || "",
+	                p_code: p_code
+	            }).then(() => {
+	                // 🔹 스크롤 복원
+	                document.querySelector('#dataTable .tabulator-tableholder')?.scrollTo({ top: scrollTop });
+
+	                // 🔹 선택 복원
+	                if (selectedId !== null) {
+	                    const row = dataTable.getRowFromData({ id: selectedId });
+	                    if (row) row.select();
+	                }
+	            });
+
+	        },
+	        error: function() {
+	            alert('오류가 발생했습니다. 다시 시도해주세요.');
+	        }
+	    });
+	}
+
   
   //설비명에 다라 버튼 개수 조정
   $(document).ready(function () {

@@ -361,17 +361,19 @@
 //		document.getElementById('header-title').innerText = menuName;
 	}
 
+
+    // 메뉴 닫기 x
 	function updateHeaderAndNavigate(event, url, menuGroupName) {
-		event.preventDefault(); // 기본 링크 동작 방지
-            
-		iframeSrc(url,menuGroupName);
-		//각 사용자별 메뉴 저장
-		var loginCode = "${loginUser.user_code}";
-		var menuUrl = url;
-		var menuName = menuGroupName;
-        
-		menuSave(loginCode, menuUrl, menuName);
-	}
+		  event.preventDefault(); 
+		  event.stopPropagation();  // 이벤트 전파 차단 (부모로 클릭 이벤트 안 전달)
+		  
+		  iframeSrc(url, menuGroupName);
+		  var loginCode = "${loginUser.user_code}";
+		  var menuUrl = url;
+		  var menuName = menuGroupName;
+
+		  menuSave(loginCode, menuUrl, menuName);
+		}
         
 	function menuSave(loginCode, menuUrl, menuName){
 		$.ajax({
