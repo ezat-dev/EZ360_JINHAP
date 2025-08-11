@@ -2025,4 +2025,34 @@ public class WorkController {
 
         Files.copy(file.toPath(), response.getOutputStream());
     }
+    
+    
+    @RequestMapping(value = "/work/inputControlStatusUp", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> getRepairStatusList(Work work) {
+        return workService.getInputControlStatusUp(work);
+    }
+    @RequestMapping(value = "/work/inputControlStatusDown", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> getRepairStatusDownList(@RequestBody Work work) {
+        System.out.println("=== 받은 파라미터 ===");
+        System.out.println("startDate: " + work.getStartDate());
+        System.out.println("endDate: " + work.getEndDate());
+
+        return workService.getInputControlStatusDown(work);
+    }
+
+    
+    
+    @RequestMapping(value = "/work/machineRealStatusDown", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> machineRealStatusDown(Work work) {
+        return workService.machineRealStatusDown(work);
+    }
+    
+    @RequestMapping(value = "/work/machineRealStatusUp", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> machineRealStatusUp(Work work) {
+        return workService.machineRealStatusUp(work);
+    }
 }

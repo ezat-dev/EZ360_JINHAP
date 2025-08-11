@@ -53,15 +53,20 @@
 	 
 	
 	
-	
+<!-- mssql 접속정보
+10.10.10.203
+id : micube
+pw: 찐합보안1!!
+db명: JINHAP_MES_DEV -->
 	
 	<!-- MSSQL DataSource: JINHAP_MES_DEV 08/11 추가-->
 	<bean id="dataSourceMssqlJinhap" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
 	    <property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"/>
 	    <property name="url" value="jdbc:sqlserver://10.10.10.203:1433;databaseName=JINHAP_MES_DEV"/>
 	    <property name="username" value="micube"/>
-	    <property name="password" value="찐합보안1!!"/>
+	    <property name="password" value="Wlsgkqqhdks1!!"/>
 	</bean>
+
 	
 	<!-- MyBatis 설정: MSSQL JINHAP -->
 	<bean id="sqlSessionFactoryMssqlJinhap" class="org.mybatis.spring.SqlSessionFactoryBean">

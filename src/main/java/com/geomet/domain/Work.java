@@ -4,6 +4,38 @@ import java.util.List;
 public class Work {
 	private String barcode_no;
 
+	private String w1;
+	private String w2;
+	private String s1;
+	private String s2;
+	private String s3;
+	private String s4;
+	private String s5;
+	private String s6;
+	private String g6;
+	private String g8;
+	private String kb;
+	private String mlpl;
+	private String resourceId;
+	private String resiurceName;
+	private String resourceName;
+	private String downtime;
+
+	
+	private String endDate;
+
+	private String line_cd;
+	private String total_cnt;
+	private String prod_cnt;
+//	private String ml;
+	private String pl;
+//	private String kb;
+	private String sv;
+	private String ar;
+	private String ws;
+	private String no;
+	
+	
 	private String w_s;
 	private String w_e;
 	private String s_s;
@@ -166,8 +198,18 @@ public class Work {
     private String sg;
     private String input_date;
     
+//    public String barcode_no;
+//    public String item_cd;
+//    public String item_nm;
+//    public String w_s;
+//    public String w_e;
+//    public String s_s;
+//    public String s_e;
+    public String g_s;
+    public String g_e;
+    public String mlpl_s;
+    public String mlpl_e;
     
-    private String no;
     
     
     
@@ -216,11 +258,199 @@ public class Work {
     public String a12;
     public String a13;
     
+    public String total;
+    public String prod;
+	/*
+	 * public String ml; public String pl; public String kb; public String sv;
+	 * public String ar; public String ws; public String no;
+	 */
+    
     
     
     
 
 
+	public String getLine_cd() {
+		return line_cd;
+	}
+	public String getG_s() {
+		return g_s;
+	}
+	public void setG_s(String g_s) {
+		this.g_s = g_s;
+	}
+	public String getG_e() {
+		return g_e;
+	}
+	public void setG_e(String g_e) {
+		this.g_e = g_e;
+	}
+	public String getMlpl_s() {
+		return mlpl_s;
+	}
+	public void setMlpl_s(String mlpl_s) {
+		this.mlpl_s = mlpl_s;
+	}
+	public String getMlpl_e() {
+		return mlpl_e;
+	}
+	public void setMlpl_e(String mlpl_e) {
+		this.mlpl_e = mlpl_e;
+	}
+	public String getTotal() {
+		return total;
+	}
+	public void setTotal(String total) {
+		this.total = total;
+	}
+	public String getProd() {
+		return prod;
+	}
+	public void setProd(String prod) {
+		this.prod = prod;
+	}
+	public void setLine_cd(String line_cd) {
+		this.line_cd = line_cd;
+	}
+	public String getTotal_cnt() {
+		return total_cnt;
+	}
+	public void setTotal_cnt(String total_cnt) {
+		this.total_cnt = total_cnt;
+	}
+	public String getProd_cnt() {
+		return prod_cnt;
+	}
+	public void setProd_cnt(String prod_cnt) {
+		this.prod_cnt = prod_cnt;
+	}
+	public String getPl() {
+		return pl;
+	}
+	public void setPl(String pl) {
+		this.pl = pl;
+	}
+	public String getSv() {
+		return sv;
+	}
+	public void setSv(String sv) {
+		this.sv = sv;
+	}
+	public String getAr() {
+		return ar;
+	}
+	public void setAr(String ar) {
+		this.ar = ar;
+	}
+	public String getWs() {
+		return ws;
+	}
+	public void setWs(String ws) {
+		this.ws = ws;
+	}
+
+	public String getResourceName() {
+		return resourceName;
+	}
+	public void setResourceName(String resourceName) {
+		this.resourceName = resourceName;
+	}
+	public String getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(String endDate) {
+		this.endDate = endDate;
+	}
+	public String getW1() {
+		return w1;
+	}
+	public void setW1(String w1) {
+		this.w1 = w1;
+	}
+	public String getW2() {
+		return w2;
+	}
+	public void setW2(String w2) {
+		this.w2 = w2;
+	}
+	public String getS1() {
+		return s1;
+	}
+	public void setS1(String s1) {
+		this.s1 = s1;
+	}
+	public String getS2() {
+		return s2;
+	}
+	public void setS2(String s2) {
+		this.s2 = s2;
+	}
+	public String getS3() {
+		return s3;
+	}
+	public void setS3(String s3) {
+		this.s3 = s3;
+	}
+	public String getS4() {
+		return s4;
+	}
+	public void setS4(String s4) {
+		this.s4 = s4;
+	}
+	public String getS5() {
+		return s5;
+	}
+	public void setS5(String s5) {
+		this.s5 = s5;
+	}
+	public String getS6() {
+		return s6;
+	}
+	public void setS6(String s6) {
+		this.s6 = s6;
+	}
+	public String getG6() {
+		return g6;
+	}
+	public void setG6(String g6) {
+		this.g6 = g6;
+	}
+	public String getG8() {
+		return g8;
+	}
+	public void setG8(String g8) {
+		this.g8 = g8;
+	}
+	public String getKb() {
+		return kb;
+	}
+	public void setKb(String kb) {
+		this.kb = kb;
+	}
+	public String getMlpl() {
+		return mlpl;
+	}
+	public void setMlpl(String mlpl) {
+		this.mlpl = mlpl;
+	}
+	public String getResourceId() {
+		return resourceId;
+	}
+	public void setResourceId(String resourceId) {
+		this.resourceId = resourceId;
+	}
+	public String getResiurceName() {
+		return resiurceName;
+	}
+	public void setResiurceName(String resiurceName) {
+		this.resiurceName = resiurceName;
+	}
+	public String getDowntime() {
+		return downtime;
+	}
+	public void setDowntime(String downtime) {
+		this.downtime = downtime;
+	}
 	public String getBarcode_no() {
 		return barcode_no;
 	}

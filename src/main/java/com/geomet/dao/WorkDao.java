@@ -32,4 +32,13 @@ public interface WorkDao {
 	//모니터링 현황
 	List<Work> MonitoringStatusList(Work work);
     List<Work> MonitoringStatusList2(Work work);
+    
+    List<Work> getInputControlStatusUp(Work work);
+    List<Work> getInputControlStatusDown(Work work);
+
+    List<Work> machineRealStatusDown(Work work);
+    List<Work> machineRealStatusUp(Work work);
+    
+    List<Work> lotReportStatusList(Work work);
+    
 }

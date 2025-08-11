@@ -1,6 +1,7 @@
 package com.geomet.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -72,5 +73,25 @@ public class WorkServiceImpl implements WorkService {
 	        return workDao.MonitoringStatusList2(work);
 	    }
 	    
-
+	    @Override
+	    public List<Work> getInputControlStatusUp(Work work) {
+	        return workDao.getInputControlStatusUp(work);
+	    }
+	    @Override
+	    public List<Work> getInputControlStatusDown(Work work) {
+	        return workDao.getInputControlStatusDown(work);
+	    }
+	    @Override
+	    public List<Work> machineRealStatusDown(Work work) {
+	        return workDao.machineRealStatusDown(work);
+	    }
+	    @Override
+	    public List<Work> machineRealStatusUp(Work work) {
+	        return workDao.machineRealStatusUp(work);
+	    }
+	    @Override
+	    public List<Work> lotReportStatusList(Work work) {
+	        return workDao.lotReportStatusList(work);
+	    }
+	    
 }

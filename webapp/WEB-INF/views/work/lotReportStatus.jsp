@@ -6,9 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC교체이력</title>
-    <%@include file="../include/pluginpage.jsp" %>    
+<%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
-    <style>
+ <style>
         .container {
             display: flex;
             justify-content: space-between;
@@ -21,16 +21,16 @@
             justify-content: center;
             margin-top: 1%;
         }
-        .tab {
-            width: 95%;
-            margin-bottom: 37px;
-            margin-top: 5px;
-            height: 45px;
-            border-radius: 6px 6px 0px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+		.tab {
+		    width: 90%;
+		    margin-bottom: 3px;
+		    margin-top: 25px;
+		    height: 45px;
+		    border-radius: 6px 6px 0px 0px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: space-between;
+		}
         .modal {
             display: none;
             position: fixed;
@@ -45,7 +45,7 @@
 	        background: white;
 	        width: 24%;
 	        max-width: 500px;
-	        height: 80vh; 
+	      
 	        overflow-y: auto; 
 	        margin: 6% auto 0;
 	        padding: 20px;
@@ -89,7 +89,7 @@
             border-radius: 5px;
         }
         select {
-         
+            width: 100%;
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -119,11 +119,11 @@
 		    display: flex;
 		    justify-content: right;
 		    align-items: center;
-		    width: 880px;
+		    width: 800px;
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
-        .equipmentName {
+        .mach_code {
             width: 20%;
             text-align: center;
             font-size: 15px;
@@ -147,7 +147,7 @@
         button-container.button{
         height: 16px;
         }
-        .mid{
+         .mid{
         margin-right: 9px;
 	    font-size: 20px;
 	    font-weight: bold;
@@ -155,14 +155,6 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
-        .equipment_name{
-            width: 20%;
-            text-align: center;
-            font-size: 15px;
-        }
-	.excel-button {
-	    margin-right: 30px;
-	}
     </style>
 </head>
 
@@ -174,241 +166,271 @@
 
             <div class="button-container">
             
-  			<div class="box1">
-           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">기간 선택 :</label>
-			<input type="text" class="daySet" autocomplete="off" id="start_time" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-			
-			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+              <div class="box1">
+	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+	           <label class="daylabel">검색일자 :</label>
+				<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+				
+				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+	
+				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+	
+	     
 
-			<input type="text" class="daySet" autocomplete="off" id="end_time" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-
-            <label class="daylabel">LOT 번호 :</label>
-        	<input class="barcode_no" id="barcode_no" style="width:170px; height:28px; border:1px solid #ccc; border-radius:4px; margin-bottom:8px;">
-
-        
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-<!--                 <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button> -->
+             
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-<!--         		<button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
-				</button> -->
 
             </div>
         </div>
 
         <div class="view">
-            <div id="dataList"></div>
+            <div id="dataList" style="margin-top:50px;"></div>
+           
         </div>
+       <div class="view">       
+         <div id="dataList2" style="margin-top:10px;"></div>
+       </div>
     </main>
 	
 
 
+   <script>
+let now_page_code = "f02";
 
-    <script>
-    let now_page_code = "g01";
+$(function() {
+    var today = new Date();
 
-    $(function() {
-       
-        function calcNextDate() {
-          var dateStr = $('input[name="replacement_date"]').val();    // 교체일자
-          var cycle   = $('select[name="replacement_cycle"]').val();  // 교체 주기
+    // 1년 전 날짜 계산
+    var oneYearAgo = new Date(today);
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
 
-          if (dateStr && cycle !== 'x') {
-          
-            var parts = dateStr.split('-');
-            if (parts.length === 3) {
-              var y = parseInt(parts[0], 10),
-                  m = parseInt(parts[1], 10) - 1, 
-                  d = parseInt(parts[2], 10);
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        return year + "-" + month + "-" + day;
+    }
 
-              var dt = new Date(y, m, d);
+    $('#startDate').val(formatDate(oneYearAgo));
+    $('#endDate').val(formatDate(today));
 
-              var addYears = parseInt(cycle, 10);
-              dt.setFullYear(dt.getFullYear() + addYears);
-
-             
-              var ny = dt.getFullYear(),
-                  nm = ('0' + (dt.getMonth() + 1)).slice(-2),
-                  nd = ('0' + dt.getDate()).slice(-2);
-
-              $('input[name="next_date"]').val(ny + '-' + nm + '-' + nd);
-            }
-          } else {
-    
-            $('input[name="next_date"]').val('');
-          }
-        }
-
-      
-        $('input[name="replacement_date"], select[name="replacement_cycle"]')
-          .on('change', calcNextDate);
-      });
-
-
-    
-    $(document).ready(function () {
-	    getDataList();
-	    // 모달 열기 버튼 이벤트
-	    $(".insert-button").click(function () {
-	        let modal = $("#modalContainer");
-	        modal.show(); 
-	        modal.addClass("show");
-	    });
-
-	    // 모달 닫기 버튼 이벤트
-	    $(".close, #closeModal").click(function () {
-	        let modal = $("#modalContainer");
-	        modal.removeClass("show").hide(); 
-	    });
-
-	    $("#barcode_no").on("change", function () {
-	        console.log("선택된 설비명:", $(this).val());
-	    });
-  
-    });
-
-
-	    $(".select-button").click(function () {
-	        let barcode_no = $("#barcode_no").val() || "";
-	        let start_time = $("#start_time").val() || "";
-	        let end_time = $("#end_time").val() || "";
-	
-	        console.log("검색 요청 값 =>", {
-	        	barcode_no: barcode_no,
-	            start_time: start_time,
-	            end_time: end_time
-	        });
-	
-	        dataTable.setData("/geomet/work/lotReport/list", {
-	            "barcode_no": barcode_no,
-	            "start_time": start_time,
-	            "end_time": barcode_no,
-	        });
-	    });
-	    
-
-        var selectedRow = null;
-        function getDataList() {
-        	dataTable = new Tabulator("#dataList", {
-        	    height: "830px",
-        	    layout: "fitColumns",
-        	    selectable: true,
-        	    tooltips: true,
-                columnHeaderVertAlign: "middle",
-                rowVertAlign: "middle",
-        	    selectableRangeMode: "click",
-        	    reactiveData: true,
-        	    headerHozAlign: "center",
-        	    ajaxConfig: "POST",
-        	    ajaxLoader: false,
-        	    ajaxURL: "/geomet/work/lotReport/list",
-        	    ajaxProgressiveLoad: "scroll",
-        	    ajaxParams: {
-        	        "equipment_name": $("#equipment_name").val() || "",
-        	        "startDate": $("#startDate").val() || "",
-        	        "endDate": $("#endDate").val() || "",
-        	    },
-        	    placeholder: "조회된 데이터가 없습니다.",
-        	    paginationSize: 20,
-        	    groupBy: "equipment_name",  
-        	    groupStartOpen: true,  
-        	    groupHeader: function(value, count, data) {
-        	    	
-        	        return `<span style="font-weight:bold; font-size:16px;">${value}</span>`;
-        	    },
-
-        	    ajaxResponse: function(url, params, response) {
-        	        $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-        	        return response;
-        	    },
-        	    columns: [
-        	        {title: "NO", field: "no", sorter: "string", width: 100, hozAlign: "center", headerSort: false,visible: false},
-        	        {
-        	            title: "순번", 
-        	            formatter: "rownum", 
-        	            hozAlign: "center", 
-        	            width: 80, 
-        	            headerSort: false  // ✅ 자동 순번 추가
-        	          },
-        	        {title: "LOT 번호", field: "barcode_no", sorter: "string", width: 190, hozAlign: "center", headerSort: false},
-        	        {title: "제품 번호", field: "item_cd", sorter: "string", width: 140, hozAlign: "center", headerSort: false},
-        	        {title: "제품명", field: "item_nm", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-        	       
-        	        {title: "세척 투입", field: "w_s", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-        	        {title: "세척 추출", field: "w_e", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-
-        	        {title: "쇼트 투입", field: "s_s", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-        	        {title: "쇼트 추출", field: "s_e", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-
-        	        {title: "GEOMET 투입", field: "G03_s", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-        	        {title: "GEOMET 투입", field: "G03_e", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-
-        	        {title: "공용설비 투입", field: "G04_s", sorter: "string", width: 230, hozAlign: "center", headerSort: false},
-        	        {title: "공용설비 투입", field: "G04_e", sorter: "string", width: 230, hozAlign: "center", headerSort: false}
-        	       
-        	    ],
-        	    rowClick: function(e, row) {
-        	        $("#dataList .tabulator-row").removeClass("row_select");
-        	        row.getElement().classList.add("row_select");
-
-        	        selectedRow = row; 
-        	        console.log("no:", selectedRow.getData().no);
-        	    },
-
-        	});
-
-        }
+    getDataList();
+    getDataList2();
+});
 
 
 
-        $(document).ready(function () {
+function getDataList() {
+    var mach_code = $('.mach_code').val() || ""; // mach_code가 없으면 빈 문자열
 
-   
-
-        $(".excel-button").on("click", function () {
-        	  console.log("엑셀 다운로드 버튼 클릭됨"); 
-
-        	  const equipmentName = $("#equipment_name").val() || "";
-            const startDate = $("#startDate").val() || "";
-            const endDate = $("#endDate").val() || "";
-
-            console.log("엑셀 다운로드 요청 값 =>", {
-                equipment_name: equipmentName,
-                startDate: startDate,
-                endDate: endDate
-            });
-          	  
-              
-            $.ajax({
-                url: "/geomet/work/lotReport/excel",
-                type: "post",
-                data: {
-                    equipment_name: equipmentName,
-                    startDate: startDate,
-                    endDate: endDate
-                },
-                dataType: "json",
-                success: function (result) {
-                    console.log(result);
-                    alert("D:\\GEOMET양식\\T/C조절 저장 완료되었습니다.");
-                },
-                error: function (xhr, status, error) {
-                    alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
-                    console.error("Error:", error);
-                }
-            });
+    if (window.dataTable) {
+        dataTable.setData("/geomet/work/inputControlStatusUp", {
+           
         });
+        return;
+    }
 
-                
-    </script>
+    dataTable = new Tabulator("#dataList", {
+        height: "100px",
+        layout: "fitColumns",
+        ajaxConfig: "POST",
+        ajaxURL: "/geomet/work/inputControlStatusUp",
+        columnHeaderVertAlign: "middle",
+        headerHozAlign: "center",
+        ajaxParams: {
+           
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function(url, params, response) {
+            console.log("dataList 서버에서 받은 응답:", response);
+            return response;
+        },
+        columns: [
+            { title: "세척1호기", field: "w1", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "세척2호기", field: "w2", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트1호기", field: "s1", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            // 나머지 컬럼도 동일하게 작성 (필요하면 복사 붙여넣기)
+            { title: "쇼트2호기", field: "s2", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트3호기", field: "s3", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트4호기", field: "s4", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트5호기", field: "s5", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트6호기", field: "s6", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "G-600", field: "g6", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "G-800", field: "g8", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "K-BLACK", field: "kb", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "공용설비", field: "mlpl", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            }
+        ],
+        rowFormatter: function(row){
+            row.getElement().style.fontWeight = "700";
+            row.getElement().style.backgroundColor = "#FFFFFF";
+        },
+        rowClick: function(e, row){
+            $("#dataList .tabulator-row").removeClass("row_select");
+            row.getElement().classList.add("row_select");
+        }
+    });
+}
 
+function getDataList2() {
+    if (window.dataTable2) {
+        dataTable2.setData("/geomet/work/lotReportStatusList", {
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val()
+        });
+        return;
+    }
+    dataTable2 = new Tabulator("#dataList2", {
+        height: "500px",
+        layout: "fitColumns",
+        ajaxURL: "/geomet/work/lotReportStatusList", // <- 여기 추가
+        ajaxConfig: {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        },
+        ajaxParams: {
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val()
+        },
+        ajaxRequestFunc: function(url, config, params) {
+            return fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(params)
+            }).then(response => response.json());
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        columnHeaderVertAlign: "middle",
+        headerHozAlign: "center",
+        columns: [
+        	{ title: "?번호", formatter: "rownum", hozAlign: "center", width: 180 },
+            { title: "제품CODE", field: "resourceId", hozAlign: "center", width: 180 },
+            { title: "제품명", field: "resourceName", hozAlign: "center", width: 180 },
+            { title: "세척 시작", field: "downtime", hozAlign: "center", width: 180 },
+            { title: "세척 종료", field: "downtime", hozAlign: "center", width: 180 },
+            { title: "쇼트 시작", field: "downtime", hozAlign: "center", width: 180 },
+            { title: "쇼트 종료", field: "downtime", hozAlign: "center", width: 180 },
+            { title: "GEOMET 시작", field: "downtime", hozAlign: "center", width: 180 },
+            { title: "GEOMET 종료", field: "downtime", hozAlign: "center", width: 180 },
+            { title: "공용설비 시작", field: "downtime", hozAlign: "center", width: 180 },
+            { title: "공용설비 종료", field: "downtime", hozAlign: "center", width: 180 },
+           
+        ],
+        ajaxResponse: function (url, params, response) {
+            console.log("dataList2 서버에서 받은 응답:", response);
+            return response;
+        }
+    });
+}
+
+
+
+// 공통 포맷터
+function colorFormatter(cell) {
+    const value = cell.getValue();
+    return value === "가동"
+        ? "<span style='color:green;'>" + value + "</span>"
+        : "<span style='color:red;'>" + value + "</span>";
+}
+
+// 조회 버튼 클릭 시 두 테이블 모두 조회
+$('.select-button').on('click', function() {
+    getDataList();
+    getDataList2();
+});
+</script>
 </body>
 </html>

@@ -5,12 +5,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>설비 실시간정보</title>
-   
-      <%@include file="../include/pluginpage.jsp" %>    
+    <title>생산설비 시간 정보</title>
+<%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
-
-  <style>
+ <style>
         .container {
             display: flex;
             justify-content: space-between;
@@ -23,16 +21,16 @@
             justify-content: center;
             margin-top: 1%;
         }
-        .tab {
-            width: 95%;
-            margin-bottom: 37px;
-            margin-top: 5px;
-            height: 45px;
-            border-radius: 6px 6px 0px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+		.tab {
+		    width: 90%;
+		    margin-bottom: 3px;
+		    margin-top: 25px;
+		    height: 45px;
+		    border-radius: 6px 6px 0px 0px;
+		    display: flex;
+		    align-items: center;
+		    justify-content: space-between;
+		}
         .modal {
             display: none;
             position: fixed;
@@ -47,7 +45,7 @@
 	        background: white;
 	        width: 24%;
 	        max-width: 500px;
-	        height: 80vh; 
+	      
 	        overflow-y: auto; 
 	        margin: 6% auto 0;
 	        padding: 20px;
@@ -84,7 +82,7 @@
             margin: 10px 0 5px;
         }
         .modal-content input, .modal-content textarea {
-
+            width: 97%;
             padding: 8px;
             margin-bottom: 10px;
             border: 1px solid #ccc;
@@ -125,7 +123,7 @@
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
-        .dayselect {
+        .mach_code {
             width: 20%;
             text-align: center;
             font-size: 15px;
@@ -149,7 +147,7 @@
         button-container.button{
         height: 16px;
         }
-        .mid{
+         .mid{
         margin-right: 9px;
 	    font-size: 20px;
 	    font-weight: bold;
@@ -157,29 +155,6 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
-        
-            /* 체크박스 스타일 */
- /* 체크박스 스타일 */
-    .checkbox-group {
-        display: flex;
-        gap: 20px;
-        margin-bottom: 10px;
-    }
-    .checkbox1{
-    margin-top:20px;
-    margin-right:10px;
-    
-    }
-
-    .checkbox-group label {
-        font-size: 16px;
-    }
-
-    .checkbox-group input[type="checkbox"] {
-        transform: scale(1.7); /* 체크박스 크기 키우기 */
-    }
-        
-        
     </style>
 </head>
 
@@ -191,219 +166,264 @@
 
             <div class="button-container">
             
-  			<div class="box1">
-           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-           <label class="daylabel">검색일자 :</label>
-			<input type="text" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-			
-			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+              <div class="box1">
+	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+	           <label class="daylabel">검색일자 :</label>
+				<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+				
+				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+	
+				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+	
+	     
 
-			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-
-            <label class="daylabel">설비명 :</label>
-            <select class="dayselect">
-             
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+             
                 <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
                 </button>
-                <button class="printer-button">
-                    <img src="/geomet/css/tabBar/printer-icon.png" alt="printer" class="button-image">출력
-                </button>
+
             </div>
         </div>
 
         <div class="view">
-            <div id="dataList"></div>
+            <div id="dataList" style="margin-top:50px;"></div>
+           
         </div>
+       <div class="view">       
+         <div id="dataList2" style="margin-top:10px;"></div>
+       </div>
     </main>
 	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
-	        
-	        
-	        
-	        
-	         <label>구분</label>
-	            <select name="select1">
-	                <option value="1">전처리</option>
-	                <option value="2">후처리</option>
-	                
-	            </select>
-	            
-	            
-	            
-	            <label>설비명</label>
-	            <select name="equipmentName">
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
-	            </select>
-	
-
-	   		  <div class="checkbox-group">
-                <label>가동
-                    <input type="checkbox"class="checkbox1" name="status" value="가동">
-                </label>
-                <label>비가동
-                    <input type="checkbox"class="checkbox1" name="status" value="비가동">
-                </label>
-                <label>정지
-                    <input type="checkbox"class="checkbox1" name="status" value="정지">
-                </label>
-            </div>
-
-	         
-	
-	           
-	            <label>비고</label>
-	            <textarea name="remarks" rows="17"></textarea>
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
 
 
-    <script>
-    let now_page_code = "f02";
-    
-        $(function() {
+   <script>
+let now_page_code = "f02";
 
-            const today = new Date().toISOString().split('T')[0];
-            $('#startDate').val(today);
-            $('#endDate').val(today);
-            getDataList();
+$(function() {
+    var today = new Date();
+
+    // 1년 전 날짜 계산
+    var oneYearAgo = new Date(today);
+    oneYearAgo.setFullYear(today.getFullYear() - 1);
+
+    function formatDate(date) {
+        var year = date.getFullYear();
+        var month = ("0" + (date.getMonth() + 1)).slice(-2);
+        var day = ("0" + date.getDate()).slice(-2);
+        return year + "-" + month + "-" + day;
+    }
+
+    $('#startDate').val(formatDate(oneYearAgo));
+    $('#endDate').val(formatDate(today));
+
+    getDataList();
+    getDataList2();
+});
+
+
+
+function getDataList() {
+    var mach_code = $('.mach_code').val() || ""; // mach_code가 없으면 빈 문자열
+
+    if (window.dataTable) {
+        dataTable.setData("/geomet/work/inputControlStatusUp", {
+           
         });
+        return;
+    }
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                columnHeaderVertAlign: "middle",
-                rowVertAlign: "middle",
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                    {title: "구분", field: "1", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "설비", field: "2", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "가동", field: "3", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "비가동", field: "4", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "정지", field: "5", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "비고", field: "6", sorter: "string", width: 580, hozAlign: "center", headerSort: false},
-                  
-                ],
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
+    dataTable = new Tabulator("#dataList", {
+        height: "100px",
+        layout: "fitColumns",
+        ajaxConfig: "POST",
+        ajaxURL: "/geomet/work/inputControlStatusUp",
+        columnHeaderVertAlign: "middle",
+        headerHozAlign: "center",
+        ajaxParams: {
+           
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function(url, params, response) {
+            console.log("dataList 서버에서 받은 응답:", response);
+            return response;
+        },
+        columns: [
+            { title: "세척1호기", field: "w1", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "세척2호기", field: "w2", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트1호기", field: "s1", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            // 나머지 컬럼도 동일하게 작성 (필요하면 복사 붙여넣기)
+            { title: "쇼트2호기", field: "s2", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트3호기", field: "s3", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트4호기", field: "s4", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트5호기", field: "s5", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "쇼트6호기", field: "s6", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "G-600", field: "g6", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "G-800", field: "g8", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "K-BLACK", field: "kb", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            },
+            { title: "공용설비", field: "mlpl", headerSort: false, width: 110, hozAlign: "center",
+                formatter: function(cell) {
+                    const value = cell.getValue();
+                    return value === "가동"
+                        ? "<span style='color:green;'>" + value + "</span>"
+                        : "<span style='color:red;'>" + value + "</span>";
+                }
+            }
+        ],
+        rowFormatter: function(row){
+            row.getElement().style.fontWeight = "700";
+            row.getElement().style.backgroundColor = "#FFFFFF";
+        },
+        rowClick: function(e, row){
+            $("#dataList .tabulator-row").removeClass("row_select");
+            row.getElement().classList.add("row_select");
         }
+    });
+}
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
+function getDataList2() {
+    if (window.dataTable2) {
+        dataTable2.setData("/geomet/work/inputControlStatusDown", {
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val()
         });
+        return;
+    }
+    dataTable2 = new Tabulator("#dataList2", {
+        height: "500px",
+        layout: "fitColumns",
+        ajaxURL: "/geomet/work/inputControlStatusDown", // <- 여기 추가
+        ajaxConfig: {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            }
+        },
+        ajaxParams: {
+            startDate: $('#startDate').val(),
+            endDate: $('#endDate').val()
+        },
+        ajaxRequestFunc: function(url, config, params) {
+            return fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(params)
+            }).then(response => response.json());
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        columnHeaderVertAlign: "middle",
+        headerHozAlign: "center",
+        columns: [
+        	{ title: "순번", formatter: "rownum", hozAlign: "center", width: 100 },
+            { title: "설비코드", field: "resourceId", hozAlign: "center", width: 310 },
+            { title: "설비명", field: "resourceName", hozAlign: "center", width: 310 },
+            { title: "발생 시간(분)", field: "downtime", hozAlign: "center", width: 310 },
+            { title: "발생 카운트", field: "cc", hozAlign: "center", width: 300 },
+        ],
+        ajaxResponse: function (url, params, response) {
+            console.log("dataList2 서버에서 받은 응답:", response);
+            return response;
+        }
+    });
+}
 
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
 
 
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
-                
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+// 공통 포맷터
+function colorFormatter(cell) {
+    const value = cell.getValue();
+    return value === "가동"
+        ? "<span style='color:green;'>" + value + "</span>"
+        : "<span style='color:red;'>" + value + "</span>";
+}
 
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
-
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
-
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
-        });
-
-        	
-
-
-        
-    </script>
-
+// 조회 버튼 클릭 시 두 테이블 모두 조회
+$('.select-button').on('click', function() {
+    getDataList();
+    getDataList2();
+});
+</script>
 </body>
 </html>

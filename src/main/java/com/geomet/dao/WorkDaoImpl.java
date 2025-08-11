@@ -16,6 +16,15 @@ public class WorkDaoImpl implements WorkDao {
     @Resource(name = "session")
     private SqlSession sqlSession;
 
+
+    @Resource(name = "sessionMssqlJinhap")
+    private SqlSession sqlSessionMssqlJinhap;
+    
+    
+	 @Resource(name="orcleSession")
+		private SqlSession sessionOrcle;
+    
+    
     @Override
     public List<Work> getInventoryStatusList(Work work) {
         return sqlSession.selectList("work.getInventoryStatusList", work);
@@ -77,5 +86,35 @@ public class WorkDaoImpl implements WorkDao {
     @Override
     public List<Work> MonitoringStatusList2(Work work) {
         return sqlSession.selectList("work.MonitoringStatusList2", work);
+    }
+    
+    
+    // 생산조건 모니터링
+    @Override
+    public List<Work> getInputControlStatusUp(Work work) {
+        return sqlSession.selectList("work.getInputControlStatusUp", work);
+    }
+    
+    
+  
+    @Override
+    public List<Work> getInputControlStatusDown(Work work) {
+    	 return sqlSessionMssqlJinhap.selectList("work.getInputControlStatusDown", work);
+    }
+    
+    @Override
+    public List<Work> machineRealStatusDown(Work work) {
+    	 return sessionOrcle.selectList("work.machineRealStatusDown", work);
+    }
+    
+    @Override
+    public List<Work> machineRealStatusUp(Work work) {
+    	 return sessionOrcle.selectList("work.machineRealStatusUp", work);
+    }
+    
+    
+    @Override
+    public List<Work> lotReportStatusList(Work work) {
+    	 return sqlSession.selectList("work.lotReportStatusList", work);
     }
 }
