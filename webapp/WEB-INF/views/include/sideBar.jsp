@@ -211,7 +211,7 @@
 				<ul class="collapse__menu" id="hMenu"></ul>
 			</div>
 
-			<div class="nav__link collapse">
+			<!-- <div class="nav__link collapse">
 				<ion-icon name="people-outline" class="nav__icon"></ion-icon>
 				<span class="nav_name">문서관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
@@ -230,7 +230,7 @@
 				<span class="nav_name">세척 관리</span>
 				<ion-icon name="chevron-down-outline" class="collapse__link"></ion-icon>
 				<ul class="collapse__menu" id="kMenu"></ul>
-			</div>
+			</div> -->
 		</div>
 	</div>
 </nav>
@@ -319,7 +319,7 @@
 							}else if(key.indexOf("h") != -1){
 								_group = "설비관리";
 								_groupID = "hMenu";
-							}else if(key.indexOf("i") != -1){
+							}/* else if(key.indexOf("i") != -1){
 								_group = "문서관리";
 								_groupID = "iMenu";
 							}else if(key.indexOf("j") != -1){
@@ -328,7 +328,7 @@
 							}else if(key.indexOf("k") != -1){
 								_group = "세척관리";
 								_groupID = "kMenu";
-							}
+							} */
 							
 							
 							_group_t = _group.replace(/\s/gi,"&nbsp;");

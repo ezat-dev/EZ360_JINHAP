@@ -811,4 +811,131 @@ ORDER BY MAX(end_time) DESC;
 
 </select>
 
+
+
+
+
+
+
+<select id="inputControlStatusUp" parameterType="Work" resultType="Work">
+<![CDATA[
+SELECT
+  MAX(CASE WHEN facility_name = '세척1호기' THEN d END) AS 'w1',
+  MAX(CASE WHEN facility_name = '세척2호기' THEN d END) AS 'w2',
+  MAX(CASE WHEN facility_name = '쇼트1호기' THEN d END) AS 's1',
+  MAX(CASE WHEN facility_name = '쇼트2호기' THEN d END) AS 's2',
+  MAX(CASE WHEN facility_name = '쇼트3호기' THEN d END) AS 's3',
+  MAX(CASE WHEN facility_name = '쇼트4호기' THEN d END) AS 's4',
+  MAX(CASE WHEN facility_name = '쇼트5호기' THEN d END) AS 's5',
+  MAX(CASE WHEN facility_name = '쇼트6호기' THEN d END) AS 's6',
+  MAX(CASE WHEN facility_name = 'G600' THEN d END) AS 'G6',
+  MAX(CASE WHEN facility_name = 'G800' THEN d END) AS 'G8',
+  MAX(CASE WHEN facility_name = 'K-BLACK' THEN d END) AS 'b',
+  MAX(CASE WHEN facility_name = '공용설비' THEN d END) AS 'mlpl'
+FROM (
+  SELECT 
+    IFNULL(facility_name, fac_name3) AS facility_name,
+    IFNULL(d, '비가동') AS d
+  FROM (
+     SELECT facility_mach_Code AS fac_code3, facility_name AS fac_name3, ch_idx
+     FROM tb_facility
+     WHERE ch_idx < 30
+  ) AS main
+  LEFT OUTER JOIN
+  (
+     SELECT mach_code, facility_name,
+       CASE 
+         WHEN work_gb = 0 THEN '가동'
+         ELSE 
+           CASE 
+             WHEN TIMESTAMPDIFF(HOUR, max_end_time, DATE_FORMAT(NOW(),'%Y%m%d%H%i%s')) > 2 
+             THEN '비가동'
+             ELSE '가동'
+           END
+       END AS d
+     FROM (
+        SELECT mach_code, facility_name,
+          MAX(end_time) AS max_end_time,
+          MAX(work_gb) AS work_gb
+        FROM (
+           SELECT 
+             mach_code,
+             facility_name,
+             end_time,
+             work_gb
+           FROM tb_lowdata_save A
+           LEFT JOIN (
+             SELECT 'JH_KR_01' AS du_plac_cd, '02' AS du_plnt_cd,
+               CASE WHEN CURDATE() = CURDATE() THEN 1 ELSE 0 END AS work_gb
+           ) AS B
+           ON A.plac_cd = B.du_plac_cd AND A.plnt_cd = B.du_plnt_cd
+           LEFT JOIN (
+             SELECT * FROM tb_facility WHERE ch_idx < 30
+           ) AS C
+           ON A.mach_code = C.facility_mach_code
+           WHERE A.start_time >= DATE_FORMAT(CURDATE(), '%Y%m01%H%i%s')
+             AND A.start_time <= DATE_FORMAT(DATE_ADD(LAST_DAY(CURDATE()), INTERVAL 1 DAY), '%Y%m%d%H%i%s')
+        ) AS AA
+        GROUP BY mach_code, facility_name
+     ) AS BB
+  ) AS DD
+  ON main.fac_code3 = DD.mach_code
+) AS pivoted;
+]]>
+
+</select>
+
+
+
+<!-- mssql디비임 -->
+<select id="inputControlStatusDown" parameterType="Work" resultType="Work">
+    <![CDATA[
+    SELECT 
+        A.ResourceID,
+        CASE A.ResourceID
+            WHEN 'G01-GW01' THEN '세척1'
+            WHEN 'G01-GW02' THEN '세척2'
+            WHEN 'G03-GG01' THEN 'G-800'
+            WHEN 'G03-GG03' THEN 'G-600'
+            WHEN 'G02-GC01' THEN '쇼트1호기'
+            WHEN 'G02-GC02' THEN '쇼트2호기'
+            WHEN 'G02-GC03' THEN '쇼트3호기'
+            WHEN 'G02-GC04' THEN '쇼트4호기'
+            WHEN 'G02-GC05' THEN '쇼트5호기'
+            WHEN 'G02-GC07' THEN '쇼트6호기'
+            WHEN 'G04-GG05' THEN 'K-BLACK'
+            WHEN 'G04-GG07' THEN '공용설비'
+            ELSE A.ResourceID
+        END AS ResourceName,
+        SUM(A.downtime) AS downtime,
+        COUNT(*) AS cc
+    FROM 
+        V_FEMS_IF_DOWNTIME A
+    WHERE 
+        A.endtime IS NOT NULL
+        AND A.workDay >= #{startTime}
+        AND A.workDay <= #{endTime}
+        AND A.ResourceID IN (
+            'G01-GW01',
+            'G01-GW02',
+            'G03-GG01',
+            'G03-GG03',
+            'G02-GC01',
+            'G02-GC02',
+            'G02-GC03',
+            'G02-GC04',
+            'G02-GC05',
+            'G02-GC07',
+            'G04-GG05',
+            'G04-GG07'
+        )
+    GROUP BY 
+        A.ResourceID
+    ORDER BY 
+        ResourceName
+    ]]>
+</select>
+
+
+
 </mapper>
