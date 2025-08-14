@@ -361,55 +361,88 @@ function getDataList() {
     });
 }
 
-function getDataList2() {
-    if (window.dataTable2) {
-        dataTable2.setData("/geomet/work/inputControlStatusDown", {
-            startDate: $('#startDate').val(),
-            endDate: $('#endDate').val()
-        });
-        return;
-    }
-    dataTable2 = new Tabulator("#dataList2", {
-        height: "500px",
-        layout: "fitColumns",
-        ajaxURL: "/geomet/work/inputControlStatusDown", // <- 여기 추가
-        ajaxConfig: {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            }
-        },
-        ajaxParams: {
-            startDate: $('#startDate').val(),
-            endDate: $('#endDate').val()
-        },
-        ajaxRequestFunc: function(url, config, params) {
-            return fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(params)
-            }).then(response => response.json());
-        },
-        placeholder: "조회된 데이터가 없습니다.",
-        columnHeaderVertAlign: "middle",
-        headerHozAlign: "center",
-        columns: [
-        	{ title: "순번", formatter: "rownum", hozAlign: "center", width: 100 },
-            { title: "설비코드", field: "resourceId", hozAlign: "center", width: 310 },
-            { title: "설비명", field: "resourceName", hozAlign: "center", width: 310 },
-            { title: "발생 시간(분)", field: "downtime", hozAlign: "center", width: 310 },
-            { title: "발생 카운트", field: "cc", hozAlign: "center", width: 300 },
-        ],
-        ajaxResponse: function (url, params, response) {
-            console.log("dataList2 서버에서 받은 응답:", response);
-            return response;
-        }
-    });
-}
+const order = [
+	  "세척1",
+	  "세척2",
+	  "쇼트1호기",
+	  "쇼트2호기",
+	  "쇼트3호기",
+	  "쇼트4호기",
+	  "G-600",
+	  "G-800",
+	  "K-BLACK",
+	  "공용설비"
+	];
 
+	function getDataList2() {
+	  if (window.dataTable2) {
+	    dataTable2.setData("/geomet/work/inputControlStatusDown", {
+	      startDate: $('#startDate').val(),
+	      endDate: $('#endDate').val()
+	    });
+	    return;
+	  }
+	  dataTable2 = new Tabulator("#dataList2", {
+	    height: "500px",
+	    layout: "fitColumns",
+	    ajaxURL: "/geomet/work/inputControlStatusDown",
+	    ajaxConfig: {
+	      method: "POST",
+	      headers: {
+	        "Content-Type": "application/json"
+	      }
+	    },
+	    ajaxParams: {
+	      startDate: $('#startDate').val(),
+	      endDate: $('#endDate').val()
+	    },
+	    ajaxRequestFunc: function(url, config, params) {
+	      return fetch(url, {
+	        method: "POST",
+	        headers: {
+	          "Content-Type": "application/json"
+	        },
+	        body: JSON.stringify(params)
+	      }).then(response => response.json());
+	    },
+	    placeholder: "조회된 데이터가 없습니다.",
+	    columnHeaderVertAlign: "middle",
+	    headerHozAlign: "center",
+	    columns: [
+	      { title: "순번", formatter: "rownum", hozAlign: "center", width: 100 },
+	      { title: "설비코드", field: "resourceId", hozAlign: "center", width: 310 },
+	      {
+	        title: "설비명",
+	        field: "resourceName",
+	        hozAlign: "center",
+	        width: 310,
+	        sorter: function(a, b, aRow, bRow, column, dir, sorterParams) {
+	          const indexA = order.indexOf(a);
+	          const indexB = order.indexOf(b);
+	          const posA = indexA === -1 ? order.length : indexA;
+	          const posB = indexB === -1 ? order.length : indexB;
+	          return posA - posB;
+	        }
+	      },
+	      { title: "발생 시간(분)", field: "downtime", hozAlign: "center", width: 310 },
+	      { title: "발생 카운트", field: "cc", hozAlign: "center", width: 300 },
+	    ],
+	    ajaxResponse: function (url, params, response) {
+	      console.log("dataList2 서버에서 받은 응답:", response);
 
+	      // order 배열 기준으로 resourceName 정렬
+	      response.sort((a, b) => {
+	        const indexA = order.indexOf(a.resourceName);
+	        const indexB = order.indexOf(b.resourceName);
+	        const posA = indexA === -1 ? order.length : indexA;
+	        const posB = indexB === -1 ? order.length : indexB;
+	        return posA - posB;
+	      });
+
+	      return response;
+	    }
+	  });
+	}
 
 // 공통 포맷터
 function colorFormatter(cell) {

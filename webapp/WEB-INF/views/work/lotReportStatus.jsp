@@ -22,7 +22,7 @@
             margin-top: 1%;
         }
 		.tab {
-		    width: 90%;
+		    width: 99%;
 		    margin-bottom: 3px;
 		    margin-top: 25px;
 		    height: 45px;
@@ -119,7 +119,7 @@
 		    display: flex;
 		    justify-content: right;
 		    align-items: center;
-		    width: 800px;
+		    width: 1000px;
 		    margin-right: 20px;
 		    margin-top:4px;
 		}
@@ -174,8 +174,11 @@
 				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 	
 				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-	
-	     
+	  			<label class="daylabel">바코드_NO :</label>
+	     		<input type="text" autocomplete="off" class="barcode_no" id="barcode_no"
+		       	style="font-size: 16px; margin-bottom:10px; height: 30px; border-radius: 6px; border: 1.5px solid #ccc;" 
+		       	placeholder="바코드->lot">
+
 
 			</div>
                 <button class="select-button">
@@ -189,10 +192,7 @@
             </div>
         </div>
 
-        <div class="view">
-            <div id="dataList" style="margin-top:50px;"></div>
-           
-        </div>
+
        <div class="view">       
          <div id="dataList2" style="margin-top:10px;"></div>
        </div>
@@ -201,14 +201,14 @@
 
 
    <script>
-let now_page_code = "f02";
+let now_page_code = "g01";
 
 $(function() {
     var today = new Date();
 
-    // 1년 전 날짜 계산
-    var oneYearAgo = new Date(today);
-    oneYearAgo.setFullYear(today.getFullYear() - 1);
+    // 1일 전 날짜 계산
+    var oneDayAgo = new Date(today);
+    oneDayAgo.setDate(today.getDate() - 1);
 
     function formatDate(date) {
         var year = date.getFullYear();
@@ -217,160 +217,26 @@ $(function() {
         return year + "-" + month + "-" + day;
     }
 
-    $('#startDate').val(formatDate(oneYearAgo));
-    $('#endDate').val(formatDate(today));
+    $('#startDate').val(formatDate(oneDayAgo)); // 어제
+    $('#endDate').val(formatDate(today));       // 오늘
 
-    getDataList();
     getDataList2();
 });
 
 
 
-function getDataList() {
-    var mach_code = $('.mach_code').val() || ""; // mach_code가 없으면 빈 문자열
-
-    if (window.dataTable) {
-        dataTable.setData("/geomet/work/inputControlStatusUp", {
-           
-        });
-        return;
-    }
-
-    dataTable = new Tabulator("#dataList", {
-        height: "100px",
-        layout: "fitColumns",
-        ajaxConfig: "POST",
-        ajaxURL: "/geomet/work/inputControlStatusUp",
-        columnHeaderVertAlign: "middle",
-        headerHozAlign: "center",
-        ajaxParams: {
-           
-        },
-        placeholder: "조회된 데이터가 없습니다.",
-        ajaxResponse: function(url, params, response) {
-            console.log("dataList 서버에서 받은 응답:", response);
-            return response;
-        },
-        columns: [
-            { title: "세척1호기", field: "w1", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "세척2호기", field: "w2", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "쇼트1호기", field: "s1", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            // 나머지 컬럼도 동일하게 작성 (필요하면 복사 붙여넣기)
-            { title: "쇼트2호기", field: "s2", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "쇼트3호기", field: "s3", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "쇼트4호기", field: "s4", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "쇼트5호기", field: "s5", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "쇼트6호기", field: "s6", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "G-600", field: "g6", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "G-800", field: "g8", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "K-BLACK", field: "kb", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            },
-            { title: "공용설비", field: "mlpl", headerSort: false, width: 110, hozAlign: "center",
-                formatter: function(cell) {
-                    const value = cell.getValue();
-                    return value === "가동"
-                        ? "<span style='color:green;'>" + value + "</span>"
-                        : "<span style='color:red;'>" + value + "</span>";
-                }
-            }
-        ],
-        rowFormatter: function(row){
-            row.getElement().style.fontWeight = "700";
-            row.getElement().style.backgroundColor = "#FFFFFF";
-        },
-        rowClick: function(e, row){
-            $("#dataList .tabulator-row").removeClass("row_select");
-            row.getElement().classList.add("row_select");
-        }
-    });
-}
 
 function getDataList2() {
     if (window.dataTable2) {
         dataTable2.setData("/geomet/work/lotReportStatusList", {
             startDate: $('#startDate').val(),
-            endDate: $('#endDate').val()
+            endDate: $('#endDate').val(),
+            barcode_no: $('#barcode_no').val()
         });
         return;
     }
     dataTable2 = new Tabulator("#dataList2", {
-        height: "500px",
+        height: "800px",
         layout: "fitColumns",
         ajaxURL: "/geomet/work/lotReportStatusList", // <- 여기 추가
         ajaxConfig: {
@@ -381,7 +247,9 @@ function getDataList2() {
         },
         ajaxParams: {
             startDate: $('#startDate').val(),
-            endDate: $('#endDate').val()
+            endDate: $('#endDate').val(),
+            barcode_no: $('#barcode_no').val()
+                
         },
         ajaxRequestFunc: function(url, config, params) {
             return fetch(url, {
@@ -396,19 +264,20 @@ function getDataList2() {
         columnHeaderVertAlign: "middle",
         headerHozAlign: "center",
         columns: [
-        	{ title: "?번호", formatter: "rownum", hozAlign: "center", width: 180 },
-            { title: "제품CODE", field: "resourceId", hozAlign: "center", width: 180 },
-            { title: "제품명", field: "resourceName", hozAlign: "center", width: 180 },
-            { title: "세척 시작", field: "downtime", hozAlign: "center", width: 180 },
-            { title: "세척 종료", field: "downtime", hozAlign: "center", width: 180 },
-            { title: "쇼트 시작", field: "downtime", hozAlign: "center", width: 180 },
-            { title: "쇼트 종료", field: "downtime", hozAlign: "center", width: 180 },
-            { title: "GEOMET 시작", field: "downtime", hozAlign: "center", width: 180 },
-            { title: "GEOMET 종료", field: "downtime", hozAlign: "center", width: 180 },
-            { title: "공용설비 시작", field: "downtime", hozAlign: "center", width: 180 },
-            { title: "공용설비 종료", field: "downtime", hozAlign: "center", width: 180 },
-           
-        ],
+        	  { title: "N", formatter: "rownum", hozAlign: "center", width: 50 },
+        	  { title: "barcode_no",  field: "barcode_no", hozAlign: "left", width: 120 },
+        	  { title: "제품CODE", field: "item_cd", hozAlign: "left", width: 140 },
+        	  { title: "제품명", field: "item_nm", hozAlign: "left", width: 230 },
+        	  { title: "세척 시작", field: "w_s", hozAlign: "left", width: 230 },
+        	  { title: "세척 종료", field: "w_e", hozAlign: "left", width: 230 },
+        	  { title: "쇼트 시작", field: "s_s", hozAlign: "left", width: 230 },
+        	  { title: "쇼트 종료", field: "s_e", hozAlign: "left", width: 230 },
+        	  { title: "GEOMET 시작", field: "g_s", hozAlign: "left", width: 230 },
+        	  { title: "GEOMET 종료", field: "g_e", hozAlign: "left", width: 230 },
+        	  { title: "공용설비 시작", field: "mlpl_s", hozAlign: "left", width: 230 },
+        	  { title: "공용설비 종료", field: "mlpl_e", hozAlign: "left", width: 230 },
+        	],
+
         ajaxResponse: function (url, params, response) {
             console.log("dataList2 서버에서 받은 응답:", response);
             return response;
@@ -418,17 +287,11 @@ function getDataList2() {
 
 
 
-// 공통 포맷터
-function colorFormatter(cell) {
-    const value = cell.getValue();
-    return value === "가동"
-        ? "<span style='color:green;'>" + value + "</span>"
-        : "<span style='color:red;'>" + value + "</span>";
-}
+
 
 // 조회 버튼 클릭 시 두 테이블 모두 조회
 $('.select-button').on('click', function() {
-    getDataList();
+
     getDataList2();
 });
 </script>

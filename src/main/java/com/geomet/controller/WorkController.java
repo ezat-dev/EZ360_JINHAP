@@ -2055,4 +2055,30 @@ public class WorkController {
     public List<Work> machineRealStatusUp(Work work) {
         return workService.machineRealStatusUp(work);
     }
+    
+    @RequestMapping(value = "/work/lotReportStatusList", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> lotReportStatusList(@RequestBody Work work) {
+        // 원본 날짜 출력
+        System.out.println("원본 startDate: " + work.getStartDate());
+        System.out.println("원본 endDate: " + work.getEndDate());
+        System.out.println("barcode_no: " + work.getBarcode_no());
+
+        // 하이픈 제거 후 뒤에 0000 붙이기
+        if (work.getStartDate() != null) {
+            String s = work.getStartDate().replace("-", "") + "0000";
+            work.setStartDate(s);
+        }
+        if (work.getEndDate() != null) {
+            String e = work.getEndDate().replace("-", "") + "0000";
+            work.setEndDate(e);
+        }
+
+        // 가공 후 날짜 출력
+        System.out.println("가공된 startDate: " + work.getStartDate());
+        System.out.println("가공된 endDate: " + work.getEndDate());
+
+        return workService.lotReportStatusList(work);
+    }
+
 }

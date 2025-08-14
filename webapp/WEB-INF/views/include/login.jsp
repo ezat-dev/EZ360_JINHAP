@@ -54,7 +54,7 @@
 			<div class="login_box">
 				<div class="notice">
 					<div class="tit_bar">
-						<h2 class="tit">현재 프로그램 수정 중입니다</h2>
+						<h2 class="tit">현재 프로그램 수정중입니다</h2>
 					</div>
 					<ul id="login_noticeCont_ul" class="bu_lst">
 					</ul>

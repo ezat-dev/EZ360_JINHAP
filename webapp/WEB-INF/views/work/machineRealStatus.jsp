@@ -226,17 +226,18 @@
                     return response;
                 },
                 columns: [
-                	   {title: "순번", formatter: "rownum", hozAlign: "center", width: 60, headerSort: false},
-                    {title: "라인코드", field: "line_cd", sorter: "string", width: 180, hozAlign: "left", headerSort: false},
+                	{title: "순번", formatter: "rownum", hozAlign: "center", width: 60, headerSort: false},
+                	{title: "라인코드", field: "line_cd", sorter: "string", width: 170, hozAlign: "left", headerSort: false},
+                    {title: "라인명", field: "mch_name", sorter: "string", width: 130, hozAlign: "left", headerSort: false},
                     {title: "총 투입 가능", field: "total_cnt", sorter: "string", width: 130, hozAlign: "center", headerSort: false},
                     {title: "현재 투입 진행", field: "prod_cnt", sorter: "string", width: 130, hozAlign: "center", headerSort: false},
-                    {title: "ML", field: "ml", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
-                    {title: "PL", field: "pl", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
-                    {title: "K-BLACK", field: "kb", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
-                    {title: "은백", field: "sv", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
-                    {title: "방청", field: "ar", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
-                    {title: "세척", field: "ws", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
-                    {title: "기타", field: "no", sorter: "string", width: 110, hozAlign: "center", headerSort: false},
+                    {title: "ML", field: "ml", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "PL", field: "pl", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "K-BLACK", field: "kb", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
+                    {title: "은백", field: "sv", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "방청", field: "ar", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "세척", field: "ws", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
+                    {title: "기타", field: "no", sorter: "string", width: 90, hozAlign: "center", headerSort: false},
                    
                 ],
                 rowFormatter: function(row) {

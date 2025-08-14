@@ -335,11 +335,13 @@ SELECT
   ROUND(weight_day / tong_day, 1) AS avg_day, -- 표준중량
   TIME_FORMAT(SEC_TO_TIME(w_seconds), '%H:%i') AS work_time,
   ROUND(w_seconds / 3600.0, 1) AS ex_uph_hours, 
-  ROUND(tong_day / NULLIF(ROUND(w_seconds / 3600.0, 1), 0), 1) AS uph,
+  CONCAT(FORMAT(ROUND(weight_day / (w_seconds / 60), 1), 1), ' kg') AS uph,
+
   TIME_FORMAT(SEC_TO_TIME(w_m_sec), '%H:%i') AS sum_time,
   tong_month AS tong_sum, -- 월 생산 통수
   weight_month AS weight_sum, -- 월 누적 생산중량
-  ROUND((tong_month * 3600) / NULLIF(w_m_sec, 0), 1) AS uph_sum,
+  CONCAT(FORMAT(ROUND(weight_month / (w_m_sec / 3600), 1), 1), ' kg') AS uph_sum,
+
   ROUND((ROUND(c_t_hour * (w_seconds / 3600), 1) - tong_day) * c_t, 0) AS stop_seconds, -- 일 비가동
   -- 비가동시간 포함된 가동효율 (순가동시간 / 가동시간)
   ROUND(
@@ -778,14 +780,14 @@ ORDER BY AAA.ch_idx;
 SELECT barcode_no,
        MAX(item_cd) AS item_cd,
        MAX(item_nm) AS item_nm,
-       GROUP_CONCAT(IF(mach_code LIKE 'W%', CONCAT(facility_name,' - ',start_time), NULL)) AS '세척 시작',
-       GROUP_CONCAT(IF(mach_code LIKE 'W%', CONCAT(facility_name,' - ',end_time), NULL)) AS '세척 종료',
-       GROUP_CONCAT(IF(mach_code LIKE 'S%', CONCAT(facility_name,' - ',start_time), NULL)) AS '쇼트 시작',
-       GROUP_CONCAT(IF(mach_code LIKE 'S%', CONCAT(facility_name,' - ',end_time), NULL)) AS '쇼트 종료',
-       GROUP_CONCAT(IF(mach_code LIKE 'G03-%', CONCAT(facility_name,' - ',start_time), NULL)) AS 'GEOMET 시작',
-       GROUP_CONCAT(IF(mach_code LIKE 'G03-%', CONCAT(facility_name,' - ',end_time), NULL)) AS 'GEOMET 종료',
-       GROUP_CONCAT(IF(mach_code LIKE 'G04-%', CONCAT(facility_name,' - ',start_time), NULL)) AS '공용설비 시작',
-       GROUP_CONCAT(IF(mach_code LIKE 'G04-%', CONCAT(facility_name,' - ',end_time), NULL)) AS '공용설비 종료'
+       GROUP_CONCAT(IF(mach_code LIKE 'W%', CONCAT(facility_name,' - ',start_time), NULL)) AS 'w_s',
+       GROUP_CONCAT(IF(mach_code LIKE 'W%', CONCAT(facility_name,' - ',end_time), NULL)) AS 'w_e',
+       GROUP_CONCAT(IF(mach_code LIKE 'S%', CONCAT(facility_name,' - ',start_time), NULL)) AS 's_s',
+       GROUP_CONCAT(IF(mach_code LIKE 'S%', CONCAT(facility_name,' - ',end_time), NULL)) AS 's_e',
+       GROUP_CONCAT(IF(mach_code LIKE 'G03-%', CONCAT(facility_name,' - ',start_time), NULL)) AS 'g_s',
+       GROUP_CONCAT(IF(mach_code LIKE 'G03-%', CONCAT(facility_name,' - ',end_time), NULL)) AS 'g_e',
+       GROUP_CONCAT(IF(mach_code LIKE 'G04-%', CONCAT(facility_name,' - ',start_time), NULL)) AS 'mlpl_s',
+       GROUP_CONCAT(IF(mach_code LIKE 'G04-%', CONCAT(facility_name,' - ',end_time), NULL)) AS 'mlpl_e'
 FROM (
     SELECT A.barcode_no, 
            DATE_FORMAT(A.start_time, '%Y-%m-%d %H:%i:%s') AS start_time, 
@@ -795,11 +797,12 @@ FROM (
     FROM tb_lowdata_save A
     LEFT OUTER JOIN tb_facility B ON A.mach_code = B.facility_mach_code
     WHERE 1=1
-      <if test="start_time != null and start_time != ''">
-        AND A.end_time &gt;= #{start_time}
+    AND start_time IS NOT NULL AND end_time IS NOT NULL
+      <if test="startDate != null and startDate != ''">
+        AND A.end_time &gt;= #{startDate}
       </if>
-      <if test="end_time != null and end_time != ''">
-        AND A.end_time &lt;= #{end_time}
+      <if test="endDate != null and endDate != ''">
+        AND A.end_time &lt;= #{endDate}
       </if>
       <if test="barcode_no != null and barcode_no != ''">
         AND A.barcode_no = #{barcode_no}
@@ -810,9 +813,6 @@ ORDER BY MAX(end_time) DESC;
 
 
 </select>
-
-
-
 
 
 
@@ -935,6 +935,49 @@ SELECT * FROM GEO_DIS_INV
 </select>
 
 <select id="machineRealStatusDown"  resultType="Work">
-SELECT * FROM EZ_FLOW_VIEW 
+SELECT 
+    rownum,
+    LINE_CD,
+    total_cnt,
+    prod_cnt,
+    prod_cnt,
+    ml,
+    pl,
+    kb,
+    sv,
+    ar,
+    ws,
+    no,
+    CASE 
+        WHEN LINE_CD = 'C0100' THEN '세척 1번 레일' 
+        WHEN LINE_CD = 'C0200' THEN '세척 2번 레일' 
+        WHEN LINE_CD = 'C0300' THEN '세척 3번 레일' 
+        WHEN LINE_CD = 'C0400' THEN '세척 4번 레일' 
+        WHEN LINE_CD = 'C0500' THEN '세척 5번 레일' 
+        WHEN LINE_CD = 'C0600' THEN '세척 6번 레일' 
+        WHEN LINE_CD = 'W0100' THEN '세척 1호기' 
+        WHEN LINE_CD = 'W0200' THEN '세척 2호기' 
+        WHEN LINE_CD = 'B0500' THEN '쇼트 1번 버퍼' 
+        WHEN LINE_CD = 'B0600' THEN '쇼트 2번 버퍼' 
+        WHEN LINE_CD = 'B0700' THEN '쇼트 3번 버퍼' 
+        WHEN LINE_CD = 'B0800' THEN '쇼트 4번 버퍼' 
+        WHEN LINE_CD = 'G03-GG01' THEN 'G800' 
+        WHEN LINE_CD = 'G03-GG01_INCOV' THEN 'G800 투입' 
+        WHEN LINE_CD = 'G03-GG01_OUTCOV' THEN 'G800 퇴출' 
+        WHEN LINE_CD = 'G03-GG03' THEN 'G600' 
+        WHEN LINE_CD = 'G03-GG03_INCOV' THEN 'G600 투입' 
+        WHEN LINE_CD = 'G03-GG03_OUTCOV' THEN 'G600 퇴출' 
+        WHEN LINE_CD = 'G04-GG05' THEN 'K-BLACK' 
+        WHEN LINE_CD = 'G04-GG05_INCOV' THEN 'K-BLACK 투입' 
+        WHEN LINE_CD = 'G04-GG05_OUTCOV' THEN 'K-BLACK 퇴출' 
+        WHEN LINE_CD = 'G04-GG07' THEN '공용설비' 
+        WHEN LINE_CD = 'G04-GG07_INCOV1' THEN '공용설비1 투입' 
+        WHEN LINE_CD = 'G04-GG07_INCOV2' THEN '공용설비2 투입' 
+        WHEN LINE_CD = 'G04-GG07_OUTCOV1' THEN '공용설비1 퇴출' 
+        WHEN LINE_CD = 'G04-GG07_OUTCOV2' THEN '공용설비2 퇴출' 
+    END AS mch_name
+FROM 
+    EZ_FLOW_VIEW
+
 </select>
 </mapper>
