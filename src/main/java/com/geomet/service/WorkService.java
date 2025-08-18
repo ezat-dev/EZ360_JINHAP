@@ -18,6 +18,8 @@ public interface WorkService {
 	
 	
 	 	List<Work> getWorkDailyList(Work work);
+	 	List<Work> list_condition(Work work);
+	 	
 	    List<Work> getWorkDailySum(Work work);
 	    List<Work> getReportInputLIst(Work work);
 	    

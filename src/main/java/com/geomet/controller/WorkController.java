@@ -411,6 +411,122 @@ public class WorkController {
 
     
     
+    // 생산조건 모니터링 로우 데이터 변경 버전
+    @RequestMapping(value = "/work/workDailyReport/list_condition", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> list_condition(@RequestBody Work work) {
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("yyyyMMdd");
+        DateTimeFormatter fmt2 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+       
+
+        String rawStart = work.getS_time();  // 예: "20250711"
+        String rawEnd   = work.getE_time();
+
+        // ▶ s_time2는 yyyy-MM-dd 형식으로 저장 (0800 없이)
+        String sTime2 = LocalDate.parse(rawStart, fmt).format(fmt2);
+        work.setS_time2(sTime2);
+
+        // ▶ s_time은 0800 붙여서 DB용으로
+        work.setS_time(rawStart + "080000");
+
+        // ▶ e_time도 +1일 후 0800 붙이기
+        LocalDate eDate = LocalDate.parse(rawEnd, fmt).plusDays(1);
+        work.setE_time(eDate.format(fmt) + "080000");
+
+       
+      
+        String code = work.getM_code();
+        String code2 = "";
+        if ("G03-GG01".equals(code)) {
+            code2 = "'G03-GG01','G04-GG05','G04-GG07'";
+        } else if ("G03-GG03".equals(code)) {
+            code2 = "'G03-GG03','G04-GG05','G04-GG07'";
+        }
+        work.setM_code2(code2);
+
+     // 📢 여기에서 최종 파라미터 출력!
+        System.out.println("▶ 최종 Work 파라미터:");
+        System.out.println("   s_time   = " + work.getS_time());
+        System.out.println("   e_time   = " + work.getE_time());
+        System.out.println("   s_time2  = " + work.getS_time2());
+        System.out.println("   m_code   = " + work.getM_code());
+        System.out.println("   m_code2  = " + work.getM_code2());
+
+    
+        Map<String, Object> result = new HashMap<>();
+
+        List<Work> table1 = workService.getReportInputLIst(work);
+        result.put("table1", table1);
+        DecimalFormat df = new DecimalFormat("#,###");
+        List<Work> table2Data = workService.getWorkDailySum(work);
+        for (Work w : table2Data) {
+        	 if (w.getWeight_day()    != null) w.setWeight_day(w.getWeight_day() + "kg");
+            if (w.getAvg_day()    != null) w.setAvg_day(w.getAvg_day() + "kg");
+            if (w.getAvg_sum()    != null) w.setAvg_sum(w.getAvg_sum() + "kg");
+            if (w.getWork_time()  != null) w.setWork_time(w.getWork_time() + "");
+            if (w.getSum_time()   != null) w.setSum_time(w.getSum_time() + "hr");
+            if (w.getSum_percent()!= null) w.setSum_percent(w.getSum_percent() + "%");
+            if (w.getWork_percent()!=null) w.setWork_percent(w.getWork_percent() + "%");
+       
+        
+			/*
+			 * if (w.getWeight_day() != null && !w.getWeight_day().isEmpty()) {
+			 * w.setWeight_day(df.format(Double.parseDouble(w.getWeight_day()))); }
+			 */
+
+            if (w.getTong_sum() != null && !w.getTong_sum().isEmpty()) {
+                w.setTong_sum(df.format(Double.parseDouble(w.getTong_sum())));
+            }
+
+            if (w.getWeight_sum() != null && !w.getWeight_sum().isEmpty()) {
+                w.setWeight_sum(df.format(Double.parseDouble(w.getWeight_sum())));
+            }
+        }
+        result.put("table2", table2Data);
+
+        List<Work> table3List = workService.list_condition(work);
+        for (Work w : table3List) {
+            if (w.getStart_time() != null && w.getStart_time().length() == 14) {
+                w.setStart_time(
+                    w.getStart_time().substring(8,10) + ":" +
+                    w.getStart_time().substring(10,12) + ":" +
+                    w.getStart_time().substring(12,14)
+                );
+            }
+            if (w.getEnd_time() != null && w.getEnd_time().length() == 14) {
+                w.setEnd_time(
+                    w.getEnd_time().substring(8,10) + ":" +
+                    w.getEnd_time().substring(10,12) + ":" +
+                    w.getEnd_time().substring(12,14)
+                );
+            }
+            if (w.getWeight_day() != null) {
+                w.setWeight_day(w.getWeight_day() + "kg");
+            }
+        }
+        result.put("table3", table3List);
+
+        // 4) 원본과 추가 문자열도 함께 리턴
+        result.put("m_code", code);
+        result.put("m_code2", code2);
+
+       
+        //System.out.println("▶ Returning Map keys:");
+        result.forEach((k, v) -> {
+            if (v instanceof List) {
+                //System.out.println("   " + k + " -> List size = " + ((List<?>) v).size());
+            } else {
+                //System.out.println("   " + k + " -> " + v);
+            }
+        });
+
+        return result;
+    }
+
+    
+    
+    
+    
     @RequestMapping(value = "/work/workDailyReport/excel", method = RequestMethod.POST)
     @ResponseBody
     public Map<String, Object> exportWorkDailyReportExcel(@RequestBody Work work) throws Exception {

@@ -348,7 +348,7 @@
 
       $.ajax({
     	    type: "POST",
-    	    url: "/geomet/work/workDailyReport/list",
+    	    url: "/geomet/work/workDailyReport/list_condition",
     	    contentType: "application/json",
     	    data: JSON.stringify({ s_time, e_time, m_code }),
     	    success: function(response) {
@@ -400,7 +400,7 @@
     	    columns: [
     	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },       // 조금 줄임
     	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 130  },
-    	       /*  { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 150  }, */
+    	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 150  }, 
     	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 350 },
     	        { title: "품번", field: "group_id", hozAlign: "left", headerSort: false, width: 170 },
     	        { title: "작업오더", field: "barcode_no", hozAlign: "left", headerSort: false, width: 170 }, 

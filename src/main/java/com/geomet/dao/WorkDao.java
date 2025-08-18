@@ -17,7 +17,7 @@ public interface WorkDao {
 
     // 작업일보 리스트 (테이블 3)
     List<Work> getWorkDailyList(Work work);
-
+    List<Work> list_condition(Work work);
     // 작업일보 요약 (테이블 2)
     List<Work> getWorkDailySum(Work work);
 

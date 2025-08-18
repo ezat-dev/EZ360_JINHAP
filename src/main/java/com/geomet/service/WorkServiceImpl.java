@@ -35,13 +35,17 @@ public class WorkServiceImpl implements WorkService {
 	public List<Work> getMachineEfficStatusList(Work work){
 		return workDao.getMachineEfficStatusList(work);
 	}
-	
-	
+
 	
 	 	@Override
 	    public List<Work> getWorkDailyList(Work work) {
 	        return workDao.getWorkDailyList(work);
 	    }
+	 	@Override
+	    public List<Work> list_condition(Work work) {
+	        return workDao.list_condition(work);
+	    }
+	 	
 
 	    @Override
 	    public List<Work> getWorkDailySum(Work work) {

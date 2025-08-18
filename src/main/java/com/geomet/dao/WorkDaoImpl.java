@@ -53,6 +53,14 @@ public class WorkDaoImpl implements WorkDao {
     public List<Work> getWorkDailyList(Work work) {
         return sqlSession.selectList("work.getWorkDailyList", work);
     }
+    
+    
+    
+    @Override
+    public List<Work> list_condition(Work work) {
+        return sqlSession.selectList("work.list_condition", work);
+    }
+
 
     // 작업일보 
     @Override

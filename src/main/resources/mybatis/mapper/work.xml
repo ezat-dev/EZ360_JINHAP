@@ -241,8 +241,7 @@
 <select id="getWorkDailyList" parameterType="Work" resultType="Work">
 SELECT
   ROW_NUMBER() OVER(ORDER BY bb.end_time) AS r_num,
-  bb.barcode_no,                 -- 🔹 barcode_no 제일 상단에 추가
-  bb.division_num AS a,          -- 🔹 ez_geo_hst.division_num 가져오기
+  IFNULL(bb.division_num,'0') AS a,       -- 🔹 ez_geo_hst.division_num 가져오기
   bb.group_id,
   bb.start_time,
   bb.end_time,
@@ -267,11 +266,12 @@ SELECT
     WHEN bb.wrk_ord_no LIKE '%WR%' THEN '재작업'
     ELSE '신규'
   END AS e,                   
-  '' AS f
+  '' AS f,
+  hst2_barcode,
+  barcode_no
 FROM (
   SELECT 
     aa.mach_code,
-    aa.barcode_no,                  -- 🔹 안쪽 SELECT에도 barcode_no 유지
     aa.end_time,
     aa.start_time,
     aa.tong_day,
@@ -282,7 +282,9 @@ FROM (
     ab.coating_nm AS next_facility,
     ab.group_id,
     COALESCE(aa.std_weight, 0) AS division_weight,
-    eh.division_num                 -- 🔹 ez_geo_hst.division_num JOIN
+    eh.division_num,             -- 🔹 ez_geo_hst.division_num JOIN
+    hst2_barcode,
+    barcode_no
   FROM (
     SELECT
       lows.mach_code,
@@ -304,7 +306,7 @@ FROM (
     INNER JOIN tb_facility AS fac
       ON lows.mach_code = fac.facility_mach_code
     WHERE 1=1
-      <if test="s_time != null">
+ <if test="s_time != null">
         AND lows.end_time &gt;= #{s_time}
       </if>
       <if test="e_time != null">
@@ -317,99 +319,119 @@ FROM (
   ) AS aa
   LEFT JOIN pwo_geo_division_data AS ab
     ON aa.item_cd = ab.item_cd
-  LEFT JOIN ez_geo_hst2_save3 AS eh
-    ON aa.barcode_no = eh.barcode_no   -- 🔹 division_num 가져오는 위치를 이쪽으로 옮김
+  LEFT JOIN
+    (
+    	SELECT barcode_no AS hst2_barcode, MAX(division_num) AS division_num
+  		FROM ez_geo_hst2_save3 
+  		WHERE mach_code = #{m_code}
+  		AND wrk_gbn_state = 'IN'
+  		GROUP BY barcode_no
+  	) AS eh
+    ON aa.barcode_no = eh.hst2_barcode   -- 🔹 division_num 가져오는 위치를 이쪽으로 옮김
 ) AS bb
-<where>
-  <if test="m_code != null">
-    bb.mach_code = #{m_code}
-  </if>
-</where>
+WHERE 1=1
+AND bb.mach_code = #{m_code}
 ORDER BY bb.end_time;
 </select>
 
-<select id="getWorkDailyList_back" parameterType="Work" resultType="Work">
-SELECT
-  ROW_NUMBER() OVER(ORDER BY end_time) AS r_num,
-  group_id,
-  start_time,
-  end_time,
-  tong_day,
-  weight_day,
-  item_nm,
-  item_cd,
-  next_facility,
-  wrk_ord_no,
+<select id="list_condition" parameterType="map" resultType="Work">
+
+ SELECT
+  ROW_NUMBER() OVER(ORDER BY bb.end_time) AS r_num,
+  IFNULL(bb.division_num,'0') AS a,       -- 🔹 ez_geo_hst.division_num 가져오기
+  bb.group_id,
+  bb.start_time,
+  bb.end_time,
+  bb.tong_day,
+  bb.weight_day,
+  bb.item_nm,
+  bb.item_cd,
+  bb.next_facility,
+  bb.wrk_ord_no,
   CASE 
-    WHEN division_weight = 0 THEN 0
+    WHEN bb.division_weight = 0 THEN 0
     ELSE CASE 
-           WHEN (weight_day / division_weight) > 1 
-           THEN FLOOR((weight_day / division_weight)) + 1 
+           WHEN (bb.weight_day / bb.division_weight) > 1 
+           THEN FLOOR((bb.weight_day / bb.division_weight)) + 1 
            ELSE 1 
          END
-  END AS a, /*분할횟수*/
+  END AS a2,                  
   '' AS b,
   '' AS c,
   '' AS d,
   CASE 
     WHEN bb.wrk_ord_no LIKE '%WR%' THEN '재작업'
     ELSE '신규'
-  END AS e,  /*구분(신규/재작업)*/
-  '' AS f
+  END AS e,                   
+  '' AS f,
+  hst2_barcode,
+  barcode_no
 FROM (
   SELECT 
     aa.mach_code,
-    end_time,
-    start_time,
-    tong_day,
-    weight_day,
+    aa.end_time,
+    aa.start_time,
+    aa.tong_day,
+    aa.weight_day,
     aa.item_cd,
     aa.item_nm,
-    aa.wrk_ord_no,              
+    aa.wrk_ord_no,
     ab.coating_nm AS next_facility,
     ab.group_id,
-    aa.std_weight AS division_weight  <!-- 여기 변경됨 -->
+    COALESCE(aa.std_weight, 0) AS division_weight,
+    eh.division_num,             -- 🔹 ez_geo_hst.division_num JOIN
+    hst2_barcode,
+    barcode_no
   FROM (
     SELECT
-      mach_code,
-      barcode_no,
-      ROUND(weight, 0) AS weight_day,
+      lows.mach_code,
+      lows.barcode_no,
+      ROUND(lows.weight, 0) AS weight_day,
       1 AS tong_day,
       fac.facility_name,
       fac.std_weight,
-      start_time,
-      end_time,
-      item_cd,
-      item_nm,
-      wrk_ord_no,
-      LEAD(end_time) OVER(PARTITION BY mach_code, barcode_no ORDER BY end_time DESC) AS next_start_time
-    FROM tb_lowdata_save AS lows
+      lows.start_time,
+      lows.end_time,
+      lows.item_cd,
+      lows.item_nm,
+      lows.wrk_ord_no,
+      LEAD(lows.end_time) OVER(
+        PARTITION BY lows.mach_code, lows.barcode_no 
+        ORDER BY lows.end_time DESC
+      ) AS next_start_time
+    FROM tb_lowdata_save_list_condition AS lows
     INNER JOIN tb_facility AS fac
       ON lows.mach_code = fac.facility_mach_code
     WHERE 1=1
-      <if test="s_time != null">
-        AND end_time &gt;= #{s_time}
+ <if test="s_time != null">
+        AND lows.start_time &gt;= #{s_time}
       </if>
       <if test="e_time != null">
-        AND end_time &lt; #{e_time}
+        AND lows.start_time &lt; #{e_time}
       </if>
       <if test="m_code2 != null and m_code2 != ''">
-        AND mach_code IN (${m_code2})
+        AND lows.mach_code IN (${m_code2})
       </if>
-      AND weight IS NOT NULL
-<!--       AND start_time IS NOT NULL
-      AND end_time IS NOT NULL -->
+      AND lows.weight IS NOT NULL
   ) AS aa
-  LEFT OUTER JOIN pwo_geo_division_data AS ab
+  LEFT JOIN pwo_geo_division_data AS ab
     ON aa.item_cd = ab.item_cd
+  LEFT JOIN
+    (
+    	SELECT barcode_no AS hst2_barcode, MAX(division_num) AS division_num
+  		FROM ez_geo_hst2_save3 
+  		WHERE mach_code = #{m_code}
+  		AND wrk_gbn_state = 'IN'
+  		GROUP BY barcode_no
+  	) AS eh
+    ON aa.barcode_no = eh.hst2_barcode   -- 🔹 division_num 가져오는 위치를 이쪽으로 옮김
 ) AS bb
-<where>
-  <if test="m_code != null">
-    mach_code = #{m_code}
-  </if>
-</where>
-ORDER BY end_time;
+WHERE 1=1
+AND bb.mach_code = #{m_code}
+ORDER BY bb.end_time;
+
 </select>
+
 
   
   
@@ -425,7 +447,7 @@ SELECT
   ROUND(weight_day / tong_day, 1) AS avg_day, -- 표준중량
   TIME_FORMAT(SEC_TO_TIME(w_seconds), '%H:%i') AS work_time,
   ROUND(w_seconds / 3600.0, 1) AS ex_uph_hours, 
-  CONCAT(FORMAT(ROUND(weight_day / (w_seconds / 360), 1), 1), ' kg') AS uph,
+  CONCAT(FORMAT(ROUND(weight_day / (w_seconds / 360), 1), 1)* 10, ' kg') AS uph,
 
   TIME_FORMAT(SEC_TO_TIME(w_m_sec), '%H:%i') AS sum_time,
   tong_month AS tong_sum, -- 월 생산 통수
