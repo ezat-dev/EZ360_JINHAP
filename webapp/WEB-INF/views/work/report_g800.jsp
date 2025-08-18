@@ -470,7 +470,7 @@
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "주간/야간", field: "b_a", headerSort: false,hozAlign: "center", width: 200  },
+    	        { title: "근무조", field: "b_a", headerSort: false,hozAlign: "center", width: 200  },
     	      
     	        { title: "예열존온도</br>(설정값±10°C)", field: "t_800_d12000", hozAlign: "center", headerSort: false },
     	        { title: "가열존온도</br>(설정값±10°C)", field: "t_800_d12001", hozAlign: "center", headerSort: false },

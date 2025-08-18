@@ -497,7 +497,7 @@ $('.pCodeBtn').click(function () {
 
      
      { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
-     { title: '주간/야간', field: 'b_a', width: 200, hozAlign: 'center' },
+     { title: '근무조', field: 'b_a', width: 200, hozAlign: 'center' },
 
      { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
        formatter: function(cell) {

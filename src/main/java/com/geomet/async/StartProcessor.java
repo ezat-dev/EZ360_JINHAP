@@ -21,16 +21,15 @@ public class StartProcessor {
     @Autowired
     private ReportExService reportExService;
     
-    @Scheduled(cron = "0 14 17 * * *")
+    @Scheduled(cron = "0 58 16 * * *")
     public void reportEx() {
         try {
             reportExService.generateDailyReport();
-            
-            
             System.out.println("[Schedule] 작업일보 엑셀 생성 완료: " + java.time.LocalDateTime.now());
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
 }
 

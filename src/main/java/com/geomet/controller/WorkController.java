@@ -493,7 +493,7 @@ public class WorkController {
                 rowIdx++;
             }
 
-            rowIdx = 10;
+            rowIdx = 11;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
@@ -731,7 +731,7 @@ public class WorkController {
                 rowIdx++;
             }
 
-            rowIdx = 10;
+            rowIdx = 11;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
@@ -978,7 +978,7 @@ public class WorkController {
                 rowIdx++;
             }
 
-            rowIdx = 10;
+            rowIdx = 11;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
@@ -1287,7 +1287,7 @@ public class WorkController {
                 rowIdx++;
             }
 
-            rowIdx = 10;
+            rowIdx = 11;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
@@ -1489,7 +1489,7 @@ public class WorkController {
                 rowIdx++;
             }
 
-            rowIdx = 10;
+            rowIdx = 11;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
@@ -1692,7 +1692,7 @@ public class WorkController {
                 rowIdx++;
             }
 
-            rowIdx = 10;
+            rowIdx = 11;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");
@@ -1888,7 +1888,7 @@ public class WorkController {
                 rowIdx++;
             }
 
-            rowIdx = 10;
+            rowIdx = 11;
             for (Work w : table2) {
                 if (w.getAvg_day() != null)      w.setAvg_day(w.getAvg_day() + "kg");
                 if (w.getWork_time() != null)    w.setWork_time(w.getWork_time() + "");

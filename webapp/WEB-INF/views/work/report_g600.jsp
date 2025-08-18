@@ -479,7 +479,7 @@
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "주간/야간", field: "b_a", headerSort: false,hozAlign: "center", width: 150  },
+    	        { title: "근무조", field: "b_a", headerSort: false,hozAlign: "center", width: 150  },
     	      
     	        { title: "예열존온도</br>(설정값±10°C)", field: "t_600_d12000", hozAlign: "center", headerSort: false },
     	        { title: "가열존온도</br>(설정값±10°C)", field: "t_600_d12001", hozAlign: "center", headerSort: false },
@@ -569,6 +569,8 @@
     	    },
     	    columns: [
     	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },       // 조금 줄임
+
+
     	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 100  },
     	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 100  },
     	        { title: "투입통수", field: "tong_day", hozAlign: "center", headerSort: false, width: 100 },

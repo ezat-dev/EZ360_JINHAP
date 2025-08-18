@@ -240,6 +240,96 @@
 
 <select id="getWorkDailyList" parameterType="Work" resultType="Work">
 SELECT
+  ROW_NUMBER() OVER(ORDER BY bb.end_time) AS r_num,
+  bb.barcode_no,                 -- 🔹 barcode_no 제일 상단에 추가
+  bb.division_num AS a,          -- 🔹 ez_geo_hst.division_num 가져오기
+  bb.group_id,
+  bb.start_time,
+  bb.end_time,
+  bb.tong_day,
+  bb.weight_day,
+  bb.item_nm,
+  bb.item_cd,
+  bb.next_facility,
+  bb.wrk_ord_no,
+  CASE 
+    WHEN bb.division_weight = 0 THEN 0
+    ELSE CASE 
+           WHEN (bb.weight_day / bb.division_weight) > 1 
+           THEN FLOOR((bb.weight_day / bb.division_weight)) + 1 
+           ELSE 1 
+         END
+  END AS a2,                  
+  '' AS b,
+  '' AS c,
+  '' AS d,
+  CASE 
+    WHEN bb.wrk_ord_no LIKE '%WR%' THEN '재작업'
+    ELSE '신규'
+  END AS e,                   
+  '' AS f
+FROM (
+  SELECT 
+    aa.mach_code,
+    aa.barcode_no,                  -- 🔹 안쪽 SELECT에도 barcode_no 유지
+    aa.end_time,
+    aa.start_time,
+    aa.tong_day,
+    aa.weight_day,
+    aa.item_cd,
+    aa.item_nm,
+    aa.wrk_ord_no,
+    ab.coating_nm AS next_facility,
+    ab.group_id,
+    COALESCE(aa.std_weight, 0) AS division_weight,
+    eh.division_num                 -- 🔹 ez_geo_hst.division_num JOIN
+  FROM (
+    SELECT
+      lows.mach_code,
+      lows.barcode_no,
+      ROUND(lows.weight, 0) AS weight_day,
+      1 AS tong_day,
+      fac.facility_name,
+      fac.std_weight,
+      lows.start_time,
+      lows.end_time,
+      lows.item_cd,
+      lows.item_nm,
+      lows.wrk_ord_no,
+      LEAD(lows.end_time) OVER(
+        PARTITION BY lows.mach_code, lows.barcode_no 
+        ORDER BY lows.end_time DESC
+      ) AS next_start_time
+    FROM tb_lowdata_save AS lows
+    INNER JOIN tb_facility AS fac
+      ON lows.mach_code = fac.facility_mach_code
+    WHERE 1=1
+      <if test="s_time != null">
+        AND lows.end_time &gt;= #{s_time}
+      </if>
+      <if test="e_time != null">
+        AND lows.end_time &lt; #{e_time}
+      </if>
+      <if test="m_code2 != null and m_code2 != ''">
+        AND lows.mach_code IN (${m_code2})
+      </if>
+      AND lows.weight IS NOT NULL
+  ) AS aa
+  LEFT JOIN pwo_geo_division_data AS ab
+    ON aa.item_cd = ab.item_cd
+  LEFT JOIN ez_geo_hst2_save3 AS eh
+    ON aa.barcode_no = eh.barcode_no   -- 🔹 division_num 가져오는 위치를 이쪽으로 옮김
+) AS bb
+<where>
+  <if test="m_code != null">
+    bb.mach_code = #{m_code}
+  </if>
+</where>
+ORDER BY bb.end_time;
+</select>
+
+<select id="getWorkDailyList_back" parameterType="Work" resultType="Work">
+SELECT
   ROW_NUMBER() OVER(ORDER BY end_time) AS r_num,
   group_id,
   start_time,
@@ -330,12 +420,12 @@ SELECT
   mach_code, 
   facility_name, 
   tong_day,
-  weight_day,
+  FORMAT(SUM(weight_day), 0) AS weight_day,
   w_seconds,
   ROUND(weight_day / tong_day, 1) AS avg_day, -- 표준중량
   TIME_FORMAT(SEC_TO_TIME(w_seconds), '%H:%i') AS work_time,
   ROUND(w_seconds / 3600.0, 1) AS ex_uph_hours, 
-  CONCAT(FORMAT(ROUND(weight_day / (w_seconds / 60), 1), 1), ' kg') AS uph,
+  CONCAT(FORMAT(ROUND(weight_day / (w_seconds / 360), 1), 1), ' kg') AS uph,
 
   TIME_FORMAT(SEC_TO_TIME(w_m_sec), '%H:%i') AS sum_time,
   tong_month AS tong_sum, -- 월 생산 통수

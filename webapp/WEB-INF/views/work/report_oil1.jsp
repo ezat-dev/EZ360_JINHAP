@@ -501,7 +501,7 @@ $(document).ready(function () {
 	        headerTooltip: false
 	    },
         columns: [
-          { title: "주간/야간", field: "gb" ,headerSort: false},
+          { title: "근무조", field: "gb" ,headerSort: false},
           { title: "점도", field: "visc",headerSort: false },
           { title: "점도", field: "visc",headerSort: false },
           { title: "예열존온도", field: "pre_temp",headerSort: false },
