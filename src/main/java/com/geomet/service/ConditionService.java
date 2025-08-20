@@ -44,4 +44,7 @@ public interface ConditionService {
     void divisionWashingUpdate(Condition condition); 
     void divisionWashingLog(Condition condition); 
     List<Condition> divisionWashingLogList(Condition condition); 
+    
+    //일상점검일지
+    List<Condition> dailyCheckList(Condition condition); 
 }

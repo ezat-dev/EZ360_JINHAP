@@ -870,6 +870,18 @@ public class ConditionController {
          return u;
       }
 
-   
+
+
+    // 일상점검일지
+    @RequestMapping(value = "/condition/dailyCheck/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> dailyCheckList(Condition condition) {
+        List<Condition> list = conditionService.dailyCheckList(condition);
+        Map<String, Object> result = new HashMap<>();
+        result.put("table3", list);   // key를 table3으로
+        return result;
+    }
+
+    
 
 }

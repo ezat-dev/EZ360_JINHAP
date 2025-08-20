@@ -112,4 +112,10 @@ private ConditionDao conditionDao;
 					public List<Condition> divisionWashingLogList(Condition condition){
 						return conditionDao.divisionWashingLogList(condition);
 					}
+					
+					//일상
+					@Override
+					public List<Condition> dailyCheckList(Condition condition){
+						return conditionDao.dailyCheckList(condition);
+					}
 }

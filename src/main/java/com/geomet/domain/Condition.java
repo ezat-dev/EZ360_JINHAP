@@ -1,6 +1,20 @@
 package com.geomet.domain;
 
 public class Condition {
+	
+	  	public String plant_id;
+	    public String maint_item_id;
+	    public String maint_item_name_ko_kr;
+	    public String maint_method;
+	    public String creator;
+	    public String created_time;
+		/*
+		 * public String specific_gravity; public String chiller_temp;
+		 */
+	    public String s_time;
+	    public String e_time;
+	    
+	    
 		private String op2_old;
 		private String op3_old;
 		private String op4_old;
@@ -129,6 +143,54 @@ public class Condition {
 
 
 
+		public String getPlant_id() {
+			return plant_id;
+		}
+		public void setPlant_id(String plant_id) {
+			this.plant_id = plant_id;
+		}
+		public String getMaint_item_id() {
+			return maint_item_id;
+		}
+		public void setMaint_item_id(String maint_item_id) {
+			this.maint_item_id = maint_item_id;
+		}
+		public String getMaint_item_name_ko_kr() {
+			return maint_item_name_ko_kr;
+		}
+		public void setMaint_item_name_ko_kr(String maint_item_name_ko_kr) {
+			this.maint_item_name_ko_kr = maint_item_name_ko_kr;
+		}
+		public String getMaint_method() {
+			return maint_method;
+		}
+		public void setMaint_method(String maint_method) {
+			this.maint_method = maint_method;
+		}
+		public String getCreator() {
+			return creator;
+		}
+		public void setCreator(String creator) {
+			this.creator = creator;
+		}
+		public String getCreated_time() {
+			return created_time;
+		}
+		public void setCreated_time(String created_time) {
+			this.created_time = created_time;
+		}
+		public String getS_time() {
+			return s_time;
+		}
+		public void setS_time(String s_time) {
+			this.s_time = s_time;
+		}
+		public String getE_time() {
+			return e_time;
+		}
+		public void setE_time(String e_time) {
+			this.e_time = e_time;
+		}
 		public String getOp4_old() {
 			return op4_old;
 		}

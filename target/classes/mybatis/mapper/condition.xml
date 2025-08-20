@@ -438,5 +438,19 @@
     ORDER BY log_dt DESC
 </select>
 
+
+<select id="dailyCheckList" parameterType="Condition" resultType="Condition">
+  SELECT *
+  FROM EXT_EMS_TB_DAILY_MAINT_ITEM
+  WHERE 1 = 1
+    <if test="s_time != null and s_time != '' and e_time != null and e_time != ''">
+      AND CREATED_TIME BETWEEN 
+          CONVERT(datetime2, #{s_time} + ' 00:00:00', 120)
+      AND CONVERT(datetime2, #{e_time} + ' 23:59:59.997', 120)
+    </if>
+</select>
+
+
+
 	
 </mapper>

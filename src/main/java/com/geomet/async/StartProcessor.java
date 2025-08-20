@@ -21,7 +21,7 @@ public class StartProcessor {
     @Autowired
     private ReportExService reportExService;
     
-    @Scheduled(cron = "0 58 16 * * *")
+    @Scheduled(cron = "0 33 13 * * *")
     public void reportEx() {
         try {
             reportExService.generateDailyReport();

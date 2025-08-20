@@ -19,7 +19,11 @@ public class ConditionDaoImpl implements ConditionDao {
 	 
 	 @Resource(name="orcleSession")
 		private SqlSession sessionOrcle;
-    
+	 
+	 @Resource(name = "sessionMssqlJinhap")
+	    private SqlSession sqlSessionMssqlJinhap;
+	    
+	    
     
     //기준정보
     @Override
@@ -112,5 +116,11 @@ public class ConditionDaoImpl implements ConditionDao {
 		@Override
 		public List<Condition> divisionWashingLogList(Condition condition) {
 			return sqlSession.selectList("condition.divisionWashingLogList",condition);
+		}
+		
+		
+		@Override
+		public List<Condition> dailyCheckList(Condition condition) {
+			return sqlSessionMssqlJinhap.selectList("condition.dailyCheckList",condition);
 		}
 }

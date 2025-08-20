@@ -50,4 +50,7 @@ public interface ConditionDao {
 	    
 	    void divisionWashingLog(Condition condition); 
 	    List<Condition> divisionWashingLogList(Condition condition); 
+	    //일상점검
+	    List<Condition> dailyCheckList(Condition condition); 
+
 }
