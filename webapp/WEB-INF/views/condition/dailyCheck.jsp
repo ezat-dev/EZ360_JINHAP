@@ -280,7 +280,21 @@
                 <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
 				<input type="text" autocomplete="off" class="daySet" id="e_time" placeholder="시작 날짜 선택">
 
-
+ 				<label for="m_code">설비선택 :</label>
+				<select id="m_code">
+				    <option value="W0100">세척1호기</option>
+				    <option value="W0200">세척2호기</option>
+				    <option value="S0100">쇼트1호기</option>
+				    <option value="S0200">쇼트2호기</option>
+				    <option value="S0300">쇼트3호기</option>
+				    <option value="S0400">쇼트4호기</option>
+				    <option value="S0500">쇼트5호기</option>
+				    <option value="S0600">쇼트6호기</option>
+				    <option value="G03-GG03">G600</option>
+				    <option value="G03-GG01" selected>G800</option> <!-- 🔹 기본 선택값 -->
+				    <option value="G04-GG05">K-BLACK</option>
+				    <option value="G04-GG07">공용설비</option>
+				</select>
 
                 <button class="select-button" onclick="loadWorkDailyData()">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
@@ -309,59 +323,45 @@
 </body>
 
 <script>
-  let table3,  selectedRowData;
-  let now_page_code = "c04";
+let table3, selectedRowData;
+let now_page_code = "c04";
 
-  $('.insert-button').click(function() {
+$(function() {
+    const today = new Date();
+
+    // 오늘 ISO 문자열
+    const todayISO = today.toISOString().split('T')[0]; // yyyy-mm-dd
+
+    // 이번 달 1일
+    const firstDayOfMonth = todayISO.substring(0, 8) + '01';
+
+    $('#s_time').val(firstDayOfMonth); // 이번 달 1일
+    $('#e_time').val(todayISO);        // 오늘
+
+    initTables();
+    loadWorkDailyData();
+
+    // 설비 선택 시 자동 조회
+    $('#m_code').change(function() {
+        loadWorkDailyData();
+    });
+});
+
+
+// 추가 버튼 클릭
+$('.insert-button').click(function() {
     const startDate = $('#s_time').val();
-
     selectedRowData = null;
     $('#corrForm')[0].reset();
 
     if (startDate) {
-      const formattedDate = startDate.replace(/-/g, '') + '0900';
-      $('input[name="input_date"]').val(formattedDate);
+        const formattedDate = startDate.replace(/-/g, '') + '0900';
+        $('input[name="input_date"]').val(formattedDate);
     }
-  });
+});
 
-  // 테이블1만 사용하도록 변경된 로드 함수 (m_code 미전송)
-  function loadWorkDailyData() {
-      let s_time = $("#s_time").val().replaceAll("-", "");
-      let e_time = $("#e_time").val().replaceAll("-", "");
-
-      console.log("보내는 값 (table3 조회):", { s_time, e_time });
-
-      $.ajax({
-          type: "POST",
-          url: "/geomet/condition/dailyCheck/list",
-          contentType: "application/json",
-          data: JSON.stringify({ s_time, e_time }), // <-- m_code 제거
-          success: function(response) {
-        	    if (!response || !response.table3) {
-        	        console.warn("서버 응답에 table3이 없습니다:", response);
-        	        table3.setData([]); // 빈값
-        	        return;
-        	    }
-
-        	    // table3 데이터를 화면 테이블에 세팅
-        	    table3.setData(response.table3);
-        	},
-          error: function(xhr, status, error) {
-              console.error("에러 응답:", xhr.responseText);
-              alert("조회에 실패했습니다.");
-          }
-      });
-  }
-
-  $(function() {
-      const today = new Date().toISOString().split('T')[0];
-      $('#s_time').val(today);
-      initTables();
-      loadWorkDailyData();
-
-  });
-
-  function initTables() {
+// 테이블 초기화
+function initTables() {
     table3 = new Tabulator("#table3", {
         height: "670px",
         layout: "fitColumns",
@@ -373,70 +373,97 @@
             headerTooltip: false
         },
         columns: [
-            { title: "NO", formatter: "rownum", hozAlign: "center", headerSort: false, width: 60 }, // 자동 번호
-            { title: "PLANT_ID",            field: "plant_id",             hozAlign: "center", headerSort: false, width: 160 },
-            { title: "MAINT_ITEM_ID",       field: "maint_item_id",        hozAlign: "center", headerSort: false, width: 160 },
-            { title: "MAINT_ITEM_NAME_KO_KR", field: "maint_item_name_ko_kr", hozAlign: "center", headerSort: false, width: 260 },
-            { title: "MAINT_METHOD",        field: "maint_method",        hozAlign: "center", headerSort: false, width: 160 },
-            { title: "CREATOR",             field: "creator",             hozAlign: "center", headerSort: false, width: 160 },
-            { title: "CREATED_TIME",        field: "created_time",        hozAlign: "center", headerSort: false, width: 260 },
-            { title: "Specific Gravity",    field: "specific_gravity",    hozAlign: "center", headerSort: false, width: 160 },
-            { title: "Chiller Temp",        field: "chiller_temp",        hozAlign: "center", headerSort: false, width: 160 }
+            { title: "NO", formatter: "rownum", hozAlign: "center", headerSort: false, width: 60 },
+            { title: "등록일자", field: "maint_date", hozAlign: "center", headerSort: false, width: 110 },
+            { title: "공정명", field: "segment_id", hozAlign: "center", headerSort: false, width: 110 },
+            { title: "설비명", field: "equipment_id", hozAlign: "center", headerSort: false, width: 110 },
+            { title: "점검항목", field: "maint_item_name_ko_kr", headerSort: false, width: 250 },
+            { title: "방법", field: "ss", hozAlign: "center", headerSort: false, width: 100 },
+            { title: "기준값", field: "maint_target",  headerSort: false, width: 250 },
+            { title: "상한값", field: "maint_usl", hozAlign: "center", headerSort: false, width: 90 },
+            { title: "하한값", field: "maint_lsl", hozAlign: "center", headerSort: false, width: 90 },
+            { title: "측정값", field: "maint_value", hozAlign: "center", headerSort: false, width: 90 },
+           // { title: "D 결과", field: "d_result", hozAlign: "center", headerSort: false, width: 100 },
+            { title: "결과", field: "e_result", hozAlign: "center", headerSort: false, width: 90 }
         ]
 
+
     });
-  }
+}
 
-  // 엑셀 버튼: m_code 제거, table3 기준 엑셀 생성 요청
-  $(".excel-button").on("click", function () {
-      $("#excelOverlay, #excelLoading").show();
+// 조회 Ajax
+function loadWorkDailyData() {
+    let s_time = $("#s_time").val();
+    let e_time = $("#e_time").val();
+    let m_code = $("#m_code").val(); // 선택 설비 값
 
-      let s_time = $("#s_time").val().replaceAll("-", "");
-      let e_time = s_time;
+    console.log("보내는 값 (table3 조회):", { s_time, e_time, m_code });
 
+    $.ajax({
+        type: "POST",
+        url: "/geomet/condition/dailyCheck/list",
+        contentType: "application/json",
+        data: JSON.stringify({ s_time, e_time, m_code }),
+        success: function(response) {
+            if (!response || !response.table3) {
+                console.warn("서버 응답에 table3이 없습니다:", response);
+                table3.setData([]);
+                return;
+            }
+            table3.setData(response.table3);
+        },
+        error: function(xhr, status, error) {
+            console.error("에러 응답:", xhr.responseText);
+            alert("조회에 실패했습니다.");
+        }
+    });
+}
 
+// 엑셀 버튼 클릭
+$(".excel-button").on("click", function () {
+    $("#excelOverlay, #excelLoading").show();
 
+    let s_time = $("#s_time").val().replaceAll("-", "");
+    let e_time = $("#e_time").val().replaceAll("-", "");
+    let m_code = $("#m_code").val(); // 선택 설비 값
 
-      $.ajax({
-          url: "/geomet/work/workDailyReport_600/excel",
-          method: "POST",
-          contentType: "application/json",
-          data: JSON.stringify({ s_time, e_time, ex_mch_name }), // <-- m_code 제거
-          dataType: "json",
+    $.ajax({
+        url: "/geomet/work/workDailyReport_600/excel",
+        method: "POST",
+        contentType: "application/json",
+        data: { s_time, e_time, m_code },
+        dataType: "json",
+        success: function (result) {
+            console.log("▶ 서버가 돌려준 result:", result);
 
-          success: function (result) {
-              console.log("▶ 서버가 돌려준 result:", result);
+            if (result && result.downloadPath) {
+                const downloadUrl = result.downloadPath;
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.style.display = 'none';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
 
-              if (result && result.downloadPath) {
-                  const downloadUrl = result.downloadPath;
-                  const a = document.createElement('a');
-                  a.href = downloadUrl;
-                  a.style.display = 'none';
-                  document.body.appendChild(a);
-                  a.click();
-                  document.body.removeChild(a);
-
-                  alert("작업일보 엑셀 저장 완료되었습니다.");
-              } else {
-                  console.warn("✋ downloadPath 키가 없습니다!", result);
-                  alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
-              }
-          },
-
-          error: function (xhr, status, error) {
-              console.error("▶ 엑셀 생성/다운로드 중 오류:", {
-                  status: status,
-                  error: error,
-                  responseText: xhr.responseText
-              });
-              alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
-          },
-
-          complete: function () {
-              $("#excelOverlay, #excelLoading").hide();
-          }
-      });
-  });
+                alert("작업일보 엑셀 저장 완료되었습니다.");
+            } else {
+                console.warn("✋ downloadPath 키가 없습니다!", result);
+                alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error("▶ 엑셀 생성/다운로드 중 오류:", {
+                status: status,
+                error: error,
+                responseText: xhr.responseText
+            });
+            alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+        },
+        complete: function () {
+            $("#excelOverlay, #excelLoading").hide();
+        }
+    });
+});
 </script>
 
 </body>

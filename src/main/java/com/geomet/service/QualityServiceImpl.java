@@ -83,5 +83,19 @@ public class QualityServiceImpl implements QualityService {
 	public void delTest_infoList(Quality quality) {
 	     qualityDao.delTest_infoList(quality); 
 	}
+	
+	//약품투입 기준자료
+	@Override
+	public List<Quality> getMedicineList1(Quality quality) {
+		return qualityDao.getMedicineList1(quality);
+	}
+	@Override
+	public List<Quality> getMedicineList2(Quality quality) {
+		return qualityDao.getMedicineList2(quality);
+	}
+	@Override
+	public boolean updateMedicineStandard(Quality quality) {
+		return qualityDao.updateMedicineStandard(quality);
+	}
 
 }

@@ -440,15 +440,32 @@
 
 
 <select id="dailyCheckList" parameterType="Condition" resultType="Condition">
-  SELECT *
-  FROM EXT_EMS_TB_DAILY_MAINT_ITEM
-  WHERE 1 = 1
-    <if test="s_time != null and s_time != '' and e_time != null and e_time != ''">
-      AND CREATED_TIME BETWEEN 
-          CONVERT(datetime2, #{s_time} + ' 00:00:00', 120)
-      AND CONVERT(datetime2, #{e_time} + ' 23:59:59.997', 120)
-    </if>
+    SELECT 
+        D.MAINT_DATE            AS maint_date,          -- 등록일자
+        C.SEGMENT_ID            AS segment_id,          -- 공정명
+        D.EQUIPMENT_ID          AS equipment_id,        -- 설비명
+        C.MAINT_ITEM_NAME_KO_KR AS maint_item_name_ko_kr, -- 점검항목
+        ''                      AS ss,                  -- 방법
+        C.MAINT_TARGET          AS maint_target,        -- 기준값
+        C.MAINT_USL             AS maint_usl,           -- 상한값
+        C.MAINT_LSL             AS maint_lsl,           -- 하한값
+        D.MAINT_VALUE           AS maint_value,         -- 측정값
+        D.RESULT                AS d_result,            -- D 결과
+        E.RESULT                AS e_result             -- E 결과
+    FROM EXT_EMS_TB_DAILY_MAINT_ITEM C
+    INNER JOIN EXT_EMS_TB_DAILY_MAINT_ITEM_RESULT D
+        ON C.MAINT_ITEM_ID = D.MAINT_ITEM_ID
+    INNER JOIN EXT_EMS_TB_DAILY_MAINT_RESULT E
+        ON D.EQUIPMENT_ID = E.EQUIPMENT_ID
+       AND D.MAINT_DATE = E.MAINT_DATE
+       AND D.DAY_NIGHT = E.DAY_NIGHT
+    WHERE 1=1
+      AND D.MAINT_DATE <![CDATA[ >= ]]> #{s_time}
+      AND D.MAINT_DATE <![CDATA[ <= ]]> #{e_time}
+      AND D.EQUIPMENT_ID = #{m_code}
+    ORDER BY D.MAINT_DATE DESC
 </select>
+
 
 
 

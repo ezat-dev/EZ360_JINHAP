@@ -4,7 +4,7 @@ public class Condition {
 	
 	  	public String plant_id;
 	    public String maint_item_id;
-	    public String maint_item_name_ko_kr;
+	 
 	    public String maint_method;
 	    public String creator;
 	    public String created_time;
@@ -13,6 +13,18 @@ public class Condition {
 		 */
 	    public String s_time;
 	    public String e_time;
+	    
+	    private String maint_date;            // 등록일자
+	    private String segment_id;            // 공정명
+	    private String equipment_id;          // 설비명
+	    private String maint_item_name_ko_kr; // 점검항목
+	    private String ss;                    // 방법
+	    private String maint_target;          // 기준값
+	    private String maint_usl;             // 상한값
+	    private String maint_lsl;             // 하한값
+	    private String maint_value;           // 측정값
+	    private String d_result;              // D 결과
+	    private String e_result;              // E 결과
 	    
 	    
 		private String op2_old;
@@ -127,7 +139,7 @@ public class Condition {
 	    private String viscosity_after;
 	    private String ck_time2;
 	    private String operator;
-	    
+	    private String m_code;
 	    
 	    private String plac_cd;
 	    private String plnt_cd;
@@ -143,6 +155,72 @@ public class Condition {
 
 
 
+		public String getM_code() {
+			return m_code;
+		}
+		public void setM_code(String m_code) {
+			this.m_code = m_code;
+		}
+		public String getMaint_date() {
+			return maint_date;
+		}
+		public void setMaint_date(String maint_date) {
+			this.maint_date = maint_date;
+		}
+		public String getSegment_id() {
+			return segment_id;
+		}
+		public void setSegment_id(String segment_id) {
+			this.segment_id = segment_id;
+		}
+		public String getEquipment_id() {
+			return equipment_id;
+		}
+		public void setEquipment_id(String equipment_id) {
+			this.equipment_id = equipment_id;
+		}
+		public String getSs() {
+			return ss;
+		}
+		public void setSs(String ss) {
+			this.ss = ss;
+		}
+		public String getMaint_target() {
+			return maint_target;
+		}
+		public void setMaint_target(String maint_target) {
+			this.maint_target = maint_target;
+		}
+		public String getMaint_usl() {
+			return maint_usl;
+		}
+		public void setMaint_usl(String maint_usl) {
+			this.maint_usl = maint_usl;
+		}
+		public String getMaint_lsl() {
+			return maint_lsl;
+		}
+		public void setMaint_lsl(String maint_lsl) {
+			this.maint_lsl = maint_lsl;
+		}
+		public String getMaint_value() {
+			return maint_value;
+		}
+		public void setMaint_value(String maint_value) {
+			this.maint_value = maint_value;
+		}
+		public String getD_result() {
+			return d_result;
+		}
+		public void setD_result(String d_result) {
+			this.d_result = d_result;
+		}
+		public String getE_result() {
+			return e_result;
+		}
+		public void setE_result(String e_result) {
+			this.e_result = e_result;
+		}
 		public String getPlant_id() {
 			return plant_id;
 		}

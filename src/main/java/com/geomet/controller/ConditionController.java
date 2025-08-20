@@ -872,15 +872,23 @@ public class ConditionController {
 
 
 
-    // 일상점검일지
+ // 일상점검일지
     @RequestMapping(value = "/condition/dailyCheck/list", method = RequestMethod.POST)
     @ResponseBody
-    public Map<String, Object> dailyCheckList(Condition condition) {
+    public Map<String, Object> dailyCheckList(@RequestBody Condition condition) {
+        System.out.println("▶ 요청 파라미터:");
+        System.out.println("   s_time = " + condition.getS_time());
+        System.out.println("   e_time = " + condition.getE_time());
+        System.out.println("   m_code = " + condition.getM_code());
+
         List<Condition> list = conditionService.dailyCheckList(condition);
+        System.out.println("▶ 조회 결과 건수: " + (list != null ? list.size() : 0));
+
         Map<String, Object> result = new HashMap<>();
-        result.put("table3", list);   // key를 table3으로
+        result.put("table3", list);
         return result;
     }
+
 
     
 

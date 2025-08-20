@@ -105,5 +105,23 @@ public class QualityDaoImpl implements QualityDao {
     public void delTest_infoList(Quality quality) {
     	sqlSession.delete("quality.delTest_infoList",quality);
     }
+    
+    //약품투입 기준자료
+	@Override
+	public List<Quality> getMedicineList1(Quality quality) {
+		return sqlSession.selectList("quality.getMedicineList1", quality);
+	}
+	@Override
+	public List<Quality> getMedicineList2(Quality quality) {
+		return sqlSession.selectList("quality.getMedicineList2", quality);
+	}
+	@Override
+	public boolean updateMedicineStandard(Quality quality) {
+		int result = sqlSession.insert("quality.updateMedicineStandard", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
 }
 

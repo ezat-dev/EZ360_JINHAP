@@ -45,4 +45,9 @@ public interface QualityDao {
 	    void saveTest_infoList(Quality quality);
 	    
 	    void delTest_infoList(Quality quality);
+	    
+	    //약품투입 기준자료
+	    List<Quality> getMedicineList1(Quality quality);
+	    List<Quality> getMedicineList2(Quality quality);
+	    boolean updateMedicineStandard(Quality quality);
 }

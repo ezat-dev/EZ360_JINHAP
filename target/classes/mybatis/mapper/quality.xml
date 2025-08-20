@@ -323,4 +323,38 @@
         DELETE FROM tb_test_info 
         WHERE item_cd = #{item_cd}
     	</delete>
+    	
+    		<select id="getMedicineList1" parameterType="Quality"
+		resultType="Quality">
+		SELECT *
+		FROM tb_medicine_standard
+		<where>
+				table_code = '1'
+		</where>
+	</select>
+
+	<select id="getMedicineList2" parameterType="Quality"
+		resultType="Quality">
+		SELECT *
+		FROM tb_medicine_standard
+		<where>
+				table_code = '2'
+		</where>
+	</select>
+	
+		<!-- 수입검사 수정 -->
+	<update id="updateMedicineStandard" parameterType="quality">
+		UPDATE tb_medicine_standard
+		<set>
+			<if test="naoh_result != null and naoh_result != ''">naoh_result = #{naoh_result},</if>
+			<if test="hcl != null and hcl != ''">hcl = #{hcl},</if>
+			<if test="liter != null and liter != ''">liter = #{liter},</if>
+			<if test="naoh != null and naoh != ''">naoh = #{naoh},</if>
+			<if test="sc300a != null and sc300a != ''">sc300a = #{sc300a},</if>
+			<if test="sc300b != null and sc300b != ''">sc300b = #{sc300b},</if>
+			<if test="condense != null and condense != ''">condense = #{condense},</if>
+			<if test="after_naoh != null and after_naoh != ''">after_naoh = #{after_naoh},</if>
+		</set>
+		WHERE num = #{num}
+	</update>
 </mapper>

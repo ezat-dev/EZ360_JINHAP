@@ -84,13 +84,82 @@ public class Quality {
 	    private String result; //판정결과
 	    private String update_id; //작성자
 	    
+	    private Integer num; //투입약품기준자료 pk
+	    private Integer naoh_result; //NaOH 분석결과
+	    private Float hcl; //1.0N-HCL 소모량
+	    private Integer liter; //조 용량
+	    private Float naoh; //NaOH
+	    private Float sc300a; //sc300a
+	    private Float sc300b; //sc300b
+	    private Float condense; //농축액
+	    private Float after_naoh; //투입 후 NaOH
+	    private Integer table_code; //테이블코드
 	    
 	    
 	    
 	    
 	    
 	    
-	    
+		public Integer getNum() {
+			return num;
+		}
+		public void setNum(Integer num) {
+			this.num = num;
+		}
+		public Integer getNaoh_result() {
+			return naoh_result;
+		}
+		public void setNaoh_result(Integer naoh_result) {
+			this.naoh_result = naoh_result;
+		}
+		public Float getHcl() {
+			return hcl;
+		}
+		public void setHcl(Float hcl) {
+			this.hcl = hcl;
+		}
+		public Integer getLiter() {
+			return liter;
+		}
+		public void setLiter(Integer liter) {
+			this.liter = liter;
+		}
+		public Float getNaoh() {
+			return naoh;
+		}
+		public void setNaoh(Float naoh) {
+			this.naoh = naoh;
+		}
+		public Float getSc300a() {
+			return sc300a;
+		}
+		public void setSc300a(Float sc300a) {
+			this.sc300a = sc300a;
+		}
+		public Float getSc300b() {
+			return sc300b;
+		}
+		public void setSc300b(Float sc300b) {
+			this.sc300b = sc300b;
+		}
+		public Float getCondense() {
+			return condense;
+		}
+		public void setCondense(Float condense) {
+			this.condense = condense;
+		}
+		public Float getAfter_naoh() {
+			return after_naoh;
+		}
+		public void setAfter_naoh(Float after_naoh) {
+			this.after_naoh = after_naoh;
+		}
+		public Integer getTable_code() {
+			return table_code;
+		}
+		public void setTable_code(Integer table_code) {
+			this.table_code = table_code;
+		}
 		public String getGroup_id() {
 			return group_id;
 		}

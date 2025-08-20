@@ -1770,6 +1770,44 @@ public class QualityController {
 
 	    return rtnMap;
 	}
+	  
+		// 약품투입기준자료 페이지 이동
+		@RequestMapping(value = "/quality/medicineStandard", method = RequestMethod.GET)
+		public String medicineStandard(Model model) {
+			return "/quality/medicineStandard.jsp"; //
+		}
+		
+	    //약품투입기준자료 리스트1
+		@RequestMapping(value = "/quality/getMedicineListStandardList1", method = RequestMethod.POST)
+	    @ResponseBody
+	    public List<Quality> getFacilityList(Quality quality) { 
+			System.out.println("getMedicineListStandardList1 컨트롤러 도착");
+			List<Quality> datas = qualityService.getMedicineList1(quality);
+			for(Quality v: datas) {
+				System.out.println(v);
+			}
+	        return datas;
+	    }
+		// 약품투입기준자료 리스트2
+		@RequestMapping(value = "/quality/getMedicineListStandardList2", method = RequestMethod.POST)
+	    @ResponseBody
+	    public List<Quality> getFacilityList2(Quality quality) { 
+			System.out.println("getMedicineListStandardList2 컨트롤러 도착");
+			List<Quality> datas = qualityService.getMedicineList2(quality);
+			for(Quality v: datas) {
+				System.out.println(v);
+			}
+	        return datas;
+	    }
+		
+		//약품투입기준자료 업데이트
+		@RequestMapping(value = "/quality/medicineStandard/update", method = RequestMethod.POST)
+	    @ResponseBody
+	    public boolean updateMedicineStandard(@RequestBody Quality quality) {
+			System.out.println("업데이트 컨트롤러 도착");
+			System.out.println("quality.getNum()" + quality.getNum());
+			return qualityService.updateMedicineStandard(quality);
+		}
 	 
     
 }
