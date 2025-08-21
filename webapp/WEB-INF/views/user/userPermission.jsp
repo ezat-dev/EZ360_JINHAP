@@ -151,6 +151,8 @@
 
 
 <script>
+//let now_page_code = "aa01";
+
 $(function(){
   var userTable;
   var user_code = 0;

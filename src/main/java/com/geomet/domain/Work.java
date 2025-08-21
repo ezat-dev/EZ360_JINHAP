@@ -3,7 +3,7 @@ import java.util.List;
 
 public class Work {
 	private String barcode_no;
-
+	private String date_time;
 	private String w1;
 	private String w2;
 	private String s1;
@@ -215,7 +215,13 @@ public class Work {
     
     
     
-    public String getWrk_ord_no() {
+    public String getDate_time() {
+		return date_time;
+	}
+	public void setDate_time(String date_time) {
+		this.date_time = date_time;
+	}
+	public String getWrk_ord_no() {
 		return wrk_ord_no;
 	}
 	public void setWrk_ord_no(String wrk_ord_no) {

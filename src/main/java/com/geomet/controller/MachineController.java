@@ -563,7 +563,7 @@ public class MachineController {
     @ResponseBody
     public List<Machine> getRepairStatusList(Machine machine) {
         System.out.println(">>> mch_name: " + machine.getMch_name());
-        System.out.println(">>> content: " + machine.getContent());
+
         return machineService.getRepairStatusList(machine);
     }
 

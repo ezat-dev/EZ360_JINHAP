@@ -374,17 +374,19 @@ function initTables() {
         },
         columns: [
             { title: "NO", formatter: "rownum", hozAlign: "center", headerSort: false, width: 60 },
-            { title: "등록일자", field: "maint_date", hozAlign: "center", headerSort: false, width: 110 },
-            { title: "공정명", field: "segment_id", hozAlign: "center", headerSort: false, width: 110 },
-            { title: "설비명", field: "equipment_id", hozAlign: "center", headerSort: false, width: 110 },
+          //  { title: "등록일자", field: "maint_date", hozAlign: "center", headerSort: false, width: 110 },
+         //   { title: "공정명", field: "segment_id", hozAlign: "center", headerSort: false, width: 110 },
+            { title: "설비", field: "equipment_id", hozAlign: "center", headerSort: false, width: 110 },
             { title: "점검항목", field: "maint_item_name_ko_kr", headerSort: false, width: 250 },
-            { title: "방법", field: "ss", hozAlign: "center", headerSort: false, width: 100 },
+            { title: "방법", field: "ss", hozAlign: "center", headerSort: false, width: 250 },
             { title: "기준값", field: "maint_target",  headerSort: false, width: 250 },
-            { title: "상한값", field: "maint_usl", hozAlign: "center", headerSort: false, width: 90 },
-            { title: "하한값", field: "maint_lsl", hozAlign: "center", headerSort: false, width: 90 },
-            { title: "측정값", field: "maint_value", hozAlign: "center", headerSort: false, width: 90 },
+            { title: "상한값", field: "maint_usl", hozAlign: "center", headerSort: false, width: 100,
+                formatter:"money", formatterParams:{precision:1} },
+              { title: "하한값", field: "maint_lsl", hozAlign: "center", headerSort: false, width: 100,
+                formatter:"money", formatterParams:{precision:1} },
+            { title: "측정값", field: "maint_value", hozAlign: "center", headerSort: false, width: 100 },
            // { title: "D 결과", field: "d_result", hozAlign: "center", headerSort: false, width: 100 },
-            { title: "결과", field: "e_result", hozAlign: "center", headerSort: false, width: 90 }
+            { title: "결과", field: "e_result", hozAlign: "center", headerSort: false, width: 100 }
         ]
 
 

@@ -178,20 +178,30 @@
 	
 				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
 	
+	
+		         <label class="daylabel">검색일자 :</label>
+				<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+				
+				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+	
+				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+	
+	
+	
 	            <label class="daylabel">설비명 :</label>
-	            <select class="dayselect">
+	            <select class="dayselect mch_name_s">
 	            <option value="ALL">전체</option>
            
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="k_balck">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
+  					<option value="G800">G800</option>
+	                <option value="G600">G600</option>
+	                <option value="K-BLACK">K-BLACK</option>
+	                <option value="공용설비">공용설비</option>
+	                <option value="방청">방청</option>
+	                <option value="이코팅1호기">이코팅1호기</option>
+	                <option value="이코팅2호기">이코팅2호기</option>
+	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
+	                <option value="세척 1호기">세척 1호기</option>
+	                <option value="세척 2호기">세척 2호기</option>
             </select>
 			</div>
                 <button class="select-button">
@@ -272,127 +282,162 @@
 
 
 <script>
-
 let now_page_code = "h03";
+var dataTable;
+var selectedRowData = null;
+
+// 날짜 포맷 함수: yyyy-MM-dd
+function formatDate(date) {
+    return date.getFullYear() + "-" 
+         + String(date.getMonth() + 1).padStart(2, '0') + "-" 
+         + String(date.getDate()).padStart(2, '0');
+}
+
+//Tabulator 데이터 로드 함수: 설비명 + 시작일 + 종료일
+function loadTableData() {
+    const mch_name = $('.dayselect').val();
+    const s_date = $('#startDate').val();
+    const e_date = $('#endDate').val();
+
+    console.log("보내는 파라미터:", { mch_name, s_date, e_date }); // <-- 여기 추가
+
+    if(dataTable){
+        dataTable.setData("/geomet/machine/repairStatus/list", { 
+            mch_name: mch_name,
+            s_date: s_date,
+            e_date: e_date
+        });
+    }
+}
 
 
-  var dataTable;
-  var selectedRowData = null;
+$(function() {
+    // 페이지 로드 시 어제/오늘 날짜 자동 입력
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
 
-  $(function() {
+    $('#startDate').val(formatDate(yesterday));
+    $('#endDate').val(formatDate(today));
+
+    // Tabulator 초기화
     dataTable = new Tabulator('#dataTable', {
-      height: '790px',
-      layout: 'fitDataFill',
-      headerSort: false,
-      columnHeaderVertAlign: "middle",
-      rowVertAlign: "middle",
-      reactiveData: true,
-      headerHozAlign: 'center',
-      ajaxConfig: { method: 'POST' },
-      ajaxURL: "/geomet/machine/repairStatus/list",
-      ajaxParams: { mch_name: "ALL" },
-      placeholder: "조회된 데이터가 없습니다.",
-      columns: [
-         
-          { 
-            title: "NO", 
-            formatter: "rownum", 
-            width: 70, 
-            hozAlign: "center" 
-          },
-        { title: "db_NO",                     field: "no",             width: 100, hozAlign: "center",visible: false },
-        { title:"설비",      field:"mch_name",   width:250, hozAlign:"center" },
-        { title:"점검",      field:"a_check",      width:140, hozAlign:"center" },
-        { title:"정비",      field:"maintenance",width:140, hozAlign:"center" },
-        { title:"내용",      field:"content",    width:390, hozAlign:"center" },
-        { title:"결과",      field:"result",     width:140, hozAlign:"center" },
-        { title:"비고",      field:"remarks",    width:390, hozAlign:"center" }
-      ],
-      rowClick: function(e, row) {
-        $('#dataTable .tabulator-row').removeClass('row_select');
-        row.getElement().classList.add('row_select');
-        selectedRowData = row.getData();
-      },
-      rowDblClick: function(e, row) {
-        var d = row.getData();
-        selectedRowData = d;
-        $('#corrForm')[0].reset();
-        $('select[name="mch_name"]').val(d.mch_name);
-        $('select[name="a_check"]').val(d.a_check);
-        $('select[name="maintenance"]').val(d.maintenance);
-        $('input[name="content"]').val(d.content);
-        $('select[name="result"]').val(d.result);
-        $('textarea[name="remarks"]').val(d.remarks);
-        $('#modalContainer').show().addClass('show');
-      }
+        height: '790px',
+        layout: 'fitDataFill',
+        headerSort: false,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        reactiveData: true,
+        headerHozAlign: 'center',
+        ajaxConfig: { method: 'POST' },
+        placeholder: "조회된 데이터가 없습니다.",
+        columns: [
+            { title: "NO", formatter: "rownum", width: 70, hozAlign: "center" },
+            { title: "db_NO", field: "no", width: 100, hozAlign: "center", visible: false },
+            { title:"설비", field:"mch_name", width:150, hozAlign:"center" },
+            { title:"점검", field:"a_check", width:120, hozAlign:"center" },
+            { title:"정비", field:"maintenance", width:140, hozAlign:"center" },
+            { title:"내용", field:"content", width:310 },
+            { title:"결과", field:"result", width:120, hozAlign:"center" },
+            { title:"비고", field:"remarks", width:350 },
+            { title:"날짜", field:"insert_date", width:180, hozAlign:"center" }
+        ],
+        rowClick: function(e, row) {
+            $('#dataTable .tabulator-row').removeClass('row_select');
+            row.getElement().classList.add('row_select');
+            selectedRowData = row.getData();
+        },
+        rowDblClick: function(e, row) {
+            var d = row.getData();
+            selectedRowData = d;
+            $('#corrForm')[0].reset();
+            $('select[name="mch_name"]').val(d.mch_name);
+            $('select[name="a_check"]').val(d.a_check);
+            $('select[name="maintenance"]').val(d.maintenance);
+            $('input[name="content"]').val(d.content);
+            $('select[name="result"]').val(d.result);
+            $('textarea[name="remarks"]').val(d.remarks);
+            $('#modalContainer').show().addClass('show');
+        }
     });
 
+    // 페이지 로드 시 초기 조회
+    loadTableData();
 
+    // 조회 버튼
     $('.select-button').click(function(){
-      var sel = $('.dayselect').val();
-      dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: sel });
+        loadTableData();
     });
 
+    // 셀렉트/날짜 변경 시 자동 조회
+    $('.dayselect, #startDate, #endDate').on('change', function(){
+        loadTableData();
+    });
+
+    // 추가 버튼
     $('.insert-button').click(function(){
-      selectedRowData = null;
-      $('#corrForm')[0].reset();
-      $('#modalContainer').show().addClass('show');
+        selectedRowData = null;
+        $('#corrForm')[0].reset();
+        $('#modalContainer').show().addClass('show');
     });
 
+    // 삭제 버튼
     $('.delete-button').click(function(){
-      if (!selectedRowData) {
-        alert('삭제할 행을 먼저 클릭해 주세요.');
-        return;
-      }
-      if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
-
-      $.ajax({
-        url: "/geomet/machine/repairStatus/delete",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({ no: selectedRowData.no }),
-        success: function(res){
-          alert('삭제되었습니다.');
-          var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: currentFilter });
-          selectedRowData = null;
-        },
-        error: function(){
-          alert('삭제 중 오류가 발생했습니다.');
+        if(!selectedRowData){
+            alert('삭제할 행을 먼저 클릭해 주세요.');
+            return;
         }
-      });
+        if(!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
+
+        $.ajax({
+            url: "/geomet/machine/repairStatus/delete",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ no: selectedRowData.no }),
+            success: function(){
+                alert('삭제되었습니다.');
+                selectedRowData = null;
+                loadTableData();
+            },
+            error: function(){
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        });
     });
 
+    // 모달 닫기
     $('.close, #closeModal').click(function(){
-      $('#modalContainer').removeClass('show').hide();
+        $('#modalContainer').removeClass('show').hide();
     });
 
+    // 저장 (추가/수정)
     $('#saveCorrStatus').click(function(event){
-      event.preventDefault();
-      var formData = new FormData($('#corrForm')[0]);
-      if (selectedRowData && selectedRowData.no) {
-        formData.append('no', selectedRowData.no);
-      }
-      $.ajax({
-        url: "/geomet/machine/repairStatus/insert",
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(){
-          alert("저장되었습니다!");
-          $('#modalContainer').hide();
-          var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/machine/repairStatus/list", { mch_name: currentFilter });
-          selectedRowData = null;
-        },
-        error: function(){
-          alert('저장 중 오류가 발생했습니다.');
+        event.preventDefault();
+        var formData = new FormData($('#corrForm')[0]);
+        if(selectedRowData && selectedRowData.no){
+            formData.append('no', selectedRowData.no);
         }
-      });
+
+        $.ajax({
+            url: "/geomet/machine/repairStatus/insert",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(){
+                alert('저장되었습니다!');
+                $('#modalContainer').hide();
+                selectedRowData = null;
+                loadTableData();
+            },
+            error: function(){
+                alert('저장 중 오류가 발생했습니다.');
+            }
+        });
     });
-  });
+});
 </script>
+
 
 
 </body>

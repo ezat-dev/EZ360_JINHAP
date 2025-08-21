@@ -9,7 +9,7 @@
     <title>1호기(G-600)</title>
 <style>
 	.tab {
-	    width: 89%;
+	    width: 91%;
 	    margin-bottom: 37px;
 	    margin-top: 35px;
 	    height: 55px;
@@ -398,15 +398,17 @@
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "순서", field: "r_num", hozAlign: "center", headerSort: false, width: 50 },       // 조금 줄임
-    	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 130  },
-    	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 150  }, 
-    	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 350 },
-    	        { title: "품번", field: "group_id", hozAlign: "left", headerSort: false, width: 170 },
-    	        { title: "작업오더", field: "barcode_no", hozAlign: "left", headerSort: false, width: 170 }, 
+    	        { title: "NO", formatter: "rownum", hozAlign: "center", headerSort: false, width: 60 },
+    	        { title: "투입시간", field: "start_time", hozAlign: "center", headerSort: false, width: 105  },
+    	        { title: "완료시간", field: "end_time", hozAlign: "center", headerSort: false, width: 105  }, 
+    	        { title: "품번", field: "group_id", hozAlign: "left", headerSort: false, width: 130 },
+    	    	{ title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 300 },
+    	    	 { title: "작업오더", field: "wrk_ord_no", hozAlign: "left", headerSort: false, width: 130 }, 
+    	    	    
+    	        { title: "바코드 번호", field: "barcode_no", hozAlign: "left", headerSort: false, width: 130 }, 
 
     	        { title: "후처리 사양", field: "next_facility",  headerSort: false, width: 260 },       
-    	        { title: "구분</br>(신규/재작업)", field: "e", headerSort: false, width: 155, hozAlign: "center" }
+    	        { title: "구분</br>(신규/재작업)", field: "e", headerSort: false, width: 145, hozAlign: "center" }
     	      
     	    ]
     	});

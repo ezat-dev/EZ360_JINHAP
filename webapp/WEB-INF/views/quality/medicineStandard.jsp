@@ -507,7 +507,21 @@ $("#saveCorrStatus").click(function (event) {
             { title: "NO", formatter: "rownum", hozAlign: "center", width: 40, headerSort: false },
             { title: "NaOH<br>분석결과(g/L)", field: "naoh_result", width: 110, hozAlign: "center", editor: "number", headerSort: false },
             { title: "1.0N-HCL<br>소모량(mL)", field: "hcl", width: 100, hozAlign: "center", editor: "number", headerSort: false },
-            { title: "조 용량<br>(liter)", field: "liter", width: 75, hozAlign: "center", editor: "number", headerSort: false },
+            { 
+                title: "조 용량<br>(liter)", 
+                field: "liter", 
+                width: 75, 
+                hozAlign: "center", 
+                editor: "number", 
+                headerSort: false,
+                formatter: "money",          // 숫자 포맷 적용
+                formatterParams: {
+                    precision: 0,            // 소수점 자리수
+                    thousand: ",",           // 천 단위 구분기호
+                    symbol: ""               // 단위 기호 없앰
+                }
+            },
+
             { title: "NaOH 0.5포 단위 투입량",
 				columns: [
 		            { title: "NaOH<br>(포)", field: "naoh", width: 80, hozAlign: "center", editor: "number", headerSort: false },
@@ -584,7 +598,21 @@ $("#saveCorrStatus").click(function (event) {
 	            { title: "NO", formatter: "rownum", hozAlign: "center", width: 40, headerSort: false },
 	            { title: "NaOH<br>분석결과(g/L)", field: "naoh_result", width: 110, hozAlign: "center", editor: "number", headerSort: false },
 	            { title: "1.0N-HCL<br>소모량(mL)", field: "hcl", width: 100, hozAlign: "center", editor: "number", headerSort: false },
-	            { title: "조 용량<br>(liter)", field: "liter", width: 75, hozAlign: "center", editor: "number", headerSort: false },
+	            { 
+	                title: "조 용량<br>(liter)", 
+	                field: "liter", 
+	                width: 75, 
+	                hozAlign: "center", 
+	                editor: "number", 
+	                headerSort: false,
+	                formatter: "money",          // 숫자 포맷 적용
+	                formatterParams: {
+	                    precision: 0,            // 소수점 자리수
+	                    thousand: ",",           // 천 단위 구분기호
+	                    symbol: ""               // 단위 기호 없앰
+	                }
+	            },
+
 	            { title: "NaOH 0.5포 단위 투입량",
 					columns: [
 			            { title: "NaOH<br>(포)", field: "naoh", width: 80, hozAlign: "center", editor: "number", headerSort: false },

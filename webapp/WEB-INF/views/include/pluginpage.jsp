@@ -294,9 +294,6 @@ $(window).on("load", function () {
         type: "POST",
         dataType: "json",
         success: function (response) {
-      //      console.log("서버에서 받은 전체 데이터:", response); // 전체 응답 확인
-      //      console.log("데이터 목록:", response.data); // data 배열만 확인
-            
             const $select = $(".equipment_name_select");
             $select.empty();
             $select.append('<option value="">전체</option>');
@@ -305,8 +302,8 @@ $(window).on("load", function () {
                 if (item.facility_name) {
                     const $option = $('<option>' + item.facility_name + '</option>')
                         .attr('value', item.facility_mach_code);
-                   
-                     $select.append($option);
+
+                    $select.append($option);
                 }
             });
         },
@@ -316,11 +313,9 @@ $(window).on("load", function () {
     });
 });
 
-
-
-
 let userPermissions = {};
 
+// 권한 정보 가져오기
 function userInfoList(now_page_code) {
     $.ajax({
         url: '/geomet/user/info',
@@ -331,52 +326,56 @@ function userInfoList(now_page_code) {
             const loginUserPage = response.loginUserPage;
             userPermissions = loginUserPage || {};
             controlButtonPermissions(now_page_code);
+            // 권한 세팅 후 핸들러 설치 (중복 호출 방지 내부 처리됨)
+            installTabulatorReadOnlyHandlers();
         },
         error: function(xhr, status, error) {
             console.error("데이터 가져오기 실패:", error);
+            // 그래도 핸들러는 설치해 둡니다(나중에 권한이 세팅되면 동작).
+            installTabulatorReadOnlyHandlers();
         }
     });
 }
 
 function controlButtonPermissions(now_page_code) {
     const permission = userPermissions?.[now_page_code];
-  //  console.log("현재 페이지 권한(permission):", permission);
+    // 전역 플래그 설정
+    window.currentPermission = permission; // "R", "C", "D" 등
+    window.canRead = permission === "R" || permission === "C" || permission === "D";
+    window.canCreate = permission === "C" || permission === "D";
+    window.canDelete = permission === "D";
 
-    const canRead = permission === "R" || permission === "C" || permission === "D";
-    const canCreate = permission === "C" || permission === "D";
-    const canDelete = permission === "D";
-
-    if (!canRead) {
+    if (!window.canRead) {
         $(".select-button").css("pointer-events", "none").css("background-color", "#ced4da");
     }
 
-    if (!canCreate) {
+    if (!window.canCreate) {
         $(".insert-button").css("pointer-events", "none").css("background-color", "#ced4da");
         $("#corrForm").prop("disabled", true);
     }
 
-    if (!canDelete) {
+    if (!window.canDelete) {
         $(".delete-button").css("pointer-events", "none").css("background-color", "#ced4da");
     }
 
-    $(".select-button").on("click", function (e) {
-        if (!canRead) {
+    $(".select-button").off("click.permissionCheck").on("click.permissionCheck", function (e) {
+        if (!window.canRead) {
             alert("당신의 권한이 없습니다. (조회)");
             e.preventDefault();
             e.stopImmediatePropagation();
         }
     });
 
-    $(".insert-button").on("click", function (e) {
-        if (!canCreate) {
+    $(".insert-button").off("click.permissionCheck").on("click.permissionCheck", function (e) {
+        if (!window.canCreate) {
             alert("당신의 권한이 없습니다. (추가)");
             e.preventDefault();
             e.stopImmediatePropagation();
         }
     });
 
-    $(".delete-button").on("click", function (e) {
-        if (!canDelete) {
+    $(".delete-button").off("click.permissionCheck").on("click.permissionCheck", function (e) {
+        if (!window.canDelete) {
             alert("당신의 권한이 없습니다. (삭제)");
             e.preventDefault();
             e.stopImmediatePropagation();
@@ -384,11 +383,156 @@ function controlButtonPermissions(now_page_code) {
     });
 }
 
+/* ---------- 편집 차단 로직 (캡처 + Observer + 안전판) ---------- */
+
+// 전역 토스트 알림 함수 (다른 곳에서도 사용)
+window.showPermissionNotice = function(msg){
+    let t = document.getElementById('permission-toast');
+    if (!t) {
+        t = document.createElement('div');
+        t.id = 'permission-toast';
+        t.style.position = 'fixed';
+        t.style.right = '20px';
+        t.style.bottom = '20px';
+        t.style.padding = '10px 14px';
+        t.style.background = 'rgba(0,0,0,0.75)';
+        t.style.color = '#fff';
+        t.style.borderRadius = '6px';
+        t.style.zIndex = 99999;
+        t.style.fontSize = '13px';
+        document.body.appendChild(t);
+    }
+    t.textContent = msg;
+    t.style.display = 'block';
+    clearTimeout(t._hideTimer);
+    t._hideTimer = setTimeout(function(){ t.style.display = 'none'; }, 1200);
+};
+
+// 설치 함수 (한 번만 설치됨)
+function installTabulatorReadOnlyHandlers(){
+    if (window.preventTabEditInstalled) return;
+    window.preventTabEditInstalled = true;
+
+    // 캡처 단계: 더블클릭 차단
+    document.addEventListener('dblclick', function(e){
+        const cell = e.target.closest && e.target.closest('.tabulator .tabulator-cell');
+        if (cell && window.currentPermission === "R") {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation && e.stopImmediatePropagation();
+            window.showPermissionNotice("당신의 권한이 없습니다. (수정)");
+            return false;
+        }
+    }, true);
+
+    // 캡처 단계: 클릭 차단(단일 클릭으로 편집 열리는 경우 대비)
+    document.addEventListener('click', function(e){
+        const cell = e.target.closest && e.target.closest('.tabulator .tabulator-cell');
+        if (cell && window.currentPermission === "R") {
+
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation && e.stopImmediatePropagation();
+
+            return false;
+        }
+    }, true);
+
+    document.addEventListener('mousedown', function(e){
+        const cell = e.target.closest && e.target.closest('.tabulator .tabulator-cell');
+        if (cell && window.currentPermission === "R") {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation && e.stopImmediatePropagation();
+            window.showPermissionNotice("당신의 권한이 없습니다. (수정)");
+            return false;
+        }
+    }, true);
+
+    // 캡처 단계: 키 (Enter / F2) 차단
+    document.addEventListener('keydown', function(e){
+        const active = document.activeElement;
+        const isCell = active && active.closest && active.closest('.tabulator .tabulator-cell');
+        if (isCell && window.currentPermission === "R") {
+            if (e.key === "Enter" || e.key === "F2") {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation && e.stopImmediatePropagation();
+                window.showPermissionNotice("당신의 권한이 없습니다. (수정)");
+                return false;
+            }
+        }
+    }, true);
+
+    // MutationObserver: 생성되는 에디터 DOM을 즉시 제거
+    const editorSelectors = [
+        '.tabulator-editor',
+        '.tabulator-editing',
+        '.tabulator-edit',
+        'input.tabulator-edit-input',
+        'input.tabulator-editor',
+        'textarea.tabulator-editor'
+    ].join(',');
+
+    const observer = new MutationObserver(function(mutations){
+        if (window.currentPermission !== "R") return;
+
+        mutations.forEach(function(m){
+            m.addedNodes && m.addedNodes.forEach(function(node){
+                if (!(node && node.nodeType === 1)) return;
+                try {
+                    if (node.matches && node.matches(editorSelectors)) {
+                        node.remove();
+                        window.showPermissionNotice("당신의 권한이 없습니다. (수정)");
+                        return;
+                    }
+                    const found = node.querySelector && node.querySelector(editorSelectors);
+                    if (found) {
+                        found.remove();
+                        window.showPermissionNotice("당신의 권한이 없습니다. (수정)");
+                        return;
+                    }
+                } catch (err) {
+        
+                }
+            });
+        });
+    });
+
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // 전역 레퍼런스로 보관 (원하면 observer.disconnect()로 해제 가능)
+    window._tabulatorEditObserver = observer;
+
+    // 안전판: 주기적으로 (느린 주기) 에디터/인풋이 남아있나 확인하여 제거/blur
+    window._tabulatorEditCleaner = setInterval(function(){
+        if (window.currentPermission !== "R") return;
+        try {
+            // 탐지 셀렉터: 에디터 래퍼 또는 입력 필드
+            const list = document.querySelectorAll('.tabulator .tabulator-editor, .tabulator input, .tabulator textarea, .tabulator .tabulator-editing');
+            if (!list || list.length === 0) return;
+            list.forEach(function(el){
+                try {
+                    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                        el.blur();
+                        el.disabled = true;
+                    } else {
+                        el.remove();
+                    }
+                } catch(e){}
+            });
+            if (list.length) window.showPermissionNotice("당신의 권한이 없습니다. (수정)");
+        } catch(e){}
+    }, 700); // 700ms 주기: 부담 적음
+}
 
 $(document).ready(function() {
     userInfoList(now_page_code);
-    console.log("나우페이지코드",now_page_code)
+    console.log("나우페이지코드", now_page_code);
+
+    installTabulatorReadOnlyHandlers();
 });
+
 
 
 

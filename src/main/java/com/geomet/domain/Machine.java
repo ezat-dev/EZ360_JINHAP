@@ -8,7 +8,8 @@ public class Machine {
 	private String rate;
 	private String n_rate;
 	private String c_rate;
- 
+	private String s_date;
+	private String e_date;
 
 	private String alarm_count;
 
@@ -38,6 +39,22 @@ public class Machine {
 
 	
 	
+	public String getS_date() {
+		return s_date;
+	}
+
+	public void setS_date(String s_date) {
+		this.s_date = s_date;
+	}
+
+	public String getE_date() {
+		return e_date;
+	}
+
+	public void setE_date(String e_date) {
+		this.e_date = e_date;
+	}
+
 	public String getP() {
 		return p;
 	}

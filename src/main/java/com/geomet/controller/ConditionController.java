@@ -882,7 +882,7 @@ public class ConditionController {
         System.out.println("   m_code = " + condition.getM_code());
 
         List<Condition> list = conditionService.dailyCheckList(condition);
-        System.out.println("▶ 조회 결과 건수: " + (list != null ? list.size() : 0));
+        System.out.println("▶ 일상정검일지 조회 결과 건수: " + (list != null ? list.size() : 0));
 
         Map<String, Object> result = new HashMap<>();
         result.put("table3", list);

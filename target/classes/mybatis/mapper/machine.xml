@@ -302,23 +302,18 @@ SELECT * FROM v_moniteolingling
   </delete>
 
 
-    <select id="getRepairStatusList" parameterType="Machine" resultType="machine">
-        SELECT * FROM (
-            SELECT *
-            FROM tb_repair_status
-            WHERE mch_name = #{mch_name}
+<select id="getRepairStatusList" parameterType="Machine" resultType="Machine">
+    SELECT *
+    FROM tb_repair_status
+    WHERE 1=1
+      <if test="mch_name != 'ALL'">
+        AND mch_name = #{mch_name}
+      </if>
+      AND insert_date BETWEEN CONCAT(#{s_date}, ' 00:00:00') AND CONCAT(#{e_date}, ' 23:59:59')
+    ORDER BY insert_date DESC
+    LIMIT 200
+</select>
 
-            UNION ALL
-
-            SELECT *
-            FROM tb_repair_status
-            WHERE NOT EXISTS (
-                SELECT 1 FROM tb_repair_status WHERE mch_name = #{mch_name}
-            )
-            LIMIT 100
-        ) AS sub
-        ORDER BY insert_date DESC
-    </select>
 
  
   <select id="getPartStatusList" parameterType="Machine" resultType="Machine">

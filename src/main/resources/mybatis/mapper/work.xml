@@ -428,7 +428,7 @@ FROM (
 ) AS bb
 WHERE 1=1
 AND bb.mach_code = #{m_code}
-ORDER BY bb.end_time;
+ORDER BY bb.start_time;
 
 </select>
 

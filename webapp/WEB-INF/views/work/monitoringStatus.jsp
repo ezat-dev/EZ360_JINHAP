@@ -302,8 +302,8 @@
                     {title: "현 생산량(kg)", field: "3", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
                     {title: "시간당 생산량(kg)", field: "4", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
                     {title: "누적 진도율(%)", field: "5", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "장입량 준수율(%)", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "로트수", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                  //  {title: "장입량 준수율(%)", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
+                    {title: "작업통수", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
                     {title: "비가동 현황(시간)", field: "6", sorter: "string", width: 280, hozAlign: "center", headerSort: false},
                     ],
                    
