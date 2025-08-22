@@ -1092,4 +1092,110 @@ FROM
     EZ_FLOW_VIEW
 
 </select>
+
+
+
+
+
+
+<select id="monitoringStatusList"  resultType="Work">
+<![CDATA[
+        SELECT 
+            AAA.ch_idx,
+            AAA.facility_name,
+			FORMAT(AAA.F * 170, 0) AS target_weight,           -- 일 목표 생산량
+			FORMAT(ROUND(BBB.weight * BBB.L, 1), 1) AS now_weight,   -- 현 생산량
+			FORMAT(ROUND((BBB.weight * BBB.L) / AAA.work_time, 1), 1) AS hour_weight, -- 시간당 생산량
+
+            ROUND(BBB.L / AAA.F, 1) * 100 AS jindo,
+            BBB.L AS work_tong,
+            ROUND((L - I) / D, 1) AS non_time,
+
+            AAA.work_time,
+            BBB.weight,
+            AAA.C,
+            AAA.C_min,
+            AAA.D,
+            AAA.E,
+            AAA.G,
+            AAA.H,
+            AAA.H_min,
+            AAA.I,
+            BBB.J,
+            BBB.K,
+            ROUND(BBB.L / AAA.I, 1) * 100 AS N,
+            L - F AS O,
+            FORMAT((L - I),1) AS P,
+            Q AS Q,
+            ROUND(((L - I) * 170) / 1000,1) AS R,
+
+            ROUND((L - I) / D, 1) * 60 AS T,
+            TRUNCATE(((ROUND((L - I) / D, 1) / C) * 60) * 100, 1) AS U
+        FROM
+        (
+            SELECT 
+                facility_code,
+                facility_name,
+                facility_mach_code,
+                facility_comment,
+                c_t,
+                capa,
+                c_t_hour,
+                std_weight,
+                ch_idx,
+                division,
+                facility_name AS B,
+                CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+                     ELSE (du.work_time*60) END AS C,
+                TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+                     ELSE (du.work_time*60) END) * 60), '%H:%i') AS C_min,
+                c_t_hour AS D,
+                ROUND((c_t_hour * 12), 0) AS E,
+                ROUND((c_t_hour * 12), 0) * 2 AS F,
+                '01:20' AS G,
+                ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+                     ELSE (du.work_time*60) END - TIME_TO_SEC('00:00')/60)/60),0) AS H,
+                TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+                     ELSE (du.work_time*60) END - TIME_TO_SEC('00:00')/60)*60),'%H:%i') AS H_min,
+                FORMAT(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+                     ELSE (du.work_time*60) END - TIME_TO_SEC('00:00')/60)/60) * c_t_hour,1) AS I,
+                "없음" AS Q,
+                du.work_time,
+                work_gb
+            FROM
+            (
+                SELECT *, 'Z' AS Z FROM tb_facility WHERE ch_idx != 9999
+            ) AS fac
+            LEFT OUTER JOIN
+            (
+                SELECT 'Z' AS ZZ,
+                    CASE WHEN DATE_FORMAT(SUBSTR(#{startDate},1,8),'%Y-%m-%d') = CURDATE() THEN TIMESTAMPDIFF(HOUR,
+                             CONCAT(DATE_FORMAT(LEFT(#{startDate},8), '%Y-%m-%d'),' 08:00:00'), NOW())
+                         ELSE 24 END AS work_time,
+                    CASE WHEN DATE_FORMAT(SUBSTR(#{startDate},1,8),'%Y-%m-%d') = CURDATE() THEN 0 ELSE 1 END work_gb
+            ) AS du
+            ON fac.Z = du.ZZ
+        ) AS AAA
+        INNER JOIN
+        (
+            SELECT mach_code, weight,
+                   SUM(CASE WHEN end_time >= #{startDate} AND end_time < #{endDate} THEN 1 ELSE 0 END) AS L,
+                   SUM(CASE WHEN end_time >= CONCAT(SUBSTR(#{startDate}, 1, 8), '080000') 
+                            AND end_time < CONCAT(SUBSTR(#{startDate}, 1, 8), '200000') THEN 1 ELSE 0 END) AS J,
+                   SUM(CASE WHEN end_time >= CONCAT(SUBSTR(#{startDate}, 1, 8), '200000') 
+                            AND end_time < CONCAT(DATE_FORMAT(DATE_ADD(STR_TO_DATE(SUBSTR(#{startDate}, 1, 8), '%Y%m%d'), INTERVAL 1 DAY), '%Y%m%d'), '080000') THEN 1 ELSE 0 END) AS K
+            FROM tb_lowdata_save
+            WHERE start_time IS NOT NULL
+              AND end_time IS NOT NULL
+              AND end_time >= #{startDate}
+              AND end_time < #{endDate}
+            GROUP BY mach_code
+        ) AS BBB
+        ON AAA.facility_mach_code = BBB.mach_code
+        ORDER BY AAA.ch_idx
+]]>
+</select>
+
+
+
 </mapper>

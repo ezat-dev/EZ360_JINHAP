@@ -19,7 +19,7 @@
         .view {
             display: flex;
             justify-content: center;
-            margin-top: 1%;
+            margin-top: 5%;
         }
         .tab {
             width: 95%;
@@ -155,41 +155,82 @@
 	    height: 42px;
 	    margin-left: 9px;
         }
+        
+        
+    .color-red        { background: #e74c3c;        }
+    .color-orange     { background: #e67e22;     }
+    .color-yellow     { background: #f1c40f;     }
+    .color-lightgreen { background: #2ecc71; }
+        
+#dataList .tabulator-tableHolder .tabulator-row {
+    height: 47px !important;
+    font-size: 20px !important;
+    font-weight: bold !important; /* 글씨 두껍게 */
+}
+
+#dataList .tabulator-tableHolder .tabulator-cell {
+    line-height: 47px !important;
+    font-size: 20px !important;
+    font-weight: bold !important; /* 글씨 두껍게 */
+}
+
+#dataList .tabulator-tableHolder .tabulator-header .tabulator-col {
+    height: 37px !important;
+    line-height: 37px !important;
+    font-size: 17px !important;
+    font-weight: bold !important; /* 글씨 두껍게 */
+}
+
+      .custom-progress {
+      background: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+      height: 27px;
+      position: relative;
+      box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .custom-progress .bar {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease-in-out;
+    }
+    /* 값 범위별 색상 */
+    .bar.color-red { background: #e74c3c; }
+    .bar.color-orange { background: #e67e22; }
+    .bar.color-yellow { background: #f1c40f; }
+    .bar.color-lightgreen { background: #2ecc71; }
+    .custom-progress .label {
+      position: absolute;
+      width: 100%;
+      text-align: center;
+      font-size: 17px;
+      font-weight: bold;
+      color: #333;
+      top: 0;
+      left: 0;
+      line-height: 19px;
+    }
     </style>
 </head>
 
 <body>
-
     <main class="main">
         <div class="tab">
-        
-
             <div class="button-container">
-            
-               <div class="box1">
-	           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-	           <label class="daylabel">검색일자 :</label>
-				<input type="text" autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-				
-				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
-	
-				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-	
-	            <label class="daylabel">설비명 :</label>
-	            <select class="dayselect">
-             
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
-			</div>
+                <div class="box1">
+                    <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
+                    
+                    <label class="daylabel">검색일자 :</label>
+                    <input type="text" 
+                           autocomplete="off" 
+                           class="daySet" 
+                           id="startDate" 
+                           style="font-size: 16px; margin-bottom:10px;" 
+                           placeholder="날짜 선택">
+                    
+                  
+                </div>
+
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
@@ -209,174 +250,107 @@
             <div id="dataList"></div>
         </div>
     </main>
-	
-	   <div id="modalContainer" class="modal">
-	    <div class="modal-content">
-	        <span class="close">&times;</span>
-	        <h2>교체이력 등록</h2>
-	        <form id="corrForm">
-	            <label>설비명</label>
-	            <select name="equipmentName">
-	                <option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
-	            </select>
-	
-	            <label>점검</label>
-	              <select name="select1">
-	                <option value="일상">일상</option>
-	                <option value="정기">정기</option>
-	            </select>
-	
-	            <label>정비</label>
-	           	<select name="select2">
-	                <option value="예방">예방</option>
-	            	<option value="돌발">돌발</option>
-	            </select>
-	
-	            <label>점검 및 정비 내용</label>
-	           <input type="text" name="nextDate">
 
-	
-	            <label>점검 결과</label>
-	            <select name="select3">
-	                <option value="양호">예방</option>
-	            	<option value="추가보안 필요">돌발</option>
-	            </select>
-	            
-	         
-	
-	            <label>비고</label>
-	            <textarea name="remarks" rows="4"></textarea>
-	
-	            <button type="submit" id="saveCorrStatus">저장</button>
-	            <button type="button" id="closeModal">닫기</button>
-	        </form>
-	    </div>
-	</div>
+ <script>
+let now_page_code = "b03";
+let dataTable; // Tabulator 전역 변수
 
+$(function () {
+    // 오늘 날짜 구하기
+    const today = new Date().toISOString().split('T')[0];
 
-    <script>
-    let now_page_code = "b03";
-    
-        $(function() {
-            getDataList();
+    // input에 오늘 날짜 기본 세팅
+    $('#startDate').val(today);
 
-            const today = new Date().toISOString().split('T')[0];
-            $('#startDate').val(today);
-            $('#endDate').val(today);
-        });
+    // Tabulator 테이블 초기 생성
+    initDataTable();
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "560px",
-                layout: "fitColumns",
-                selectable: true,
-                tooltips: true,
-                selectableRangeMode: "click",
-                reactiveData: true,
-                columnHeaderVertAlign: "middle",
-                rowVertAlign: "middle",
-                headerHozAlign: "center",
-                ajaxConfig: "POST",
-                ajaxLoader: false,
-                ajaxURL: "/geomet/quality/tustest/selectList",
-                ajaxProgressiveLoad: "scroll",
-                ajaxParams: {},
-                placeholder: "조회된 데이터가 없습니다.",
-                paginationSize: 20,
-                ajaxResponse: function(url, params, response) {
-                    $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                    return response;
-                },
-                columns: [
-                    {title: "설비", field: "1", sorter: "string", width: 100, hozAlign: "center", headerSort: false},
-                    {title: "일 목표 생산량", field: "2", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "현 생산량(kg)", field: "3", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "시간당 생산량(kg)", field: "4", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "누적 진도율(%)", field: "5", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                  //  {title: "장입량 준수율(%)", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "작업통수", field: "6", sorter: "string", width: 200, hozAlign: "center", headerSort: false},
-                    {title: "비가동 현황(시간)", field: "6", sorter: "string", width: 280, hozAlign: "center", headerSort: false},
-                    ],
-                   
-              
-                rowFormatter: function(row) {
-                    var data = row.getData();
-                    row.getElement().style.fontWeight = "700";
-                    row.getElement().style.backgroundColor = "#FFFFFF";
-                },
-                rowClick: function(e, row) {
-                    $("#dataList .tabulator-tableHolder > .tabulator-table > .tabulator-row").each(function(index, item) {
-                        if ($(this).hasClass("row_select")) {
-                            $(this).removeClass('row_select');
-                            row.getElement().className += " row_select";
-                        } else {
-                            $("#dataList div.row_select").removeClass("row_select");
-                            row.getElement().className += " row_select";
-                        }
-                    });
-                },
-            });
-        }
+    // 페이지 로드 시 데이터 조회
+    getDataList(today);
 
-        document.querySelector(".insert-button").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.add("show");
-        });
+    // 조회 버튼 클릭 시
+    $('.select-button').click(function() {
+        const selectedDate = $('#startDate').val();
+        getDataList(selectedDate);
+    });
+});
 
-        document.querySelector(".close").addEventListener("click", function() {
-            let modal = document.getElementById("modalContainer");
-            modal.classList.remove("show");
-        });
-        document.getElementById("closeModal").addEventListener("click", function() {
-            document.getElementById("modalContainer").classList.remove("show");
-        });
+// Tabulator 초기화 함수
+function initDataTable() {
+	 if (!document.getElementById('progress-styles')) {
+ 	    const style = document.createElement('style');
+ 	    style.id = 'progress-styles';
+ 	    style.innerHTML = `
+ 	      .custom-progress { background: #f0f0f0; border-radius: 4px; overflow: hidden; height: 27px; position: relative; box-shadow: inset 0 1px 3px rgba(0,0,0,0.2); }
+ 	      .custom-progress .bar { height: 100%; border-radius: 4px; transition: width 0.5s ease-in-out; }
+ 	      .bar.color-red { background: #e74c3c; }
+ 	      .bar.color-orange { background: #e67e22; }
+ 	      .bar.color-yellow { background: #f1c40f; }
+ 	      .bar.color-lightgreen { background: #2ecc71; }
+ 	      .custom-progress .label { position: absolute; width: 100%; text-align: center; font-size: 16px; font-weight: bold; color: #333; top: -4; left: 0; line-height: 16px; }
+ 	    `;
+ 	    document.head.appendChild(style);
+ 	  }
 
+ 	  // 퍼센트 포맷터 정의: 범위별 색상 적용
+ 	  var percentFormatter = function(cell, formatterParams, onRendered) {
+ 	    var value = cell.getValue() || 0;
+ 	    var colorClass = value <= 25 ? 'color-red'
+ 	                   : value <= 50 ? 'color-orange'
+ 	                   : value <= 75 ? 'color-yellow'
+ 	                   : 'color-lightgreen';
+ 	    var wrapper = document.createElement('div');
+ 	    wrapper.className = 'custom-progress';
 
-        $(document).ready(function () {
-            $("#saveCorrStatus").click(function (event) {
-                event.preventDefault();
-                
-                var corrForm = new FormData($("#corrForm")[0]);  // 폼 데이터를 FormData 객체로 생성
+ 	    var bar = document.createElement('div');
+ 	    bar.className = 'bar ' + colorClass;
+ 	    bar.style.width = value + '%';
+ 	    wrapper.appendChild(bar);
 
-                // FormData의 값을 콘솔에 출력
-                corrForm.forEach(function(value, key){
-                    console.log(key + ": " + value);  // key와 value를 콘솔에 출력
-                });
+ 	    var label = document.createElement('div');
+ 	    label.className = 'label';
+ 	    label.textContent = value + '%';
+ 	    wrapper.appendChild(label);
 
-                $.ajax({
-                    url: "/geomet/condition/corrStatus/insert",
-                    type: "POST",
-                    data: corrForm,
-                    dataType: "json",
-                    processData: false,  
-                    contentType: false,  
-                    success: function (response) {
-                        alert("교체 이력이 성공적으로 저장되었습니다!");
-                        $("#modalContainer").hide(); 
-                    }
-                });
-            });
+ 	    return wrapper;
+ 	  };
+    dataTable = new Tabulator("#dataList", {
+        height: "660px",
+        layout: "fitColumns",
+        selectableRangeMode: "click",
+        reactiveData: true,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        headerHozAlign: "center",
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        ajaxURL: "/geomet/work/monitoringStatus/list",
+        ajaxContentType: "json",
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function (url, params, response) {
+            $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
+            return response;
+        },
+        columns: [
+            {title: "설비", field: "facility_name", sorter: "string", width: 210, headerSort: false, hozAlign: "center"},
+            {title: "일 목표 생산량(kg)", field: "target_weight", sorter: "string", width: 210, hozAlign: "center", headerSort: false},
+            {title: "현 생산량(kg)", field: "now_weight", sorter: "string", width: 210, hozAlign: "center", headerSort: false},
+            {title: "시간당 생산량(kg)", field: "hour_weight", sorter: "string", width: 210, hozAlign: "center", headerSort: false},
+            {title: "누적 진도율(%)", field: "jindo", sorter: "string", width: 210, hozAlign: "center",formatter: percentFormatter, headerSort: false},
+            {title: "작업통수", field: "work_tong", sorter: "string", width: 210, hozAlign: "center", headerSort: false},
+            {title: "비가동 현황(시간)", field: "non_time", sorter: "string", width: 210, hozAlign: "center", headerSort: false},
+        ],
+    });
+}
 
-            // 모달 닫기 버튼 이벤트
-            $("#closeModal").click(function () {
-                $("#modalContainer").hide();
-            });
-        });
-
-        	
-
-
-        
-    </script>
+// 데이터 조회 함수 (재조회)
+function getDataList(startDate) {
+    if (dataTable) {
+        dataTable.setData("/geomet/work/monitoringStatus/list", { startDate: startDate });
+    }
+}
+</script>
 
 </body>
+
 </html>

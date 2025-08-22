@@ -97,5 +97,15 @@ public class QualityServiceImpl implements QualityService {
 	public boolean updateMedicineStandard(Quality quality) {
 		return qualityDao.updateMedicineStandard(quality);
 	}
+	//테스트 관리대장
+	@Override
+	public List<Quality> getTestManageList(Quality quality) {
+		return qualityDao.getTestManageList(quality);
+	}
+	@Override
+	public boolean updateTestManage(Quality quality) {
+		return qualityDao.updateTestManage(quality);
+	}
+
 
 }

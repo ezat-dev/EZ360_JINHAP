@@ -97,5 +97,8 @@ public class WorkServiceImpl implements WorkService {
 	    public List<Work> lotReportStatusList(Work work) {
 	        return workDao.lotReportStatusList(work);
 	    }
-	    
+	    @Override
+	    public List<Work> monitoringStatusList(Work work) {
+	        return workDao.monitoringStatusList(work);
+	    }	    
 }

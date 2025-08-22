@@ -96,10 +96,192 @@ public class Quality {
 	    private Integer table_code; //테이블코드
 	    
 	    
+	    //테스트 관리대장
+	    private String number; //테스트 관리대장 pk
+	    private String date; //날짜
+	    private String sst1; //sst1
+	    private String sst2; 
+	    private String sst3;
+	    private String cct1;
+	    private String cct2;
+	    private String cct3;
+	    private String contact1;
+	    private String contact2;
+	    private String contact3;
+	    private String gattach1;
+	    private String gattach2;
+	    private String gattach3;
+	    private String after_attach1;
+	    private String after_attach2;
+	    private String after_attach3;
+	    private String heat1;
+	    private String heat2;
+	    private String heat3;
+	    private String clean1;
+	    private String clean2;
+	    private String clean3;
+	    private String shot1;
+	    private String shot2;
+	    private String shot3;
 	    
 	    
 	    
-	    
+		public String getNumber() {
+			return number;
+		}
+		public void setNumber(String number) {
+			this.number = number;
+		}
+		public String getDate() {
+			return date;
+		}
+		public void setDate(String date) {
+			this.date = date;
+		}
+		public String getSst1() {
+			return sst1;
+		}
+		public void setSst1(String sst1) {
+			this.sst1 = sst1;
+		}
+		public String getSst2() {
+			return sst2;
+		}
+		public void setSst2(String sst2) {
+			this.sst2 = sst2;
+		}
+		public String getSst3() {
+			return sst3;
+		}
+		public void setSst3(String sst3) {
+			this.sst3 = sst3;
+		}
+		public String getCct1() {
+			return cct1;
+		}
+		public void setCct1(String cct1) {
+			this.cct1 = cct1;
+		}
+		public String getCct2() {
+			return cct2;
+		}
+		public void setCct2(String cct2) {
+			this.cct2 = cct2;
+		}
+		public String getCct3() {
+			return cct3;
+		}
+		public void setCct3(String cct3) {
+			this.cct3 = cct3;
+		}
+		public String getContact1() {
+			return contact1;
+		}
+		public void setContact1(String contact1) {
+			this.contact1 = contact1;
+		}
+		public String getContact2() {
+			return contact2;
+		}
+		public void setContact2(String contact2) {
+			this.contact2 = contact2;
+		}
+		public String getContact3() {
+			return contact3;
+		}
+		public void setContact3(String contact3) {
+			this.contact3 = contact3;
+		}
+		public String getGattach1() {
+			return gattach1;
+		}
+		public void setGattach1(String gattach1) {
+			this.gattach1 = gattach1;
+		}
+		public String getGattach2() {
+			return gattach2;
+		}
+		public void setGattach2(String gattach2) {
+			this.gattach2 = gattach2;
+		}
+		public String getGattach3() {
+			return gattach3;
+		}
+		public void setGattach3(String gattach3) {
+			this.gattach3 = gattach3;
+		}
+		public String getAfter_attach1() {
+			return after_attach1;
+		}
+		public void setAfter_attach1(String after_attach1) {
+			this.after_attach1 = after_attach1;
+		}
+		public String getAfter_attach2() {
+			return after_attach2;
+		}
+		public void setAfter_attach2(String after_attach2) {
+			this.after_attach2 = after_attach2;
+		}
+		public String getAfter_attach3() {
+			return after_attach3;
+		}
+		public void setAfter_attach3(String after_attach3) {
+			this.after_attach3 = after_attach3;
+		}
+		public String getHeat1() {
+			return heat1;
+		}
+		public void setHeat1(String heat1) {
+			this.heat1 = heat1;
+		}
+		public String getHeat2() {
+			return heat2;
+		}
+		public void setHeat2(String heat2) {
+			this.heat2 = heat2;
+		}
+		public String getHeat3() {
+			return heat3;
+		}
+		public void setHeat3(String heat3) {
+			this.heat3 = heat3;
+		}
+		public String getClean1() {
+			return clean1;
+		}
+		public void setClean1(String clean1) {
+			this.clean1 = clean1;
+		}
+		public String getClean2() {
+			return clean2;
+		}
+		public void setClean2(String clean2) {
+			this.clean2 = clean2;
+		}
+		public String getClean3() {
+			return clean3;
+		}
+		public void setClean3(String clean3) {
+			this.clean3 = clean3;
+		}
+		public String getShot1() {
+			return shot1;
+		}
+		public void setShot1(String shot1) {
+			this.shot1 = shot1;
+		}
+		public String getShot2() {
+			return shot2;
+		}
+		public void setShot2(String shot2) {
+			this.shot2 = shot2;
+		}
+		public String getShot3() {
+			return shot3;
+		}
+		public void setShot3(String shot3) {
+			this.shot3 = shot3;
+		}
 		public Integer getNum() {
 			return num;
 		}

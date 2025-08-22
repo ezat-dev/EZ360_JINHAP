@@ -50,4 +50,8 @@ public interface QualityDao {
 	    List<Quality> getMedicineList1(Quality quality);
 	    List<Quality> getMedicineList2(Quality quality);
 	    boolean updateMedicineStandard(Quality quality);
+	    
+	    //테스트 관리대장
+	    List<Quality> getTestManageList(Quality quality);
+	    boolean updateTestManage(Quality quality);
 }

@@ -123,5 +123,19 @@ public class QualityDaoImpl implements QualityDao {
 		}
 		return true;
 	}
+	
+	//테스트 관리대장
+	@Override
+	public List<Quality> getTestManageList(Quality quality) {
+		return sqlSession.selectList("quality.getTestManageList", quality);
+	}
+	@Override
+	public boolean updateTestManage(Quality quality) {
+		int result = sqlSession.insert("quality.updateTestManage", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
 }
 

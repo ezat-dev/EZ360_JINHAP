@@ -22,7 +22,7 @@
             margin-top: 1%;
         }
         .tab {
-            width: 95%;
+            width: 94%;
             margin-bottom: 37px;
             margin-top: 5px;
             height: 45px;

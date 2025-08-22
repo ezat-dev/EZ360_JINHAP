@@ -39,4 +39,7 @@ public interface WorkService {
 	    List<Work> machineRealStatusUp(Work work);
 
 	    List<Work> lotReportStatusList(Work work);
-}
+	    
+	    List<Work> monitoringStatusList(Work work);
+	}
+

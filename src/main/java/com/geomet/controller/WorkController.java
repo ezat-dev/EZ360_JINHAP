@@ -2197,4 +2197,30 @@ public class WorkController {
         return workService.lotReportStatusList(work);
     }
 
+   
+    
+    
+    @RequestMapping(value = "/work/monitoringStatus/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> monitoringStatusList(@RequestBody Work work) {
+        // 원본 날짜 출력
+        System.out.println("원본 startDate: " + work.getStartDate());
+
+        if (work.getStartDate() != null) {
+            // startDate 가공 (하이픈 제거 후 080000 붙이기)
+            String s = work.getStartDate().replace("-", "");
+            work.setStartDate(s + "080000");
+
+            // endDate 계산 (startDate 하루 뒤 + 080000)
+            LocalDate start = LocalDate.parse(s, DateTimeFormatter.ofPattern("yyyyMMdd"));
+            String e = start.plusDays(1).format(DateTimeFormatter.ofPattern("yyyyMMdd")) + "080000";
+            work.setEndDate(e);
+        }
+
+        // 가공 후 날짜 출력
+        System.out.println("가공된 startDate: " + work.getStartDate());
+        System.out.println("가공된 endDate: " + work.getEndDate());
+
+        return workService.monitoringStatusList(work);
+    }
 }

@@ -357,4 +357,48 @@
 		</set>
 		WHERE num = #{num}
 	</update>
+	
+		<!-- 테스트 관리대장 -->
+<select id="getTestManageList" parameterType="Quality"
+        resultType="Quality">
+    SELECT *
+    FROM tb_test_manage
+    WHERE 1=1
+    <if test="date != null and date != ''">
+         AND `date` LIKE CONCAT(#{date}, '%')
+    </if>
+    ORDER BY `date` ASC
+</select>
+
+		<!-- 테스트 관리대장 수정 -->
+	<update id="updateTestManage" parameterType="quality">
+		UPDATE tb_test_manage
+		<set>
+			<if test="sst1 != null and sst1 != ''">sst1 = #{sst1},</if>
+			<if test="sst2 != null and sst2 != ''">sst2 = #{sst2},</if>
+			<if test="sst3 != null and sst3 != ''">sst3 = #{sst3},</if>
+			<if test="cct1 != null and cct1 != ''">cct1 = #{cct1},</if>
+			<if test="cct2 != null and cct2 != ''">cct2 = #{cct2},</if>
+			<if test="cct3 != null and cct3 != ''">cct3 = #{cct3},</if>
+			<if test="contact1 != null and contact1 != ''">contact1 = #{contact1},</if>
+			<if test="contact2 != null and contact2 != ''">contact2 = #{contact2},</if>
+			<if test="contact3 != null and contact3 != ''">contact3 = #{contact3},</if>
+			<if test="gattach1 != null and gattach1 != ''">gattach1 = #{gattach1},</if>
+			<if test="gattach2 != null and gattach2 != ''">gattach2 = #{gattach2},</if>
+			<if test="gattach3 != null and gattach3 != ''">gattach3 = #{gattach3},</if>
+			<if test="after_attach1 != null and after_attach1 != ''">after_attach1 = #{after_attach1},</if>
+			<if test="after_attach2 != null and after_attach2 != ''">after_attach2 = #{after_attach2},</if>
+			<if test="after_attach3 != null and after_attach3 != ''">after_attach3 = #{after_attach3},</if>
+			<if test="heat1 != null and heat1 != ''">heat1 = #{heat1},</if>
+			<if test="heat2 != null and heat2 != ''">heat2 = #{heat2},</if>
+			<if test="heat3 != null and heat3 != ''">heat3 = #{heat3},</if>
+			<if test="clean1 != null and clean1 != ''">clean1 = #{clean1},</if>
+			<if test="clean2 != null and clean2 != ''">clean2 = #{clean2},</if>
+			<if test="clean3 != null and clean3 != ''">clean3 = #{clean3},</if>
+			<if test="shot1 != null and shot1 != ''">shot1 = #{shot1},</if>
+			<if test="shot2 != null and shot2 != ''">shot2 = #{shot2},</if>
+			<if test="shot3 != null and shot3 != ''">shot3 = #{shot3},</if>
+		</set>
+		WHERE number = #{number}
+	</update>
 </mapper>

@@ -854,6 +854,7 @@
                     return response;
                 },
                 columns: [
+                	  { title: "NO", formatter: "rownum", width: 70, hozAlign: "center" },
                     { title: "id", field: "idx", sorter: "string", width: 85, hozAlign: "center", headerSort: false },
                     { title: "정검일자", field: "car_date", sorter: "string", width: 250, hozAlign: "center", headerSort: false },
 

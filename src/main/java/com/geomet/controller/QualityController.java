@@ -4,18 +4,19 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.BiFunction;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -43,11 +44,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.geomet.domain.Machine;
 import com.geomet.domain.Quality;
 import com.geomet.domain.UserLog;
 import com.geomet.domain.Users;
-import com.geomet.service.ExcelService;
 import com.geomet.service.ExcelServiceTestInfo;
 import com.geomet.service.QualityService;
 import com.geomet.service.UserService;
@@ -1781,7 +1780,7 @@ public class QualityController {
 		@RequestMapping(value = "/quality/getMedicineListStandardList1", method = RequestMethod.POST)
 	    @ResponseBody
 	    public List<Quality> getFacilityList(Quality quality) { 
-			System.out.println("getMedicineListStandardList1 컨트롤러 도착");
+//			System.out.println("getMedicineListStandardList1 컨트롤러 도착");
 			List<Quality> datas = qualityService.getMedicineList1(quality);
 			for(Quality v: datas) {
 				System.out.println(v);
@@ -1792,7 +1791,7 @@ public class QualityController {
 		@RequestMapping(value = "/quality/getMedicineListStandardList2", method = RequestMethod.POST)
 	    @ResponseBody
 	    public List<Quality> getFacilityList2(Quality quality) { 
-			System.out.println("getMedicineListStandardList2 컨트롤러 도착");
+//			System.out.println("getMedicineListStandardList2 컨트롤러 도착");
 			List<Quality> datas = qualityService.getMedicineList2(quality);
 			for(Quality v: datas) {
 				System.out.println(v);
@@ -1804,10 +1803,139 @@ public class QualityController {
 		@RequestMapping(value = "/quality/medicineStandard/update", method = RequestMethod.POST)
 	    @ResponseBody
 	    public boolean updateMedicineStandard(@RequestBody Quality quality) {
-			System.out.println("업데이트 컨트롤러 도착");
-			System.out.println("quality.getNum()" + quality.getNum());
+//			System.out.println("업데이트 컨트롤러 도착");
+//			System.out.println("quality.getNum()" + quality.getNum());
 			return qualityService.updateMedicineStandard(quality);
 		}
+	 
+	    //테스트 관리대장 리스트
+		@RequestMapping(value = "/quality/getTestManageList", method = RequestMethod.POST)
+	    @ResponseBody
+	    public List<Quality> getTestManageList(Quality quality) { 
+			System.out.println("테스트 관리대장 리스트");
+			List<Quality> datas = qualityService.getTestManageList(quality);
+			for(Quality v: datas) {
+//				System.out.println(v);
+			}
+	        return datas;
+	    }
+		
+		// 테스트 관리대장 페이지 이동
+		@RequestMapping(value = "/quality/testManage", method = RequestMethod.GET)
+		public String testManage(Model model) {
+			return "/quality/testManage.jsp"; 
+		}
+		
+		//테스트 관리대장 업데이트
+		@RequestMapping(value = "/quality/testManage/update", method = RequestMethod.POST)
+	    @ResponseBody
+	    public boolean updatetestManage(@RequestBody Quality quality) {
+			/*
+			 * System.out.println("업데이트 컨트롤러 도착"); System.out.println("quality.getNumber()"
+			 * + quality.getNumber());
+			 */
+			return qualityService.updateTestManage(quality);
+		}
+		
+		//테스트 관리대장 파일 업로드(그냥 업데이트와 데이터 전송 방식이 달라 나눔)
+		@RequestMapping(value = "/quality/testManage/updateFile", method = RequestMethod.POST)
+		@ResponseBody
+		public boolean updatetestManageFile(@ModelAttribute Quality quality,
+		                              @RequestParam(value = "file", required = false) MultipartFile file,
+		                              @RequestParam("targetField") String targetField) {
+			/*
+			 * System.out.println("업데이트 컨트롤러 도착");
+			 * System.out.println("quality.getNumber(): " + quality.getNumber());
+			 * System.out.println("targetField: " + targetField);
+			 */
+		    
+		    String originalFilename = null;
+		    
+		    // 파일 처리 로직 (저장 등)
+		    if (file != null && !file.isEmpty()) {
+				try {
+					originalFilename = file.getOriginalFilename();
+					String savePath = "D:/GEOMET양식/테스트 관리대장/";
+
+					File dir = new File(savePath);
+					if (!dir.exists())
+						dir.mkdirs();
+
+					File dest = new File(savePath + originalFilename);
+					file.transferTo(dest);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+					return false;
+				}
+		    }
+		    
+		    if (originalFilename != null) {
+		        switch (targetField) {
+		            case "sst3":
+		                quality.setSst3(originalFilename);
+		                break;
+		            case "cct3":
+		                quality.setCct3(originalFilename);
+		                break;
+		            case "contact3":
+		                quality.setContact3(originalFilename);
+		                break;
+		            case "gattach3":
+		                quality.setGattach3(originalFilename);
+		                break;
+		            case "after_attach3":
+		                quality.setAfter_attach3(originalFilename);
+		                break;
+		            case "heat3":
+		                quality.setHeat3(originalFilename);
+		                break;
+		            case "clean3":
+		                quality.setClean3(originalFilename);
+		                break;
+		            case "shot3":
+		                quality.setShot3(originalFilename);
+		                break;
+		            default:
+		                // 매칭되는 필드가 없을 경우의 처리
+		                System.out.println("매칭되는 필드가 없습니다: " + targetField);
+		                return false;
+		        }
+		    }
+		    
+		    return qualityService.updateTestManage(quality);
+		}
+		
+	    @RequestMapping(value="/quality/openFile", method=RequestMethod.GET)
+	    public void viewPdf(@RequestParam("filename") String filename,
+	                        HttpServletResponse resp) throws Exception {
+
+	        if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+	            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+	            return;
+	        }
+
+	        Path base = Paths.get("D:/GEOMET양식/테스트 관리대장");
+	        Path file = base.resolve(filename).normalize();
+	        if (!Files.exists(file) || !Files.isRegularFile(file)) {
+	            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+	            return;
+	        }
+
+	        resp.setContentType("application/pdf");
+	        // inline으로 브라우저 뷰어에서 열기
+	        String encoded = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+	        resp.setHeader("Content-Disposition", "inline; filename*=UTF-8''" + encoded);
+	        resp.setHeader("X-Content-Type-Options", "nosniff");
+
+	        try (InputStream in = Files.newInputStream(file);
+	             OutputStream out = resp.getOutputStream()) {
+	            byte[] buf = new byte[8192];
+	            int len;
+	            while ((len = in.read(buf)) != -1) out.write(buf, 0, len);
+	            out.flush();
+	        }
+	    }
 	 
     
 }

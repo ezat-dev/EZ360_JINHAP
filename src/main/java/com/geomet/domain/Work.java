@@ -20,6 +20,14 @@ public class Work {
 	private String resiurceName;
 	private String resourceName;
 	private String downtime;
+	
+	private String target_weight;
+	private String hour_weight;
+	private String now_weight;
+	private String jindo;
+	private String work_tong;
+	private String non_time;
+
 
 	
 	private String endDate;
@@ -215,7 +223,43 @@ public class Work {
     
     
     
-    public String getDate_time() {
+    public String getTarget_weight() {
+		return target_weight;
+	}
+	public void setTarget_weight(String target_weight) {
+		this.target_weight = target_weight;
+	}
+	public String getHour_weight() {
+		return hour_weight;
+	}
+	public void setHour_weight(String hour_weight) {
+		this.hour_weight = hour_weight;
+	}
+	public String getNow_weight() {
+		return now_weight;
+	}
+	public void setNow_weight(String now_weight) {
+		this.now_weight = now_weight;
+	}
+	public String getJindo() {
+		return jindo;
+	}
+	public void setJindo(String jindo) {
+		this.jindo = jindo;
+	}
+	public String getWork_tong() {
+		return work_tong;
+	}
+	public void setWork_tong(String work_tong) {
+		this.work_tong = work_tong;
+	}
+	public String getNon_time() {
+		return non_time;
+	}
+	public void setNon_time(String non_time) {
+		this.non_time = non_time;
+	}
+	public String getDate_time() {
 		return date_time;
 	}
 	public void setDate_time(String date_time) {

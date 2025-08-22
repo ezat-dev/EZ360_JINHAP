@@ -125,4 +125,9 @@ public class WorkDaoImpl implements WorkDao {
     public List<Work> lotReportStatusList(Work work) {
     	 return sqlSession.selectList("work.lotReportStatusList", work);
     }
+    
+    @Override
+    public List<Work> monitoringStatusList(Work work) {
+    	 return sqlSession.selectList("work.monitoringStatusList", work);
+    }
 }
