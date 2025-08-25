@@ -398,6 +398,12 @@
 			<if test="shot1 != null and shot1 != ''">shot1 = #{shot1},</if>
 			<if test="shot2 != null and shot2 != ''">shot2 = #{shot2},</if>
 			<if test="shot3 != null and shot3 != ''">shot3 = #{shot3},</if>
+			<if test="etc1 != null and etc1 != ''">etc1 = #{etc1},</if>
+			<if test="etc2 != null and etc1 != ''">etc2 = #{etc2},</if>
+			<if test="etc3 != null and etc1 != ''">etc3 = #{etc3},</if>
+			<if test="etc4 != null and etc1 != ''">etc4 = #{etc4},</if>
+			<if test="etc5 != null and etc1 != ''">etc5 = #{etc5},</if>
+			<if test="etc6 != null and etc1 != ''">etc6 = #{etc6},</if>
 		</set>
 		WHERE number = #{number}
 	</update>

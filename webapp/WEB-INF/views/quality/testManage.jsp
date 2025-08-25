@@ -45,7 +45,7 @@
            background: white;
            width: 24%;
            max-width: 500px;
-           height: 47vh; 
+           height: 39vh; 
            overflow-y: auto; 
            margin: 6% auto 0;
            padding: 20px;
@@ -170,7 +170,7 @@
         border: 1px solid #ccc;
         border-radius: 5px;
         font-size: 15px;
-        margin-right: -337px;
+        margin-right: -346px;
     }
     .monthlabel {
         margin-right: 10px;
@@ -207,7 +207,7 @@
 }
 
 .excel-button {
-    width: 96px;
+    width: 86px;
     height: 40px;
     padding: 0 19px;
     border: 1px solid rgb(53, 53, 53);
@@ -216,7 +216,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
-    margin-bottom: 14px;
+    margin-bottom: 8px;
     margin-left: 15px;
     font-size: 14px;
 }
@@ -269,18 +269,6 @@
     margin-top: 3%;
 }
 
-/* iframe을 포함하는 컨테이너 스타일 */
-#pdfViewer {
-    width: 100%;
-    height: calc(100% - 20px); /* 닫기 버튼 여백 고려 */
-}
-
-/* iframe 스타일 */
-#pdfIframe {
-    width: 100%;
-    height: 100%;
-    border: none; /* 프레임 테두리 제거 */
-}
 button.select-button {
     margin-top: -7px;
 }
@@ -324,9 +312,9 @@ button.select-button {
 
             </select> -->
 
-<!--                  <button class="excel-button">
+                <button class="excel-button" style="width:92px;">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button> -->
+                </button> 
               
          </div>
 
@@ -348,7 +336,7 @@ button.select-button {
            <input type="hidden" id="targetField" name="targetField" />
 
 			<label>저장할 파일</label>
-			<input type="file" name="file" id="file" accept="application/pdf">
+			<input type="file" name="file" id="file" accept=".xls,.xlsx">
 
 			<label>저장된 파일</label>
 			<input type="text" name="fileName" id="fileName" placeholder="저장된 파일 없음">
@@ -361,14 +349,14 @@ button.select-button {
    </div>
    
    <!-- pdf 미리보기 모달창-->
-<div id="pdfViewerModal" class="modal">
+<!-- <div id="pdfViewerModal" class="modal">
     <div class="modal-content-viewer">
         <span class="close" id="pdfViewerCloseBtn">&times;</span>
         <div id="pdfViewer">
             <iframe id="pdfIframe" src="" frameborder="0"></iframe>
         </div>
     </div>
-</div>
+</div> -->
    
 
 <script>
@@ -493,7 +481,7 @@ $('.pCodeBtn').click(function () {
  		columns:[
  			{title: "2회/주", 
  					columns: [
- 						{ title: "투입/종료</br>시험일", field: "sst1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+ 						{ title: "투입/종료</br>시험일", field: "sst1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
  						{ title: "결과", field: "sst2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
  	 						editorParams: {
 								values: {"합격": "합격", "불합격": "불합격" }
@@ -504,29 +492,11 @@ $('.pCodeBtn').click(function () {
  						    field: "sst3",
  						    hozAlign: "center",
  						    width: 230,
- 						    formatter: function(cell, formatterParams, onRendered) {
- 						        const fileName = cell.getValue();
- 						        if (!fileName) return "";
- 						        
- 						        // 미리보기 버튼을 생성
- 						        const previewBtn = document.createElement('a');
- 						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
- 						        previewBtn.textContent = fileName;
- 						        
- 						        // 버튼 클릭 시 이벤트 리스너 추가
- 						        previewBtn.addEventListener('click', function(e) {
- 						            e.preventDefault(); // 기본 링크 동작 방지
- 						            
- 						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
- 						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
- 						            
- 						            // iframe의 src 속성 설정 및 모달 띄우기
- 						            $('#pdfIframe').attr('src', fileURL);
- 						            $('#pdfViewerModal').show().addClass('show');
- 						        });
- 						        
- 						        return previewBtn;
- 						    }
+ 			                formatter: function(cell, formatterParams, onRendered) {
+ 			                    const fileName = cell.getValue();
+ 			                    if (!fileName) return "";
+ 			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+ 			                }
 
  			            }
  						]
@@ -537,7 +507,7 @@ $('.pCodeBtn').click(function () {
    		columns:[
    			{title: "2회/주", 
    					columns: [
-   						{ title: "투입/종료</br>시험일", field: "cct1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+   						{ title: "투입/종료</br>시험일", field: "cct1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
    						{ title: "결과", field: "cct2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
  	 						editorParams: {
 								values: {"합격": "합격", "불합격": "불합격" }
@@ -548,29 +518,11 @@ $('.pCodeBtn').click(function () {
  						    field: "cct3",
  						    hozAlign: "center",
  						    width: 230,
- 						    formatter: function(cell, formatterParams, onRendered) {
- 						        const fileName = cell.getValue();
- 						        if (!fileName) return "";
- 						        
- 						        // 미리보기 버튼을 생성
- 						        const previewBtn = document.createElement('a');
- 						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
- 						        previewBtn.textContent = fileName;
- 						        
- 						        // 버튼 클릭 시 이벤트 리스너 추가
- 						        previewBtn.addEventListener('click', function(e) {
- 						            e.preventDefault(); // 기본 링크 동작 방지
- 						            
- 						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
- 						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
- 						            
- 						            // iframe의 src 속성 설정 및 모달 띄우기
- 						            $('#pdfIframe').attr('src', fileURL);
- 						            $('#pdfViewerModal').show().addClass('show');
- 						        });
- 						        
- 						        return previewBtn;
- 						    }
+ 			                formatter: function(cell, formatterParams, onRendered) {
+ 			                    const fileName = cell.getValue();
+ 			                    if (!fileName) return "";
+ 			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+ 			                }
 
  			            }
    						]
@@ -579,9 +531,9 @@ $('.pCodeBtn').click(function () {
         },
         { title: "내수밀착성",
        		columns:[
-       			{title: "2회/주", 
+       			{title: "1회/월", 
        					columns: [
-       						{ title: "투입/종료</br>시험일", field: "contact1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+       						{ title: "투입/종료</br>시험일", field: "contact1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
        						{ title: "결과", field: "contact2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
      	 						editorParams: {
     								values: {"합격": "합격", "불합격": "불합격" }
@@ -591,29 +543,11 @@ $('.pCodeBtn').click(function () {
      						    field: "contact3",
      						    hozAlign: "center",
      						    width: 230,
-     						    formatter: function(cell, formatterParams, onRendered) {
-     						        const fileName = cell.getValue();
-     						        if (!fileName) return "";
-     						        
-     						        // 미리보기 버튼을 생성
-     						        const previewBtn = document.createElement('a');
-     						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
-     						        previewBtn.textContent = fileName;
-     						        
-     						        // 버튼 클릭 시 이벤트 리스너 추가
-     						        previewBtn.addEventListener('click', function(e) {
-     						            e.preventDefault(); // 기본 링크 동작 방지
-     						            
-     						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
-     						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
-     						            
-     						            // iframe의 src 속성 설정 및 모달 띄우기
-     						            $('#pdfIframe').attr('src', fileURL);
-     						            $('#pdfViewerModal').show().addClass('show');
-     						        });
-     						        
-     						        return previewBtn;
-     						    }
+     			                formatter: function(cell, formatterParams, onRendered) {
+     			                    const fileName = cell.getValue();
+     			                    if (!fileName) return "";
+     			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+     			                }
 
      			            }
        						]
@@ -622,9 +556,9 @@ $('.pCodeBtn').click(function () {
             },
             { title: "GEOMET 부착량",
            		columns:[
-           			{title: "2회/주", 
+           			{title: "1회/일", 
            					columns: [
-           						{ title: "투입/종료</br>시험일", field: "gattach1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+           						{ title: "투입/종료</br>시험일", field: "gattach1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
            						{ title: "결과", field: "gattach2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
          	 						editorParams: {
         								values: {"합격": "합격", "불합격": "불합격" }
@@ -634,29 +568,11 @@ $('.pCodeBtn').click(function () {
          						    field: "gattach3",
          						    hozAlign: "center",
          						    width: 230,
-         						    formatter: function(cell, formatterParams, onRendered) {
-         						        const fileName = cell.getValue();
-         						        if (!fileName) return "";
-         						        
-         						        // 미리보기 버튼을 생성
-         						        const previewBtn = document.createElement('a');
-         						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
-         						        previewBtn.textContent = fileName;
-         						        
-         						        // 버튼 클릭 시 이벤트 리스너 추가
-         						        previewBtn.addEventListener('click', function(e) {
-         						            e.preventDefault(); // 기본 링크 동작 방지
-         						            
-         						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
-         						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
-         						            
-         						            // iframe의 src 속성 설정 및 모달 띄우기
-         						            $('#pdfIframe').attr('src', fileURL);
-         						            $('#pdfViewerModal').show().addClass('show');
-         						        });
-         						        
-         						        return previewBtn;
-         						    }
+         			                formatter: function(cell, formatterParams, onRendered) {
+         			                    const fileName = cell.getValue();
+         			                    if (!fileName) return "";
+         			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+         			                }
 
          			            }
            						]
@@ -667,7 +583,7 @@ $('.pCodeBtn').click(function () {
                		columns:[
                			{title: "2회/주", 
                					columns: [
-               						{ title: "투입/종료</br>시험일", field: "after_attach1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+               						{ title: "투입/종료</br>시험일", field: "after_attach1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
                						{ title: "결과", field: "after_attach2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
              	 						editorParams: {
             								values: {"합격": "합격", "불합격": "불합격" }
@@ -677,29 +593,11 @@ $('.pCodeBtn').click(function () {
              						    field: "after_attach3",
              						    hozAlign: "center",
              						    width: 230,
-             						    formatter: function(cell, formatterParams, onRendered) {
-             						        const fileName = cell.getValue();
-             						        if (!fileName) return "";
-             						        
-             						        // 미리보기 버튼을 생성
-             						        const previewBtn = document.createElement('a');
-             						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
-             						        previewBtn.textContent = fileName;
-             						        
-             						        // 버튼 클릭 시 이벤트 리스너 추가
-             						        previewBtn.addEventListener('click', function(e) {
-             						            e.preventDefault(); // 기본 링크 동작 방지
-             						            
-             						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
-             						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
-             						            
-             						            // iframe의 src 속성 설정 및 모달 띄우기
-             						            $('#pdfIframe').attr('src', fileURL);
-             						            $('#pdfViewerModal').show().addClass('show');
-             						        });
-             						        
-             						        return previewBtn;
-             						    }
+             			                formatter: function(cell, formatterParams, onRendered) {
+             			                    const fileName = cell.getValue();
+             			                    if (!fileName) return "";
+             			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+             			                }
 
              			            }
                						]
@@ -708,9 +606,9 @@ $('.pCodeBtn').click(function () {
                     },
                     { title: "가열잔분",
                    		columns:[
-                   			{title: "2회/주", 
+                   			{title: "1회/주", 
                    					columns: [
-                   						{ title: "투입/종료</br>시험일", field: "heat1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+                   						{ title: "투입/종료</br>시험일", field: "heat1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
                    						{ title: "결과", field: "heat2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
                  	 						editorParams: {
                 								values: {"합격": "합격", "불합격": "불합격" }
@@ -720,29 +618,11 @@ $('.pCodeBtn').click(function () {
                  						    field: "heat3",
                  						    hozAlign: "center",
                  						    width: 230,
-                 						    formatter: function(cell, formatterParams, onRendered) {
-                 						        const fileName = cell.getValue();
-                 						        if (!fileName) return "";
-                 						        
-                 						        // 미리보기 버튼을 생성
-                 						        const previewBtn = document.createElement('a');
-                 						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
-                 						        previewBtn.textContent = fileName;
-                 						        
-                 						        // 버튼 클릭 시 이벤트 리스너 추가
-                 						        previewBtn.addEventListener('click', function(e) {
-                 						            e.preventDefault(); // 기본 링크 동작 방지
-                 						            
-                 						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
-                 						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
-                 						            
-                 						            // iframe의 src 속성 설정 및 모달 띄우기
-                 						            $('#pdfIframe').attr('src', fileURL);
-                 						            $('#pdfViewerModal').show().addClass('show');
-                 						        });
-                 						        
-                 						        return previewBtn;
-                 						    }
+                 			                formatter: function(cell, formatterParams, onRendered) {
+                 			                    const fileName = cell.getValue();
+                 			                    if (!fileName) return "";
+                 			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+                 			                }
 
                  			            }
                    						]
@@ -751,9 +631,9 @@ $('.pCodeBtn').click(function () {
                         },
                         { title: "세척 적정 액 분석",
                        		columns:[
-                       			{title: "2회/주", 
+                       			{title: "1회/주", 
                        					columns: [
-                       						{ title: "투입/종료</br>시험일", field: "clean1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+                       						{ title: "투입/종료</br>시험일", field: "clean1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
                        						{ title: "결과", field: "clean2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
                      	 						editorParams: {
                     								values: {"합격": "합격", "불합격": "불합격" }
@@ -763,29 +643,11 @@ $('.pCodeBtn').click(function () {
                      						    field: "clean3",
                      						    hozAlign: "center",
                      						    width: 230,
-                     						    formatter: function(cell, formatterParams, onRendered) {
-                     						        const fileName = cell.getValue();
-                     						        if (!fileName) return "";
-                     						        
-                     						        // 미리보기 버튼을 생성
-                     						        const previewBtn = document.createElement('a');
-                     						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
-                     						        previewBtn.textContent = fileName;
-                     						        
-                     						        // 버튼 클릭 시 이벤트 리스너 추가
-                     						        previewBtn.addEventListener('click', function(e) {
-                     						            e.preventDefault(); // 기본 링크 동작 방지
-                     						            
-                     						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
-                     						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
-                     						            
-                     						            // iframe의 src 속성 설정 및 모달 띄우기
-                     						            $('#pdfIframe').attr('src', fileURL);
-                     						            $('#pdfViewerModal').show().addClass('show');
-                     						        });
-                     						        
-                     						        return previewBtn;
-                     						    }
+                     			                formatter: function(cell, formatterParams, onRendered) {
+                     			                    const fileName = cell.getValue();
+                     			                    if (!fileName) return "";
+                     			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+                     			                }
 
                      			            }
                        						]
@@ -794,9 +656,9 @@ $('.pCodeBtn').click(function () {
                             },
                             { title: "쇼트볼 수입검사",
                            		columns:[
-                           			{title: "2회/주", 
+                           			{title: "1회/월", 
                            					columns: [
-                           						{ title: "투입/종료</br>시험일", field: "shot1", width: 110, hozAlign: "center", editor: "input", headerSort: false },
+                           						{ title: "투입/종료</br>시험일", field: "shot1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
                            						{ title: "결과", field: "shot2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
                          	 						editorParams: {
                         								values: {"합격": "합격", "불합격": "불합격" }
@@ -806,35 +668,67 @@ $('.pCodeBtn').click(function () {
                          						    field: "shot3",
                          						    hozAlign: "center",
                          						    width: 230,
-                         						    formatter: function(cell, formatterParams, onRendered) {
-                         						        const fileName = cell.getValue();
-                         						        if (!fileName) return "";
-                         						        
-                         						        // 미리보기 버튼을 생성
-                         						        const previewBtn = document.createElement('a');
-                         						        previewBtn.href = "#"; // 클릭 시 페이지 이동 방지
-                         						        previewBtn.textContent = fileName;
-                         						        
-                         						        // 버튼 클릭 시 이벤트 리스너 추가
-                         						        previewBtn.addEventListener('click', function(e) {
-                         						            e.preventDefault(); // 기본 링크 동작 방지
-                         						            
-                         						            // 파일 URL 생성 (서버의 정적 리소스 경로 사용)
-                         						            const fileURL = '/geomet/quality/openFile?filename=' + encodeURIComponent(fileName);
-                         						            
-                         						            // iframe의 src 속성 설정 및 모달 띄우기
-                         						            $('#pdfIframe').attr('src', fileURL);
-                         						            $('#pdfViewerModal').show().addClass('show');
-                         						        });
-                         						        
-                         						        return previewBtn;
-                         						    }
+                         			                formatter: function(cell, formatterParams, onRendered) {
+                         			                    const fileName = cell.getValue();
+                         			                    if (!fileName) return "";
+                         			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+                         			                }
 
                          			            }
                            						]
                            				}
                            			]
-                                }
+                                },
+                                { title: "기타",
+                               		columns:[
+                               			{title: "2회/주", 
+                               					columns: [
+                               						{ title: "투입/종료</br>시험일", field: "etc1", width: 180, hozAlign: "center", editor: "input", headerSort: false },
+                               						{ title: "결과", field: "etc2", width: 110, hozAlign: "center", editor: "select", headerSort: false,
+                             	 						editorParams: {
+                            								values: {"합격": "합격", "불합격": "불합격" }
+                             	 						},},
+                             			            {
+                             						    title: "파일",
+                             						    field: "etc3",
+                             						    hozAlign: "center",
+                             						    width: 230,
+                             			                formatter: function(cell, formatterParams, onRendered) {
+                             			                    const fileName = cell.getValue();
+                             			                    if (!fileName) return "";
+                             			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+                             			                }
+
+                             			            }
+                               						]
+                               				}
+                               			]
+                                    },
+                                    { title: "기타",
+                                   		columns:[
+                                   			{title: "2회/주", 
+                                   					columns: [
+                                   						{ title: "투입/종료</br>시험일", field: "etc4", width: 180, hozAlign: "center", editor: "input", headerSort: false },
+                                   						{ title: "결과", field: "etc5", width: 110, hozAlign: "center", editor: "select", headerSort: false,
+                                 	 						editorParams: {
+                                								values: {"합격": "합격", "불합격": "불합격" }
+                                 	 						},},
+                                 			            {
+                                 						    title: "파일",
+                                 						    field: "etc6",
+                                 						    hozAlign: "center",
+                                 						    width: 230,
+                                 			                formatter: function(cell, formatterParams, onRendered) {
+                                 			                    const fileName = cell.getValue();
+                                 			                    if (!fileName) return "";
+                                 			                    return '<a href="/geomet/download_testManage?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+                                 			                }
+
+                                 			            }
+                                   						]
+                                   				}
+                                   			]
+                                        }
    ];
 
 
@@ -1045,7 +939,8 @@ $('.pCodeBtn').click(function () {
             var rowData = cell.getRow().getData();
 
             if (field == 'sst3' || field == 'cct3' || field == 'contact3'|| field == 'gattach3' 
-                || field == 'after_attach3' || field == 'heat3' || field == 'clean3' || field == 'shot3') {
+                || field == 'after_attach3' || field == 'heat3' || field == 'clean3' || field == 'shot3'
+                    || field == 'etc3' || field == 'etc6') {
               var title  = cell.getColumn().getDefinition().title;
               var value  = cell.getValue();	//파일명
               var number  = rowData.number; //number
@@ -1089,6 +984,60 @@ $('.pCodeBtn').click(function () {
         }
     });
 });
+
+  //엑셀
+      $(".excel-button").on("click", function () {
+  	    $("#excelOverlay, #excelLoading").show();
+
+  	    // 1) 파라미터 준비
+  	    //let s_time = $("#s_time").val().replaceAll("-", "");
+/*   	    let e_time = s_time;
+  	    let m_code = $("#m_code").text().trim();
+  	    let ex_mch_name  = "세척1호기 작업일보"; */
+  	    let date = $("#startDate").val();
+
+  	    console.log("▶ 엑셀 생성 요청 파라미터:", { date });
+
+  	    // 2) AJAX 호출
+  	    $.ajax({
+  	        url: "/geomet/quality/testManage/excel",
+  	        method: "POST",
+  	        contentType: "application/json",
+  	        data: JSON.stringify({ date }),
+  	        dataType: "json",
+
+  	        success: function (result) {
+  	            console.log("▶ 서버가 돌려준 result:", result);
+
+  	            if (result && result.downloadPath) {
+                                 const a = document.createElement('a');
+                                 a.href = result.downloadPath;
+                                 a.style.display = 'none';
+                                 document.body.appendChild(a);
+                                 a.click();
+                                 document.body.removeChild(a);
+
+  	                alert("작업일보 엑셀 저장 완료되었습니다.");
+  	            } else {
+  	                console.warn("✋ downloadPath 키가 없습니다!", result);
+  	                alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
+  	            }
+  	        },
+
+  	        error: function (xhr, status, error) {
+  	            console.error("▶ 엑셀 생성/다운로드 중 오류:", {
+  	                status: status,
+  	                error: error,
+  	                responseText: xhr.responseText
+  	            });
+  	            alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+  	        },
+
+  	        complete: function () {
+  	            $("#excelOverlay, #excelLoading").hide();
+  	        }
+  	    });
+  	});
 </script>
 
 

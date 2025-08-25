@@ -182,9 +182,11 @@
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
              
-                <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
+			<button class="excel-button" style="width:90px;">
+			    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+			</button>
+
+
 
             </div>
         </div>

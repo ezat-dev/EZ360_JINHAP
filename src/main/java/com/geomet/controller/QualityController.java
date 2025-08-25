@@ -1837,22 +1837,20 @@ public class QualityController {
 			return qualityService.updateTestManage(quality);
 		}
 		
-		//테스트 관리대장 파일 업로드(그냥 업데이트와 데이터 전송 방식이 달라 나눔)
+		// 테스트 관리대장 파일 업로드(그냥 업데이트와 데이터 전송 방식이 달라 나눔)
 		@RequestMapping(value = "/quality/testManage/updateFile", method = RequestMethod.POST)
 		@ResponseBody
 		public boolean updatetestManageFile(@ModelAttribute Quality quality,
-		                              @RequestParam(value = "file", required = false) MultipartFile file,
-		                              @RequestParam("targetField") String targetField) {
-			/*
-			 * System.out.println("업데이트 컨트롤러 도착");
-			 * System.out.println("quality.getNumber(): " + quality.getNumber());
-			 * System.out.println("targetField: " + targetField);
-			 */
-		    
-		    String originalFilename = null;
-		    
-		    // 파일 처리 로직 (저장 등)
-		    if (file != null && !file.isEmpty()) {
+				@RequestParam(value = "file", required = false) MultipartFile file,
+				@RequestParam("targetField") String targetField) {
+			System.out.println("업데이트 컨트롤러 도착");
+			System.out.println("quality.getNumber(): " + quality.getNumber());
+			System.out.println("targetField: " + targetField);
+
+			String originalFilename = null;
+
+			// 파일 처리 로직 (저장 등)
+			if (file != null && !file.isEmpty()) {
 				try {
 					originalFilename = file.getOriginalFilename();
 					String savePath = "D:/GEOMET양식/테스트 관리대장/";
@@ -1863,79 +1861,238 @@ public class QualityController {
 
 					File dest = new File(savePath + originalFilename);
 					file.transferTo(dest);
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 					return false;
 				}
-		    }
-		    
-		    if (originalFilename != null) {
-		        switch (targetField) {
-		            case "sst3":
-		                quality.setSst3(originalFilename);
-		                break;
-		            case "cct3":
-		                quality.setCct3(originalFilename);
-		                break;
-		            case "contact3":
-		                quality.setContact3(originalFilename);
-		                break;
-		            case "gattach3":
-		                quality.setGattach3(originalFilename);
-		                break;
-		            case "after_attach3":
-		                quality.setAfter_attach3(originalFilename);
-		                break;
-		            case "heat3":
-		                quality.setHeat3(originalFilename);
-		                break;
-		            case "clean3":
-		                quality.setClean3(originalFilename);
-		                break;
-		            case "shot3":
-		                quality.setShot3(originalFilename);
-		                break;
-		            default:
-		                // 매칭되는 필드가 없을 경우의 처리
-		                System.out.println("매칭되는 필드가 없습니다: " + targetField);
-		                return false;
-		        }
-		    }
-		    
-		    return qualityService.updateTestManage(quality);
+			}
+
+			if (originalFilename != null) {
+				switch (targetField) {
+				case "sst3":
+					quality.setSst3(originalFilename);
+					break;
+				case "cct3":
+					quality.setCct3(originalFilename);
+					break;
+				case "contact3":
+					quality.setContact3(originalFilename);
+					break;
+				case "gattach3":
+					quality.setGattach3(originalFilename);
+					break;
+				case "after_attach3":
+					quality.setAfter_attach3(originalFilename);
+					break;
+				case "heat3":
+					quality.setHeat3(originalFilename);
+					break;
+				case "clean3":
+					quality.setClean3(originalFilename);
+					break;
+				case "shot3":
+					quality.setShot3(originalFilename);
+				case "etc3":
+					quality.setEtc3(originalFilename);
+				case "etc6":
+					quality.setEtc6(originalFilename);
+					break;
+				default:
+					// 매칭되는 필드가 없을 경우의 처리
+					System.out.println("매칭되는 필드가 없습니다: " + targetField);
+					return false;
+				}
+			}
+
+			return qualityService.updateTestManage(quality);
+		}
+
+		// pdf 미리보기
+		@RequestMapping(value = "/quality/openFile", method = RequestMethod.GET)
+		public void viewPdf(@RequestParam("filename") String filename, HttpServletResponse resp) throws Exception {
+
+			if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+				resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+
+			Path base = Paths.get("D:/GEOMET양식/테스트 관리대장");
+			Path file = base.resolve(filename).normalize();
+			if (!Files.exists(file) || !Files.isRegularFile(file)) {
+				resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+
+			resp.setContentType("application/pdf");
+			// inline으로 브라우저 뷰어에서 열기
+			String encoded = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+			resp.setHeader("Content-Disposition", "inline; filename*=UTF-8''" + encoded);
+			resp.setHeader("X-Content-Type-Options", "nosniff");
+
+			try (InputStream in = Files.newInputStream(file); OutputStream out = resp.getOutputStream()) {
+				byte[] buf = new byte[8192];
+				int len;
+				while ((len = in.read(buf)) != -1)
+					out.write(buf, 0, len);
+				out.flush();
+			}
+		}
+
+		// 테스트 관리대장 엑셀
+		@RequestMapping(value = "/quality/testManage/excel", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> nonProductManageExcel(@RequestBody Quality quality,
+				@RequestParam(required = false) String startDate) {
+			System.out.println("엑셀 컨트롤러 도착");
+			System.out.println("quality.getDate()" + quality.getDate());
+
+			Map<String, Object> rtnMap = new HashMap<>();
+
+			// 날짜 및 파일명 생성
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_테스트 관리대장 엑셀_'HHmmss");
+			Date time = new Date();
+			String fileName = format.format(time) + ".xlsx";
+
+			FileOutputStream fos = null;
+			FileInputStream fis = null;
+			String openPath = "D:/GEOMET양식/";
+			String savePath = "D:/GEOMET양식/테스트 관리대장/";
+			
+			// 필터링된 데이터만 조회
+			List<Quality> datas = qualityService.getTestManageList(quality);
+			// System.out.println("조회된 건수: " + (getMachineList != null ?
+			// getMachineList.size() : 0));
+
+			if (datas == null || datas.isEmpty()) {
+				rtnMap.put("error", "데이터 없음");
+				return rtnMap;
+			}
+
+			try {
+				fis = new FileInputStream(openPath + "테스트 관리대장 엑셀 양식.xlsx");
+				XSSFWorkbook workbook = new XSSFWorkbook(fis);
+				XSSFSheet sheet = workbook.getSheetAt(0);
+				
+				// 테두리 스타일 객체 생성
+				XSSFCellStyle borderStyle = workbook.createCellStyle();
+				borderStyle.setBorderTop(BorderStyle.THIN);
+				borderStyle.setBorderBottom(BorderStyle.THIN);
+				borderStyle.setBorderLeft(BorderStyle.THIN);
+				borderStyle.setBorderRight(BorderStyle.THIN);
+
+				// 기존 스타일을 유지하면서 데이터만 삽입
+				String[] fields = { "date", "sst1", "sst2", "sst3", "cct1", "cct2", "cct3", "contact1", "contact2",
+						"contact3", "gattach1", "gattach2", "gattach3", "after_attach1", "after_attach2", "after_attach3",
+						"heat1", "heat2", "heat3", "clean1", "clean2", "clean3", "shot1", "shot2", "shot3", "etc1", "etc2",
+						"etc3", "etc4", "etc5", "etc6" };
+
+				int startRow = 10; // B11부터 시작 (row index는 0부터니까 10번 인덱스가 11번째 줄)
+				int startCol = 0; // A열 (index 0)
+
+				for (int i = 0; i < datas.size(); i++) {
+					Quality item = datas.get(i);
+					XSSFRow row = sheet.getRow(startRow + i);
+					if (row == null)
+						row = sheet.createRow(startRow + i);
+
+					for (int j = 0; j < fields.length; j++) {
+						XSSFCell cell = row.getCell(startCol + j);
+						if (cell == null)
+							cell = row.createCell(startCol + j);
+
+						String value = "";
+						try {
+							Field field = Quality.class.getDeclaredField(fields[j]);
+							field.setAccessible(true);
+							Object fieldValue = field.get(item);
+							value = (fieldValue != null) ? fieldValue.toString() : "";
+						} catch (NoSuchFieldException | IllegalAccessException e) {
+							value = "";
+						}
+
+						cell.setCellValue(value); // ✅ 스타일 유지
+						cell.setCellStyle(borderStyle); //테두리
+					}
+				}
+
+				workbook.setForceFormulaRecalculation(true);
+				fos = new FileOutputStream(savePath + fileName);
+				workbook.write(fos);
+				workbook.close();
+				fos.flush();
+
+	            // 클라이언트가 다운로드할 수 있도록 경로 반환
+	            rtnMap.put("filename", fileName);
+	            rtnMap.put("downloadPath",
+	                  "/geomet/download_testManage?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+			} finally {
+				try {
+					if (fis != null)
+						fis.close();
+					if (fos != null)
+						fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+
+			return rtnMap;
 		}
 		
-	    @RequestMapping(value="/quality/openFile", method=RequestMethod.GET)
-	    public void viewPdf(@RequestParam("filename") String filename,
-	                        HttpServletResponse resp) throws Exception {
+		 // 엑셀 다운로드
+		 @RequestMapping(value = "/download_testManage", method = RequestMethod.GET)
+		 public void download_testManage(@RequestParam("filename") String filename, HttpServletResponse response)
+		       throws IOException {
 
-	        if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
-	            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-	            return;
-	        }
+		    // 파일이 저장된 경로
+		    String baseDir = "D:/GEOMET양식/테스트 관리대장/";
 
-	        Path base = Paths.get("D:/GEOMET양식/테스트 관리대장");
-	        Path file = base.resolve(filename).normalize();
-	        if (!Files.exists(file) || !Files.isRegularFile(file)) {
-	            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
-	            return;
-	        }
+		    // System.out.println("다운 주소 filename: " + filename);
 
-	        resp.setContentType("application/pdf");
-	        // inline으로 브라우저 뷰어에서 열기
-	        String encoded = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
-	        resp.setHeader("Content-Disposition", "inline; filename*=UTF-8''" + encoded);
-	        resp.setHeader("X-Content-Type-Options", "nosniff");
+		    // 보안 체크
+		    if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+		       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		       return;
+		    }
 
-	        try (InputStream in = Files.newInputStream(file);
-	             OutputStream out = resp.getOutputStream()) {
-	            byte[] buf = new byte[8192];
-	            int len;
-	            while ((len = in.read(buf)) != -1) out.write(buf, 0, len);
-	            out.flush();
-	        }
-	    }
-	 
-    
+		    // 다운로드할 파일 객체 생성
+		    File file = new File(baseDir + filename);
+		    System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+		    // 파일이 존재하지 않으면 에러 반환
+		    if (!file.exists()) {
+		       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		       return;
+		    }
+
+		    // 파일 확장자 자동 추정
+		    String mimeType = Files.probeContentType(file.toPath());
+		    if (mimeType == null) {
+		       mimeType = "application/octet-stream";
+		    }
+		    response.setContentType(mimeType);
+		    response.setContentLengthLong(file.length());
+
+		    // 파일명 인코딩
+		    String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+		    // 다운로드 되도록 브라우저에 알림
+		    response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+		    // 파일을 바이트 스트림으로 클라이언트에 전송
+		    try (FileInputStream fis = new FileInputStream(file); OutputStream os = response.getOutputStream()) {
+		       byte[] buffer = new byte[1024];
+		       int len;
+		       while ((len = fis.read(buffer)) != -1) {
+		          os.write(buffer, 0, len);
+		       }
+		       os.flush();
+		    }
+		 }
 }
