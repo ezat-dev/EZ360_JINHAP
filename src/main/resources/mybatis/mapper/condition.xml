@@ -164,12 +164,31 @@
     SELECT *
     FROM tb_machineliquidmanage
     WHERE 1 = 1
-    <if test="in_date != null and in_date != ''">
-        AND in_date = #{in_date}
-    </if>
     <if test="mch_name != null and mch_name != ''">
         AND mch_name = #{mch_name}
     </if>
+      <!-- 날짜 필터 -->
+  <choose>
+    <!-- 시작+종료 모두 있는 경우: [in_date, end_date+1day) -->
+    <when test="in_date != null and in_date != '' and endDate != null and endDate != ''">
+      AND in_date &gt;= #{in_date}
+      AND in_date &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+    </when>
+
+    <!-- 시작만 있는 경우: 해당 일 하루 -->
+    <when test="endDate != null and endDate != ''">
+      AND in_date &gt;= #{in_date}
+      AND in_date &lt; DATE_ADD(#{in_date}, INTERVAL 1 DAY)
+    </when>
+
+    <!-- 종료만 있는 경우: 그 날까지 -->
+    <when test="endDate != null and endDate != ''">
+      AND in_date &lt; DATE_ADD(#{end_date}, INTERVAL 1 DAY)
+    </when>
+    <!-- 둘 다 없는 경우: 필터 없음 -->
+    <otherwise/>
+  </choose>
+  order by in_date desc
 </select>
 
 <insert id="insertMachineliquidmanage" parameterType="Condition">
@@ -274,10 +293,28 @@
     <if test="mch_name != null and mch_name != ''">
         AND mch_name = #{mch_name}
     </if>
-    <if test="in_date != null and in_date != ''">
-        AND in_date = #{in_date}
-    </if>
-    ORDER BY ck_time DESC
+  <choose>
+    <!-- 시작+종료 모두 있는 경우: [in_date, end_date+1day) -->
+    <when test="in_date != null and in_date != '' and endDate != null and endDate != ''">
+      AND in_date &gt;= #{in_date}
+      AND in_date &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+    </when>
+
+    <!-- 시작만 있는 경우: 해당 일 하루 -->
+    <when test="endDate != null and endDate != ''">
+      AND in_date &gt;= #{in_date}
+      AND in_date &lt; DATE_ADD(#{in_date}, INTERVAL 1 DAY)
+    </when>
+
+    <!-- 종료만 있는 경우: 그 날까지 -->
+    <when test="endDate != null and endDate != ''">
+      AND in_date &lt; DATE_ADD(#{endDate}, INTERVAL 1 DAY)
+    </when>
+
+    <!-- 둘 다 없는 경우: 필터 없음 -->
+    <otherwise/>
+  </choose>
+    ORDER BY in_date DESC
 </select>
 
 <!-- insert 매퍼: id 제외 -->

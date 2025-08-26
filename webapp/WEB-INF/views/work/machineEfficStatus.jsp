@@ -11,7 +11,7 @@
    <style>
 		#legend {
 		    position: absolute;
-		    top: 50px;
+		    top: 85px;
 		    right: 100px;
 		    background: #fff;
 		    border: 1px solid #ccc;
@@ -31,7 +31,7 @@
     .tabulator-cell.grade-B-cell { color: #ff7f0e !important; }
     .tabulator-cell.grade-C-cell { color: #d62728 !important; }
     .tabulator-cell.grade-D-cell { color: #7f7f7f !important; }
-    .view{margin-top:140px;}
+    .view{margin-top:210px;}
     
     
     </style>
@@ -55,7 +55,7 @@
     
         $(document).ready(function() {
             new Tabulator("#dataList", {
-                height: "760px",
+                height: "680px",
                 layout: "fitDataFill",
                 columnMinWidth: 170,
                 selectable: true,
@@ -77,7 +77,22 @@
                 columns: [
                     { title: "설비명",      field: "facility_name", width: 265, sorter: "string", hozAlign: "center", headerSort: false },
                     { title: "생산효율(%)",    field: "a",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
-                    { title: "가동효율(%)",    field: "b",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
+                    { 
+                        title: "가동효율(%)",    
+                        field: "b",              
+                        width: 265, 
+                        sorter: "string", 
+                        hozAlign: "center", 
+                        headerSort: false,
+                        formatter: function(cell) {
+                            let value = cell.getValue();
+                            if (value > 100) {
+                                return 99.9;
+                            }
+                            return value;
+                        }
+                    },
+
                     { title: "양품율(%)",      field: "c",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
                     { title: "종합효율(%)",    field: "d",              width: 265, sorter: "string", hozAlign: "center", headerSort: false },
                     {

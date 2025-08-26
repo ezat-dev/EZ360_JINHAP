@@ -9,7 +9,7 @@
     <title>일상점검일지</title>
 <style>
 	.tab {
-	    width: 89%;
+	    width: 94%;
 	    margin-bottom: 37px;
 	    margin-top: 35px;
 	    height: 55px;
@@ -374,7 +374,7 @@ function initTables() {
         },
         columns: [
             { title: "NO", formatter: "rownum", hozAlign: "center", headerSort: false, width: 60 },
-          //  { title: "등록일자", field: "maint_date", hozAlign: "center", headerSort: false, width: 110 },
+            { title: "등록일자", field: "maint_date", hozAlign: "center", headerSort: false, width: 110 },
          //   { title: "공정명", field: "segment_id", hozAlign: "center", headerSort: false, width: 110 },
             { title: "설비", field: "equipment_id", hozAlign: "center", headerSort: false, width: 110 },
             { title: "점검항목", field: "maint_item_name_ko_kr", headerSort: false, width: 250 },

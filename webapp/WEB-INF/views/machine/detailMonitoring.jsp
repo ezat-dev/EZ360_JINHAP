@@ -19,7 +19,7 @@
         .view {
             display: flex;
             justify-content: center;
-            margin-top: 1%;
+            margin-top: 8%;
         }
         .tab {
             width: 95%;
@@ -159,17 +159,16 @@
         
         
 .legend {
-  position: absolute;
-  top: 20px;
-  right: 190px;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  padding: 10px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  
-  display: flex;         
-  gap: 12px;              
+    position: absolute;
+    top: 80px;
+    right: 90px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    padding: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    gap: 12px;
 }
 
 .legend-item {
@@ -191,7 +190,7 @@
     .color-lightgreen { background: #2ecc71; }
         
    #dataList .tabulator-tableHolder .tabulator-row {
-    height: 37px !important;
+    height: 38px !important;
      font-size: 17px !important;
   }
 

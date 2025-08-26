@@ -889,7 +889,11 @@ public class ConditionController {
         return result;
     }
 
-
+	//후처리 액교반 관리일지
+    @RequestMapping(value= "/condition/afterLiquidManage", method = RequestMethod.GET)
+    public String afterLiquidManage(Model model) {
+        return "/condition/afterLiquidManage.jsp"; // 
+    }
     
 
 }

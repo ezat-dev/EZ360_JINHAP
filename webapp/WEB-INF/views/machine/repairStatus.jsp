@@ -202,6 +202,15 @@
 	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
 	                <option value="세척 1호기">세척 1호기</option>
 	                <option value="세척 2호기">세척 2호기</option>
+	                
+	                <option value="쇼트 1호기">쇼트 1호기</option>
+					<option value="쇼트 2호기">쇼트 2호기</option>
+					<option value="쇼트 3호기">쇼트 3호기</option>
+					<option value="쇼트 4호기">쇼트 4호기</option>
+					<option value="쇼트 5호기">쇼트 5호기</option>
+					<option value="쇼트 6호기">쇼트 6호기</option>
+					<option value="쇼트 7호기">쇼트 7호기</option>
+
             </select>
 			</div>
                 <button class="select-button">
@@ -245,6 +254,14 @@
 	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
 	                <option value="세척 1호기">세척 1호기</option>
 	                <option value="세척 2호기">세척 2호기</option>
+	                <option value="쇼트 1호기">쇼트 1호기</option>
+					<option value="쇼트 2호기">쇼트 2호기</option>
+					<option value="쇼트 3호기">쇼트 3호기</option>
+					<option value="쇼트 4호기">쇼트 4호기</option>
+					<option value="쇼트 5호기">쇼트 5호기</option>
+					<option value="쇼트 6호기">쇼트 6호기</option>
+					<option value="쇼트 7호기">쇼트 7호기</option>
+	                
 	            </select>
 	
 	            <label>점검</label>

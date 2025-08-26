@@ -270,7 +270,7 @@
               {title: "설비명",     field: "facility_name", hozAlign: "center", headerSort: false, width: 150},
               {title: "라인코드",   field: "line_cd", hozAlign: "center", headerSort: false, width: 130},
               {title: "에러코드",   field: "err_code", hozAlign: "center", headerSort: false, width: 130},
-              {title: "알람내용",     field: "err_name", hozAlign: "center", headerSort: false, width: 300},
+              {title: "알람내용",     field: "err_name",  headerSort: false, width: 300},
               {title: "시작시간",   field: "start_time_formatted", hozAlign: "center", headerSort: false, width: 200},
               {title: "종료시간",   field: "end_time_formatted",   hozAlign: "center", headerSort: false, width: 200},
               {title: "비고",       field: "remark", hozAlign: "center", headerSort: false, width: 240}
