@@ -179,4 +179,19 @@ public class UserServiceImpl implements UserService {
     public void insertUserLog(UserLog userLog) {
         userDao.insertUserLog(userLog);
     }
+    
+	@Override
+	public boolean allNo(Users users) {
+		return userDao.allNo(users);
+	}
+	
+	@Override
+	public boolean allNull(Users users) {
+		return userDao.allNull(users);
+	}
+
+	@Override
+	public boolean deleteUser(Users users) {
+		return userDao.deleteUser(users);
+	}
 }

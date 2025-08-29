@@ -75,4 +75,10 @@ public interface UserService {
     
     
     void insertUserLog(UserLog userLog);
+    
+    boolean allNo(Users users);
+    
+    boolean allNull(Users users);
+    
+    boolean deleteUser(Users users);
 }

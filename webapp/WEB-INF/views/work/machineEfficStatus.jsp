@@ -50,7 +50,7 @@
         </div>
     </main>
     <script>
-    let now_page_code = "b02";
+    let now_page_code = "c07";
 
     
         $(document).ready(function() {

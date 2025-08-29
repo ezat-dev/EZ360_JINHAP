@@ -66,4 +66,10 @@ public interface UserDao {
     void updateCheckManage(Users users);
     
     void insertUserLog(UserLog userLog);
+    
+    boolean allNo(Users users);
+    
+    boolean allNull(Users users);
+    
+    boolean deleteUser(Users users);
 }

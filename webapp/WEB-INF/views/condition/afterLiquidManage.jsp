@@ -60,7 +60,7 @@
     font-size: 19px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 150px;
+    width: 230px;
     text-align: center;
     height: 39px;
 }
@@ -190,7 +190,7 @@
 		    margin-left: auto;
 		    margin-right: 10px;
 		    margin-top: 40px;
-		      width: 980px;
+		      width: 1180px;
 		}
 		.box1 {
 		    display: flex;
@@ -313,11 +313,11 @@
 	  <label for="mch_name" class="daylabel">설비명 :</label>
 			<select id="mch_name" class="mch_name" onchange="toggleTable()">
            
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
+                <option value="G800">지오메트 액교반</option>
+<!--                 <option value="G600">G600</option>
                 <option value="K_BLACK">K_BLACK</option>
-                <option value="ML">ML</option>
-                <option value="PL">PL</option>
+                <option value="ML">ML</option> -->
+                <option value="PL">후처리 액교반</option>
                
             </select>
 	        

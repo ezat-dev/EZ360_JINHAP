@@ -845,6 +845,47 @@ public class UserController {
         
         return rtnMap;
     }
+    
+    //전체없음
+    @RequestMapping(value = "/user/userPermission/allNo", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> allNo(@RequestBody Users users) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("전체없음 요청 받은 user_code: " + users.getUser_code());
+
+        boolean result = userService.allNo(users);
+        System.out.println("result" + result);
+
+        rtnMap.put("data", result);
+        return rtnMap;
+    }
+    
+    //권한 초기화
+    @RequestMapping(value = "/user/userPermission/allNull", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> allNull(@RequestBody Users users) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("전체없음 요청 받은 user_code: " + users.getUser_code());
+
+        boolean result = userService.allNull(users);
+        System.out.println("result" + result);
+
+        rtnMap.put("data", result);
+        return rtnMap;
+    }
+    
+	 //사용자 정보수정
+	 @RequestMapping(value = "/user/userInsert/update", method = RequestMethod.POST)
+	 @ResponseBody
+	 public Map<String, Object> userUpdate(@ModelAttribute Users users) {
+		 Map<String, Object> rtnMap = new HashMap<>();
+		 System.out.println("수정 users.getUser_name(): "+users.getUser_name());
+ 
+		 userService.userInsertInsert(users);
+		 
+		 return rtnMap; 
+	 }
+    
 
 }
 

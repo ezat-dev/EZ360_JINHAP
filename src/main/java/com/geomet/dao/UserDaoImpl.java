@@ -211,4 +211,31 @@ public class UserDaoImpl implements UserDao{
 				public void insertUserLog(UserLog userLog) {
 				   sqlSession.insert("users.insertUserLog",userLog);
 				 }
+				
+				@Override
+				public boolean allNo(Users users) {
+					int result = sqlSession.update("users.allNo",users);
+					if(result <= 0) {
+						return false;
+					}
+					return true;
+					}
+
+				@Override
+				public boolean allNull(Users users) {
+					int result = sqlSession.update("users.allNull", users);
+					if(result <= 0) {
+						return false;
+					}
+					return true;
+				}
+
+				@Override
+				public boolean deleteUser(Users users) {
+					int result = sqlSession.delete("users.deleteUser", users);
+					if(result <= 0) {
+						return false;
+					}
+					return true;
+				}
 }
