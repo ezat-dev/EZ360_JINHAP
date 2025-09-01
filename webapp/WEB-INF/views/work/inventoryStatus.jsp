@@ -244,6 +244,9 @@
         <button class="insert-button">
           <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
         </button>
+        <button class="delete-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+		</button>
         <button class="excel-button">
           <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
         </button>
@@ -322,229 +325,233 @@
 
 
 
-
 <script>
 let now_page_code = "b05";
 
+$(document).ready(function () {
+    $('.insert-button').click(function(){
+        selectedRowData = null;
+        $('#corrForm')[0].reset();
+        $('#modalContainer').show().addClass('show');
+    });
 
+    $(".headerP").text("생산관리 - 재고관리");
 
+    const now = new Date();
+    const yearMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
 
-   $(document).ready(function () {
+    $(".insert-button").click(function () {
+        let modal = $("#modalContainer");
+        modal.show(); 
+        modal.addClass("show");
+    });
 
+    // 모달 닫기 버튼 이벤트
+    $(".close, #closeModal").click(function () {
+        let modal = $("#modalContainer");
+        modal.removeClass("show").hide(); 
+    });
 
+    $("#startDate")
+      .val(yearMonth)
+      .attr("placeholder", yearMonth);
 
-	    $('.insert-button').click(function(){
-	        selectedRowData = null;
-	        $('#corrForm')[0].reset();
-	        $('#modalContainer').show().addClass('show');
-	    });
-		   
+    getDataList();
+    handleSelectButtonClick();
+});
 
-     $(".headerP").text("생산관리 - 재고관리");
+function handleSelectButtonClick() {
+    let startDate = $("#startDate").val() || "";
+    let medicine_name = $("#productName").val() || "";
+    if (medicine_name === "전체") medicine_name = null;
 
-     const now = new Date();
-     const yearMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
+    console.log("검색 요청 값 =>", { startDate, medicine_name });
 
-     $(".insert-button").click(function () {
-       let modal = $("#modalContainer");
-       modal.show(); 
-       modal.addClass("show");
-     });
+    if (!startDate || startDate.trim() === "") {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, "0");
+        startDate = `${year}-${month}`;
+    }
 
-     // 모달 닫기 버튼 이벤트
-     $(".close, #closeModal").click(function () {
-       let modal = $("#modalContainer");
-       modal.removeClass("show").hide(); 
-     });
+    dataTable.setData("/geomet/work/inventoryStatus/list", {
+        "startDate": startDate,
+        "medicine_name": medicine_name,
+    });
+}
 
-     $("#startDate")
-       .val(yearMonth)
-       .attr("placeholder", yearMonth);
+// 클릭 이벤트 연결
+$(".select-button").click(handleSelectButtonClick);
 
-     getDataList();
-     handleSelectButtonClick();
-   });
+function getDataList() {
+    dataTable = new Tabulator("#dataTable", {
+        height: "830px",
+        layout: "fitDataFill",
+        layoutColumnsOnNewData: true,
+        headerSort: false,
+        selectable: true, // ✅ 여러 행 선택 가능
+        selectableRangeMode: "click",
+        tooltips: true,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        reactiveData: true,
+        headerHozAlign: "center",
 
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        ajaxURL: "/geomet/work/inventoryStatus/list",
+        ajaxProgressiveLoad: false,
+        ajaxParams: {
+            startDate: (() => {
+                const v = $("#startDate").val();
+                return v ? v + "-01" : "";
+            })(),
+            medicine_name: (() => {
+                const m = $("#medicine_name").val();
+                return m && m !== "전체" ? m : null;
+            })()
+        },
 
-   function handleSelectButtonClick() {
-       let startDate = $("#startDate").val() || "";
-       let medicine_name = $("#productName").val() || "";
-       if (medicine_name === "전체") medicine_name = null; // 전체면 null 처리
-       console.log("검색 요청 값 =>", {
-           startDate: startDate,
-           medicine_name: medicine_name
-       });
+        placeholder: "조회된 데이터가 없습니다.",
+        paginationSize: false,
 
-       // 날짜가 없으면 현재 년-월로 기본 설정
-       if (!startDate || startDate.trim() === "") {
-           const today = new Date();
-           const year = today.getFullYear();
-           const month = String(today.getMonth() + 1).padStart(2, "0"); // 0부터 시작하므로 +1
-           startDate = `${year}-${month}`;
-       }
-
-       dataTable.setData("/geomet/work/inventoryStatus/list", {
-    	    "startDate": startDate,
-    	    "medicine_name": medicine_name,
-    	});
-   }
-
-   // 클릭 이벤트 연결
-   $(".select-button").click(handleSelectButtonClick);
-
-
-
-
-
-
-   
-   function getDataList() {
-        dataTable = new Tabulator("#dataTable", {
-          height: "830px",
-          layout: "fitDataFill",
-          layoutColumnsOnNewData: true,
-          headerSort: false,
-          selectable: true,
-          tooltips: true,
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
-          selectableRangeMode: "click",
-          reactiveData: true,
-          headerHozAlign: "center",
-
-          ajaxConfig: "POST",
-          ajaxLoader: false,
-          ajaxURL: "/geomet/work/inventoryStatus/list",
-          ajaxProgressiveLoad: false,
-          ajaxParams: {
-        	    startDate: (() => {
-        	        const v = $("#startDate").val();
-        	        return v ? v + "-01" : "";
-        	    })(),
-        	    medicine_name: (() => {
-        	        const m = $("#medicine_name").val();
-        	        return m && m !== "전체" ? m : null; // "전체"면 null로 처리
-        	    })()
-        	},
-
-          placeholder: "조회된 데이터가 없습니다.",
-          paginationSize: false,
-
-          groupBy: "date",
-          groupStartOpen: true,
-          groupHeader: function (value, count) {
+        groupBy: "date",
+        groupStartOpen: true,
+        groupHeader: function (value, count) {
             return `<strong>${value}</strong>`;
-          },
+        },
 
-          ajaxResponse: function (url, params, response) {
+        ajaxResponse: function (url, params, response) {
             return response;
-          },
+        },
 
-          dataLoaded: function (data) {
+        dataLoaded: function (data) {
             $("#dataTable .tabulator-col.tabulator-sortable").css("height", "29px");
-          },
+        },
 
-          columns: [
-        	    { title: "No", formatter: "rownum", hozAlign: "center", width: 80 },
-        	    { title: "ID", field: "id", visible: false }, // ID 숨김
-        	    { title: "날짜", field: "reg_date", editor: "input", hozAlign: "center", minWidth: 140 },
-        	    { title: "업체", field: "company_name", editor: "input", minWidth: 200 },
-        	    { title: "약품명", field: "medicine_name", editor: "input", minWidth: 200 },
-        	    { title: "LOT번호", field: "lot_no", editor: "input", minWidth: 200 },
-        	    { title: "입고수량", field: "stock_in", hozAlign: "center", editor: "input", minWidth: 150 },
-        	    { title: "일간 사용량", field: "daily_usage", hozAlign: "center", editor: "input", minWidth: 150 },
+        columns: [
+            { formatter: "rowSelection", titleFormatter: "rowSelection", 
+              hozAlign: "center", headerSort: false, width: 60 }, // ✅ 체크박스 선택
+            { title: "No", formatter: "rownum", hozAlign: "center", width: 80 },
+            { title: "ID", field: "id", visible: false },
+            { title: "날짜", field: "reg_date", editor: "input", hozAlign: "center", minWidth: 140 },
+            { title: "업체", field: "company_name", editor: "input", minWidth: 200, headerFilter: "input" },
+            { title: "약품명", field: "medicine_name", editor: "input", minWidth: 200, headerFilter: "input" },
+            { title: "LOT번호", field: "lot_no", editor: "input", minWidth: 200, headerFilter: "input" },
+            { title: "입고수량", field: "stock_in", hozAlign: "center", editor: "input", minWidth: 150 },
+            { title: "일간 사용량", field: "daily_usage", hozAlign: "center", editor: "input", minWidth: 150 },
+            { title: "현재고", field: "day_sum", hozAlign: "center", editor: "input", minWidth: 150 },
+        ],
 
-        	    { title: "현재고", field: "day_sum", hozAlign: "center", editor: "input", minWidth: 150 },
-        	],
+        cellEdited: function(cell){
+            const row = cell.getRow().getData(); 
+            $.ajax({
+                url: "/geomet/work/inventoryStatus/update",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(row),
+                success: function(res){
+                    if(res === true) {
+                        console.log("업데이트 성공");
+                        dataTable.replaceData();
+                    } else { 
+                        alert("업데이트 실패: " + res.message); 
+                        cell.restoreOldValue(); 
+                    }
+                },
+                error: function(){ 
+                    alert("서버 오류"); 
+                    cell.restoreOldValue(); 
+                }
+            });
+        }
+    }); 
+}
 
-          
-        	cellEdited: function(cell){
-        	    const row = cell.getRow().getData(); 
-        	    const field = cell.getField();
-        	    const newValue = cell.getValue();
+$('#saveCorrStatus').click(function(event){
+    event.preventDefault();
 
-        	    console.log("수정된 셀:", {
-        	        id: row.id,
-        	        field: field,
-        	        value: newValue,
-        	        rowData: row
-        	    });
+    var data = {};
+    $('#corrForm').serializeArray().forEach(function(field){
+        if(field.name !== 'medicine_name') {
+            data[field.name] = field.value;
+        }
+    });
 
-        	    $.ajax({
-        	        url: "/geomet/work/inventoryStatus/update",
-        	        type: "POST",
-        	        contentType: "application/json",
-        	        data: JSON.stringify(row),
-        	        success: function(res){
-        	            if(res === true) {
-        	                console.log("업데이트 성공");
-        	                dataTable.replaceData(); // 전체 데이터 다시 로드
-        	            } else { 
-        	                alert("업데이트 실패: " + res.message); 
-        	                cell.restoreOldValue(); 
-        	            }
-        	        },
-        	        error: function(){ 
-        	            alert("서버 오류"); 
-        	            cell.restoreOldValue(); 
-        	        }
-        	    });
-        	}
+    var selectedMedicine = $("#medicine_name_select").val();
+    if(selectedMedicine === "기타") {
+        selectedMedicine = $("#medicine_name_input").val();
+    }
+    data.medicine_name = selectedMedicine;
 
-        }); 
-      }
+    console.log("전송 데이터:", data);
 
-   $('#saveCorrStatus').click(function(event){
-	    event.preventDefault();
+    $.ajax({
+        url: "/geomet/work/inventoryStatus/insert",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(data),
+        success: function(){
+            alert("저장되었습니다!");
+            $('#modalContainer').hide();
+            dataTable.setData("/geomet/work/inventoryStatus/list", { startDate: $('.dayselect').val() || 'ALL' });
+            handleSelectButtonClick();
+        },
+        error: function(){
+            alert('저장 중 오류가 발생했습니다.');
+        }
+    });
+});
 
-	    var data = {};
-	    $('#corrForm').serializeArray().forEach(function(field){
-	        if(field.name !== 'medicine_name') { // 기존 medicine_name 제외
-	            data[field.name] = field.value;
-	        }
-	    });
+const select = document.getElementById('medicine_name_select');
+const input = document.getElementById('medicine_name_input');
 
-	    // medicine_name 선택 처리
-	    var selectedMedicine = $("#medicine_name_select").val();
-	    if(selectedMedicine === "기타") {
-	        selectedMedicine = $("#medicine_name_input").val(); // 기타 입력값 사용
-	    }
-	    data.medicine_name = selectedMedicine;
+select.addEventListener('change', function() {
+    if(this.value === '기타') {
+        input.style.display = 'block';
+        input.required = true;
+    } else {
+        input.style.display = 'none';
+        input.required = false;
+        input.value = '';
+    }
+});
 
-	    console.log("전송 데이터:", data);
+// 삭제 버튼 클릭 이벤트
+$(".delete-button").click(function () {
+    let selectedData = dataTable.getSelectedData();
 
-	    $.ajax({
-	        url: "/geomet/work/inventoryStatus/insert",
-	        type: "POST",
-	        contentType: "application/json",
-	        data: JSON.stringify(data),
-	        success: function(){
-	            alert("저장되었습니다!");
-	            $('#modalContainer').hide();
-	            dataTable.setData("/geomet/work/inventoryStatus/list", { startDate: $('.dayselect').val() || 'ALL' });
-	        },
-	        error: function(){
-	            alert('저장 중 오류가 발생했습니다.');
-	        }
-	    });
-	});
+    if (selectedData.length === 0) {
+        alert("삭제할 데이터를 선택해주세요.");
+        return;
+    }
 
+    let ids = selectedData.map(row => row.id);
 
-   const select = document.getElementById('medicine_name_select');
-   const input = document.getElementById('medicine_name_input');
+    if (!confirm(ids.length + "건을 삭제하시겠습니까?")) {
+        return;
+    }
 
-   select.addEventListener('change', function() {
-     if(this.value === '기타') {
-       input.style.display = 'block';
-       input.required = true;
-     } else {
-       input.style.display = 'none';
-       input.required = false;
-       input.value = ''; // 기존 입력값 초기화
-     }
-   });
-
+    $.ajax({
+        url: "/geomet/work/inventoryStatus/del",
+        type: "POST",
+        contentType: "application/json",
+        data: JSON.stringify(ids),
+        success: function (res) {
+            if (res === true || res.success) {
+                alert("삭제 완료되었습니다.");
+                dataTable.replaceData();
+            } else {
+                alert("삭제 실패: " + (res.message || "알 수 없는 오류"));
+            }
+        },
+        error: function () {
+            alert("서버 오류로 삭제하지 못했습니다.");
+        }
+    });
+});
 </script>
+
 
 </body>
 </html>

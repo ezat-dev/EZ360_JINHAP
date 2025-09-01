@@ -531,7 +531,7 @@ $('.pCodeBtn').click(function () {
          }
        },
 
-     { title: 'PLUS 비중(1.075±0.075)', field: 'specific_gravity', width: 200, hozAlign: 'center',
+     { title: 'ML 비중(1.075±0.075)', field: 'specific_gravity', width: 200, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
          if (value < 1.0 || value > 1.15) {

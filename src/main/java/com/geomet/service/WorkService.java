@@ -13,6 +13,9 @@ public interface WorkService {
 	void insertinventoryStatus(Work work);	
 
     boolean inventoryStatusUpdate(Work work);
+   
+    boolean deleteInventoryStatus(List<Integer> ids);
+    
 	//생산현황
 	List<Work> getMachineEfficStatusList(Work work);
 	

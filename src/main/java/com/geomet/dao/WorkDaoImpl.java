@@ -43,6 +43,11 @@ public class WorkDaoImpl implements WorkDao {
     }
     
     @Override
+    public int deleteInventoryStatus(List<Integer> ids) {
+        return sqlSession.delete("work.deleteInventoryStatus", ids);
+    }
+    
+    @Override
     public List<Work> getMachineEfficStatusList(Work work) {
         return sqlSession.selectList("work.getMachineEfficStatusList", work);
     }

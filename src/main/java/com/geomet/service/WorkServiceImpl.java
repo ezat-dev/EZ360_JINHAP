@@ -30,6 +30,13 @@ public class WorkServiceImpl implements WorkService {
     public boolean inventoryStatusUpdate(Work work) {
        return workDao.inventoryStatusUpdate(work);
     }
+    
+    
+    @Override
+    public boolean deleteInventoryStatus(List<Integer> ids) {
+        return workDao.deleteInventoryStatus(ids) > 0;
+    }
+
 	//생산관리
 	@Override
 	public List<Work> getMachineEfficStatusList(Work work){

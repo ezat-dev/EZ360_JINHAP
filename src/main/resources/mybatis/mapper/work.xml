@@ -4,7 +4,13 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="work">
 
-
+	<delete id="deleteInventoryStatus" parameterType="list">
+	    DELETE FROM tb_new_inventorystatus
+	    WHERE id IN
+	    <foreach item="id" collection="list" open="(" separator="," close=")">
+	        #{id}
+	    </foreach>
+	</delete>
 
 
    <select id="getInventoryStatusList" parameterType="Work" resultType="Work">

@@ -184,6 +184,25 @@ public class WorkController {
         return "success";
     }
 
+ // 재고관리(약품) 삭제
+    @RequestMapping(value = "/work/inventoryStatus/del", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean deleteInventoryStatus(@RequestBody List<Integer> ids) {
+        System.out.println("=== deleteInventoryStatus 컨트롤러 도착 ===");
+        System.out.println("삭제 요청 ID 리스트: " + ids);
+
+        try {
+            if (ids == null || ids.isEmpty()) {
+                return false;
+            }
+            boolean result = workService.deleteInventoryStatus(ids);
+            System.out.println("삭제 결과: " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 	/*-----투입 운전관리-----*/
 	

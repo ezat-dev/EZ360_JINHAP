@@ -11,6 +11,8 @@ public interface WorkDao {
 	List<Work> getInventoryStatusList(Work work);
 	void insertinventoryStatus(Work work);
     boolean inventoryStatusUpdate(Work work);
+    int deleteInventoryStatus(List<Integer> ids);
+
 	//생산현황
 	List<Work> getMachineEfficStatusList(Work work);
 	
