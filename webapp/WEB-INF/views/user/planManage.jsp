@@ -22,7 +22,7 @@
             margin-top: 1%;
         }
         .tab {
-            width: 95%;
+            width: 100%;
             margin-bottom: 37px;
             margin-top: 5px;
             height: 45px;
@@ -190,9 +190,9 @@
         <button class="delete-button">
           <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image">삭제
         </button>
-        <button class="excel-button">
+<!--         <button class="excel-button">
           <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-        </button>
+        </button> -->
       </div>
     </div>
 
@@ -314,11 +314,23 @@
           { title: '사번', field: 'employee_no', sorter: 'string', width: 120, hozAlign: 'center' },
           { title: '성명', field: 'name', sorter: 'string', width: 90, hozAlign: 'center' },
           { title: '학력', field: 'education', sorter: 'string', width: 120, hozAlign: 'center' },
-          { title: '입사일자', field: 'start_day', sorter: 'string', width: 120, hozAlign: 'center' },
+          { title: '입사일자', field: 'start_day', sorter: 'string', width: 120, hozAlign: 'center',
+        	  formatter: function(cell) {
+        		    const value = cell.getValue();
+        		    if (!value) return "";
+        		    return value.split(" ")[0];  // "2025-08-14 15:55" → "2025-08-14"
+        		  }
+		   },
           { title: '경력(년/개월)', field: 'career', sorter: 'string', width: 120, hozAlign: 'center' },
-          { title: '교육', field: 'training', sorter: 'string', width: 140, hozAlign: 'center' },
+          { title: '교육', field: 'training', sorter: 'string', width: 100, hozAlign: 'center' },
           { title: '자격인정 신청명', field: 'cert_name', sorter: 'string', width: 120, hozAlign: 'center' },
-          { title: '취득일', field: 'acquisition_date', sorter: 'string', width: 120, hozAlign: 'center' },
+          { title: '취득일', field: 'acquisition_date', sorter: 'string', width: 120, hozAlign: 'center',
+        	  formatter: function(cell) {
+      		    const value = cell.getValue();
+      		    if (!value) return "";
+      		    return value.split(" ")[0];  // "2025-08-14 15:55" → "2025-08-14"
+      		  }
+               },
           { 
             title: '차기갱신일', 
             field: 'next_date', 
@@ -330,17 +342,15 @@
             title: '자격인증평가표',
             field: 'file_name',
             hozAlign: 'center',
-            width: 200,
-            formatter: function(cell) {
-            	  var file = cell.getValue();
-            	  var basePath = 'D:\\GEOMET양식\\자격인증관리\\';
-            	  return file
-            	    ? '<a href="/geomet/download?filename=' + encodeURIComponent(basePath + file) + '" target="_blank">' + file + '</a>'
-            	    : '';
-            	}
+            width: 180,
+            formatter: function(cell, formatterParams, onRendered) {
+                const fileName = cell.getValue();
+                if (!fileName) return "";
+                return '<a href="/geomet/download_file?filename=' + encodeURIComponent(fileName) + '" target="_blank">' + fileName + '</a>';
+            }
 
           },
-          { title: '비고', field: 'note', sorter: 'string', width: 140, hozAlign: 'center' },
+          { title: '비고', field: 'note', sorter: 'string', width: 120, hozAlign: 'center' },
         ],
 
         rowClick: function(e, row) {

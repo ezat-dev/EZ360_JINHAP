@@ -148,6 +148,8 @@
         <if test="filed == 'visocosity'">visocosity = #{value},</if>
         <if test="filed == 'tank_temp'">tank_temp = #{value},</if>
         <if test="filed == 'chiller_temp'">chiller_temp = #{value},</if>
+        <if test="filed == 'specific_gravity1'">specific_gravity1 = #{value},</if>
+		<if test="filed == 'visocosity1'">visocosity1 = #{value},</if>
     </set>
     WHERE id = #{id}
 </update>

@@ -2,6 +2,25 @@ package com.geomet.domain;
 import java.util.List;
 
 public class Work {
+	
+	
+	
+	
+	
+
+	private String reg_date;
+	private String company_name;
+	private String medicine_name;
+	private String lot_no;
+	private String stock_in;
+	private String daily_usage;
+	private String day_sum;
+	
+	
+	
+	
+	
+	
 	private String barcode_no;
 	private String date_time;
 	private String w1;
@@ -212,7 +231,7 @@ public class Work {
 //    public String w_s;
 //    public String w_e;
 //    public String s_s;
-//    public String s_e;
+
     public String g_s;
     public String g_e;
     public String mlpl_s;
@@ -223,7 +242,49 @@ public class Work {
     
     
     
-    public String getTarget_weight() {
+    public String getReg_date() {
+		return reg_date;
+	}
+	public void setReg_date(String reg_date) {
+		this.reg_date = reg_date;
+	}
+	public String getCompany_name() {
+		return company_name;
+	}
+	public void setCompany_name(String company_name) {
+		this.company_name = company_name;
+	}
+	public String getMedicine_name() {
+		return medicine_name;
+	}
+	public void setMedicine_name(String medicine_name) {
+		this.medicine_name = medicine_name;
+	}
+	public String getLot_no() {
+		return lot_no;
+	}
+	public void setLot_no(String lot_no) {
+		this.lot_no = lot_no;
+	}
+	public String getStock_in() {
+		return stock_in;
+	}
+	public void setStock_in(String stock_in) {
+		this.stock_in = stock_in;
+	}
+	public String getDaily_usage() {
+		return daily_usage;
+	}
+	public void setDaily_usage(String daily_usage) {
+		this.daily_usage = daily_usage;
+	}
+	public String getDay_sum() {
+		return day_sum;
+	}
+	public void setDay_sum(String day_sum) {
+		this.day_sum = day_sum;
+	}
+	public String getTarget_weight() {
 		return target_weight;
 	}
 	public void setTarget_weight(String target_weight) {

@@ -265,6 +265,7 @@
 	         
 	
 	            <button type="submit" id="saveCorrStatus">저장</button>
+	            <button type="submit" id="updateCorrStatus" style="display: none;">수정</button>
 	            <button type="button" id="closeModal">닫기</button>
 	        </form>
 	    </div>
@@ -323,6 +324,11 @@ $(function() {
       $('select[name="user_level"]').val(d.user_level);
       $('input[name="user_busu"]').val(d.user_busu);
       $('input[name="user_jick"]').val(d.user_jick);
+
+      // 저장 숨기고 수정 보이게
+      $('#saveCorrStatus').hide();
+      $('#updateCorrStatus').show();
+      
       $('#modalContainer').show().addClass('show');
     }
   });
@@ -345,6 +351,9 @@ $(function() {
 
   // 삽입 버튼 클릭 시
   $('.insert-button').click(function() {
+      // 수정 숨기고 저장 보이게
+      $('#saveCorrStatus').show();
+      $('#updateCorrStatus').hide();
     selectedRowData = null;
     $('#corrForm')[0].reset();
     $('#modalContainer').show().addClass('show');
@@ -407,6 +416,37 @@ $(function() {
       contentType: false,
       success: function() {
         alert("저장되었습니다!");
+        $('#modalContainer').hide();
+    
+        dataTable.setData("/geomet/user/userInsert/select", {});
+        selectedRowData = null;
+      },
+      error: function() {
+        alert('저장 중 오류가 발생했습니다.');
+      }
+    });
+  });
+
+  //수정 버튼 클릭 시
+  $('#updateCorrStatus').click(function(event) {
+    event.preventDefault();
+    var formData = new FormData($('#corrForm')[0]);
+    if (selectedRowData && selectedRowData.user_code) {
+      formData.append('user_code', selectedRowData.user_code);  // 수정 시 user_code 추가
+    }
+    for (var pair of formData.entries()) {
+        console.log(pair[0] + ': ' + pair[1]);
+      }
+        
+
+    $.ajax({
+      url: "/geomet/user/userInsert/update",
+      type: "POST",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function() {
+        alert("수정되었습니다!");
         $('#modalContainer').hide();
     
         dataTable.setData("/geomet/user/userInsert/select", {});

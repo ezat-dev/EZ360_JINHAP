@@ -92,7 +92,8 @@ public class Condition {
 	    private String title;
 	    private String value;
 	    private String field;
-
+	    private String visocosity1;
+	    private String specific_gravity1;
 	    
 	    
 	   
@@ -155,6 +156,18 @@ public class Condition {
 
 
 
+		public String getVisocosity1() {
+			return visocosity1;
+		}
+		public void setVisocosity1(String visocosity1) {
+			this.visocosity1 = visocosity1;
+		}
+		public String getSpecific_gravity1() {
+			return specific_gravity1;
+		}
+		public void setSpecific_gravity1(String specific_gravity1) {
+			this.specific_gravity1 = specific_gravity1;
+		}
 		public String getM_code() {
 			return m_code;
 		}

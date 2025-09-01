@@ -236,8 +236,10 @@ public class UserController {
 	     System.out.println("===================================");
 
 	     try {
-	    	 userService.userInsertDel(user); 
-	         return "success";
+	    	 if(userService.deleteUser(user)) {
+	    		 return "success";
+	    	 }
+	         return "fail";
 	     } catch (Exception e) {
 	         e.printStackTrace();
 	         return "fail";
@@ -886,6 +888,45 @@ public class UserController {
 		 return rtnMap; 
 	 }
     
+	 //자격인증관리 자격인증평가표 다운로드
+		@RequestMapping(value = "/download_file", method = RequestMethod.GET)
+		public void downloadFile(@RequestParam("filename") String filename, HttpServletResponse response)
+				throws IOException {
+			System.out.println("자격인증관리 컨트롤러 도착");
 
+			String baseDir = "D:/GEOMET양식/자격인증관리/";
+
+			if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+				response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				return;
+			}
+
+			File file = new File(baseDir + filename);
+
+			if (!file.exists()) {
+				response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+				return;
+			}
+
+			String mimeType = Files.probeContentType(file.toPath());
+			if (mimeType == null) {
+				mimeType = "application/octet-stream";
+			}
+			response.setContentType(mimeType);
+			response.setContentLengthLong(file.length());
+
+			String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+			response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+			try (FileInputStream fis = new FileInputStream(file); OutputStream os = response.getOutputStream()) {
+				byte[] buffer = new byte[1024];
+				int len;
+				while ((len = fis.read(buffer)) != -1) {
+					os.write(buffer, 0, len);
+				}
+				os.flush();
+			}
+		}
 }
 

@@ -270,12 +270,12 @@
 	    <div class="tab-controls">
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
-	       	        <button class="select-button" onclick="loadWorkDailyData()">
+	       	        <button class="select-button" onclick="loadWorkDailyData(); loadWorkDailyData1();">
 	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 	        </button>
-	          <button class="insert-button">
+<!-- 	          <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
+                </button> -->
                       <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
@@ -335,6 +335,7 @@
 <script>
   let table1, table2, table3, selectedRowData;
   let now_page_code = "b04";
+
 
   $('.insert-button').click(function() {
 	  const startDate = $('#s_time').val();
@@ -456,9 +457,35 @@
         success: function(response) {
 //        	console.log(response);
 //        	console.log(response.table1);
-          table1.setData(response.table1);
+          //table1.setData(response.table1);
           table2.setData(response.table2);
           table3.setData(response.table3);
+        },
+        error: function(xhr, status, error) {
+          console.error("에러 응답:", xhr.responseText);
+          alert("조회에 실패했습니다.");
+        }
+      });
+    }
+
+  function loadWorkDailyData1() {
+	  var startDate = $('#s_time').val();
+	  var mch_code = 'G04-GG07';
+
+      console.log(' startDate:', startDate);
+      console.log(' mch_code:', mch_code);
+
+      $.ajax({
+        type: "POST",
+        url: "/geomet/condition/machinePartTemp/list",
+        //contentType: "application/json",
+        data: {
+            startDate: startDate,
+            mch_code: mch_code
+        },
+        success: function(response) {
+	      console.log(response);
+          table1.setData(response);
         },
         error: function(xhr, status, error) {
           console.error("에러 응답:", xhr.responseText);
@@ -472,6 +499,8 @@
         $('#s_time').val(today);
         initTables();
         loadWorkDailyData();
+
+        loadWorkDailyData1();
     });
 
 
@@ -488,31 +517,116 @@
     	        headerTooltip: false
     	    },
     	    columns: [
-    	        { title: "주간/야간", field: "b_a", headerSort: false,hozAlign: "center", width: 200  },
-    	      
-    	        { title: "예열존온도</br>(설정값±10°C)", field: "mlpl_d12000", hozAlign: "center", headerSort: false },
-    	        { title: "가열존온도</br>(설정값±10°C)", field: "mlpl_d12001", hozAlign: "center", headerSort: false },
+    	        { title: '일자', field: 'date', width: 150, hozAlign: 'center' },
+    	        { title: '근무조', field: 'b_a', width: 100, hozAlign: 'center' },
     	        { 
     	            title: "액탱크 번호", 
     	            field: "p_code", 
+    	            width: 150,
     	            hozAlign: "center", 
     	            headerSort: false,
     	            formatter: function(cell) {
     	                const val = cell.getValue();
     	                const map = {
     	                        "p_1": "액탱크1",
-        	                    "p_2": "액탱크2",
-        	                    "p_3": "액탱크3",
-        	                    "p_4": "액탱크4"
+        	                    "p_2": "액탱크2"
     	                };
     	                return map[val] || val;  // 매핑 없으면 원래 값 표시
     	            }
     	        },
-    	        { title: "액탱크 온도</br>(38°C 이하)", field: "tank_temp", hozAlign: "center", headerSort: false },
-    	        { title: "점도</br>PLUS : 45±10초", field: "visocosity",hozAlign: "center", headerSort: false },
-    	        { title: "비중</br>1.43±0.05)", field: "specific_gravity", hozAlign: "center", headerSort: false },
-    	        { title: "칠러 온도</br>1.10±2)", field: "chiller_temp", hozAlign: "center", headerSort: false }
+    	        { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 200, hozAlign: 'center',
+    	          formatter: function(cell) {
+    	            var value = parseFloat(cell.getValue());
+    	            if (value > 38) {
+    	              return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+    	            } else {
+    	              return value;
+    	            }
+    	          }
+    	        },
+
+    	        { title: 'PLUS 점도(25±10초)', field: 'visocosity', width: 200, hozAlign: 'center',
+    	          formatter: function(cell) {
+    	            var value = parseFloat(cell.getValue());
+    	            if (value < 15 || value > 35) {
+    	              return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+    	            } else {
+    	              return value;
+    	            }
+    	          }
+    	        },
+    	        { title: 'ML 점도(35±10초)', field: 'visocosity1', width: 200, hozAlign: 'center',
+    	            formatter: function(cell) {
+    	              var value = parseFloat(cell.getValue());
+    	              if (value < 25 || value > 45) {
+    	                return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+    	              } else {
+    	                return value;
+    	              }
+    	            }
+    	          },
+
+    	        { title: 'PLUS 비중(1.075±0.075)', field: 'specific_gravity', width: 200, hozAlign: 'center',
+    	          formatter: function(cell) {
+    	            var value = parseFloat(cell.getValue());
+    	            if (value < 1.0 || value > 1.15) {
+    	              return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+    	            } else {
+    	              return value;
+    	            }
+    	          }
+    	        },
+    	        { title: 'ML 비중(1.08±0.04)', field: 'specific_gravity1', width: 200, hozAlign: 'center',
+    	            formatter: function(cell) {
+    	              var value = parseFloat(cell.getValue());
+    	              if (value < 1.04 || value > 1.12) {
+    	                return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+    	              } else {
+    	                return value;
+    	              }
+    	            }
+    	          },
+
+    	        { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 200, hozAlign: 'center',
+    	          formatter: function(cell) {
+    	            var value = parseFloat(cell.getValue());
+    	            if (value < 13.5 || value > 16.5) {
+    	              return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+    	            } else {
+    	              return value;
+    	            }
+    	          }
+    	        },
+
+    	        { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+    	        { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+    	        { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
     	    ],
+    	    rowFormatter: function(row) {
+        	    //행 데이터 가져오기
+    	        const data = row.getData();
+
+    	        // 체크할 필드들만 모아두기
+    	        const fieldsToCheck = [
+    	            "tank_temp",
+    	            "visocosity",
+    	            "visocosity1",
+    	            "specific_gravity",
+    	            "specific_gravity1",
+    	            "chiller_temp"
+    	        ];
+
+    	        // 모두 0이거나 null/빈 값이면 숨김 처리
+    	        //배열의 모든 요소가 조건을 만족하면 true 반환
+    	        const allZero = fieldsToCheck.every(f => {
+    	            const v = parseFloat(data[f]);
+    	            return !v || v === 0;
+    	        });
+
+    	        if (allZero) {
+    	            row.getElement().style.display = "none"; 
+    	        }
+    	    },
     	    rowClick: function (e, row) {
     	        selectedRowData = row.getData();
     	        table1.getRows().forEach(r => r.getElement().style.backgroundColor = ""); // 모두 초기화

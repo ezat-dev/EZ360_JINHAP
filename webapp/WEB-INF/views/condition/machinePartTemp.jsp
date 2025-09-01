@@ -245,7 +245,7 @@
              
                 <option value="G03-GG01">G800조건관리</option>
                 <option value="G03-GG03">G600조건관리</option>
-                <option value="PL">공용관리</option>
+                <option value="G04-GG07">공용관리</option>
                 <option value="G04-GG05">K-BLACK조건관리</option>
 
             </select>
@@ -499,10 +499,10 @@ $('.pCodeBtn').click(function () {
      { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
      { title: '근무조', field: 'b_a', width: 200, hozAlign: 'center' },
 
-     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
+     { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 200, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value < 10 || value > 30) {
+         if (value > 38) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
@@ -510,18 +510,28 @@ $('.pCodeBtn').click(function () {
        }
      },
 
-     { title: '점도(35±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
+     { title: 'PLUS 점도(25±10초)', field: 'visocosity', width: 200, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value < 30 || value > 40) {
+         if (value < 15 || value > 35) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
          }
        }
      },
+     { title: 'ML 점도(35±10초)', field: 'visocosity1', width: 200, hozAlign: 'center',
+         formatter: function(cell) {
+           var value = parseFloat(cell.getValue());
+           if (value < 25 || value > 45) {
+             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+           } else {
+             return value;
+           }
+         }
+       },
 
-     { title: '비중(1.075±0.075)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+     { title: 'PLUS 비중(1.075±0.075)', field: 'specific_gravity', width: 200, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
          if (value < 1.0 || value > 1.15) {
@@ -531,8 +541,18 @@ $('.pCodeBtn').click(function () {
          }
        }
      },
+     { title: 'PLUS 비중(1.08±0.04)', field: 'specific_gravity1', width: 200, hozAlign: 'center',
+         formatter: function(cell) {
+           var value = parseFloat(cell.getValue());
+           if (value < 1.04 || value > 1.12) {
+             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+           } else {
+             return value;
+           }
+         }
+       },
 
-     { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+     { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 200, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
          if (value < 13.5 || value > 16.5) {
@@ -562,10 +582,10 @@ $('.pCodeBtn').click(function () {
      { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
      { title: '작업 시간', field: 'b_a', width: 200, hozAlign: 'center' },
      
-     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
+     { title: '액탱크 온도(38°C이하))', field: 'tank_temp', width: 310, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value < 10 || value > 30) {
+         if (value > 38) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
@@ -573,10 +593,10 @@ $('.pCodeBtn').click(function () {
        }
      },
 
-     { title: '점도(48±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
+     { title: '점도(44±11초)', field: 'visocosity', width: 310, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value < 43 || value > 53) {
+         if (value < 33 || value > 55) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
@@ -802,6 +822,48 @@ $('.pCodeBtn').click(function () {
      $("#mch_code").on("change", function () {
        const selectedCode = $(this).val();
        updatePCodeButtons(selectedCode);
+       
+       p_code = 'p_1'; //기본 p_code 액탱크1로 설정
+
+       // 👉 버튼 스타일 토글
+       $('.pCodeBtn').removeClass('active');
+       $(".pCodeBtn[data-pcode='p_1']").show().addClass('active'); //기본으로 액탱크1 진한 회색
+
+       var startDate = $('#startDate').val();
+       var mch_code = $('.mch_code').val();
+
+       console.log(' p_code:', p_code);
+       console.log(' startDate:', startDate);
+       console.log(' mch_code:', mch_code);
+
+       if (!startDate) {
+           alert('날짜를 선택하세요');
+           return;
+       }
+
+       var cols = defaultColumns;
+       if (mch_code === 'PL')           cols = plColumns;
+       else if (mch_code === 'G04-GG07')      cols = mlColumns; //공용관리
+       else if (mch_code === 'G04-GG05') cols = g04Columns; //K-BLACK
+       console.log("cols", cols);
+
+       $.ajax({
+           url: '/geomet/condition/machinePartTemp/list',
+           method: 'POST',
+           data: {
+               startDate: startDate,
+               mch_code: mch_code,
+               p_code: p_code
+           },
+           success: function (data) {
+               console.log('서버 응답 데이터:', data);
+               dataTable.setColumns(cols);
+               dataTable.setData(data);
+           },
+           error: function () {
+               alert('데이터 조회 중 오류 발생');
+           }
+       });
      });
    });
 

@@ -129,24 +129,52 @@ public class WorkController {
     // 재고관리(약품) 조절 리스트
     @RequestMapping(value = "/work/inventoryStatus/list", method = RequestMethod.POST)
     @ResponseBody
-    public List<Work> getInventoryStatusList(@RequestParam(required = false) String startDate) {
-       //System.out.println(">>> startDate: " + startDate);
-       Work work = new Work();
+    public List<Work> getInventoryStatusList(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String medicine_name) {
+
+        System.out.println(">>> startDate: " + startDate);
+        System.out.println(">>> medicine_name: " + medicine_name);
+
+        Work work = new Work();
         work.setStartDate(startDate == null || startDate.isEmpty() ? null : startDate);
-        //System.out.println("work.getStartDate(): " + work.getStartDate());
+
+        if (medicine_name != null && !"전체".equals(medicine_name)) {
+            work.setMedicine_name(medicine_name);
+        }
+
+        System.out.println(">>> Work 객체 medicine_name: " + work.getMedicine_name());
+        System.out.println(">>> Work 객체 startDate: " + work.getStartDate());
+
         return workService.getInventoryStatusList(work);
     }
+
     
-    //재고관리 업데이트
     @RequestMapping(value = "/work/inventoryStatus/update", method = RequestMethod.POST)
     @ResponseBody
     public boolean inventoryStatusUpdate(@RequestBody Work work) {
-       //System.out.println("inventoryStatusUpdate 컨트롤러 도착 ");
-       //System.out.println("work.getId: " + work.getId());
-       //System.out.println("work.getNext_month: " + work.getNext_month());
-        return workService.inventoryStatusUpdate(work);
+        // 요청 도착 로그
+        System.out.println("=== inventoryStatusUpdate 컨트롤러 도착 ===");
+        
+        // 전달된 객체 확인
+        System.out.println("work.getId(): " + work.getId());
+        System.out.println("work.getCompany_name(): " + work.getCompany_name());
+        System.out.println("work.getReg_date(): " + work.getReg_date());
+        System.out.println("work.getMedicine_name(): " + work.getMedicine_name());
+        System.out.println("work.getLot_no(): " + work.getLot_no());
+        System.out.println("work.getStock_in(): " + work.getStock_in());
+        System.out.println("work.getDaily_usage(): " + work.getDaily_usage());
+
+        try {
+            boolean result = workService.inventoryStatusUpdate(work);
+            System.out.println("업데이트 결과: " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 상세 출력
+            return false;
+        }
     }
-    
+
     
     @RequestMapping(value = "/work/inventoryStatus/insert", method = RequestMethod.POST)
     @ResponseBody
