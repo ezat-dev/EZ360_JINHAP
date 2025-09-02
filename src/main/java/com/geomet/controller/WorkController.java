@@ -2270,4 +2270,63 @@ public class WorkController {
 
         return workService.monitoringStatusList(work);
     }
+    
+    //약품정보 페이지 이동
+    @RequestMapping(value= "/work/medicineInfoPage", method = RequestMethod.GET)
+    public String page(Model model) {
+        return "/work/medicineInfoPage.jsp";  
+    }
+    
+    //약품정보 데이터 조회
+    @RequestMapping(value= "/work/getMedicineInfo/list", method = RequestMethod.GET)
+    @ResponseBody
+    public List<Work> getMedicineInfo(Work work) {
+    	System.out.println("getMedicineInfo 도착");
+        return workService.getMedicineInfoList(work);  
+    }
+    
+    //약품정보 데이터 수정
+    @RequestMapping(value= "/work/medicineInfo/update", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean medicineInfoUpdate(@RequestBody Work work) {
+    	System.out.println("medicineInfoUpdate 도착");
+        try {
+            boolean result = workService.medicineInfoUpdate(work);
+            System.out.println("업데이트 결과: " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 상세 출력
+            return false;
+        }
+    }
+    
+    //약품정보 데이터 삭제
+    @RequestMapping(value= "/work/medicineInfo/delete", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean medicineInfoDelete(@RequestBody Work work) {
+    	System.out.println("medicineInfoDelete 도착");
+        try {
+            boolean result = workService.medicineInfoDelete(work);
+            System.out.println("업데이트 결과: " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 상세 출력
+            return false;
+        }
+    }
+    
+    //약품정보 데이터 추가
+    @RequestMapping(value= "/work/medicineInfo/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean medicineInfoInsert(Work work) {
+    	System.out.println("medicineInfoInsert 도착");
+        try {
+            boolean result = workService.medicineInfoInsert(work);
+            System.out.println("업데이트 결과: " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 상세 출력
+            return false;
+        }
+    }
 }

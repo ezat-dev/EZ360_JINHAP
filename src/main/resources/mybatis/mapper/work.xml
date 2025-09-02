@@ -1020,6 +1020,39 @@ FROM
 ]]>
 </select>
 
+<!-- 약품정보 -->
+ <select id="getMedicineInfoList" resultType="Work">
+    SELECT *
+    FROM tb_medicine_info
+    WHERE y_n = 'y'
+</select>
 
+   <!-- 약품정보 업데이트 -->
+   <update id="medicineInfoUpdate" parameterType="Work">
+      UPDATE tb_medicine_info
+    SET
+        medicine_name = #{medicine_name},
+        kg_price = #{kg_price},
+        barrel_weight = #{barrel_weight},
+        barrel_price = #{barrel_price},
+        attachment_spec = #{attachment_spec},
+        unit = #{unit}
+    WHERE m_id = #{m_id}
+   </update>
+   
+      <!-- 약품정보 삭제(업데이트) -->
+   <update id="medicineInfoDelete" parameterType="Work">
+      UPDATE tb_medicine_info
+    SET
+        y_n = 'n'
+    WHERE m_id = #{m_id}
+   </update>
+   
+   <!-- 약품정보 추가 -->
+   <insert id="medicineInfoInsert">
+    <![CDATA[
+    INSERT INTO tb_medicine_info () VALUES ();
+    ]]>
+   </insert>
 
 </mapper>

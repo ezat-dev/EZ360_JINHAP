@@ -42,6 +42,30 @@ public class WorkServiceImpl implements WorkService {
 	public List<Work> getMachineEfficStatusList(Work work){
 		return workDao.getMachineEfficStatusList(work);
 	}
+	
+    //약품정보
+	@Override
+	public List<Work> getMedicineInfoList(Work work) {
+		return workDao.getMedicineInfoList(work);
+	}
+	//약품정보 업데이트
+	@Override
+	public boolean medicineInfoUpdate(Work work) {
+		// TODO Auto-generated method stub
+		return workDao.medicineInfoUpdate(work);
+	}	
+	//약품정보 삭제
+	@Override
+	public boolean medicineInfoDelete(Work work) {
+		// TODO Auto-generated method stub
+		return workDao.medicineInfoDelete(work);
+	}
+	//약품정보 추가
+	@Override
+	public boolean medicineInfoInsert(Work work) {
+		// TODO Auto-generated method stub
+		return workDao.medicineInfoInsert(work);
+	}
 
 	
 	 	@Override

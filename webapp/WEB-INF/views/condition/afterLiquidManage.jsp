@@ -60,7 +60,7 @@
     font-size: 19px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 230px;
+    width: 330px;
     text-align: center;
     height: 39px;
 }
@@ -313,11 +313,11 @@
 	  <label for="mch_name" class="daylabel">설비명 :</label>
 			<select id="mch_name" class="mch_name" onchange="toggleTable()">
            
-                <option value="G800">지오메트 액교반</option>
-<!--                 <option value="G600">G600</option>
-                <option value="K_BLACK">K_BLACK</option>
-                <option value="ML">ML</option> -->
-                <option value="PL">후처리 액교반</option>
+                <option value="G600">지오메트 액교반(G600)</option>
+               <option value="G800">지오메트 액교반(G800)</option>
+                <option value="K_BLACK">후처리 액교반(K_BLACK)</option>
+                <option value="ML">후처리 액교반(ML)</option> 
+                <option value="PL">후처리 액교반(PL)</option>
                
             </select>
 	        
@@ -775,71 +775,10 @@
   });
 
   function initTables() {
-/*     table1 = new Tabulator("#table1", {
-      height: "355px",
-      layout: "fitColumns",
-      selectable: true,
-      headerHozAlign: "center",
-      headerVertAlign: "middle",
-      columnDefaults: {
-        hozAlign: "center",
-        vertAlign: "middle",
-        headerTooltip: false
-      },
-      columns: [
-    	    { title: "NO",            field: "id",              headerSort: false, hozAlign: "center", visible: false },
-    	    { title: "날짜",          field: "in_date",         headerSort: false, visible: false },
-    	    { title: "설비",          field: "mch_name",        headerSort: false, visible: false },  
-        { title: "교반기NO", field: "m68_mixer_no" },
-        { title: "G1 온도<br>(20±5℃)", field: "m68_g1_temp" },
-        { title: "G2 온도<br>(20±5℃)", field: "m68_g2_temp" },
-        { title: "G1<br>LOTNO", field: "m68_g1_lot_no" },
-        { title: "G2<br>LOTNO", field: "m68_g2_lot_no" },
-        { title: "증점제<br>(220±40g)", field: "m68_thickener_g" },
-        { title: "교반<br>시작시간", field: "m68_mixing_start_time" },
-        { title: "증점제<br>투입시간", field: "m68_thickener_time" },
-        { title: "점도<br>48±7초", field: "m68_viscosity" },
-        { title: "약품<br>출고시간", field: "m68_out_time" },
-        { title: "교반 시간<br>(증점제 투입 후 시간)", field: "m68_mixing_time" },
-        { title: "확인자<br>최소 24시간 이상 교반", field: "m68_checker" },
-        { title: "증점제 투입 후 rpm<br>50Hz", field: "m68_post_rpm" },
-        { title: "증점제<br>LOTNO.", field: "m68_thickener_lot" },
-        { title: "온도<br>25℃이하", field: "m68_mch_temp" },
-        { title: "습도<br>20%이상", field: "m68_humidity" }
-      ],
-      rowDblClick: function(e, row) {
-        const data = row.getData();
-        const $form = $('#corrForm1');
-        if ($form[0].reset) $form[0].reset();
-        $form.find('input[name="id"]').val(data.id);
-        $('select[name="mch_name"]').val(data.mch_name);
-        $form.find('input[name="in_date"]').val(data.in_date);
-        $form.find('input[name="date"]').val(data.date);
-        $form.find('input[name="m68_mixer_no"]').val(data.m68_mixer_no);
-        $form.find('input[name="m68_g1_temp"]').val(data.m68_g1_temp);
-        $form.find('input[name="m68_g2_temp"]').val(data.m68_g2_temp);
-        $form.find('input[name="m68_g1_lot_no"]').val(data.m68_g1_lot_no);
-        $form.find('input[name="m68_g2_lot_no"]').val(data.m68_g2_lot_no);
-        $form.find('input[name="m68_thickener_time"]').val(data.m68_thickener_time);
-        $form.find('input[name="m68_thickener_g"]').val(data.m68_thickener_g);
-        $form.find('input[name="m68_thickener_lot"]').val(data.m68_thickener_lot);
-        $form.find('input[name="m68_post_rpm"]').val(data.m68_post_rpm);
-        $form.find('input[name="m68_mixing_start_time"]').val(data.m68_mixing_start_time);
-        $form.find('input[name="m68_mixing_time"]').val(data.m68_mixing_time);
-        $form.find('input[name="m68_checker"]').val(data.m68_checker);
-        $form.find('input[name="m68_mch_temp"]').val(data.m68_mch_temp);
-        $form.find('input[name="m68_humidity"]').val(data.m68_humidity);
-        $form.find('input[name="m68_viscosity"]').val(data.m68_viscosity);
-        $form.find('input[name="m68_out_time"]').val(data.m68_out_time);
-        $('#modalContainer1').addClass('show').show();
-      }
-    });
-    $('#modalContainer1').on('click', '#closeModal1, #closeModal1Button', function() {
-      $('#modalContainer1').removeClass('show').hide();
-    }); */
+
 
     table2 = new Tabulator("#table2", {
-      height: "420px",
+      height: "720px",
       layout: "fitColumns",
       selectable: true,
       columnHeaderVertAlign: "middle",
@@ -852,17 +791,17 @@
       columns: [
         { title: "구분", field: "id", visible: false },
         { title: "날짜", field: "in_date" },
-        { title: "설비", field: "mch_name", width: 90, visible: false },
+        { title: "설비", field: "mch_name", width: 90 },
         { title: "TANK번호", field: "tank_no" },
         { title: "측정시간", field: "ck_time2" },
         { title: "점도", field: "ck_time" },
         { title: "비중", field: "specific_gravity" },
-        { title: "측정자(작업자)", field: "operator" },
+        { title: "측정자", field: "operator" },
         { title: "신액 Lot No.", field: "liquid_lot_no" },
         { title: "신액 점도", field: "liquid_viscosity" },
         { title: "신액 투입량", field: "liquid_in" },
         { title: "증류수 투입량", field: "distilles_in" },
-        { title: "조치 1시간 후 점도", field: "viscosity_after" }
+        { title: "조치 1시간</br>후 점도", field: "viscosity_after" }
       ],
       rowDblClick: function(e, row) {
         const data = row.getData();

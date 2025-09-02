@@ -135,4 +135,34 @@ public class WorkDaoImpl implements WorkDao {
     public List<Work> monitoringStatusList(Work work) {
     	 return sqlSession.selectList("work.monitoringStatusList", work);
     }
+    
+    //약품정보
+	@Override
+	public List<Work> getMedicineInfoList(Work work) {
+		return sqlSession.selectList("work.getMedicineInfoList", work);
+	}
+	@Override
+	public boolean medicineInfoUpdate(Work work) {
+		int result = sqlSession.update("work.medicineInfoUpdate", work);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public boolean medicineInfoDelete(Work work) {
+		int result = sqlSession.update("work.medicineInfoDelete", work);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public boolean medicineInfoInsert(Work work) {
+		int result = sqlSession.insert("work.medicineInfoInsert", work);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
 }

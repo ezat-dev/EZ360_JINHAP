@@ -44,5 +44,11 @@ public interface WorkService {
 	    List<Work> lotReportStatusList(Work work);
 	    
 	    List<Work> monitoringStatusList(Work work);
+	    
+	    //약품정보
+	    List<Work> getMedicineInfoList(Work work);
+	    boolean medicineInfoUpdate(Work work);
+	    boolean medicineInfoDelete(Work work);
+	    boolean medicineInfoInsert(Work work);
 	}
 

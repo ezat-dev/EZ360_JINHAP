@@ -19,7 +19,7 @@
     .view {
         display: flex;
         justify-content: center;
-        margin-top: 60px;
+        margin-top: 66px;
     }
     .tab {
         width: 95%;
@@ -43,8 +43,8 @@
     }
     .modal-content {
         background: white;
-        width: 24%;
-        max-width: 500px;
+        width: 100%;
+        max-width: 1120px;
         height: 70vh; 
         overflow-y: auto; 
         margin: 6% auto 0;
@@ -119,7 +119,7 @@
         display: flex;
         justify-content: right;
         align-items: center;
-        width: 1125px;
+        width: 800px;
         margin-right: 20px;
         margin-top: 4px;
     }
@@ -192,24 +192,21 @@
        height: 42px;
        margin-left: 9px;
         }
-        
-        .page-button {
-    height: 42px;          /* 버튼 높이 조정 */
-    padding: 0 15px;       /* 좌우 여백 조절 */
-    display: flex;         /* 이미지와 텍스트 정렬 */
-    align-items: center;   /* 세로 중앙 정렬 */
-    font-size: 16px;       /* 글씨 크기 */
-    cursor: pointer;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f5f5f5;
+.del-button {
+    position: absolute;
+    right: 42px;
+    top: 26px;
+        margin-right: 24px;
 }
-
-.page-button .button-image {
-    height: 24px;          /* 이미지 크기 조정 */
-    margin-right: 8px;     /* 이미지와 텍스트 사이 간격 */
+.ins-button{
+    position: absolute;
+    right: 118px;
+    top: 26px;
+        margin-right: 24px;
 }
-        
+.dataTable{
+  margin-top: 30px;
+}
 </style>
 
     
@@ -222,11 +219,7 @@
 
         <div class="box1">
           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-          
-                  <button class="page-button">
-          <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">월간 약품 사용량
-        </button>
-          
+
           <label class="monthlabel">약품 및 부자재 월 선택 :</label>
           <input type="text" autocomplete="off" class="monthSet" id="startDate" 
                  style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
@@ -264,7 +257,7 @@
           <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
         </button>
         <button class="insert-button">
-          <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+          <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">약품정보
         </button>
         <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
@@ -276,72 +269,21 @@
       </div>
     </div>
 
-    <div class="view">
-      <div id="dataTable"></div>
-    </div>
+
   </main>
 
   <div id="modalContainer" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
-
-    <form id="corrForm" enctype="multipart/form-data" autocomplete="off">
-      <h2 class="hName">약품 및 부자재 입력</h2>
-
-
-      <!-- 날짜 -->
-      <label for="reg_date">날짜</label>
-      <input type="date" name="reg_date" id="reg_date" required autocomplete="off"class="daySet" >
-
-      <!-- 업체 -->
-      <label for="company_name">업체</label>
-      <input type="text" name="company_name" id="company_name" required>
-	
-	<!-- 약품명 -->
-	<label for="medicine_name_select">약품명</label>
-	<select id="medicine_name_select" name="medicine_name">
-	  	  <option value="기타">기타</option>
-	  <option value="GEOMET G1">GEOMET G1</option>
-	  <option value="GEOMET G2">GEOMET G2</option>
-	  <option value="지오메트 첨가제">지오메트 첨가제</option>
-	  <option value="PLUS">PLUS</option>
-	  <option value="ML(H)">ML(H)</option>
-	  <option value="ML(G)">ML(G)</option>
-	  <option value="K-BLACK">K-BLACK</option>
-	  <option value="NaOH 99%">NaOH 99%</option>
-	  <option value="SC-300A">SC-300A</option>
-	  <option value="SC330B 3X">SC330B 3X</option>
-	  <option value="SC330농축액">SC330농축액</option>
-	  <option value="쇼트볼(SUS)">쇼트볼(SUS)</option>
-	  <option value="도료ED2800-A-BACK(E)">도료ED2800-A-BACK(E)</option>
-	  <option value="수지ED2800-B(E)">수지ED2800-B(E)</option>
-	  <option value="신 나 (005)">신 나 (005)</option>
-	  <option value="중화제 (069)">중화제 (069)</option>
-	  <option value="방 청 유(P-210)">방 청 유(P-210)</option>
-	  <option value="열처리유(SQ-70)">열처리유(SQ-70)</option>
-
-	</select>
-	
-	<input type="text" id="medicine_name_input" name="medicine_name" placeholder="약품명을 입력하세요" style="display:none; margin-top:5px;">
-
-      <!-- LOT번호 -->
-      <label for="lot_no">LOT번호</label>
-      <input type="text" name="lot_no" id="lot_no">
-
-<!-- 입고수량 -->
-<label for="stock_in">입고수량</label>
-<input type="number" name="stock_in" id="stock_in" min="0" value="0">
-
-<!-- 일간 사용량 -->
-<label for="daily_usage">일간 사용량</label>
-<input type="number" name="daily_usage" id="daily_usage" min="0" value="0">
-
-
-      <div style="margin-top: 10px;">
-        <button type="submit" id="saveCorrStatus" style="font-weight: bold;">저장</button>
-        <button type="button" id="closeModal" style="font-weight: bold;">닫기</button>
-      </div>
-    </form>
+        <button class="ins-button">
+				    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image"> 추가
+		</button>
+        <button class="del-button">
+				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+		</button>
+    <div class="view">
+      <div id="dataTable"></div>
+    </div>
   </div>
 </div>
 
@@ -353,8 +295,9 @@ let now_page_code = "b05";
 $(document).ready(function () {
     $('.insert-button').click(function(){
         selectedRowData = null;
-        $('#corrForm')[0].reset();
+        //$('#corrForm')[0].reset();
         $('#modalContainer').show().addClass('show');
+        getDataList();
     });
 
     $(".headerP").text("생산관리 - 재고관리");
@@ -380,6 +323,70 @@ $(document).ready(function () {
 
     getDataList();
     handleSelectButtonClick();
+
+  //모달창 삭제 버튼 클릭 이벤트
+  $(".del-button").click(function () {
+  	console.log("삭제");
+      let selectedData = dataTable.getSelectedData();
+      console.log("삭제할 데이터", selectedData.map(row => row.m_id));
+
+      if (selectedData.length === 0) {
+          alert("삭제할 데이터를 선택해주세요.");
+          return;
+      }
+
+      //let ids = selectedData.map(row => row.id);
+
+          let selectedMId = selectedData[0].m_id;
+    console.log("삭제할 데이터 m_id:", selectedMId);
+    
+      if (!confirm("정말 삭제하시겠습니까?")) {
+          return;
+      }
+
+      $.ajax({
+          url: "/geomet/work/medicineInfo/delete",
+          type: "POST",
+          contentType: "application/json",
+          data: JSON.stringify({m_id: selectedMId}),
+          success: function (res) {
+              if (res === true || res.success) {
+                  alert("삭제 완료되었습니다.");
+                  dataTable.replaceData();
+              } else {
+                  alert("삭제 실패: " + (res.message || "알 수 없는 오류"));
+              }
+          },
+          error: function () {
+              alert("서버 오류로 삭제하지 못했습니다.");
+          }
+      });
+  });
+
+  $(".ins-button").click(function () {
+	  	
+	      if (!confirm("데이터 추가하시겠습니까?")) {
+	          return;
+	      }
+
+	      $.ajax({
+	          url: "/geomet/work/medicineInfo/insert",
+	          type: "POST",
+	          contentType: "application/json",
+	          //data: JSON.stringify({m_id: selectedMId}),
+	          success: function (res) {
+	              if (res === true || res.success) {
+	                  alert("추가 완료되었습니다.");
+	                  dataTable.replaceData();
+	              } else {
+	                  alert("추가 실패: " + (res.message || "알 수 없는 오류"));
+	              }
+	          },
+	          error: function () {
+	              alert("서버 오류로 추가하지 못했습니다.");
+	          }
+	      });
+	  });
 });
 
 function handleSelectButtonClick() {
@@ -396,7 +403,7 @@ function handleSelectButtonClick() {
         startDate = `${year}-${month}`;
     }
 
-    dataTable.setData("/geomet/work/inventoryStatus/list", {
+    dataTable.setData("/geomet/work/getMedicineInfo/list", {
         "startDate": startDate,
         "medicine_name": medicine_name,
     });
@@ -404,47 +411,26 @@ function handleSelectButtonClick() {
 
 // 클릭 이벤트 연결
 $(".select-button").click(handleSelectButtonClick);
-
+let dataTable = null;
 function getDataList() {
-    const medicineUnits = {
-        "GEOMET G1": "Kg",
-        "GEOMET G2": "Kg",
-        "ML(H)": "Kg",
-        "ML(G)": "Kg",
-        "PLUS": "Kg",
-        "K-BLACK": "Kg",
-        "NaOH 99%": "Kg",
-        "SC-300A": "Kg",
-        "SC330B 3X": "Kg",
-        "SC330농축액": "Kg",
-        "지오메트 첨가제": "L",
-        "도료ED2800-A-BACK(E)": "L",
-        "수지ED2800-B(E)": "L",
-        "신 나 (005)": "L",
-        "중화제 (069)": "L",
-        "방 청 유(P-210)": "DM",
-        "열처리유(SQ-70)": "DM",
-        "쇼트볼(SUS)": "포"
-    };
-
     dataTable = new Tabulator("#dataTable", {
-        height: "830px",
+        height: "530px",
         layout: "fitDataFill",
-        layoutColumnsOnNewData: true,
+        //layoutColumnsOnNewData: true,
         headerSort: false,
-        selectable: true,
-        selectableRangeMode: "click",
-        tooltips: true,
-        columnHeaderVertAlign: "middle",
-        rowVertAlign: "middle",
-        reactiveData: true,
+        selectable: 1, // ✅ 최대 1개 행만 선택 가능하도록 설정
+        //selectableRangeMode: "click",
+        //tooltips: true,
+        //columnHeaderVertAlign: "middle",
+        //rowVertAlign: "middle",
+        //reactiveData: true,
         headerHozAlign: "center",
 
-        ajaxConfig: "POST",
+        ajaxConfig: "GET",
         ajaxLoader: false,
-        ajaxURL: "/geomet/work/inventoryStatus/list",
-        ajaxProgressiveLoad: false,
-        ajaxParams: {
+        ajaxURL: "/geomet/work/getMedicineInfo/list",
+        //ajaxProgressiveLoad: false,
+/*         ajaxParams: {
             startDate: (() => {
                 const v = $("#startDate").val();
                 return v ? v + "-01" : "";
@@ -453,16 +439,16 @@ function getDataList() {
                 const m = $("#medicine_name").val();
                 return m && m !== "전체" ? m : null;
             })()
-        },
+        }, */
 
         placeholder: "조회된 데이터가 없습니다.",
-        paginationSize: false,
+        //paginationSize: false,
 
-        groupBy: "date",
+/*         groupBy: "date",
         groupStartOpen: true,
         groupHeader: function (value, count) {
             return `<strong>${value}</strong>`;
-        },
+        }, */
 
         ajaxResponse: function (url, params, response) {
             return response;
@@ -470,48 +456,43 @@ function getDataList() {
 
         dataLoaded: function (data) {
             $("#dataTable .tabulator-col.tabulator-sortable").css("height", "29px");
-        },  
+        },
 
         columns: [
-            { formatter: "rowSelection", titleFormatter: "rowSelection", 
-              hozAlign: "center", headerSort: false, width: 60 },
-            { title: "No", formatter: "rownum", hozAlign: "center", width: 80 },
-            { title: "ID", field: "id", visible: false },
-            { title: "날짜", field: "reg_date", editor: "input", hozAlign: "center", minWidth: 140 },
-            { title: "업체", field: "company_name", editor: "input", minWidth: 200, headerFilter: "input" },
-            { title: "약품명", field: "medicine_name", editor: "input", minWidth: 200, headerFilter: "input" },
-            { title: "LOT번호", field: "lot_no", editor: "input", minWidth: 200, headerFilter: "input" },
-            { title: "입고수량", field: "stock_in", hozAlign: "center", editor: "input", minWidth: 150,
-              formatter: function(cell) {
-                  const value = cell.getValue();
-                  const medicine = cell.getRow().getData().medicine_name;
-                  const unit = medicineUnits[medicine] || "";
-                  return value ? value + " " + unit : "";
-              }
-            },
-            { title: "일간 사용량", field: "daily_usage", hozAlign: "center", editor: "input", minWidth: 150,
-              formatter: function(cell) {
-                  const value = cell.getValue();
-                  const medicine = cell.getRow().getData().medicine_name;
-                  const unit = medicineUnits[medicine] || "";
-                  return value ? value + " " + unit : "";
-              }
-            },
-            { title: "현재고", field: "day_sum", hozAlign: "center",  minWidth: 150,
-              formatter: function(cell) {
-                  const value = cell.getValue();
-                  const medicine = cell.getRow().getData().medicine_name;
-                  const unit = medicineUnits[medicine] || "";
-                  return value ? value + " " + unit : "";
-              }
-            },
-            { title: "이월수량", field: "before_month",  hozAlign: "center", minWidth: 140 },
+             { formatter: "rowSelection", titleFormatter: "rowSelection", 
+              hozAlign: "center", headerSort: false, width: 60 }, // ✅ 체크박스 선택 
+            { title: "m_id", field: "m_id", visible: false, headerHozAlign: "center" },
+            { title: "약품명", field: "medicine_name", editor: "input", hozAlign: "center", minWidth: 140},
+            { title: "Kg당 금액", field: "kg_price", editor: "input", minWidth: 200, hozAlign: "center",
+                formatter: function(cell, formatterParams, onRendered){
+                    const value = cell.getValue();
+                    if (value === null || value === undefined) {
+                        return "";
+                    }
+                    // 숫자를 쉼표 형식으로 변환 (예: 12400 -> 12,400)
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+                },
+            { title: "통당 중량", field: "barrel_weight", editor: "input", minWidth: 150, hozAlign: "right"},
+            { title: "단위", field: "unit", hozAlign: "left", editor: "input", minWidth: 80},
+            { title: "통당 금액", field: "barrel_price", editor: "input", minWidth: 200, hozAlign: "center",
+                formatter: function(cell, formatterParams, onRendered){
+                    const value = cell.getValue();
+                    if (value === null || value === undefined) {
+                        return "";
+                    }
+                    // 숫자를 쉼표 형식으로 변환 (예: 12400 -> 12,400)
+                    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                }
+                },
+            { title: "부착량 규격", field: "attachment_spec", hozAlign: "center", editor: "input", minWidth: 150},
+            { title: "y_n", field: "y_n",  visible: false} ,
         ],
 
         cellEdited: function(cell){
             const row = cell.getRow().getData(); 
             $.ajax({
-                url: "/geomet/work/inventoryStatus/update",
+                url: "/geomet/work/medicineInfo/update",
                 type: "POST",
                 contentType: "application/json",
                 data: JSON.stringify(row),
@@ -532,7 +513,6 @@ function getDataList() {
         }
     }); 
 }
-
 
 $('#saveCorrStatus').click(function(event){
     event.preventDefault();
@@ -617,10 +597,6 @@ $(".delete-button").click(function () {
     });
 });
 
-//약품정보 페이지 이동
-$(".page-button").click(function() {
-    window.location.href = "/geomet/work/medicineInfoPage";
-  });
 </script>
 
 

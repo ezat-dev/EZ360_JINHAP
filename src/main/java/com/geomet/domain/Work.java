@@ -236,13 +236,65 @@ public class Work {
     public String g_e;
     public String mlpl_s;
     public String mlpl_e;
+    public String before_month;
+    
+    //약품정보
+    private Integer m_id;
+    //private String medicine_name;
+    private Integer kg_price;
+    private Integer barrel_weight;
+    private Integer barrel_price;
+    private String attachment_spec;
+    //private String unit;
+    private String y_n;
     
     
     
     
     
-    
-    public String getReg_date() {
+    public Integer getM_id() {
+		return m_id;
+	}
+	public void setM_id(Integer m_id) {
+		this.m_id = m_id;
+	}
+	public Integer getKg_price() {
+		return kg_price;
+	}
+	public void setKg_price(Integer kg_price) {
+		this.kg_price = kg_price;
+	}
+	public Integer getBarrel_weight() {
+		return barrel_weight;
+	}
+	public void setBarrel_weight(Integer barrel_weight) {
+		this.barrel_weight = barrel_weight;
+	}
+	public Integer getBarrel_price() {
+		return barrel_price;
+	}
+	public void setBarrel_price(Integer barrel_price) {
+		this.barrel_price = barrel_price;
+	}
+	public String getAttachment_spec() {
+		return attachment_spec;
+	}
+	public void setAttachment_spec(String attachment_spec) {
+		this.attachment_spec = attachment_spec;
+	}
+	public String getY_n() {
+		return y_n;
+	}
+	public void setY_n(String y_n) {
+		this.y_n = y_n;
+	}
+	public String getBefore_month() {
+		return before_month;
+	}
+	public void setBefore_month(String before_month) {
+		this.before_month = before_month;
+	}
+	public String getReg_date() {
 		return reg_date;
 	}
 	public void setReg_date(String reg_date) {

@@ -13,19 +13,18 @@
 <style>
 
 
-	.tab {
-	    width: 99%;
-	    margin-bottom: 37px;
-	    margin-top: 5px;
-	    height: 55px;
-	    display: flex;
-	    align-items: center;
-	
-	   
-	    justify-content: flex-end;
-	    gap: 20px;
-	    padding-right: 20px;
-	}
+.tab {
+    margin-left: 500px;
+    width: 69%;
+    margin-bottom: 37px;
+    margin-top: 5px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 20px;
+    padding-right: 20px;
+}
 
 
     .tab-header {
@@ -60,7 +59,7 @@
     font-size: 19px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 250px;
+    width: 300px;
     text-align: center;
     height: 39px;
 }
@@ -313,11 +312,11 @@
 	  <label for="mch_name" class="daylabel">설비명 :</label>
 			<select id="mch_name" class="mch_name" onchange="toggleTable()">
            
-                <option value="G800">지오메트 액교반</option>
-<!--                 <option value="G600">G600</option>
-                <option value="K_BLACK">K_BLACK</option>
-                <option value="ML">ML</option> -->
-                <option value="PL">후처리 액교반</option>
+               <option value="G600">지오메트 액교반(G600)</option>
+               <option value="G800">지오메트 액교반(G800)</option>
+                <option value="K_BLACK">후처리 액교반(K_BLACK)</option>
+                <option value="ML">후처리 액교반(ML)</option> 
+                <option value="PL">후처리 액교반(PL)</option>
                
             </select>
 	        
@@ -350,19 +349,10 @@
        <div class="view">
     <div id="table1"></div>
 
-    <div id="table3" style="display: none;"></div>
+<div id="table3" style="width: 84%; margin-left:150px; display: none;"></div>
 
-    <!-- 버튼들 여기로 옮김 -->
-<!--     <div class="button-container-2">
-        <button class="insert-button bt2">
-            <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image"> 추가
-        </button>
-        <button class="delete-button bt2_2">
-            <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
-        </button>
-    </div> -->
 
-    <!-- <div id="table2"></div> -->
+
 </div>
 
     </main>
@@ -538,7 +528,7 @@
       <label>교반룸 온도 (25℃ 이하)</label>
       <input type="text" name="kmp_mixing_temp">
 
-      <label>KB 온도 (20±10℃)</label>
+      <label>KB 온도 (20±5℃)</label>
       <input type="text" name="kmp_mch_temp">
 
       <label>신액 Lot No.</label>
@@ -786,8 +776,9 @@
       },
       columns: [
     	    { title: "NO",            field: "id",              headerSort: false, hozAlign: "center", visible: false },
-    	    { title: "설비",          field: "mch_name",        headerSort: false, visible: false},  
-    	    { title: "날짜",          field: "in_date",         headerSort: false, width: 110 },
+
+    	    { title: "날짜",          field: "in_date",hozAlign: "center",         headerSort: false, width: 110 },
+    	    { title: "설비",          field: "mch_name",hozAlign: "center",        headerSort: false},  
             { title: "교반기", width: 100, field: "m68_mixer_no", headerSort: false, width: 90 },
             { title: "G1 온도<br>(20±5℃)", field: "m68_g1_temp", width: 100, headerSort: false,
                 formatter: function(cell){
@@ -810,7 +801,7 @@
                      }
                },
             { title: "G1<br>LOTNO", field: "m68_g1_lot_no", headerSort: false},
-            { title: "G2<br>LOTNO<br>/통", field: "m68_g2_lot_no", headerSort: false, width: 90  },
+            { title: "G2<br>LOTNO", field: "m68_g2_lot_no", headerSort: false, width: 90  },
             { title: "증점제<br>(220±40g)", field: "m68_thickener_g", headerSort: false, width: 90,
                 formatter: function(cell){
                     const value = cell.getValue();
@@ -834,8 +825,8 @@
                     }
               },
             { title: "약품<br>출고시간", field: "m68_out_time", headerSort: false, width: 90},
-            { title: "교반 시간<br>(증점제 투입 후 시간)", field: "m68_mixing_time", headerSort: false, width: 150  },
-            { title: "확인자<br>최소 24시간 이상 교반", field: "m68_checker", headerSort: false, width: 180  },
+            { title: "교반 시간", field: "m68_mixing_time", headerSort: false, width: 110  },
+            { title: "확인자<br>최소 24시간", field: "m68_checker", headerSort: false, width: 110  },
             { title: "증점제<br>투입 후 rpm<br>50Hz", field: "m68_post_rpm", width: 110, headerSort: false  },
             { title: "증점제<br>LOTNO.", field: "m68_thickener_lot", headerSort: false},
             { title: "온도<br>25℃이하", field: "m68_mch_temp", headerSort: false,
@@ -890,111 +881,78 @@
       $('#modalContainer1').removeClass('show').hide();
     });
 
-    table2 = new Tabulator("#table2", {
-      height: "420px",
-      layout: "fitColumns",
-      selectable: true,
-      columnHeaderVertAlign: "middle",
-      rowVertAlign: "middle",
-      headerHozAlign: "center",
-      columnDefaults: {
-        hozAlign: "center",
-        headerTooltip: false
-      },
-      columns: [
-        { title: "구분", field: "id", visible: false },
-        { title: "설비", field: "mch_name" },
-        { title: "날짜", field: "in_date" },
-        { title: "TANK번호", field: "tank_no" },
-        { title: "신액 Lot No.", field: "liquid_lot_no" },
-        { title: "신액 투입량", field: "liquid_in" },
-        { title: "증류수 투입량", field: "distilles_in" },
-        { title: "신액 점도", field: "liquid_viscosity" },
-        { title: "비중", field: "specific_gravity" },
-        { title: "조치 1시간 후 점도", field: "viscosity_after" },
-        { title: "측정시간", field: "ck_time2" },
-        { title: "측정자(작업자)", field: "operator" }
-      ],
-      rowDblClick: function(e, row) {
-        const data = row.getData();
-        const $form = $('#corrForm2');
-        if ($form[0].reset) $form[0].reset();
-        $form.find('input[name="id"]').val(data.id);
-        $('select[name="mch_name"]').val(data.mch_name);
-        $form.find('input[name="mch_name"]').val(data.mch_name);
-        $form.find('input[name="in_date"]').val(data.in_date);
-        $form.find('input[name="tank_no"]').val(data.tank_no);
-        $form.find('input[name="liquid_lot_no"]').val(data.liquid_lot_no);
-        $form.find('input[name="liquid_in"]').val(data.liquid_in);
-        $form.find('input[name="distilles_in"]').val(data.distilles_in);
-        $form.find('input[name="liquid_viscosity"]').val(data.liquid_viscosity);
-        $form.find('input[name="specific_gravity"]').val(data.specific_gravity);
-        $form.find('input[name="viscosity_after"]').val(data.viscosity_after);
-        $form.find('input[name="ck_time2"]').val(data.ck_time2);
-        $form.find('input[name="operator"]').val(data.operator);
-        $('#modalContainer2').addClass('show').show();
-      }
-    });
-    $('#modalContainer2').on('click', '.close2, #closeModal2', function() {
-      $('#modalContainer2').removeClass('show').hide();
-    });
-
+  
     table3 = new Tabulator("#table3", {
-      height: "365px",
-      layout: "fitColumns",
-      selectable: true,
-      headerHozAlign: "center",
-      headerVertAlign: "middle",
-      columnDefaults: {
-        hozAlign: "center",
-        vertAlign: "middle",
-        headerTooltip: false
-      },
-      columns: [
-    	    { title: "NO",            field: "id",              headerSort: false, hozAlign: "center", visible: false},
-    	    { title: "설비",          field: "mch_name",        headerSort: false, visible: false},
-    	    { title: "날짜",          field: "in_date",         headerSort: false},
-        { title: "교반룸 습도<br>(15% 이상)", field: "kmp_humidity",
-                formatter: function(cell){
-                    const value = cell.getValue();
-					if(value < 15){
-						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-						}else{
-							return value;
-							}
-                    }, headerSort: false  },
-        { title: "교반룸 온도<br>(25℃ 이하)", field: "kmp_mixing_temp",
-                        formatter: function(cell){
-                            const value = cell.getValue();
-        					if(25 < value){
-        						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-        						}else{
-        							return value;
-        							}
-                            }, headerSort: false  },
-        { title: "KB 온도<br>(20±10℃)", field: "kmp_mch_temp",
-                                formatter: function(cell){
-                                    const value = cell.getValue();
-                					if(value < 10 || 30 < value){
-                						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-                						}else{
-                							return value;
-                							}
-                                    }, headerSort: false  },
-        { title: "신액 Lot No.", field: "kmp_liquid_lot_no", headerSort: false  },
-        { title: "교반 시작 시간", field: "kmp_mixing_start_time", headerSort: false  },
-        { title: "교반 시간<br>(최소 1시간 이상)", field: "kmp_mixing_time", headerSort: false  },
-        { title: "점도<br>(35~55초)", field: "kmp_mch_visc",
-            formatter: function(cell){
-                const value = cell.getValue();
-				if(value < 35 || 55 < value){
-					return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-					}else{
-						return value;
-						}
-                }, headerSort: false  },
-        { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false  },
-        { title: "확인자(작업자)", field: "kmp_checker", headerSort: false  }
+    	  height: "365px",
+    	  layout: "fitColumns",
+    	  selectable: true,
+    	  headerHozAlign: "center",
+    	  headerVertAlign: "middle",
+    	  columnDefaults: {
+    	    hozAlign: "center",
+    	    vertAlign: "middle",
+    	    headerTooltip: false
+    	  },
+    	  columns: [
+    	    { title: "NO", field: "id", visible: false, headerSort: false, width: 60 },
+    	    { title: "날짜", field: "in_date", headerSort: false, width: 120 ,hozAlign: "center"},
+    	    { title: "설비", field: "mch_name", headerSort: false, width: 100,hozAlign: "center" },
+    	    { title: "교반룸 습도<br>(15% 이상)", field: "kmp_humidity", width: 120,hozAlign: "center",
+    	      formatter: function(cell){
+    	        const value = cell.getValue();
+    	        return value < 15
+    	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+    	          : value;
+    	      }, headerSort: false },
+    	    { title: "교반룸 온도<br>(25℃ 이하)", field: "kmp_mixing_temp", width: 120,
+    	      formatter: function(cell){
+    	        const value = cell.getValue();
+    	        return value > 25
+    	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+    	          : value;
+    	      }, headerSort: false,hozAlign: "center" },
+    	    { title: " 온도(20±5℃)", field: "kmp_mch_temp",
+    	      formatter: function(cell){
+    	        const value = cell.getValue();
+    	        return (value < 15 || value > 25)
+    	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+    	          : value;
+    	      }, headerSort: false,hozAlign: "center" },
+    	    { title: "신액 Lot No.", field: "kmp_liquid_lot_no", headerSort: false, width: 120,hozAlign: "center" },
+    	    { title: "교반 시작 시간", field: "kmp_mixing_start_time", headerSort: false, width: 130 ,hozAlign: "center"},
+    	    { title: "교반 시간<br>(최소 1시간 이상)", field: "kmp_mixing_time", headerSort: false, width: 130,hozAlign: "center" },
+    	    { title: "설비별 점도", field: "kmp_mch_visc", width: 160,
+    	      formatter: function(cell){
+    	        const data = cell.getData();
+    	        const value = cell.getValue();
+
+    	        let min, max, displayText;
+    	        if(data.mch_name === "K_BLACK"){
+    	          min = 35; max = 55;
+    	          displayText = "K_B점도 (" + min + "~" + max + "): " + value;
+    	        } else if(data.mch_name === "ML"){
+    	          min = 15; max = 55;
+    	          displayText = "ML점도 (" + min + "~" + max + "): " + value;
+    	        } else if(data.mch_name === "PL"){
+    	          min = 25; max = 45;
+    	          displayText = "PL점도 (" + min + "~" + max + "): " + value;
+    	        } else {
+    	          min = 0; max = 100;
+    	          displayText = value;
+    	        }
+
+    	        if(value < min || value > max){
+    	          return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
+    	        } else {
+    	          return displayText;
+    	        }
+    	      },
+    	      headerSort: false
+    	    },
+
+
+        { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false, width: 120 ,hozAlign: "center" },
+        { title: "확인자(작업자)", field: "kmp_checker", headerSort: false , width: 120 ,hozAlign: "center" }
       ],
       rowDblClick: function(e, row) {
         const data = row.getData();

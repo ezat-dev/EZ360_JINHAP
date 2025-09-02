@@ -217,7 +217,9 @@ function pageObject(paramKey){
 			"c04":["/geomet/condition/dailyCheck","일상점검일지"],
 			"c05":["/geomet/condition/divisionWeight","기준정보"],
 			"c06":["/geomet/condition/divisionWashing","세척 투입제어"],
-			"c07":["/geomet/condition/afterLiquidManage","후처리 액교반 관리일지"],
+			"c07":["/geomet/condition/afterLiquidManage","액투입 관리일지"],
+
+
 			"d01":["/geomet/quality/tusTest","온도균일성 테스트"],
 			"d02":["/geomet/quality/resistTest","테스트/시험정보"],
 			"d03":["/geomet/quality/inTest","수입검사"],
