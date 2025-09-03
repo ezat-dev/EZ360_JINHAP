@@ -72,4 +72,6 @@ public interface UserDao {
     boolean allNull(Users users);
     
     boolean deleteUser(Users users);
+    
+    boolean allR(Users users);
 }

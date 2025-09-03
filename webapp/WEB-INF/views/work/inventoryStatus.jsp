@@ -119,7 +119,7 @@
         display: flex;
         justify-content: right;
         align-items: center;
-        width: 1125px;
+        width: 925px;
         margin-right: 20px;
         margin-top: 4px;
     }
@@ -223,41 +223,37 @@
         <div class="box1">
           <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
           
-                  <button class="page-button">
-          <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">월간 약품 사용량
-        </button>
+
           
           <label class="monthlabel">약품 및 부자재 월 선택 :</label>
           <input type="text" autocomplete="off" class="monthSet" id="startDate" 
-                 style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+                 style="width:230px; font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택" >
+		
+		<select class="productSet" id="productName" 
+		        style="width:230px; margin-left:16px; height:36px;argin-bottom:10px; font-size:16px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; padding:5px;">
+		  <option value="">약품 선택</option>
+		  <option value="전체">전체</option>
+		  <option value="GEOMET G1">GEOMET G1</option>
+		  <option value="GEOMET G2">GEOMET G2</option>
+		  <option value="지오메트 첨가제">지오메트 첨가제</option>
+		  <option value="PLUS">PLUS</option>
+		  <option value="ML(H)">ML(H)</option>
+		  <option value="ML(G)">ML(G)</option>
+		  <option value="K-BLACK">K-BLACK</option>
+		  <option value="NaOH 99%">NaOH 99%</option>
+		  <option value="SC-300A">SC-300A</option>
+		  <option value="SC330B 3X">SC330B 3X</option>
+		  <option value="SC330농축액">SC330농축액</option>
+		  <option value="쇼트볼(SUS)">쇼트볼(SUS)</option>
+		  <option value="도료ED2800-A-BACK(E)">도료ED2800-A-BACK(E)</option>
+		  <option value="수지ED2800-B(E)">수지ED2800-B(E)</option>
+		  <option value="신 나 (005)">신 나 (005)</option>
+		  <option value="중화제 (069)">중화제 (069)</option>
+		  <option value="방 청 유(P-210)">방 청 유(P-210)</option>
+		  <option value="열처리유(SQ-70)">열처리유(SQ-70)</option>
+		  <option value="기타">기타</option>
+		</select>
 
-          <label class="monthlabel">재품 선택 :</label>
-          <input list="medicine_name" class="productSet" id="productName" 
-                 style="font-size: 16px; margin-bottom:10px; border: 1px solid #ccc; border-radius: 6px; padding: 5px;" 
-                 placeholder="재품 이름 선택">
-
-          <datalist id="medicine_name">
-            <option value="전체">
-            <option value="GEOMET G1">
-            <option value="GEOMET G2">
-            <option value="지오메트 첨가제">
-            <option value="PLUS">
-            <option value="ML(H)">
-            <option value="ML(G)">
-            <option value="K-BLACK">
-            <option value="NaOH 99%">
-            <option value="SC-300A">
-            <option value="SC330B 3X">
-            <option value="SC330농축액">
-            <option value="쇼트볼(SUS)">
-            <option value="도료ED2800-A-BACK(E)">
-            <option value="수지ED2800-B(E)">
-            <option value="신 나 (005)">
-            <option value="중화제 (069)">
-            <option value="방 청 유(P-210)">
-            <option value="열처리유(SQ-70)">
-            <option value="기타">
-          </datalist>
         </div>
 
         <button class="select-button">
@@ -273,6 +269,10 @@
           <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
         </button>
 
+
+        <button class="page-button">
+          <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">월간 약품 사용량
+        </button>
       </div>
     </div>
 

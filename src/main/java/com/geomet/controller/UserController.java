@@ -862,6 +862,20 @@ public class UserController {
         return rtnMap;
     }
     
+    //전체 조회만
+    @RequestMapping(value = "/user/userPermission/allR", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> allR(@RequestBody Users users) {
+        Map<String, Object> rtnMap = new HashMap<>();
+        System.out.println("전체없음 요청 받은 user_code: " + users.getUser_code());
+
+        boolean result = userService.allR(users);
+        System.out.println("result" + result);
+
+        rtnMap.put("data", result);
+        return rtnMap;
+    }
+    
     //권한 초기화
     @RequestMapping(value = "/user/userPermission/allNull", method = RequestMethod.POST)
     @ResponseBody

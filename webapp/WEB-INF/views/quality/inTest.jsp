@@ -489,7 +489,7 @@ select {
 
 
    <script>
-  let now_page_code = "h05";
+  let now_page_code = "d03";
 
   var dataTable = null;
   var selectedRowData = null;

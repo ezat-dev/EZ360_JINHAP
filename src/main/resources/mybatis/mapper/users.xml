@@ -779,4 +779,68 @@
     k08 = NULL
   WHERE user_code = #{user_code}
 </update>
+
+<!-- 전체 조회만 -->
+	<update id="allR" parameterType="Users">
+	UPDATE tb_permission
+  SET
+    a01 = 'R',
+    a02 = 'R',
+    a03 = 'R',
+    a04 = 'R',
+    a05 = 'R',
+    b01 = 'R',
+    b02 = 'R',
+    b03 = 'R',
+    b04 = 'R',
+    b05 = 'R',
+    c01 = 'R',
+    c02 = 'R',
+    c03 = 'R',
+    c04 = 'R',
+    c05 = 'R',
+    c06 = 'R',
+    c07 = 'R',
+    d01 = 'R',
+    d02 = 'R',
+    d03 = 'R',
+    d04 = 'R',
+    d05 = 'R',
+    d06 = 'R',
+    d07 = 'R',
+    e01 = 'R',
+    e02 = 'R',
+    e03 = 'R',
+    e04 = 'R',
+    e05 = 'R',
+    e06 = 'R',
+    f01 = 'R',
+    f02 = 'R',
+    g01 = 'R',
+    g02 = 'R',
+    h01 = 'R',
+    h02 = 'R',
+    h03 = 'R',
+    h04 = 'R',
+    h05 = 'R',
+    h06 = 'R',
+    h07 = 'R',
+    h08 = 'R',
+    i01 = 'R',
+    i02 = 'R',
+    i03 = 'R',
+    j01 = 'R',
+    j02 = 'R',
+    j03 = 'R',
+    j04 = 'R',
+    k01 = 'R',
+    k02 = 'R',
+    k03 = 'R',
+    k04 = 'R',
+    k05 = 'R',
+    k06 = 'R',
+    k07 = 'R',
+    k08 = 'R'
+  WHERE user_code = #{user_code}
+</update>
 </mapper>

@@ -194,4 +194,9 @@ public class UserServiceImpl implements UserService {
 	public boolean deleteUser(Users users) {
 		return userDao.deleteUser(users);
 	}
+	
+	@Override
+	public boolean allR(Users users) {
+		return userDao.allR(users);
+	}
 }

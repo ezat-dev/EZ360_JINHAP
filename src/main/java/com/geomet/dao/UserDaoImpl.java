@@ -238,4 +238,13 @@ public class UserDaoImpl implements UserDao{
 					}
 					return true;
 				}
+				
+				@Override
+				public boolean allR(Users users) {
+					int result = sqlSession.update("users.allR", users);
+					if(result <= 0) {
+						return false;
+					}
+					return true;
+				}
 }

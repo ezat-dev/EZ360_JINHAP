@@ -13,15 +13,15 @@
 	
     body { font-family: Arial, sans-serif; margin: 20px; }
     .permission-container { margin-top: 20px; display: grid; grid-template-columns: repeat(6, 1fr); gap: 16px; }
-    .section { background: #f9f9f9; padding: 12px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .section { background: #ececec; padding: 3px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
     .section h3 { margin: 0 0 8px; font-size: 16px; color: #333; }
     .section .control { display: flex; align-items: center; margin-bottom: 6px; }
-    .section .control label { width: 160px; font-weight: bold; color: #555; }
+    .section .control label { width: 160px; font-weight: bold; color: #555; font-size: 14px;}
     .section .control select,
     .section .control input[type=number] { flex: 1; padding: 4px 8px; border: 1px solid #ccc; border-radius: 4px; }
     .actions { grid-column: span 2; text-align: right; margin-top: 12px; }
     .actions button { margin-left: 8px; padding: 6px 12px; border: none; border-radius: 4px; background: #007bff; color: #fff; cursor: pointer; }
-    .actions button.clearAut { background: #6c757d; }
+    .actions button.clearAut { background: #7ba0c8; }
      .row_select {
 	    background-color: #ffeeba !important;
 	    }     
@@ -40,6 +40,7 @@
     <body>
 	<div class="section">
 	  <div class="actions">
+	   <button type="button" class="allR">단순 화면 조회</button>
 	    <button type="button" class="allNo">전체없음</button>
 	    <button type="button" class="allUpdate">최고권한</button>
 	    <button type="button" class="saveAut">저장</button>
@@ -55,73 +56,73 @@
   <input type="text" style="display:none;" id="user_code" name="user_code" />
     <div class="section">
       <h3>모니터링</h3>
-      <div class="control"><label for="a01">통합 모니터링</label><select id="a01" name="a01"><option value=""></option><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="a02">설비별 모니터링</label><select id="a02" name="a02"><option value=""></option><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="a03">경보 모니터링</label><select id="a03" name="a03"><option value=""></option><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="a04">경보 발생빈도</label><select id="a04" name="a04"><option value=""></option><option value="N">없음</option><option value="R">조회</option></select></div>
-      <div class="control"><label for="a05">온도경향 모니터링</label><select id="a05" name="a05"><option value=""></option><option value="N">없음</option><option value="R">조회</option></select></div>
+      <div class="control"><label for="a01">통합 모니터링</label><select id="a01" name="a01"><option value="N">없음</option><option value="R">조회</option></select></div>
+      <div class="control"><label for="a02">설비별 모니터링</label><select id="a02" name="a02"><option value="N">없음</option><option value="R">조회</option></select></div>
+      <div class="control"><label for="a03">경보 모니터링</label><select id="a03" name="a03"><option value="N">없음</option><option value="R">조회</option></select></div>
+      <div class="control"><label for="a04">경보 발생빈도</label><select id="a04" name="a04"><option value="N">없음</option><option value="R">조회</option></select></div>
+      <div class="control"><label for="a05">온도경향 모니터링</label><select id="a05" name="a05"><option value="N">없음</option><option value="R">조회</option></select></div>
     </div>
     <div class="section">
       <h3>생산관리</h3>
-      <div class="control"><label for="b01">설비별 생산실적</label><select id="b01" name="b01"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="b02">설비효율 관리</label><select id="b02" name="b02"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="b03">생산모니터링 현황</label><select id="b03" name="b03"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="b04">작업일보</label><select id="b04" name="b04"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="b05">재고관리(약품)</label><select id="b05" name="b05"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      <div class="control"><label for="b01">설비별 생산실적</label><select id="b01" name="b01"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="b02">설비효율 관리</label><select id="b02" name="b02"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="b03">생산모니터링 현황</label><select id="b03" name="b03"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="b04">작업일보</label><select id="b04" name="b04"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="b05">재고관리(약품)</label><select id="b05" name="b05"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
     </div>
     <div class="section">
       <h3>조건관리</h3>
-      <div class="control"><label for="c01">TC/조절계 이력</label><select id="c01" name="c01"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="c02">액탱크 관리대장</label><select id="c02" name="c02"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="c03">액교반 관리일지</label><select id="c03" name="c03"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="c04">일상점검일지</label><select id="c04" name="c04"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="c05">기준정보</label><select id="c05" name="c05"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="c06">세척 투입제어</label><select id="c06" name="c06"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="c07">후처리 액교반 관리일지</label><select id="c07" name="c07"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      <div class="control"><label for="c01">TC/조절계 이력</label><select id="c01" name="c01"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="c02">액탱크 관리대장</label><select id="c02" name="c02"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="c03">액교반 관리일지</label><select id="c03" name="c03"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="c04">일상점검일지</label><select id="c04" name="c04"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="c05">기준정보</label><select id="c05" name="c05"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="c06">세척 투입제어</label><select id="c06" name="c06"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="c07">후처리 액교반 관리일지</label><select id="c07" name="c07"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
     </div>
     <div class="section">
       <h3>품질관리</h3>
-      <div class="control"><label for="d01">온도균일성 테스트</label><select id="d01" name="d01"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="d02">테스트/시험정보</label><select id="d02" name="d02"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="d03">수입검사</label><select id="d03" name="d03"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="d04">액 분석 관리</label><select id="d04" name="d04"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="d05">부적합품 관리</label><select id="d05" name="d05"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="d06">양산품 표면적 기준정보</label><select id="d06" name="d06"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="d07">테스트 관리대장</label><select id="d07" name="d07"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+      <div class="control"><label for="d01">온도균일성 테스트</label><select id="d01" name="d01"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="d02">테스트/시험정보</label><select id="d02" name="d02"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="d03">수입검사</label><select id="d03" name="d03"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="d04">액 분석 관리</label><select id="d04" name="d04"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="d05">부적합품 관리</label><select id="d05" name="d05"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="d06">양산품 표면적 기준정보</label><select id="d06" name="d06"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="d07">테스트 관리대장</label><select id="d07" name="d07"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
     </div>
     <div class="section">
       <h3>인원 및 안전관리</h3>
-      <div class="control"><label for="e01">자격인증관리</label><select id="e01" name="e01"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="e02">작업자 근무현황</label><select id="e02" name="e02"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="e03">지게차,청소차 점검일지</label><select id="e03" name="e03"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="e04">유해화학물질 점검일지</label><select id="e04" name="e04"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="e05">사용자 권한부여</label><select id="e05" name="e05"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-      <div class="control"><label for="e06">사용자 등록</label><select id="e06" name="e06"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option></select></div>
+      <div class="control"><label for="e01">자격인증관리</label><select id="e01" name="e01"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="e02">작업자 근무현황</label><select id="e02" name="e02"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="e03">지게차,청소차 점검일지</label><select id="e03" name="e03"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="e04">유해화학물질 점검일지</label><select id="e04" name="e04"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="e05">사용자 권한부여</label><select id="e05" name="e05"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+      <div class="control"><label for="e06">사용자 등록</label><select id="e06" name="e06"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
     </div>
     
     
   	<div class="section">
 	  <h3>투입 운전관리</h3>
-	  <div class="control"><label for="f01">생산설비 시간 정보</label><select id="f01" name="f01"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-	  <div class="control"><label for="f02">투입제어 및 모니터링</label><select id="f02" name="f02"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="f01">생산설비 시간 정보</label><select id="f01" name="f01"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="f02">투입제어 및 모니터링</label><select id="f02" name="f02"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
 	</div>
 	
 	<div class="section">
 	  <h3>취출 운전관리</h3>
-	  <div class="control"><label for="g01">LOT 보고서</label><select id="g01" name="g01"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-	  <div class="control"><label for="g02">생산조건 모니터링</label><select id="g02" name="g02"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
+	  <div class="control"><label for="g01">LOT 보고서</label><select id="g01" name="g01"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="g02">생산조건 모니터링</label><select id="g02" name="g02"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
 	</div>
 	
 	<div class="section">
 	  <h3>설비관리</h3>
-	  <div class="control"><label for="h01">정기점검 계획</label><select id="h01" name="h01"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-	  <div class="control"><label for="h02">설비 비가동 현황</label><select id="h02" name="h02"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-	  <div class="control"><label for="h03">설비이력 관리</label><select id="h03" name="h03"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-	  <div class="control"><label for="h04">부품교체 이력관리</label><select id="h04" name="h04"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-	  <div class="control"><label for="h05">스페어부품 관리</label><select id="h05" name="h05"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option><option value="D">삭제</option></select></div>
-	  <div class="control"><label for="h06">공무 일지</label><select id="h06" name="h06"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option></select></div>
-	  <div class="control"><label for="h07">MTTR</label><select id="h07" name="h07"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option></select></div>
-	  <div class="control"><label for="h08">설비 기준관리</label><select id="h08" name="h08"><option value=""></option><option value="N">없음</option><option value="R">조회</option><option value="I">저장</option><option value="U">수정</option></select></div>
+	  <div class="control"><label for="h01">정기점검 계획</label><select id="h01" name="h01"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="h02">설비 비가동 현황</label><select id="h02" name="h02"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="h03">설비이력 관리</label><select id="h03" name="h03"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="h04">부품교체 이력관리</label><select id="h04" name="h04"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="h05">스페어부품 관리</label><select id="h05" name="h05"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="h06">공무 일지</label><select id="h06" name="h06"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="h07">MTTR</label><select id="h07" name="h07"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
+	  <div class="control"><label for="h08">설비 기준관리</label><select id="h08" name="h08"><option value="N">없음</option><option value="R">조회</option><!-- <option value="I">저장</option><option value="U">수정</option> --><option value="D">권한</option></select></div>
 	</div>
 	
 <!-- 	<div class="section">
@@ -197,6 +198,38 @@ $(function(){
     
   });
 
+  // 조회만
+  $(document).on('click', '.allR', function(){
+    $('select').val('R');
+	  var code = $('#user_code').val();
+	  console.log('전체없음 요청 user_code 전송 값:', code); 
+	  if(!code || code.length === 0){
+		  alert('행을 선택하세요.')
+		   return;
+		  }
+
+  	    $.ajax({
+	        url: '/geomet/user/userPermission/allR',
+	        type: 'POST',
+	        data: JSON.stringify({user_code: code}),
+	        //processData: false,
+	        contentType: 'application/json; charset=UTF-8',
+	        success: function (result) {
+		        if(result && result.data === true){
+	            alert('권한이 수정되었습니다.');
+		        }else{
+			        alert('수정 실패했습니다.')
+			        }
+	        },
+	        error: function (xhr, status, error) {
+	            alert('수정 중 오류가 발생했습니다.');
+	            console.error('❌ AJAX 오류:', status, error);
+	            console.error('응답 내용:', xhr.responseText);
+	        }
+	    });  
+    
+  });
+
 
   $(document).on('click', '.allUpdate', function () {
 	
@@ -238,7 +271,7 @@ $(function(){
   // 행 더블클릭 시 권한 로드
   function getAllUserList(){
 	  userTable = new Tabulator('#dataList', {
-		  height: '250px',
+		  height: '230px',
           columnHeaderVertAlign: "middle",
           rowVertAlign: "middle",
 		  layout: 'fitColumns',
@@ -254,10 +287,11 @@ $(function(){
 		  paginationSize: 20,
 		  columns: [
 		    { title: 'NO', field: 'idx', hozAlign: 'center',  visible: true },
-		    { title: '아이디', field: 'user_id', hozAlign: 'center'  },
-		    { title: '성명', field: 'user_name', hozAlign: 'center'  },
-		    { title: '부서', field: 'user_busu', hozAlign: 'center' },
-		    { title: '직책', field: 'user_jick', hozAlign: 'center' },
+		    { title: '아이디', field: 'user_id', hozAlign: 'center', headerFilter: "input" },
+		    { title: '성명', field: 'user_name', hozAlign: 'center', headerFilter: "input" },
+		    { title: '부서', field: 'user_busu', hozAlign: 'center', headerFilter: "input" },
+		    { title: '직책', field: 'user_jick', hozAlign: 'center', headerFilter: "input" },
+
 		    { title: 'user_code', field: 'user_code', hozAlign: 'center', visible: false }
 		  ],
 		  rowClick: function(e, row){

@@ -371,7 +371,7 @@
 
 
   <script>
-    let now_page_code = "i03";
+    let now_page_code = "e04";
 
     $(function () {
     	 var now    = new Date();
