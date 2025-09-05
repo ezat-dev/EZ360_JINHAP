@@ -435,7 +435,6 @@
   WHERE date LIKE CONCAT(SUBSTR(#{s_time}, 1, 7), '%')
 </select>
 
-<!-- tb_work_handover 조회 -->
 <select id="work_handover_select" parameterType="Users" resultType="Users">
   SELECT
     id,
@@ -445,8 +444,9 @@
     ex2,
     ex3
   FROM tb_work_handover
-  WHERE date = #{s_time}
+  WHERE DATE_FORMAT(`date`, '%Y-%m') = #{s_time}
 </select>
+
 
 	
    	<update id="work_handover_update" parameterType="Users">

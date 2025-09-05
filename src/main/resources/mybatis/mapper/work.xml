@@ -1055,4 +1055,76 @@ FROM
     ]]>
    </insert>
 
+
+
+
+<select id="getMedicineInfo_main" parameterType="Work" resultType="Work">
+    <![CDATA[
+    WITH month_data AS (
+        SELECT 
+            mach_code_group,
+            ROUND(SUM(weight),0) AS month_kg
+        FROM (
+            SELECT 
+                *,
+                LEAD(start_time) OVER (PARTITION BY mach_code, barcode_no ORDER BY end_time DESC) AS next_end_time,
+                CASE 
+                    WHEN mach_code LIKE 'W%'        THEN 'W'
+                    WHEN mach_code LIKE 'S%'        THEN 'S'
+                    WHEN mach_code LIKE 'G03%'      THEN 'G'
+                    WHEN mach_code LIKE 'G04-GG07%' THEN 'MP'
+                    WHEN mach_code LIKE 'G04-GG05%' THEN 'KB'
+                    ELSE mach_code
+                END AS mach_code_group
+            FROM tb_lowdata_save
+            WHERE start_time >= #{start_date}
+              AND start_time < #{end_date}
+        ) AS inner_A
+        WHERE next_end_time IS NULL
+        GROUP BY mach_code_group
+    ),
+
+    max_opening AS (
+        SELECT 
+            medicine_name,
+            MAX(month_start) AS month_start,  
+            IFNULL(SUM(opening_balance),0) AS opening_balance,
+            IFNULL(SUM(total_in),0)        AS total_in,
+            IFNULL(SUM(total_usage),0)     AS total_usage,
+            IFNULL(SUM(net_change),0)      AS net_change,
+            IFNULL(SUM(end_balance),0)     AS end_balance
+        FROM tb_month_opening
+        WHERE DATE_FORMAT(month_start, '%Y-%m') = #{month_ym}
+        GROUP BY medicine_name
+    )
+
+    SELECT 
+        M.m_id,
+        M.medicine_name,
+        M.m_mach_code,
+        IFNULL(B.month_kg,0) AS month_kg_1,
+        IFNULL(O.opening_balance,0) AS opening_balance_2,
+        IFNULL(M.kg_price,0) AS kg_price_3,
+        IFNULL(M.barrel_price,0) AS barrel_price_4,
+        IFNULL(M.barrel_weight,0) AS barrel_weight_5,
+        IFNULL(O.total_in,0) AS total_in_6,
+        IFNULL(O.total_usage,0) AS total_usage_7,
+        IFNULL(ROUND((O.total_usage * M.barrel_price),1),0) AS use_price_8,
+        IFNULL(ROUND(B.month_kg / (M.barrel_weight * O.total_usage),0),0) AS kg_use_9,
+        IFNULL(ROUND(((O.opening_balance + O.total_in) - O.total_usage),0),0) AS medicine_tong_10,
+        M.attachment_spec AS attachment_spec_11,
+        M.unit,
+        M.y_n,
+        O.month_start,
+        IFNULL(O.total_usage,0) AS total_usage,
+        IFNULL(O.net_change,0) AS net_change,
+        IFNULL(O.end_balance,0) AS end_balance
+    FROM tb_medicine_info M
+    LEFT JOIN max_opening O
+        ON O.medicine_name = M.medicine_name
+    LEFT JOIN month_data B
+        ON B.mach_code_group = M.m_mach_code
+    ]]>
+</select>
+
 </mapper>

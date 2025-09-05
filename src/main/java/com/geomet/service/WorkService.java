@@ -50,5 +50,7 @@ public interface WorkService {
 	    boolean medicineInfoUpdate(Work work);
 	    boolean medicineInfoDelete(Work work);
 	    boolean medicineInfoInsert(Work work);
+	    
+	    List<Work> getMedicineInfo_main(Work work);
 	}
 

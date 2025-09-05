@@ -281,6 +281,27 @@ margin-left:50px;
 width:1570px;
 }
 
+    .monthselect {
+        width: 15%;
+        text-align: center;
+        font-size: 15px;
+    }
+    .monthSet {
+        width: 15%;
+        text-align: center;
+        height: 16px;
+        padding: 8px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-size: 15px;
+    }
+    .monthlabel {
+        margin-right: 10px;
+        margin-bottom: 13px;
+        font-size: 18px;
+        margin-left: 20px;
+    }
 </style>
 
 
@@ -296,16 +317,18 @@ width:1570px;
 			  작업자 현황 페이지
 			</button>
 	        <label for="s_time">검색일자 :</label>
-	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
+
+	        <input type="text" autocomplete="off" class="monthSet" id="s_time" 
+                 style="width:190px; font-size: 16px; margin-bottom:10px;" placeholder="월 선택" >
 	        <button class="select-button" onclick="loadWorkDailyData()">
 	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 	        </button>
-	          <button class="insert-button">
+<!-- 	          <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
-                </button>
-                      <button class="delete-button">
+                </button> -->
+<!--                       <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
-				</button>
+				</button> -->
                 
 	    </div>
 	    <div id="m_code">G03-GG03</div>
@@ -361,7 +384,31 @@ width:1570px;
   let now_page_code = "e02";
 
 
+  $(document).ready(function () {
+     
+      const now = new Date();
+      const yearMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
 
+      $(".insert-button").click(function () {
+          let modal = $("#modalContainer");
+          modal.show(); 
+          modal.addClass("show");
+      });
+
+      $("#s_time")
+        .val(yearMonth)
+        .attr("placeholder", yearMonth);
+
+
+  });
+
+
+  $('.insert-button').on('click', function () {
+	    const $form = $('#corrForm2');
+	    $form[0].reset();              // 기존 입력값 초기화
+	    $form.find('input[name="id"]').val(''); // id 비워서 신규등록 표시
+	    $('#modalContainer2').show().addClass('show');
+	  });
  
   $('#saveCorrStatus2').on('click', function(e){
 	  e.preventDefault();
@@ -424,8 +471,7 @@ width:1570px;
     }
 
     $(function() {
-        const today = new Date().toISOString().split('T')[0];
-        $('#s_time').val(today);
+
         initTables();
         loadWorkDailyData();
     });
@@ -435,7 +481,7 @@ width:1570px;
     	 
 
     	table2 = new Tabulator("#table2", {
-    		height: "620px",
+    		height: "720px",
     	    layout: "fitColumns",
     	    headerHozAlign: "center",        // 헤더 가운데
   		  headerVertAlign: "middle",       // 헤더 세로 가운데
@@ -445,9 +491,9 @@ width:1570px;
     	        { title: "날짜", field: "date", hozAlign: "center", headerSort: false, width: 200 },
     	        { title: "no2", field: "id", hozAlign: "center", headerSort: false, visible: false, width: 50 },
     	        { title: "구분", field: "b_f", hozAlign: "center", headerSort: false, width: 120 },
-    	        { title: "설비고장 내역 및 조치사항", field: "ex1", hozAlign: "center", headerSort: false, width: 400 },
+    	        { title: "설비고장 내역 및 조치사항", field: "ex1", hozAlign: "center", headerSort: false, width: 380 },
     	        { title: "근무자 이상내역 (결근,조퇴,연차)</br>전달사항", field: "ex2", hozAlign: "center", headerSort: false, width: 400 },
-    	        { title: "중요 긴급품 확인", field: "ex3", hozAlign: "center", headerSort: false, width: 400 }
+    	        { title: "중요 긴급품 확인", field: "ex3", hozAlign: "center", headerSort: false, width: 380 }
     	    ],
 
     	    rowDblClick: function(e, row) {
@@ -474,11 +520,7 @@ width:1570px;
     	      $('#modalContainer2').hide();
     	    });
     	  }
-  $(function() {
-    $('#s_time').val(new Date().toISOString().split('T')[0]);
-    initTables();
-    loadWorkDailyData();
-  });
+
 </script>
 
 </body>

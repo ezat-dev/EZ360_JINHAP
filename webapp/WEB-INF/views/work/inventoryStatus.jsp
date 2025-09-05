@@ -232,25 +232,24 @@
 		<select class="productSet" id="productName" 
 		        style="width:230px; margin-left:16px; height:36px;argin-bottom:10px; font-size:16px; margin-bottom:10px; border:1px solid #ccc; border-radius:6px; padding:5px;">
 		  <option value="">약품 선택</option>
-		  <option value="전체">전체</option>
-		  <option value="GEOMET G1">GEOMET G1</option>
-		  <option value="GEOMET G2">GEOMET G2</option>
-		  <option value="지오메트 첨가제">지오메트 첨가제</option>
-		  <option value="PLUS">PLUS</option>
-		  <option value="ML(H)">ML(H)</option>
-		  <option value="ML(G)">ML(G)</option>
-		  <option value="K-BLACK">K-BLACK</option>
-		  <option value="NaOH 99%">NaOH 99%</option>
-		  <option value="SC-300A">SC-300A</option>
-		  <option value="SC330B 3X">SC330B 3X</option>
-		  <option value="SC330농축액">SC330농축액</option>
-		  <option value="쇼트볼(SUS)">쇼트볼(SUS)</option>
-		  <option value="도료ED2800-A-BACK(E)">도료ED2800-A-BACK(E)</option>
-		  <option value="수지ED2800-B(E)">수지ED2800-B(E)</option>
-		  <option value="신 나 (005)">신 나 (005)</option>
-		  <option value="중화제 (069)">중화제 (069)</option>
-		  <option value="방 청 유(P-210)">방 청 유(P-210)</option>
-		  <option value="열처리유(SQ-70)">열처리유(SQ-70)</option>
+	  <option value="GEOMET G1">GEOMET G1</option>
+	  <option value="GEOMET G2">GEOMET G2</option>
+	  <option value="지오메트첨가제(DYC-001)">지오메트첨가제(DYC-001)</option>
+	  <option value="PLUS">PLUS</option>
+	  <option value="ML(H)">ML(H)</option>
+	  <option value="ML(G)">ML(G)</option>
+	  <option value="K-BLACK">K-BLACK</option>
+	  <option value="가성소다99%(대만산)">가성소다99%(대만산)</option>
+	  <option value="SC300A">SC300A</option>
+	  <option value="SC330B 3X">SC330B 3X</option>
+	  <option value="SC330농축액">SC330농축액</option>
+	  <option value="쇼트볼(SUS)">쇼트볼(SUS)</option>
+	  <option value="도료(ED2800-A)">도료(ED2800-A)</option>
+	  <option value="수지(ED2800-B)">수지(ED2800-B)</option>
+	  <option value="신나(005)">신나(005)</option>
+	  <option value="중화제(069)">중화제 (069)</option>
+	  <option value="방청유(P-210)">방청유(P-210)</option>
+	  <option value="열처리유(SQ70)">열처리유(SQ70)</option>
 		  <option value="기타">기타</option>
 		</select>
 
@@ -290,8 +289,8 @@
 
 
       <!-- 날짜 -->
-      <label for="reg_date">날짜</label>
-      <input type="date" name="reg_date" id="reg_date" required autocomplete="off"class="daySet" >
+	<label for="reg_date">날짜</label>
+	<input type="date" name="reg_date" id="reg_date" required autocomplete="off" class="daySet">
 
       <!-- 업체 -->
       <label for="company_name">업체</label>
@@ -301,24 +300,26 @@
 	<label for="medicine_name_select">약품명</label>
 	<select id="medicine_name_select" name="medicine_name">
 	  	  <option value="기타">기타</option>
+			  <option value="">약품 선택</option>
 	  <option value="GEOMET G1">GEOMET G1</option>
 	  <option value="GEOMET G2">GEOMET G2</option>
-	  <option value="지오메트 첨가제">지오메트 첨가제</option>
+	  <option value="지오메트첨가제(DYC-001)">지오메트첨가제(DYC-001)</option>
 	  <option value="PLUS">PLUS</option>
 	  <option value="ML(H)">ML(H)</option>
 	  <option value="ML(G)">ML(G)</option>
 	  <option value="K-BLACK">K-BLACK</option>
-	  <option value="NaOH 99%">NaOH 99%</option>
-	  <option value="SC-300A">SC-300A</option>
+	  <option value="가성소다99%(대만산)">가성소다99%(대만산)</option>
+	  <option value="SC300A">SC300A</option>
 	  <option value="SC330B 3X">SC330B 3X</option>
 	  <option value="SC330농축액">SC330농축액</option>
 	  <option value="쇼트볼(SUS)">쇼트볼(SUS)</option>
-	  <option value="도료ED2800-A-BACK(E)">도료ED2800-A-BACK(E)</option>
-	  <option value="수지ED2800-B(E)">수지ED2800-B(E)</option>
-	  <option value="신 나 (005)">신 나 (005)</option>
-	  <option value="중화제 (069)">중화제 (069)</option>
-	  <option value="방 청 유(P-210)">방 청 유(P-210)</option>
-	  <option value="열처리유(SQ-70)">열처리유(SQ-70)</option>
+	  <option value="도료(ED2800-A)">도료(ED2800-A)</option>
+	  <option value="수지(ED2800-B)">수지(ED2800-B)</option>
+	  <option value="신나(005)">신나(005)</option>
+	  <option value="중화제(069)">중화제 (069)</option>
+	  <option value="방청유(P-210)">방청유(P-210)</option>
+	  <option value="열처리유(SQ70)">열처리유(SQ70)</option>
+
 
 	</select>
 	
@@ -338,8 +339,16 @@
 
 
       <div style="margin-top: 10px;">
-        <button type="submit" id="saveCorrStatus" style="font-weight: bold;">저장</button>
-        <button type="button" id="closeModal" style="font-weight: bold;">닫기</button>
+		<button type="submit" id="saveCorrStatus" 
+		        style="font-weight: bold; width: 90px; height: 40px; margin-left: 200px;">
+		    저장
+		</button>
+		
+		<button type="button" id="closeModal" 
+		        style="font-weight: bold; width: 90px; height: 40px;">
+		    닫기
+		</button>
+
       </div>
     </form>
   </div>
@@ -349,6 +358,8 @@
 
 <script>
 let now_page_code = "b05";
+
+
 
 $(document).ready(function () {
     $('.insert-button').click(function(){
@@ -413,17 +424,17 @@ function getDataList() {
         "ML(G)": "Kg",
         "PLUS": "Kg",
         "K-BLACK": "Kg",
-        "NaOH 99%": "Kg",
-        "SC-300A": "Kg",
+        "가성소다99%(대만산)": "Kg",
+        "SC300A": "Kg",
         "SC330B 3X": "Kg",
         "SC330농축액": "Kg",
-        "지오메트 첨가제": "L",
-        "도료ED2800-A-BACK(E)": "L",
-        "수지ED2800-B(E)": "L",
+        "지오메트첨가제(DYC-001)": "L",
+        "도료(ED2800-A)": "L",
+        "수지(ED2800-B)": "L",
         "신 나 (005)": "L",
         "중화제 (069)": "L",
-        "방 청 유(P-210)": "DM",
-        "열처리유(SQ-70)": "DM",
+        "방청유(P-210)": "DM",
+        "열처리유(SQ70)": "DM",
         "쇼트볼(SUS)": "포"
     };
 

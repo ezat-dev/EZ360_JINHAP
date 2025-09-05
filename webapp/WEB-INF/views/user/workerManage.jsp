@@ -291,7 +291,7 @@
 			</button>
 			 
 	        <label for="s_time">검색일자 :</label>
-	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
+	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="월 선택">
 	        <button class="select-button" onclick="loadWorkDailyData()">
 	            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
 	        </button>
@@ -407,7 +407,16 @@
   let table1, table2, selectedRowData;
   let now_page_code = "e02";
 
+  $(document).ready(function () {
+	  const now = new Date();
+	  const yearMonth = now.getFullYear() + "-" + String(now.getMonth() + 1).padStart(2, "0");
 
+	  $("#s_time")
+	    .val(yearMonth)
+	    .attr("placeholder", yearMonth);
+
+	  
+	});
 
   $('.close, #closeModal').click(function() {
       $('#modalContainer').removeClass('show').hide();
@@ -568,7 +577,8 @@
     		    headerTooltip: false
     		  },
     	    columns:[
-    	        {title:"NO", field:"id", headerSort:false,hozAlign: "center"},
+    	        {title:"NO", field:"id", visible: false, headerSort:false,hozAlign: "center"},
+    	        { title: "No", formatter: "rownum", hozAlign: "center" },
     	        { title: "날짜", field: "date", headerSort: false, hozAlign: "center", visible: false },
 
     	        {title:"업무", field:"task", headerSort:false,hozAlign: "center"},

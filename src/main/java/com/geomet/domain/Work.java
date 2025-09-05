@@ -4,18 +4,36 @@ import java.util.List;
 public class Work {
 	
 	
-	
-	
-	
 
-	private String reg_date;
-	private String company_name;
-	private String medicine_name;
-	private String lot_no;
-	private String stock_in;
-	private String daily_usage;
-	private String day_sum;
-	
+	    private Integer month_kg_1;        // 월간 생산량
+	    private Integer opening_balance_2; // 월초 재고
+	    private Integer kg_price_3;        // Kg 단가
+	    private Integer barrel_price_4;    // 드럼 단가
+	    private Integer barrel_weight_5;   // 드럼 무게
+	    private Integer total_in_6;        // 입고량
+	    private Integer total_usage_7;     // 사용량
+	    private Integer use_price_8;       // 사용 금액
+	    private Integer kg_use_9;          // Kg당 사용량
+	    private Integer medicine_tong_10;  // 약품 통 수량
+	    private Integer total_usage;       // 총 사용량
+	    private Integer net_change;        // 증감량
+	    private Integer end_balance;       // 기말 재고
+
+	    // --- String ---
+	    private String medicine_name;       // 약품명
+	    private String m_mach_code;         // 설비 코드 그룹
+	    private String attachment_spec_11;  // 첨부 규격
+	    private String unit;                // 단위
+	    private String y_n;                 // 사용 여부 (Y/N)
+	    private String month_start;         // 월 시작일
+
+	    // --- 추가 필드 ---
+	    private String reg_date;
+	    private String company_name;
+	    private String lot_no;
+	    private String stock_in;
+	    private String daily_usage;
+	    private String day_sum;
 	
 	
 	
@@ -116,7 +134,7 @@ public class Work {
 	private String startDate;
     private String id;
     private String date;
-    private String unit;
+
     private String next_month;
     private String stock_cnt;
     private String geomet_g1;
@@ -246,13 +264,132 @@ public class Work {
     private Integer barrel_price;
     private String attachment_spec;
     //private String unit;
-    private String y_n;
+
+    private String start_date;
+    private String month_ym;
+  
+    
+    private String end_date;
     
     
     
     
-    
-    public Integer getM_id() {
+    public String getMonth_ym() {
+		return month_ym;
+	}
+	public void setMonth_ym(String month_ym) {
+		this.month_ym = month_ym;
+	}
+	public String getStart_date() {
+		return start_date;
+	}
+	public void setStart_date(String start_date) {
+		this.start_date = start_date;
+	}
+	public String getEnd_date() {
+		return end_date;
+	}
+	public void setEnd_date(String end_date) {
+		this.end_date = end_date;
+	}
+
+	public Integer getMonth_kg_1() {
+		return month_kg_1;
+	}
+	public void setMonth_kg_1(Integer month_kg_1) {
+		this.month_kg_1 = month_kg_1;
+	}
+	public Integer getOpening_balance_2() {
+		return opening_balance_2;
+	}
+	public void setOpening_balance_2(Integer opening_balance_2) {
+		this.opening_balance_2 = opening_balance_2;
+	}
+	public Integer getKg_price_3() {
+		return kg_price_3;
+	}
+	public void setKg_price_3(Integer kg_price_3) {
+		this.kg_price_3 = kg_price_3;
+	}
+	public Integer getBarrel_price_4() {
+		return barrel_price_4;
+	}
+	public void setBarrel_price_4(Integer barrel_price_4) {
+		this.barrel_price_4 = barrel_price_4;
+	}
+	public Integer getBarrel_weight_5() {
+		return barrel_weight_5;
+	}
+	public void setBarrel_weight_5(Integer barrel_weight_5) {
+		this.barrel_weight_5 = barrel_weight_5;
+	}
+	public Integer getTotal_in_6() {
+		return total_in_6;
+	}
+	public void setTotal_in_6(Integer total_in_6) {
+		this.total_in_6 = total_in_6;
+	}
+	public Integer getTotal_usage_7() {
+		return total_usage_7;
+	}
+	public void setTotal_usage_7(Integer total_usage_7) {
+		this.total_usage_7 = total_usage_7;
+	}
+	public Integer getUse_price_8() {
+		return use_price_8;
+	}
+	public void setUse_price_8(Integer use_price_8) {
+		this.use_price_8 = use_price_8;
+	}
+	public Integer getKg_use_9() {
+		return kg_use_9;
+	}
+	public void setKg_use_9(Integer kg_use_9) {
+		this.kg_use_9 = kg_use_9;
+	}
+	public Integer getMedicine_tong_10() {
+		return medicine_tong_10;
+	}
+	public void setMedicine_tong_10(Integer medicine_tong_10) {
+		this.medicine_tong_10 = medicine_tong_10;
+	}
+	public Integer getTotal_usage() {
+		return total_usage;
+	}
+	public void setTotal_usage(Integer total_usage) {
+		this.total_usage = total_usage;
+	}
+	public Integer getNet_change() {
+		return net_change;
+	}
+	public void setNet_change(Integer net_change) {
+		this.net_change = net_change;
+	}
+	public Integer getEnd_balance() {
+		return end_balance;
+	}
+	public void setEnd_balance(Integer end_balance) {
+		this.end_balance = end_balance;
+	}
+	public String getM_mach_code() {
+		return m_mach_code;
+	}
+	public void setM_mach_code(String m_mach_code) {
+		this.m_mach_code = m_mach_code;
+	}
+	public String getAttachment_spec_11() {
+		return attachment_spec_11;
+	}
+	public void setAttachment_spec_11(String attachment_spec_11) {
+		this.attachment_spec_11 = attachment_spec_11;
+	}
+	public String getMonth_start() {
+		return month_start;
+	}
+	public void setMonth_start(String month_start) {
+		this.month_start = month_start;
+	}
+	public Integer getM_id() {
 		return m_id;
 	}
 	public void setM_id(Integer m_id) {

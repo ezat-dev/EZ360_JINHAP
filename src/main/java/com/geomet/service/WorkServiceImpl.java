@@ -66,6 +66,12 @@ public class WorkServiceImpl implements WorkService {
 		// TODO Auto-generated method stub
 		return workDao.medicineInfoInsert(work);
 	}
+	
+    //약품정보
+	@Override
+	public List<Work> getMedicineInfo_main(Work work) {
+		return workDao.getMedicineInfo_main(work);
+	}
 
 	
 	 	@Override
