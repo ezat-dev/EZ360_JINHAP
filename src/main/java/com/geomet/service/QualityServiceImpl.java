@@ -127,6 +127,10 @@ public class QualityServiceImpl implements QualityService {
 	public boolean data1Insert(Quality quality) {
 		return qualityDao.data1Insert(quality);
 	}
+	@Override
+	public boolean data1Delete(Quality quality) {
+		return qualityDao.data1Delete(quality);
+	}
 
 
 }

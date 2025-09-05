@@ -452,50 +452,76 @@
 		INSERT INTO
 		tb_clean12 (
 		test_num, date, mch_name, acid_reduce,
-		naoh_density, min_spec, max_spec
+		naoh_density, min_spec, max_spec, file_name
 		)
 		VALUES (
 		#{test_num}, #{date}, #{mch_name}, #{acid_reduce},
-		#{naoh_density}, #{min_spec}, #{max_spec}
+		#{naoh_density}, #{min_spec}, #{max_spec}, #{file_name}
 		)
 	</insert>
 	
 	<!-- 테스트/시험정보 첫 번째 테이블 조회 -->
-		<select id="getDataList1" parameterType="Quality"
-		resultType="Quality">
-    SELECT 
-        c.id,
-        c.test_num,
-        c.date,
-        c.mch_name,
-        c.acid_reduce,
-        c.naoh_density,
-        c.min_spec,
-        c.max_spec,
-        CASE
-            WHEN c.naoh_density BETWEEN min_spec AND max_spec THEN '합격'
-            ELSE '불합격'
-        END AS result,
-        m.num AS standard_num,
-        m.naoh_result,
-        m.hcl,
-        m.liter,
-        m.naoh,
-        m.sc300a,
-        m.sc300b,
-        m.condense,
-        m.after_naoh,
-        m.table_code
-    FROM tb_clean12 c
-    JOIN tb_medicine_standard m 
-      ON m.naoh_result = (FLOOR(CAST(c.naoh_density AS SIGNED) / 2) * 2)
-     AND (
-            (c.mch_name = '1호기' AND m.table_code = 1)
-         OR (c.mch_name = '2호기' AND m.table_code = 2)
-        )
-    WHERE 1=1
-    <if test="date != null and date != null">
-        AND c.date = #{date}
-    </if>
-	</select>
+<select id="getDataList1" parameterType="Quality" resultType="Quality">
+  SELECT
+      c.id,
+      c.test_num,
+      c.date,
+      c.mch_name,
+      c.acid_reduce,
+      c.naoh_density,
+      c.min_spec,
+      c.max_spec,
+      c.file_name,
+
+      /* 조인 실패시 '범위값초과', 조인 성공시 스펙 범위 판정 */
+      CASE
+        WHEN m.num IS NULL THEN '범위값초과'
+        WHEN
+          CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2))
+          BETWEEN
+          CAST(NULLIF(TRIM(REPLACE(REPLACE(c.min_spec,     ',', ''), '%','')), '') AS DECIMAL(10,2))
+          AND
+          CAST(NULLIF(TRIM(REPLACE(REPLACE(c.max_spec,     ',', ''), '%','')), '') AS DECIMAL(10,2))
+        THEN '합격'
+        ELSE '불합격'
+      END AS result,
+
+      /* m 테이블 값은 조인 실패 시 0으로 대체 */
+      IFNULL(m.num, 0)         AS standard_num,
+      IFNULL(m.naoh_result, 0) AS naoh_result,
+      IFNULL(m.hcl, 0)         AS hcl,
+      IFNULL(m.liter, 0)       AS liter,
+      IFNULL(m.naoh, 0)        AS naoh,
+      IFNULL(m.sc300a, 0)      AS sc300a,
+      IFNULL(m.sc300b, 0)      AS sc300b,
+      IFNULL(m.condense, 0)    AS condense,
+      IFNULL(m.after_naoh, 0)  AS after_naoh,
+      IFNULL(m.table_code, 0)  AS table_code
+
+  FROM tb_clean12 c
+  LEFT JOIN tb_medicine_standard m
+    ON m.naoh_result = (
+         FLOOR(
+           CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) / 2
+         ) * 2
+       )
+   AND (
+        (c.mch_name = '1호기' AND m.table_code = 1)
+     OR (c.mch_name = '2호기' AND m.table_code = 2)
+       )
+
+  WHERE 1 = 1
+  <if test="date != null and date != ''">
+    AND c.date = #{date}
+  </if>
+</select>
+
+	
+		
+		<!-- 테스트/시험정보 첫 번째 데이터 삭제 -->
+		<delete id="data1Delete" parameterType="Quality">
+		DELETE FROM
+		tb_clean12
+		WHERE test_num = #{test_num}
+	</delete>
 </mapper>

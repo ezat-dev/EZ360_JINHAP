@@ -171,5 +171,13 @@ public class QualityDaoImpl implements QualityDao {
 		}
 		return true;
 	}
+	@Override
+	public boolean data1Delete(Quality quality) {
+		int result = sqlSession.delete("quality.data1Delete", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
 }
 

@@ -2163,7 +2163,7 @@ public class QualityController {
 
 				    List<Quality> data1 = qualityService.getDataList1(quality);
 					List<Quality> data3 = qualityService.getTestTankList(quality);
-				//	System.out.println("getNonProductManageList.size()" + data3.size());
+					System.out.println("getNonProductManageList.size()" + data3.size());
 					for(Quality v: data3) {
 						//System.out.println("v: " + v);
 						v.setSpec(v.getMin_spec() + " ~ " + v.getMax_spec());
@@ -2183,7 +2183,12 @@ public class QualityController {
 			public boolean deleteTestTank(@RequestBody Quality quality) {
 				//System.out.println("삭제 컨트롤러 도착");
 				//System.out.println("quality.getTest_num()" + quality.getTest_num());
+				
+				if(quality.getTest_num().contains("tb_test_tank")) {
 				return qualityService.testTankDelete(quality);
+				}else {
+					return qualityService.data1Delete(quality);
+				}
 			}
 			
 			 //테스트 시험정보 첫 번째 테이블 추가(세척 1, 2)

@@ -60,6 +60,7 @@ public interface QualityService {
     boolean testTankDelete(Quality quality);
     List<Quality> getDataList1(Quality quality);
     boolean data1Insert(Quality quality);
+    boolean data1Delete(Quality quality);
     
     
 }

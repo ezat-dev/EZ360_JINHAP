@@ -181,20 +181,20 @@
         }
 
         		.modal-content1 {
-		    background: white;
-			width: 100%;
-   			 max-width: 450px;
-		    max-height: 700px; /* 화면 높이에 맞게 제한 */
-		    overflow-y: auto;
-		    margin: 2% auto; /* 수평 중앙 정렬 */
-		    padding: 20px;
-		    border-radius: 10px;
-		    position: relative;
-		    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-		    transform: scale(0.8);
-		    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-		    opacity: 0;
-		      z-index: 10001;
+    background: white;
+    width: 100%;
+    max-width: 625px;
+    max-height: 700px;
+    overflow-y: auto;
+    margin: 2% auto;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    opacity: 0;
+    z-index: 10001;
 		}
 		.modal.show .modal-content1 {
 		    transform: scale(1);
@@ -207,11 +207,11 @@
 		
 		.modal-content1 label {
 		    font-weight: bold;
-		    margin: 10px 85px 5px;
+		    margin: 10px 49px 5px;
 		}
 		
 		.modal-content1 input, .modal-content1 textarea {
-		    width: 50%;
+    		width: 78%;
 		    padding: 8px;
 		    margin-bottom: 10px;
 		    border: 1px solid #ccc;
@@ -308,22 +308,28 @@
         <h2>가열잔분 탱크액 관리기준 정보</h2>
         <form  id="corrForm1"  autocomplete="off">
             <label>테스트 시험일자</label>
-           <input type="text" name="date" class="daySet" placeholder="날짜 선택" style="text-align: left; width: 120px; margin-left: 83px;">
+           <input type="text" name="date" class="daySet" placeholder="날짜 선택" style="text-align: left; width: 120px; margin-left: 45px;">
       <table class="clean-table">
         <thead>
           <tr>
             <th style="text-align:left;">설비</th>
             <th style="text-align:left;">0.1N-HCL(염산) 소모량</th>
+            <th>최소 Spec(%)</th>
+            <th>최대 Spec(%)</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>1호기 <input type="hidden" name="mch_name" value="1호기"></td>
             <td><input type="number"  name="acid_reduce" required></td>
+            <td><input type="text" name="min_spec" value="30"></td>
+            <td><input type="text" name="max_spec" value="40"></td>
           </tr>
           <tr>
             <td>2호기 <input type="hidden" name="mch_name" value="2호기"></td>
             <td><input type="number"  name="acid_reduce" required></td>
+            <td><input type="text" name="min_spec" value="30"></td>
+            <td><input type="text" name="max_spec" value="40"></td>
           </tr>
         </tbody>
       </table>
@@ -331,10 +337,10 @@
       <input type="hidden" name="batchId" value="">
 			
 			<label>기준서(PDF)</label>
-			<input type="file" id="fileInput" accept="application/pdf"  name="uploadFile" style="text-align: left; width: 180px; margin-left: 83px;">
+			<input type="file" id="fileInput" accept="application/pdf"  name="uploadFile" style="text-align: left; width: 180px; margin-left: 45px;">
 
-			<label>파일 이름</label>
-			<input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)" style="text-align: left; width: 120px; margin-left: 83px;">
+			<label style="display: none;">파일 이름</label>
+			<input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)" style="text-align: left; width: 120px; margin-left: 45px; display: none;">
 
             <button type="submit" id="saveCorrStatus1">저장</button>
             <button type="button" id="closeModal">닫기</button>
@@ -414,10 +420,10 @@
       <input type="hidden" name="batchId" value="">
 			
 			<label>기준서(PDF)</label>
-			<input type="file" id="fileInput" accept="application/pdf"  name="uploadFile" style="text-align: left; width: 180px; margin-left: 5%;">
+			<input type="file" id="fileInput3" accept="application/pdf"  name="uploadFile" style="text-align: left; width: 180px; margin-left: 5%;">
 
-			<label>파일 이름</label>
-			<input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)" style="text-align: left; width: 120px; margin-left: 5%; ">
+			<label style="display: none;">파일 이름</label>
+			<input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)" style="text-align: left; width: 120px; margin-left: 5%; display: none;">
 
             <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
@@ -434,7 +440,8 @@
 	<script>
 	//전역변수
 let now_page_code = "d02";
-let dataTable; // Tabulator 전역 변수
+let dataTable1; // Tabulator 전역 변수
+let dataTable3;
 let clicked;	//클릭 했는지 확인용
 
 
@@ -513,11 +520,16 @@ let clicked;	//클릭 했는지 확인용
 		            endDate: endDate
 		        });
 
-		        dataTable.setData("/geomet/quality/testTank/list", {
+		        dataTable1.setData("/geomet/quality/testTank/list", {
 		           // equipment_name: equipmentName,
 		            date: startDate,
 		            //endDate: endDate,
 		        });
+		        dataTable3.setData("/geomet/quality/testTank/list", {
+			           // equipment_name: equipmentName,
+			            date: startDate,
+			            //endDate: endDate,
+			        });
 		    });
 
 		    // 저장 버튼 클릭 시
@@ -555,7 +567,8 @@ let clicked;	//클릭 했는지 확인용
 		            formData.append("max_spec", max_spec);
 
 		            // 파일 데이터 추가 (모든 요청에 동일하게 포함)
-		            const fileInput = $("#fileInput")[0].files[0];
+		            const fileInput = $("#fileInput3")[0].files[0];
+		            console.log("fileInput: ", fileInput);
 		            if (fileInput) {
 		                formData.append("uploadFile", fileInput);
 		            }
@@ -694,7 +707,8 @@ let clicked;	//클릭 했는지 확인용
 		            success: function(response) {
 		                console.log("행 삭제 성공:", response);
 		                alert("행 삭제 완료");
-		                dataTable.setData("/geomet/quality/testTank/list", { date: $("#startDate").val() });
+		                getDataList($("#startDate").val());
+		                //dataTable1.setData("/geomet/quality/testTank/list", { date: $("#startDate").val() });
 
 		            },
 		            error: function(xhr, status, error) {
@@ -742,7 +756,7 @@ let clicked;	//클릭 했는지 확인용
 		});
 	// 데이터 목록 로딩 함수 정의
 	  function getDataList() {
-	      dataTable = new Tabulator("#dataList1", {
+	      dataTable1 = new Tabulator("#dataList1", {
 	          height: "180px",
 	       /*    width: "660px", */
 	          layout: "fitColumns",
@@ -777,7 +791,7 @@ let clicked;	//클릭 했는지 확인용
 
 	              { title: "날짜", field: "date", width: 100, hozAlign: "center" },
 	              { title: "설비", field: "mch_name", width: 70, hozAlign: "center" },
-	              { title: "①  0.1N-HCL<br>(염산)소모량", field: "acid_reduce", width: 160, hozAlign: "center",
+	              { title: "①  0.1N-HCL<br>(염산)소모량", field: "acid_reduce", width: 130, hozAlign: "center",
 	            	    formatter: function(cell, formatterParams, onRendered){
 	            	        const value = cell.getValue();
 	            	        // 값이 유효한 숫자인지 확인
@@ -790,7 +804,7 @@ let clicked;	//클릭 했는지 확인용
 	            	        }
 	            	    }
 		               },
-	              { title: "② NaOH농도값<br>(① * 0.8)", field: "naoh_density", width: 180, hozAlign: "center",
+	              { title: "② NaOH농도값<br>(① * 0.8)", field: "naoh_density", width: 130, hozAlign: "center",
 		            	    formatter: function(cell, formatterParams, onRendered){
 		            	        const value = cell.getValue();
 		            	        // 값이 유효한 숫자인지 확인
@@ -818,12 +832,12 @@ let clicked;	//클릭 했는지 확인용
 				 		               },
 	              { title: "조치사항", 
 	                  columns: [
-	                      { title: "NaOH<br>분석결과(g/L)", field: "naoh_result", hozAlign: "center", headerSort: false, width: 140 },
-	                      { title: "1.0N-HCL<br>소모량(mL)", field: "hcl", hozAlign: "center", headerSort: false, width: 140 },
+	                      { title: "NaOH<br>분석결과(g/L)", field: "naoh_result", hozAlign: "center", headerSort: false, width: 120 },
+	                      { title: "1.0N-HCL<br>소모량(mL)", field: "hcl", hozAlign: "center", headerSort: false, width: 120 },
 	                      { 
 	                          title: "조 용량<br>(liter)", 
 	                          field: "liter", 
-	                          width: 140, 
+	                          width: 130, 
 	                          hozAlign: "center", 
 	                          headerSort: false,
 	                          formatter: "money",          // 숫자 포맷 적용
@@ -842,8 +856,8 @@ let clicked;	//클릭 했는지 확인용
 	          		            { title: "농축액<br>(liter)", field: "condense", width: 80, hozAlign: "center", headerSort: false }
 	          					]
 	                           },
-	                           { title: "투입 후<br>NaOH 농도", field: "after_naoh", width: 100, hozAlign: "center", headerSort: false,
-	           }
+	                           { title: "투입 후<br>NaOH 농도", field: "after_naoh", width: 100, hozAlign: "center", headerSort: false},
+	                           { title: "파일", field: "file_name", width: 130, hozAlign: "center" }
 	                  ]
 				 	                  }
 	          ],
@@ -856,7 +870,7 @@ let clicked;	//클릭 했는지 확인용
 
 					if(clicked === true){
 	              // test_num이 같은 모든 행을 선택하고 클래스 추가
-	              dataTable.getRows().forEach(function(r) {
+	              dataTable1.getRows().forEach(function(r) {
 	                  if (r.getData().test_num === clicked_test_num) {
 	                      r.select(); // Tabulator의 select() 메서드를 사용하여 선택 상태로 만듦
 	                      r.getElement().classList.add("row_select");
@@ -872,8 +886,8 @@ let clicked;	//클릭 했는지 확인용
 	          }
 	      });
 
-	      dataTable = new Tabulator("#dataList3", {
-	    	  height: "180px",
+	      dataTable3 = new Tabulator("#dataList3", {
+	          height: "200px",
 	          width: "800px",
 	          layout: "fitColumns",
 	          selectable: true,
@@ -970,7 +984,7 @@ let clicked;	//클릭 했는지 확인용
 
 					if(clicked === true){
 	              // test_num이 같은 모든 행을 선택하고 클래스 추가
-	              dataTable.getRows().forEach(function(r) {
+	              dataTable3.getRows().forEach(function(r) {
 	                  if (r.getData().test_num === clicked_test_num) {
 	                      r.select(); // Tabulator의 select() 메서드를 사용하여 선택 상태로 만듦
 	                      r.getElement().classList.add("row_select");
