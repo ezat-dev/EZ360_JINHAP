@@ -18,10 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.sl.usermodel.VerticalAlignment;
 import org.apache.poi.ss.usermodel.BorderStyle;
-import org.apache.poi.ss.usermodel.FormulaEvaluator;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -29,7 +28,6 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,16 +36,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-
 
 import com.geomet.domain.Condition;
 import com.geomet.domain.UserLog;
 import com.geomet.domain.Users;
-import com.geomet.domain.Work;
 import com.geomet.service.ConditionService;
-
 import com.geomet.service.ExcelService;
 import com.geomet.service.UserService;
 
@@ -894,6 +888,643 @@ public class ConditionController {
     public String afterLiquidManage(Model model) {
         return "/condition/afterLiquidManage.jsp"; // 
     }
+    
+	// 액투입 관리일지 엑셀
+	@RequestMapping(value = "/condition/afterLiquidManage/excel", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> afterLiquidManageExcek(@RequestBody Condition condition,
+			@RequestParam(required = false) String startDate) {
+		System.out.println("엑셀 컨트롤러 도착");
+		//System.out.println("quality.getDate()" + quality.getDate());
+
+		Map<String, Object> rtnMap = new HashMap<>();
+
+		// 날짜 및 파일명 생성
+		SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_액투입 관리일지 엑셀_'HHmmss");
+		Date time = new Date();
+		String fileName = format.format(time) + ".xlsx";
+
+		FileOutputStream fos = null;
+		FileInputStream fis = null;
+		String openPath = "D:/GEOMET양식/";
+		String savePath = "D:/GEOMET양식/액투입 관리일지/";
+		
+		// 필터링된 데이터만 조회
+		List<Condition> datas = conditionService.getMachineliquidmanage2(condition);
+		// System.out.println("조회된 건수: " + (getMachineList != null ?
+		// getMachineList.size() : 0));
+
+		if (datas == null || datas.isEmpty()) {
+			rtnMap.put("error", "데이터 없음");
+			return rtnMap;
+		}
+
+		try {
+			fis = new FileInputStream(openPath + "액투입 관리일지 엑셀 양식.xlsx");
+			XSSFWorkbook workbook = new XSSFWorkbook(fis);
+			XSSFSheet sheet = workbook.getSheetAt(0);
+			
+			// 테두리 스타일 객체 생성
+			XSSFCellStyle borderStyle = workbook.createCellStyle();
+			borderStyle.setBorderTop(BorderStyle.THIN);
+			borderStyle.setBorderBottom(BorderStyle.THIN);
+			borderStyle.setBorderLeft(BorderStyle.THIN);
+			borderStyle.setBorderRight(BorderStyle.THIN);
+			
+			// K7: 기간 (row=6, col=8)
+			String sDate = condition.getIn_date();   // 시작날짜
+			String eDate = condition.getEndDate();   // 끝날짜
+			String periodText = (sDate == null ? "" : sDate) + " ~ " + (eDate == null ? "" : eDate);
+
+			XSSFRow row7 = sheet.getRow(6); 
+			if(row7 == null) {
+				row7 = sheet.createRow(6);
+			}
+			XSSFCell cellI7 = row7.getCell(10);
+			if(cellI7 == null) {
+				cellI7 = row7.createCell(10);
+			}
+			cellI7.setCellValue(periodText);   // 템플릿 스타일 유지
+
+			// I8: 설비명 (row=7, col=8)
+			String mchName = condition.getMch_name();
+
+			XSSFRow row8 = sheet.getRow(7);
+			if(row8 == null) {
+				row8 = sheet.createRow(7);
+			}
+			XSSFCell cellI8 = row8.getCell(10);
+			if(cellI8 == null) {
+				row8.createCell(10);
+			}
+			cellI8.setCellValue(mchName == null ? "" : mchName);  // 템플릿 스타일 유지
+
+			// 기존 스타일을 유지하면서 데이터만 삽입
+			String[] fields = { "in_date", "mch_name", "tank_no", "ck_time2", "ck_time", "specific_gravity", "operator",
+					"liquid_lot_no", "liquid_viscosity", "liquid_in", "distilles_in", "viscosity_after"};
+
+			int startRow = 10; // B11부터 시작 (row index는 0부터니까 10번 인덱스가 11번째 줄)
+			int startCol = 0; // A열 (index 0)
+
+			for (int i = 0; i < datas.size(); i++) {
+				Condition item = datas.get(i);
+				XSSFRow row = sheet.getRow(startRow + i);
+				if (row == null)
+					row = sheet.createRow(startRow + i);
+
+				for (int j = 0; j < fields.length; j++) {
+					XSSFCell cell = row.getCell(startCol + j);
+					if (cell == null)
+						cell = row.createCell(startCol + j);
+
+					String value = "";
+					try {
+						Field field = Condition.class.getDeclaredField(fields[j]);
+						field.setAccessible(true);
+						Object fieldValue = field.get(item);
+						value = (fieldValue != null) ? fieldValue.toString() : "";
+					} catch (NoSuchFieldException | IllegalAccessException e) {
+						value = "";
+					}
+
+					cell.setCellValue(value); // ✅ 스타일 유지
+					cell.setCellStyle(borderStyle); //테두리
+				}
+			}
+
+			workbook.setForceFormulaRecalculation(true);
+			fos = new FileOutputStream(savePath + fileName);
+			workbook.write(fos);
+			workbook.close();
+			fos.flush();
+
+            // 클라이언트가 다운로드할 수 있도록 경로 반환
+            rtnMap.put("filename", fileName);
+            rtnMap.put("downloadPath",
+                  "/geomet/download_afterLiquidManage?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+		} finally {
+			try {
+				if (fis != null)
+					fis.close();
+				if (fos != null)
+					fos.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+
+		return rtnMap;
+	}
+	
+	 // 액투입 관리일지 엑셀 다운로드
+	 @RequestMapping(value = "/download_afterLiquidManage", method = RequestMethod.GET)
+	 public void download_liquidManage(@RequestParam("filename") String filename, HttpServletResponse response)
+	       throws IOException {
+
+	    // 파일이 저장된 경로
+	    String baseDir = "D:/GEOMET양식/액투입 관리일지/";
+
+	    // System.out.println("다운 주소 filename: " + filename);
+
+	    // 보안 체크
+	    if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+	       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+	       return;
+	    }
+
+	    // 다운로드할 파일 객체 생성
+	    File file = new File(baseDir + filename);
+	    System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+	    // 파일이 존재하지 않으면 에러 반환
+	    if (!file.exists()) {
+	       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+	       return;
+	    }
+
+	    // 파일 확장자 자동 추정
+	    String mimeType = Files.probeContentType(file.toPath());
+	    if (mimeType == null) {
+	       mimeType = "application/octet-stream";
+	    }
+	    response.setContentType(mimeType);
+	    response.setContentLengthLong(file.length());
+
+	    // 파일명 인코딩
+	    String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+	    // 다운로드 되도록 브라우저에 알림
+	    response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+	    // 파일을 바이트 스트림으로 클라이언트에 전송
+	    try (FileInputStream fis = new FileInputStream(file); OutputStream os = response.getOutputStream()) {
+	       byte[] buffer = new byte[1024];
+	       int len;
+	       while ((len = fis.read(buffer)) != -1) {
+	          os.write(buffer, 0, len);
+	       }
+	       os.flush();
+	    }
+	 }
+	 
+		// 액교반 관리일지 엑셀
+		@RequestMapping(value = "/condition/machineLiquidManage/excel", method = RequestMethod.POST)
+		@ResponseBody
+		public Map<String, Object> machineLiquidManageExcek(@RequestBody Condition condition,
+				@RequestParam(required = false) String startDate) {
+			System.out.println("엑셀 컨트롤러 도착");
+			System.out.println("condition.getMch_name(): " + condition.getMch_name());
+			//System.out.println("quality.getDate()" + quality.getDate());
+
+			Map<String, Object> rtnMap = new HashMap<>();
+
+			// 날짜 및 파일명 생성
+			SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd'_액교반 관리일지 엑셀_'HHmmss");
+			Date time = new Date();
+			String fileName = format.format(time) + ".xlsx";
+
+			FileOutputStream fos = null;
+			FileInputStream fis = null;
+			String openPath = "D:/GEOMET양식/";
+			String savePath = "D:/GEOMET양식/액교반 관리일지/";
+			
+			// 필터링된 데이터만 조회
+			List<Condition> datas = conditionService.getMachineliquidmanage(condition);
+			// System.out.println("조회된 건수: " + (getMachineList != null ?
+			// getMachineList.size() : 0));
+
+			if (datas == null || datas.isEmpty()) {
+				rtnMap.put("error", "데이터 없음");
+				return rtnMap;
+			}
+
+			if(condition.getMch_name().equals("G600")|| condition.getMch_name().equals("G800")) {
+			try {
+				fis = new FileInputStream(openPath + "액교반 관리일지 엑셀 양식1.xlsx");
+				XSSFWorkbook workbook = new XSSFWorkbook(fis);
+				XSSFSheet sheet = workbook.getSheetAt(0);
+				
+				// 테두리 스타일 객체 생성
+				XSSFCellStyle borderStyle = workbook.createCellStyle();
+				borderStyle.setBorderTop(BorderStyle.THIN);
+				borderStyle.setBorderBottom(BorderStyle.THIN);
+				borderStyle.setBorderLeft(BorderStyle.THIN);
+				borderStyle.setBorderRight(BorderStyle.THIN);
+				
+				//엑셀 스타일 정의(빨간색으로 입력)
+				XSSFCellStyle redStyle = workbook.createCellStyle();
+				XSSFFont redFont = workbook.createFont();
+				redFont.setColor(IndexedColors.RED.getIndex());
+				redStyle.setFont(redFont);
+				
+				//빨간색, 테두리
+				XSSFCellStyle redBorderStyle = workbook.createCellStyle();
+				redBorderStyle.cloneStyleFrom(borderStyle);
+				redBorderStyle.setFont(redFont);
+				
+				// K7: 기간 (row=6, col=8)
+				String sDate = condition.getIn_date();   // 시작날짜
+				String eDate = condition.getEndDate();   // 끝날짜
+				String periodText = (sDate == null ? "" : sDate) + " ~ " + (eDate == null ? "" : eDate);
+
+				XSSFRow row7 = sheet.getRow(6); 
+				if(row7 == null) {
+					row7 = sheet.createRow(6);
+				}
+				XSSFCell cellI7 = row7.getCell(13);
+				if(cellI7 == null) {
+					cellI7 = row7.createCell(13);
+				}
+				cellI7.setCellValue(periodText);   // 템플릿 스타일 유지
+
+				// I8: 설비명 (row=7, col=8)
+				String mchName = condition.getMch_name();
+
+				XSSFRow row8 = sheet.getRow(7);
+				if(row8 == null) {
+					row8 = sheet.createRow(7);
+				}
+				XSSFCell cellI8 = row8.getCell(13);
+				if(cellI8 == null) {
+					row8.createCell(13);
+				}
+				cellI8.setCellValue(mchName == null ? "" : mchName);  // 템플릿 스타일 유지
+
+				// 기존 스타일을 유지하면서 데이터만 삽입
+				String[] fields = { "in_date", "mch_name", "m68_mixer_no", "m68_g1_temp",
+						"m68_g2_temp", "m68_g1_lot_no", "m68_g2_lot_no",
+						"m68_thickener_g", "m68_mixing_start_time", "m68_thickener_time", "m68_viscosity", "m68_out_time",
+						"m68_mixing_time", "m68_checker", "m68_post_rpm", "m68_thickener_lot", "m68_mch_temp", "m68_humidity"};
+
+				int startRow = 10; // B11부터 시작 (row index는 0부터니까 10번 인덱스가 11번째 줄)
+				int startCol = 0; // A열 (index 0)
+
+				for (int i = 0; i < datas.size(); i++) {
+					Condition item = datas.get(i);
+					XSSFRow row = sheet.getRow(startRow + i);
+					if (row == null)
+						row = sheet.createRow(startRow + i);
+
+					for (int j = 0; j < fields.length; j++) {
+						XSSFCell cell = row.getCell(startCol + j);
+						if (cell == null)
+							cell = row.createCell(startCol + j);
+
+						String value = "";
+						try {
+							Field field = Condition.class.getDeclaredField(fields[j]);
+							field.setAccessible(true);
+							Object fieldValue = field.get(item);
+							value = (fieldValue != null) ? fieldValue.toString() : "";
+						} catch (NoSuchFieldException | IllegalAccessException e) {
+							value = "";
+						}
+						
+				        // 숫자 파싱 (문자 중 숫자/부호/소수점만 추출)
+				        Double num = null;
+				        if (value != null) {
+				            String cleaned = value.replaceAll("[^0-9.+-]", "");
+				            if (!cleaned.isEmpty()) {
+				                try {
+				                    num = Double.valueOf(cleaned);
+				                } catch (NumberFormatException ignore) {
+				                    num = null;
+				                }
+				            }
+				        }
+				        
+				        boolean makeRed = false;
+				        
+				        // ── 조건부 서식: 범위 밖이면 빨간색
+				        if ("m68_g1_temp".equals(fields[j]) || "m68_g2_temp".equals(fields[j])) {
+				            if (num != null) {
+				                if (num < 15.0 || num > 25.0) {
+				                    makeRed = true;
+				                }
+				                cell.setCellValue(num);
+				            } else {
+				                cell.setCellValue(value);
+				            }
+				        }  else if ("m68_thickener_g".equals(fields[j])) {
+				            if (num != null) {
+				                if (num < 180.0 || num > 260.0) {
+				                    makeRed = true;
+				                }
+				                cell.setCellValue(num);
+				            } else {
+				                cell.setCellValue(value);
+				            }
+				        }else if("m68_viscosity".equals(fields[j])) {
+				        	if(num != null) {
+				        		if(num < 41.0 || num > 55.0) {
+				        			makeRed = true;
+				        		}
+				        		cell.setCellValue(num);
+				        	}else {
+				        		cell.setCellValue(value);
+				        	}
+				        }else if("m68_mch_temp".equals(fields[j])) {
+				        	if(num != null) {
+				        		if(num > 25) {
+				        			makeRed = true;
+				        		}
+				        		cell.setCellValue(num);
+				        	}else {
+				        		cell.setCellValue(value);
+				        	}
+				        }else if("m68_humidity".equals(fields[j])) {
+				        	if(num != null) {
+				        		if(num < 20) {
+				        			makeRed = true;
+				        		}
+				        		cell.setCellValue(num);
+				        	}else {
+				        		cell.setCellValue(value);
+				        	}
+				        }
+				        else {
+				            // 일반 필드
+				            cell.setCellValue(value);
+				        }
+				        if(makeRed) {
+				        	cell.setCellStyle(redBorderStyle);
+				        }else {
+				        	cell.setCellStyle(borderStyle);
+				        }
+
+						cell.setCellValue(value); // ✅ 스타일 유지
+						//cell.setCellStyle(borderStyle); //테두리
+					}
+				}
+
+				workbook.setForceFormulaRecalculation(true);
+				fos = new FileOutputStream(savePath + fileName);
+				workbook.write(fos);
+				workbook.close();
+				fos.flush();
+
+	            // 클라이언트가 다운로드할 수 있도록 경로 반환
+	            rtnMap.put("filename", fileName);
+	            rtnMap.put("downloadPath",
+	                  "/geomet/download_machineLiquidManage?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+
+			} catch (Exception e) {
+				e.printStackTrace();
+				rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+			} finally {
+				try {
+					if (fis != null)
+						fis.close();
+					if (fos != null)
+						fos.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			}
+			else {
+				
+				String VISC_PREFIX = "PL점도(35~55): ";
+				
+				try {
+					fis = new FileInputStream(openPath + "액교반 관리일지 엑셀 양식2.xlsx");
+					XSSFWorkbook workbook = new XSSFWorkbook(fis);
+					XSSFSheet sheet = workbook.getSheetAt(0);
+					
+					// 테두리 스타일 객체 생성
+					XSSFCellStyle borderStyle = workbook.createCellStyle();
+					borderStyle.setBorderTop(BorderStyle.THIN);
+					borderStyle.setBorderBottom(BorderStyle.THIN);
+					borderStyle.setBorderLeft(BorderStyle.THIN);
+					borderStyle.setBorderRight(BorderStyle.THIN);
+					
+					//엑셀 스타일 정의(빨간색으로 입력)
+					XSSFCellStyle redStyle = workbook.createCellStyle();
+					XSSFFont redFont = workbook.createFont();
+					redFont.setColor(IndexedColors.RED.getIndex());
+					redStyle.setFont(redFont);
+					
+					//빨간색, 테두리
+					XSSFCellStyle redBorderStyle = workbook.createCellStyle();
+					redBorderStyle.cloneStyleFrom(borderStyle);
+					redBorderStyle.setFont(redFont);
+					
+					// K7: 기간 (row=6, col=8)
+					String sDate = condition.getIn_date();   // 시작날짜
+					String eDate = condition.getEndDate();   // 끝날짜
+					String periodText = (sDate == null ? "" : sDate) + " ~ " + (eDate == null ? "" : eDate);
+
+					XSSFRow row7 = sheet.getRow(6); 
+					if(row7 == null) {
+						row7 = sheet.createRow(6);
+					}
+					XSSFCell cellI7 = row7.getCell(9);
+					if(cellI7 == null) {
+						cellI7 = row7.createCell(9);
+					}
+					cellI7.setCellValue(periodText);   // 템플릿 스타일 유지
+
+					// I8: 설비명 (row=7, col=8)
+					String mchName = condition.getMch_name();
+
+					XSSFRow row8 = sheet.getRow(7);
+					if(row8 == null) {
+						row8 = sheet.createRow(7);
+					}
+					XSSFCell cellI8 = row8.getCell(9);
+					if(cellI8 == null) {
+						row8.createCell(9);
+					}
+					cellI8.setCellValue(mchName == null ? "" : mchName);  // 템플릿 스타일 유지
+
+					// 기존 스타일을 유지하면서 데이터만 삽입
+					String[] fields = { "in_date", "mch_name", "kmp_humidity", "kmp_mixing_temp", "kmp_mch_temp", "kmp_liquid_lot_no", "kmp_mixing_start_time",
+							"kmp_mixing_time", "kmp_mch_visc", "kmp_out_time", "kmp_checker"};
+
+					int startRow = 10; // B11부터 시작 (row index는 0부터니까 10번 인덱스가 11번째 줄)
+					int startCol = 0; // A열 (index 0)
+
+					for (int i = 0; i < datas.size(); i++) {
+						Condition item = datas.get(i);
+						XSSFRow row = sheet.getRow(startRow + i);
+						if (row == null)
+							row = sheet.createRow(startRow + i);
+
+						for (int j = 0; j < fields.length; j++) {
+							XSSFCell cell = row.getCell(startCol + j);
+							if (cell == null)
+								cell = row.createCell(startCol + j);
+
+							String value = "";
+							try {
+								Field field = Condition.class.getDeclaredField(fields[j]);
+								field.setAccessible(true);
+								Object fieldValue = field.get(item);
+								value = (fieldValue != null) ? fieldValue.toString() : "";
+							} catch (NoSuchFieldException | IllegalAccessException e) {
+								value = "";
+							}
+
+//					        if ("kmp_mch_visc".equals(fields[j])) {
+//					            if (!value.isEmpty()) {
+//					                value = VISC_PREFIX + value;
+//					            }
+//					        }
+					        // 숫자 파싱 (문자 중 숫자/부호/소수점만 추출)
+					        Double num = null;
+					        if (value != null) {
+					            String cleaned = value.replaceAll("[^0-9.+-]", "");
+					            if (!cleaned.isEmpty()) {
+					                try {
+					                    num = Double.valueOf(cleaned);
+					                } catch (NumberFormatException ignore) {
+					                    num = null;
+					                }
+					            }
+					        }
+					        
+					        boolean makeRed = false;
+					        
+					        // ── 조건부 서식: 범위 밖이면 빨간색
+					        if ("kmp_humidity".equals(fields[j])) {
+					            if (num != null) {
+					                if (num < 15) {
+					                    makeRed = true;
+					                }
+					                cell.setCellValue(num);
+					            } else {
+					                cell.setCellValue(value);
+					            }
+					        }else if("kmp_mixing_temp".equals(fields[j])) {
+					        	if(num != null) {
+					        		if(num > 25) {
+					        			makeRed = true;
+					        		}
+					        		cell.setCellValue(num);
+					        	}else {
+					        		cell.setCellValue(value);
+					        	}
+					        }else if("kmp_mch_temp".equals(fields[j])) {
+					        	if(num != null) {
+					        		if(num > 25 || num < 15) {
+					        			makeRed = true;
+					        		}
+					        		cell.setCellValue(num);
+					        	}else {
+					        		cell.setCellValue(value);
+					        	}
+					        }else if("kmp_mch_visc".equals(fields[j])) {
+					        	if(num != null) {
+					        		value = VISC_PREFIX + value;
+					        		if(num < 35 || num > 55) {
+					        			makeRed = true;
+					        		}
+					        		cell.setCellValue(num);
+					        	}else {
+					        		cell.setCellValue(value);
+					        	}
+					        }
+					        else {
+					            // 일반 필드
+					            cell.setCellValue(value);
+					        }
+					        if(makeRed) {
+					        	cell.setCellStyle(redBorderStyle);
+					        }else {
+					        	cell.setCellStyle(borderStyle);
+					        }
+
+							cell.setCellValue(value); // ✅ 스타일 유지
+						}
+					}
+
+					workbook.setForceFormulaRecalculation(true);
+					fos = new FileOutputStream(savePath + fileName);
+					workbook.write(fos);
+					workbook.close();
+					fos.flush();
+
+		            // 클라이언트가 다운로드할 수 있도록 경로 반환
+		            rtnMap.put("filename", fileName);
+		            rtnMap.put("downloadPath",
+		                  "/geomet/download_machineLiquidManage?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+
+				} catch (Exception e) {
+					e.printStackTrace();
+					rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+				} finally {
+					try {
+						if (fis != null)
+							fis.close();
+						if (fos != null)
+							fos.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+				
+			}
+
+			return rtnMap;
+		}
+		
+		 // 액교반 관리일지 엑셀 다운로드
+		 @RequestMapping(value = "/download_machineLiquidManage", method = RequestMethod.GET)
+		 public void download_machineLiquidManage(@RequestParam("filename") String filename, HttpServletResponse response)
+		       throws IOException {
+
+		    // 파일이 저장된 경로
+		    String baseDir = "D:/GEOMET양식/액교반 관리일지/";
+
+		    // System.out.println("다운 주소 filename: " + filename);
+
+		    // 보안 체크
+		    if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+		       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		       return;
+		    }
+
+		    // 다운로드할 파일 객체 생성
+		    File file = new File(baseDir + filename);
+		    System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+		    // 파일이 존재하지 않으면 에러 반환
+		    if (!file.exists()) {
+		       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		       return;
+		    }
+
+		    // 파일 확장자 자동 추정
+		    String mimeType = Files.probeContentType(file.toPath());
+		    if (mimeType == null) {
+		       mimeType = "application/octet-stream";
+		    }
+		    response.setContentType(mimeType);
+		    response.setContentLengthLong(file.length());
+
+		    // 파일명 인코딩
+		    String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+		    // 다운로드 되도록 브라우저에 알림
+		    response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+		    // 파일을 바이트 스트림으로 클라이언트에 전송
+		    try (FileInputStream fis = new FileInputStream(file); OutputStream os = response.getOutputStream()) {
+		       byte[] buffer = new byte[1024];
+		       int len;
+		       while ((len = fis.read(buffer)) != -1) {
+		          os.write(buffer, 0, len);
+		       }
+		       os.flush();
+		    }
+		 }
     
 
 }

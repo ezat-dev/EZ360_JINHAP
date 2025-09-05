@@ -106,6 +106,27 @@ public class QualityServiceImpl implements QualityService {
 	public boolean updateTestManage(Quality quality) {
 		return qualityDao.updateTestManage(quality);
 	}
+	
+	@Override
+	public Boolean testTankInsert(Quality quality) {
+		return qualityDao.testTankInsert(quality);
+	}
+	@Override
+	public List<Quality> getTestTankList(Quality quality) {
+		return qualityDao.getTestTankList(quality);
+	}
+	@Override
+	public boolean testTankDelete(Quality quality) {
+		return qualityDao.testTankDelete(quality);
+	}
+	@Override
+	public List<Quality> getDataList1(Quality quality) {
+		return qualityDao.getDataList1(quality);
+	}
+	@Override
+	public boolean data1Insert(Quality quality) {
+		return qualityDao.data1Insert(quality);
+	}
 
 
 }

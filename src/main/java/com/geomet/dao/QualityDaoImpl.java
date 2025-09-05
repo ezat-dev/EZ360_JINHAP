@@ -137,5 +137,39 @@ public class QualityDaoImpl implements QualityDao {
 		}
 		return true;
 	}
+	
+	//테스트/시험정보
+	@Override
+	public Boolean testTankInsert(Quality quality) {
+		int result = sqlSession.insert("quality.testTankInsert", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public List<Quality> getTestTankList(Quality quality) {
+		return sqlSession.selectList("quality.getTestTankList", quality);
+	}
+	@Override
+	public boolean testTankDelete(Quality quality) {
+		int result = sqlSession.delete("quality.testTankDelete", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public List<Quality> getDataList1(Quality quality) {
+		return sqlSession.selectList("quality.getDataList1", quality);
+	}
+	@Override
+	public boolean data1Insert(Quality quality) {
+		int result = sqlSession.insert("quality.data1Insert", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
 }
 

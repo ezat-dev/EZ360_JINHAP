@@ -407,4 +407,95 @@
 		</set>
 		WHERE number = #{number}
 	</update>
+	
+		
+	<!-- 테스트/시험정보 탱크액 추가 -->
+		<insert id="testTankInsert" parameterType="Quality">
+		INSERT INTO
+		tb_test_tank (
+		test_num, date, mch_name, hafter_1,
+		empty_2, hbefore_3,
+		action, min_spec, max_spec, file_name
+		)
+		VALUES (
+		#{test_num}, #{date}, #{mch_name}, #{hafter_1},
+		#{empty_2}, #{hbefore_3},
+		#{action},
+		#{min_spec}, #{max_spec}, #{file_name}
+		)
+	</insert>
+	<!-- 테스트/시험정보 탱크액 리스트 조회 -->
+		<select id="getTestTankList" parameterType="Quality"
+		resultType="Quality">
+    SELECT 
+        *,
+        ((hafter_1 - empty_2) / hbefore_3) * 100 AS etc1,
+        CASE
+            WHEN ((hafter_1 - empty_2) / hbefore_3) * 100 BETWEEN min_spec AND max_spec THEN '합격'
+            ELSE '불합격'
+        END AS etc2
+    FROM tb_test_tank
+    WHERE 1=1
+    <if test="date != null and date != ''">
+         AND `date` = #{date}
+    </if>
+	</select>
+	<!-- 테스트/시험정보 탱크액 삭제 -->
+		<delete id="testTankDelete" parameterType="Quality">
+		DELETE FROM
+		tb_test_tank
+		WHERE test_num = #{test_num}
+	</delete>
+	
+	<!-- 테스트/시험정보 첫 번째 테이블 추가 -->
+		<insert id="data1Insert" parameterType="Quality">
+		INSERT INTO
+		tb_clean12 (
+		test_num, date, mch_name, acid_reduce,
+		naoh_density, min_spec, max_spec
+		)
+		VALUES (
+		#{test_num}, #{date}, #{mch_name}, #{acid_reduce},
+		#{naoh_density}, #{min_spec}, #{max_spec}
+		)
+	</insert>
+	
+	<!-- 테스트/시험정보 첫 번째 테이블 조회 -->
+		<select id="getDataList1" parameterType="Quality"
+		resultType="Quality">
+    SELECT 
+        c.id,
+        c.test_num,
+        c.date,
+        c.mch_name,
+        c.acid_reduce,
+        c.naoh_density,
+        c.min_spec,
+        c.max_spec,
+        CASE
+            WHEN c.naoh_density BETWEEN min_spec AND max_spec THEN '합격'
+            ELSE '불합격'
+        END AS result,
+        m.num AS standard_num,
+        m.naoh_result,
+        m.hcl,
+        m.liter,
+        m.naoh,
+        m.sc300a,
+        m.sc300b,
+        m.condense,
+        m.after_naoh,
+        m.table_code
+    FROM tb_clean12 c
+    JOIN tb_medicine_standard m 
+      ON m.naoh_result = (FLOOR(CAST(c.naoh_density AS SIGNED) / 2) * 2)
+     AND (
+            (c.mch_name = '1호기' AND m.table_code = 1)
+         OR (c.mch_name = '2호기' AND m.table_code = 2)
+        )
+    WHERE 1=1
+    <if test="date != null and date != null">
+        AND c.date = #{date}
+    </if>
+	</select>
 </mapper>

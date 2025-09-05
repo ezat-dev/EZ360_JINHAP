@@ -54,4 +54,11 @@ public interface QualityDao {
 	    //테스트 관리대장
 	    List<Quality> getTestManageList(Quality quality);
 	    boolean updateTestManage(Quality quality);
+	    
+	    //테스트/시험정보
+	    Boolean testTankInsert(Quality quality);
+	    List<Quality> getTestTankList(Quality quality);
+	    boolean testTankDelete(Quality quality);
+	    List<Quality> getDataList1(Quality quality);
+	    boolean data1Insert(Quality quality);
 }

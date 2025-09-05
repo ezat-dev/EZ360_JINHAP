@@ -130,8 +130,74 @@ public class Quality {
 	    private String etc5;
 	    private String etc6;
 	    
+	    //테스트/시험정보
+	    private String test_num;
+	    private Float hafter_1;
+	    private Float empty_2;
+	    private Float hbefore_3;
+	    private String min_spec;
+	    private String max_spec;
+	    private String spec;
+	    
+	    private String acid_reduce;
+	    private String naoh_density;
 	    
 	    
+	    
+		public String getTest_num() {
+			return test_num;
+		}
+		public void setTest_num(String test_num) {
+			this.test_num = test_num;
+		}
+		public Float getHafter_1() {
+			return hafter_1;
+		}
+		public void setHafter_1(Float hafter_1) {
+			this.hafter_1 = hafter_1;
+		}
+		public Float getEmpty_2() {
+			return empty_2;
+		}
+		public void setEmpty_2(Float empty_2) {
+			this.empty_2 = empty_2;
+		}
+		public Float getHbefore_3() {
+			return hbefore_3;
+		}
+		public void setHbefore_3(Float hbefore_3) {
+			this.hbefore_3 = hbefore_3;
+		}
+		public String getMin_spec() {
+			return min_spec;
+		}
+		public void setMin_spec(String min_spec) {
+			this.min_spec = min_spec;
+		}
+		public String getMax_spec() {
+			return max_spec;
+		}
+		public void setMax_spec(String max_spec) {
+			this.max_spec = max_spec;
+		}
+		public String getSpec() {
+			return spec;
+		}
+		public void setSpec(String spec) {
+			this.spec = spec;
+		}
+		public String getAcid_reduce() {
+			return acid_reduce;
+		}
+		public void setAcid_reduce(String acid_reduce) {
+			this.acid_reduce = acid_reduce;
+		}
+		public String getNaoh_density() {
+			return naoh_density;
+		}
+		public void setNaoh_density(String naoh_density) {
+			this.naoh_density = naoh_density;
+		}
 		public String getEtc1() {
 			return etc1;
 		}

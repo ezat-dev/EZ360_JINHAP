@@ -190,7 +190,7 @@
 		    margin-left: auto;
 		    margin-right: 10px;
 		    margin-top: 40px;
-		      width: 1180px;
+		    width: 1322px;
 		}
 		.box1 {
 		    display: flex;
@@ -337,6 +337,9 @@
                       <button class="delete-button bt3_3">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
+			    <button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+                </button>
 				
                 
 	    </div>
@@ -966,6 +969,60 @@
       });
     });
   });
+
+  //엑셀
+  $(".excel-button").on("click", function () {
+	    $("#excelOverlay, #excelLoading").show();
+	    
+	    const in_date = $("#in_date").val();
+	    const mch_name = $("#mch_name").val();
+	    const endDate = $('#endDate').val();
+	    console.log("in_date", in_date);
+	    console.log("mch_name", mch_name);
+	    console.log("endDate", endDate);
+
+	    console.log("▶ 엑셀 생성 요청 파라미터:", { in_date, mch_name, endDate });
+
+	    // 2) AJAX 호출
+	    $.ajax({
+	        url: "/geomet/condition/afterLiquidManage/excel",
+	        method: "POST",
+	        contentType: "application/json",
+	        data: JSON.stringify({ in_date, mch_name, endDate }),
+	        dataType: "json",
+
+	        success: function (result) {
+	            console.log("▶ 서버가 돌려준 result:", result);
+
+	            if (result && result.downloadPath) {
+                             const a = document.createElement('a');
+                             a.href = result.downloadPath;
+                             a.style.display = 'none';
+                             document.body.appendChild(a);
+                             a.click();
+                             document.body.removeChild(a);
+
+	                alert("액투입 관리일지 엑셀 저장 완료되었습니다.");
+	            } else {
+	                console.warn("✋ downloadPath 키가 없습니다!", result);
+	                alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
+	            }
+	        },
+
+	        error: function (xhr, status, error) {
+	            console.error("▶ 엑셀 생성/다운로드 중 오류:", {
+	                status: status,
+	                error: error,
+	                responseText: xhr.responseText
+	            });
+	            alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
+	        },
+
+	        complete: function () {
+	            $("#excelOverlay, #excelLoading").hide();
+	        }
+	    });
+	});
 
   
 </script>

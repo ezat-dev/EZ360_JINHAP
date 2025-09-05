@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2095,4 +2097,164 @@ public class QualityController {
 		       os.flush();
 		    }
 		 }
+		 
+		 //테스트 시험정보 액탱크 추가
+			@RequestMapping(value = "/quality/testTank/insert", method = RequestMethod.POST)
+			@ResponseBody
+			public boolean testTankInsert(@ModelAttribute Quality quality,
+					@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile) {
+				//System.out.println("testTankInsert 컨트롤러 도착");
+				
+				String test_num = LocalDateTime.now()
+						.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+				test_num += "tb_test_tank";
+				quality.setTest_num(test_num);
+				
+				try {
+					if (uploadFile != null) {
+						String uploadDir = "D:/GEOMET양식/가열잔분 탱크액 관리기준 정보";
+
+						File directory = new File(uploadDir);
+						if (!directory.exists()) {
+							directory.mkdirs();
+						}
+
+							if (!uploadFile.isEmpty()) {
+								String originalFilename = uploadFile.getOriginalFilename();
+
+								// 현재 시간(파일명에 추가할거)
+								String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+								// 확장자 분리
+								String ext = "";
+								int dotIndex = originalFilename.lastIndexOf('.');
+								if (dotIndex > 0) {
+									ext = originalFilename.substring(dotIndex); // ".pdf", ".xlsx" 등
+									originalFilename = originalFilename.substring(0, dotIndex); // 확장자 제외한 이름
+								}
+
+								// 새 파일명 생성
+								String savedFilename = originalFilename + "_" + timestamp + ext;
+
+								// 파일 저장
+								File destination = new File(uploadDir + "/" + savedFilename);
+								uploadFile.transferTo(destination);
+
+								//db 저장되도록 file_name 갱신
+								quality.setFile_name(savedFilename);
+							}
+						}
+				} catch (Exception e) {
+					e.printStackTrace();
+					return false;
+				}
+
+				return qualityService.testTankInsert(quality);
+			}
+			
+			// 테스트/시험정보 탱크액 리스트
+			@RequestMapping(value = "/quality/testTank/list", method = RequestMethod.POST)
+			@ResponseBody
+			public Map<String, Object> testTankList(@ModelAttribute Quality quality) {
+				//System.out.println("testTankList 컨트롤러 도착");
+				//System.out.println("quality.getDate()" + quality.getDate());
+
+				Map<String, Object> rtnMap = new HashMap<String, Object>();
+
+				    List<Quality> data1 = qualityService.getDataList1(quality);
+					List<Quality> data3 = qualityService.getTestTankList(quality);
+				//	System.out.println("getNonProductManageList.size()" + data3.size());
+					for(Quality v: data3) {
+						//System.out.println("v: " + v);
+						v.setSpec(v.getMin_spec() + " ~ " + v.getMax_spec());
+					}
+					for(Quality v: data1) {
+						System.out.println(v);
+					}
+
+					rtnMap.put("data1", data1);
+					rtnMap.put("data3", data3);
+				return rtnMap;
+			}
+			
+			//테스트/시험정보 탱크액 삭제
+			@RequestMapping(value = "/quality/testTank/delete", method = RequestMethod.POST)
+			@ResponseBody
+			public boolean deleteTestTank(@RequestBody Quality quality) {
+				//System.out.println("삭제 컨트롤러 도착");
+				//System.out.println("quality.getTest_num()" + quality.getTest_num());
+				return qualityService.testTankDelete(quality);
+			}
+			
+			 //테스트 시험정보 첫 번째 테이블 추가(세척 1, 2)
+				@RequestMapping(value = "/quality/data1/insert", method = RequestMethod.POST)
+				@ResponseBody
+				public boolean data1Insert(@ModelAttribute Quality quality,
+						@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile) {
+					//System.out.println("data1Insert 컨트롤러 도착");
+					//System.out.println("quality.getAcid_reduce(): " + quality.getAcid_reduce());
+					String acid_reduce = quality.getAcid_reduce();
+					
+					String test_num = LocalDateTime.now()
+							.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+					test_num += "tb_clean12";
+					quality.setTest_num(test_num);
+					
+					try {
+						if (uploadFile != null) {
+							String uploadDir = "D:/GEOMET양식/세척1, 2호기 가성소다용액 농도 분석 기준 정보";
+
+							File directory = new File(uploadDir);
+							if (!directory.exists()) {
+								directory.mkdirs();
+							}
+
+								if (!uploadFile.isEmpty()) {
+									String originalFilename = uploadFile.getOriginalFilename();
+
+									// 현재 시간(파일명에 추가할거)
+									String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+									// 확장자 분리
+									String ext = "";
+									int dotIndex = originalFilename.lastIndexOf('.');
+									if (dotIndex > 0) {
+										ext = originalFilename.substring(dotIndex); // ".pdf", ".xlsx" 등
+										originalFilename = originalFilename.substring(0, dotIndex); // 확장자 제외한 이름
+									}
+
+									// 새 파일명 생성
+									String savedFilename = originalFilename + "_" + timestamp + ext;
+
+									// 파일 저장
+									File destination = new File(uploadDir + "/" + savedFilename);
+									uploadFile.transferTo(destination);
+
+									//db 저장되도록 file_name 갱신
+									quality.setFile_name(savedFilename);
+								}
+							}
+					} catch (Exception e) {
+						e.printStackTrace();
+						return false;
+					}
+					
+				    if (acid_reduce == null || acid_reduce.isEmpty() || acid_reduce.equals("undefined")) {
+				        System.err.println("`acid_reduce` 값이 유효하지 않습니다: " + acid_reduce);
+				        return false; // 유효하지 않은 값은 false 반환
+				    }
+				    
+				    try {
+				        // 소수점 계산을 위해 Double.parseDouble 사용
+				        double a = Double.parseDouble(acid_reduce);
+				        a *= 0.8;
+				        quality.setNaoh_density(Double.toString(a));
+				    } catch (NumberFormatException e) {
+				        // 숫자로 변환할 수 없는 경우 예외 처리
+				        System.err.println("`acid_reduce` 값을 숫자로 변환할 수 없습니다: " + acid_reduce);
+				        e.printStackTrace();
+				        return false;
+				    }
+					return qualityService.data1Insert(quality);
+				}
 }
