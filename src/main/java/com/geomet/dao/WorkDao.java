@@ -13,6 +13,13 @@ public interface WorkDao {
     boolean inventoryStatusUpdate(Work work);
     int deleteInventoryStatus(List<Integer> ids);
 
+    List<Work> getInTestList(Work work);
+	void insertInTest(Work work);
+    boolean inTestUpdate(Work work);
+  
+    
+    
+    
 	//생산현황
 	List<Work> getMachineEfficStatusList(Work work);
 	

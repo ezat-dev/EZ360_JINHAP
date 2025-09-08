@@ -47,6 +47,27 @@ public class WorkDaoImpl implements WorkDao {
         return sqlSession.delete("work.deleteInventoryStatus", ids);
     }
     
+    // 수입검사
+    
+    @Override
+    public List<Work> getInTestList(Work work) {
+        return sqlSession.selectList("work.getInTestList", work);
+    }
+    @Override
+    public void insertInTest(Work work) {
+           sqlSession.insert("work.insertInTest", work);
+    }
+    @Override
+    public boolean inTestUpdate(Work work) {
+       int result = sqlSession.update("work.inTestUpdate", work);
+       if(result <= 0) {
+          return false;
+       }
+       return true;
+    }
+  
+    
+    
     @Override
     public List<Work> getMachineEfficStatusList(Work work) {
         return sqlSession.selectList("work.getMachineEfficStatusList", work);

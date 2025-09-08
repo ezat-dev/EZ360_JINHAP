@@ -53,6 +53,54 @@
 
 
 
+
+
+
+
+
+	
+
+
+   <!-- 수입검사  -->
+   <select id="getInTestList" parameterType="Work" resultType="Work">
+		    SELECT * 
+    FROM tb_new_inventorystatus_test
+    WHERE `reg_date` LIKE CONCAT(#{startDate}, '%')
+      AND `lot_no` IS NOT NULL
+
+   </select>
+
+
+
+   <update id="inTestUpdate" parameterType="Work">
+         UPDATE tb_new_inventorystatus_test
+    SET
+        in_1 = #{in_1},
+        in_2 = #{in_2},
+        in_3 = #{in_3},
+        in_4 = #{in_4},
+        in_5 = #{in_5},
+        in_6 = #{in_6}
+    WHERE id = #{id}
+   </update>
+
+
+
+<insert id="insertinTest" parameterType="Work" useGeneratedKeys="true" keyProperty="id">
+    INSERT INTO tb_new_inventorystatus_test
+    (company_name, reg_date, medicine_name, lot_no, stock_in, daily_usage)
+    VALUES
+    (#{company_name}, #{reg_date}, #{medicine_name}, #{lot_no}, #{stock_in}, #{daily_usage})
+</insert>
+
+
+
+
+
+
+
+
+
  <select id="getMachineEfficStatusList" resultType="Work">
     SELECT facility_name, a, b, c, d
     FROM v_machineefficstatus

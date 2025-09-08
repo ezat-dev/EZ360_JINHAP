@@ -14,8 +14,7 @@
 
 
 .tab {
-    margin-left: 500px;
-    width: 69%;
+
     margin-bottom: 37px;
     margin-top: 5px;
     height: 55px;
@@ -186,10 +185,10 @@
         .button-container {
     		display: flex;
 		    gap: 10px;
-		    margin-left: auto;
+		
 		    margin-right: 10px;
 		    margin-top: 40px;
-		      width: 1180px;
+
 		}
 		.box1 {
 		    display: flex;

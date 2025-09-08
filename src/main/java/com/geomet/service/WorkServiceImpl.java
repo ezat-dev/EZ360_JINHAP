@@ -30,12 +30,28 @@ public class WorkServiceImpl implements WorkService {
     public boolean inventoryStatusUpdate(Work work) {
        return workDao.inventoryStatusUpdate(work);
     }
-    
-    
     @Override
     public boolean deleteInventoryStatus(List<Integer> ids) {
         return workDao.deleteInventoryStatus(ids) > 0;
     }
+    
+  //수입검사
+  	@Override
+  	public List<Work> getInTestList(Work work){
+  		return workDao.getInTestList(work);
+  	}
+  	@Override
+      public void insertInTest(Work work) {
+  		workDao.insertInTest(work); 	   
+      }
+  	
+      @Override
+      public boolean inTestUpdate(Work work) {
+         return workDao.inTestUpdate(work);
+      }
+   
+    
+
 
 	//생산관리
 	@Override

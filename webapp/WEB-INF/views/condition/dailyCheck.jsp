@@ -282,14 +282,14 @@
 
  				<label for="m_code">설비선택 :</label>
 				<select id="m_code">
-				    <option value="W0100">세척1호기</option>
-				    <option value="W0200">세척2호기</option>
-				    <option value="S0100">쇼트1호기</option>
-				    <option value="S0200">쇼트2호기</option>
-				    <option value="S0300">쇼트3호기</option>
-				    <option value="S0400">쇼트4호기</option>
-				    <option value="S0500">쇼트5호기</option>
-				    <option value="S0600">쇼트6호기</option>
+				    <option value="G01-GW21">세척1호기</option>
+				    <option value="G01-GW22">세척2호기</option>
+				    <option value="G02-GC01">쇼트1호기</option>
+				    <option value="G02-GC02">쇼트2호기</option>
+				    <option value="G02-GC03">쇼트3호기</option>
+				    <option value="G02-GC04">쇼트4호기</option>
+				    <option value="G02-GC05">쇼트5호기</option>
+				    <option value="G02-GC06">쇼트6호기</option>
 				    <option value="G03-GG03">G600</option>
 				    <option value="G03-GG01" selected>G800</option> <!-- 🔹 기본 선택값 -->
 				    <option value="G04-GG05">K-BLACK</option>

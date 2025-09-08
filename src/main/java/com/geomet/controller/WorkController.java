@@ -2338,4 +2338,66 @@ public class WorkController {
     	//System.out.println("getMedicineInfo 도착");
         return workService.getMedicineInfo_main(work);  
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+
+    
+    // 재고관리(약품) 조절 리스트
+    @RequestMapping(value = "/work/inTest/list", method = RequestMethod.POST)
+    @ResponseBody
+    public List<Work> getinTestList(
+            @RequestParam(required = false) String startDate) {
+        System.out.println(">>> startDate: " + startDate);
+
+        Work work = new Work();
+        work.setStartDate(startDate == null || startDate.isEmpty() ? null : startDate);
+
+        System.out.println(">>> Work 객체 startDate: " + work.getStartDate());
+
+        return workService.getInTestList(work);
+    }
+
+    
+    @RequestMapping(value = "/work/inTest/update", method = RequestMethod.POST)
+    @ResponseBody
+    public boolean inTestUpdate(@RequestBody Work work) {
+        // 요청 도착 로그
+        System.out.println("=== inTestUpdate 컨트롤러 도착 ===");
+        
+        // 전달된 객체 확인
+        System.out.println("work.getId(): " + work.getId());
+        System.out.println("work.getCompany_name(): " + work.getCompany_name());
+        System.out.println("work.getReg_date(): " + work.getReg_date());
+        System.out.println("work.getMedicine_name(): " + work.getMedicine_name());
+        System.out.println("work.getLot_no(): " + work.getLot_no());
+        System.out.println("work.getStock_in(): " + work.getStock_in());
+        System.out.println("work.getDaily_usage(): " + work.getDaily_usage());
+
+        try {
+            boolean result = workService.inTestUpdate(work);
+            System.out.println("업데이트 결과: " + result);
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace(); // 에러 상세 출력
+            return false;
+        }
+    }
+
+    
+    @RequestMapping(value = "/work/inTest/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public String insertinTest(@RequestBody Work work) {
+        //System.out.println("Received Work object: " + work);
+        workService.insertInTest(work);
+        return "success";
+    }
+
 }
