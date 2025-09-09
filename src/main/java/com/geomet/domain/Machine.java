@@ -1,6 +1,45 @@
 package com.geomet.domain;
 
 public class Machine {
+	
+	
+	
+	
+	 
+
+	    private String work_date;
+	    private String operator;
+
+	    private String inspection_type;
+	    private String downtime_flag;
+	    private Integer downtime_minutes;
+	    private String category_mid;
+	    private String category_sub;
+	    private String part_flag;
+	    private String action;
+	    private String action_detail;
+	    private String replacement_type;
+	    private String part_name;
+	    private String part_replacement_flag;
+	    private Integer quantity;
+	    private String due_date;
+	    private String replacement_date;
+	    private String prev_replacement_date;
+	    private Integer usage_days;
+	    private String manufacturer;
+	    private String manager_name;
+	    private String contact;
+	    private String part_status;
+	    private Integer safety_stock;
+	    private Integer current_stock;
+	    private Integer purchase_qty;
+	
+	
+	
+	
+	
+	
+	
 	private String work_time2;
 	private String mach_cod;
 	private String target;
@@ -198,7 +237,7 @@ public class Machine {
     private String non_time_memo;
     private String v_equipment_name;
     //non_time_view
-    
+    private String workDate;
     private String sum_time;
     private String info_list_v;
 
@@ -245,7 +284,7 @@ public class Machine {
     private String g_b;
     private String gong_type;
     private String gong_hr;
-
+    private String inspectionType;
     
     
     //경보
@@ -270,6 +309,22 @@ public class Machine {
 
     
 
+
+	public String getInspectionType() {
+		return inspectionType;
+	}
+
+	public void setInspectionType(String inspectionType) {
+		this.inspectionType = inspectionType;
+	}
+
+	public String getWorkDate() {
+		return workDate;
+	}
+
+	public void setWorkDate(String workDate) {
+		this.workDate = workDate;
+	}
 
 	public String getWork_time2() {
 		return work_time2;
@@ -1375,6 +1430,206 @@ public class Machine {
 
 	public void setEnd_time_formatted(String end_time_formatted) {
 		this.end_time_formatted = end_time_formatted;
+	}
+
+	public String getWork_date() {
+		return work_date;
+	}
+
+	public void setWork_date(String work_date) {
+		this.work_date = work_date;
+	}
+
+	public String getOperator() {
+		return operator;
+	}
+
+	public void setOperator(String operator) {
+		this.operator = operator;
+	}
+
+	public String getInspection_type() {
+		return inspection_type;
+	}
+
+	public void setInspection_type(String inspection_type) {
+		this.inspection_type = inspection_type;
+	}
+
+	public String getDowntime_flag() {
+		return downtime_flag;
+	}
+
+	public void setDowntime_flag(String downtime_flag) {
+		this.downtime_flag = downtime_flag;
+	}
+
+	public Integer getDowntime_minutes() {
+		return downtime_minutes;
+	}
+
+	public void setDowntime_minutes(Integer downtime_minutes) {
+		this.downtime_minutes = downtime_minutes;
+	}
+
+	public String getCategory_mid() {
+		return category_mid;
+	}
+
+	public void setCategory_mid(String category_mid) {
+		this.category_mid = category_mid;
+	}
+
+	public String getCategory_sub() {
+		return category_sub;
+	}
+
+	public void setCategory_sub(String category_sub) {
+		this.category_sub = category_sub;
+	}
+
+	public String getPart_flag() {
+		return part_flag;
+	}
+
+	public void setPart_flag(String part_flag) {
+		this.part_flag = part_flag;
+	}
+
+	public String getAction() {
+		return action;
+	}
+
+	public void setAction(String action) {
+		this.action = action;
+	}
+
+	public String getAction_detail() {
+		return action_detail;
+	}
+
+	public void setAction_detail(String action_detail) {
+		this.action_detail = action_detail;
+	}
+
+	public String getReplacement_type() {
+		return replacement_type;
+	}
+
+	public void setReplacement_type(String replacement_type) {
+		this.replacement_type = replacement_type;
+	}
+
+	public String getPart_name() {
+		return part_name;
+	}
+
+	public void setPart_name(String part_name) {
+		this.part_name = part_name;
+	}
+
+	public String getPart_replacement_flag() {
+		return part_replacement_flag;
+	}
+
+	public void setPart_replacement_flag(String part_replacement_flag) {
+		this.part_replacement_flag = part_replacement_flag;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public String getDue_date() {
+		return due_date;
+	}
+
+	public void setDue_date(String due_date) {
+		this.due_date = due_date;
+	}
+
+	public String getReplacement_date() {
+		return replacement_date;
+	}
+
+	public void setReplacement_date(String replacement_date) {
+		this.replacement_date = replacement_date;
+	}
+
+	public String getPrev_replacement_date() {
+		return prev_replacement_date;
+	}
+
+	public void setPrev_replacement_date(String prev_replacement_date) {
+		this.prev_replacement_date = prev_replacement_date;
+	}
+
+	public Integer getUsage_days() {
+		return usage_days;
+	}
+
+	public void setUsage_days(Integer usage_days) {
+		this.usage_days = usage_days;
+	}
+
+	public String getManufacturer() {
+		return manufacturer;
+	}
+
+	public void setManufacturer(String manufacturer) {
+		this.manufacturer = manufacturer;
+	}
+
+	public String getManager_name() {
+		return manager_name;
+	}
+
+	public void setManager_name(String manager_name) {
+		this.manager_name = manager_name;
+	}
+
+	public String getContact() {
+		return contact;
+	}
+
+	public void setContact(String contact) {
+		this.contact = contact;
+	}
+
+	public String getPart_status() {
+		return part_status;
+	}
+
+	public void setPart_status(String part_status) {
+		this.part_status = part_status;
+	}
+
+	public Integer getSafety_stock() {
+		return safety_stock;
+	}
+
+	public void setSafety_stock(Integer safety_stock) {
+		this.safety_stock = safety_stock;
+	}
+
+	public Integer getCurrent_stock() {
+		return current_stock;
+	}
+
+	public void setCurrent_stock(Integer current_stock) {
+		this.current_stock = current_stock;
+	}
+
+	public Integer getPurchase_qty() {
+		return purchase_qty;
+	}
+
+	public void setPurchase_qty(Integer purchase_qty) {
+		this.purchase_qty = purchase_qty;
 	}
     
     

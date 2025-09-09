@@ -565,11 +565,12 @@ SELECT
   ROUND((((tong * std_weight) / 1000) / capa_day) * 100, 1) AS percent_day,
   ROUND((tong * std_weight) / 1000 - capa_day, 1) AS bujok_day,
   -- 월별 기준 지표 추가
-  ROUND((work_month * capa_day), 1) AS capa_month, --
-  ROUND((m_tong * std_weight) / 1000, 1) AS month_ton, --
-  ROUND((((m_tong * std_weight) / 1000) / (work_month * capa_day)) * 100, 1) AS percent_month, --
-  ROUND((m_tong * std_weight) / 1000 - (work_month * capa_day), 1) AS bujok_month, --
-  ROUND((work_day / capa_day) * 1000,1) AS capa_sum,
+FORMAT(ROUND((work_month * capa_day), 1), 1) AS capa_month, -- 월 CAPA
+FORMAT(ROUND((m_tong * std_weight) / 1000, 1), 1) AS month_ton, -- 월 TON
+FORMAT(ROUND((((m_tong * std_weight) / 1000) / (work_month * capa_day)) * 100, 1), 1) AS percent_month, -- 달성률
+FORMAT(ROUND((m_tong * std_weight) / 1000 - (work_month * capa_day), 1), 1) AS bujok_month, -- 부족
+FORMAT(ROUND((work_day / capa_day) * 1000,1), 1) AS capa_sum, -- CAPA 합계
+
   '1' AS cc,
   '1' AS dd,
   '1' AS ee,

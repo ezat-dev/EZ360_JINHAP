@@ -311,8 +311,8 @@
 	  <label for="mch_name" class="daylabel">설비명 :</label>
 			<select id="mch_name" class="mch_name" onchange="toggleTable()">
            
-               <option value="G600">지오메트 액교반(G600)</option>
-               <option value="G800">지오메트 액교반(G800)</option>
+       <!--         <option value="G600">지오메트 액교반(G600)</option> -->
+               <option value="지오메트">지오메트 액교반</option>
                 <option value="K_BLACK">후처리 액교반(K_BLACK)</option>
                 <option value="ML">후처리 액교반(ML)</option> 
                 <option value="PL">후처리 액교반(PL)</option>
@@ -363,7 +363,7 @@
   <div id="modalContainer1" class="modal" style="display:none;">
   <div class="modal-content modal-content1">
     <span class="close close1">&times;</span>
-    <h2>G-600/G-800</h2>
+    <h2>지오메트</h2>
  <form id="corrForm1" autocomplete="off">
     
       <input type="hidden" name="id">
@@ -374,8 +374,8 @@
      
       <label>설비명</label>
       <select name="mch_name">
-        <option value="G800">G800</option>
-        <option value="G600">G600</option>
+        <option value="지오메트">지오메트</option>
+      
       </select>
           
         <label>교반기</label>
@@ -505,7 +505,7 @@
 <div id="modalContainer3" class="modal" style="display:none;">
   <div class="modal-content">
     <span class="close" id="closeModal3">&times;</span>
-    <h2>ML/PL/K_BALCK</h2>
+    <h2>액교반</h2>
     <form id="corrForm3" autocomplete="off">
       <input type="hidden" name="id">
 			
@@ -530,19 +530,19 @@
       <label>교반룸 온도 (25℃ 이하)</label>
       <input type="text" name="kmp_mixing_temp">
 
-      <label>KB 온도 (20±5℃)</label>
+      <label>온도 (20±5℃)</label>
       <input type="text" name="kmp_mch_temp">
 
       <label>신액 Lot No.</label>
       <input type="text" name="kmp_liquid_lot_no">
 
-      <label>교반 시작 시간</label>
+      <label >교반 시작시간</label>
       <input type="text" name="kmp_mixing_start_time">
 
       <label>교반 시간 (최소 1시간 이상)</label>
       <input type="text" name="kmp_mixing_time">
 
-      <label>점도 (35~55초)</label>
+      <label id="viscLabel">점도 (35~55초)</label>
       <input type="text" name="kmp_mch_visc">
 
       <label>약품 출고 시간</label>
@@ -569,6 +569,32 @@
 
   $(".bt1_1").show();
   $(".bt3_3").hide();
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+	  const map = {
+	    K_BLACK: ' 점도 (35~55초)',
+	    ML:      ' 점도 (25~45초)',
+	    PL:      ' 점도 (15~35초)'
+	  };
+
+	  document.querySelectorAll("select[name='mch_name']").forEach(selectEl => {
+	    // 초기 라벨 동기화 (필요하면)
+	    const initial = selectEl.value;
+	    const label = document.getElementById('viscLabel');
+	    if (label) label.textContent = map[initial] || '점도';
+
+	    // 변경 이벤트 연결
+	    selectEl.addEventListener('change', function () {
+	      const label = document.getElementById('viscLabel');
+	      if (!label) return;
+	      label.textContent = map[this.value] || '점도';
+	    });
+	  });
+	});
+
+
+  
 
 //yyyy-MM-dd 포맷 함수
   function fmtDate(d) {
@@ -766,7 +792,7 @@
 
   function initTables() {
     table1 = new Tabulator("#table1", {
-      height: "355px",
+      height: "655px",
       layout: "fitColumns",
       selectable: true,
       headerHozAlign: "center",
@@ -780,9 +806,9 @@
     	    { title: "NO",            field: "id",              headerSort: false, hozAlign: "center", visible: false },
 
     	    { title: "날짜",          field: "in_date",hozAlign: "center",         headerSort: false, width: 110 },
-    	    { title: "설비",          field: "mch_name",hozAlign: "center",        headerSort: false},  
-            { title: "교반기", width: 100, field: "m68_mixer_no", headerSort: false, width: 90 },
-            { title: "G1 온도<br>(20±5℃)", field: "m68_g1_temp", width: 100, headerSort: false,
+    	    { title: "설비",          field: "mch_name",hozAlign: "center",        headerSort: false, width: 90},  
+            { title: "교반기", width: 90, field: "m68_mixer_no", headerSort: false, width: 80 },
+            { title: "G1 온도<br>(20±5℃)", field: "m68_g1_temp", width: 80, headerSort: false,
                 formatter: function(cell){
                     const value = cell.getValue();
 					if(value < 15 || 25 < value){
@@ -827,7 +853,7 @@
                     }
               },
             { title: "약품<br>출고시간", field: "m68_out_time", headerSort: false, width: 90},
-            { title: "교반 시간", field: "m68_mixing_time", headerSort: false, width: 110  },
+            { title: "교반 시간", field: "m68_mixing_time", headerSort: false, width: 90  },
             { title: "확인자<br>최소 24시간", field: "m68_checker", headerSort: false, width: 110  },
             { title: "증점제<br>투입 후 rpm<br>50Hz", field: "m68_post_rpm", width: 110, headerSort: false  },
             { title: "증점제<br>LOTNO.", field: "m68_thickener_lot", headerSort: false},
@@ -885,7 +911,7 @@
 
   
     table3 = new Tabulator("#table3", {
-    	  height: "365px",
+    	  height: "665px",
     	  layout: "fitColumns",
     	  selectable: true,
     	  headerHozAlign: "center",
@@ -933,10 +959,10 @@
     	          min = 35; max = 55;
     	          displayText = "K_B점도 (" + min + "~" + max + "): " + value;
     	        } else if(data.mch_name === "ML"){
-    	          min = 15; max = 55;
+    	          min = 25; max = 45;
     	          displayText = "ML점도 (" + min + "~" + max + "): " + value;
     	        } else if(data.mch_name === "PL"){
-    	          min = 25; max = 45;
+    	          min = 15; max = 35;
     	          displayText = "PL점도 (" + min + "~" + max + "): " + value;
     	        } else {
     	          min = 0; max = 100;
@@ -953,7 +979,7 @@
     	    },
 
 
-        { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false, width: 120 ,hozAlign: "center" },
+        { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false, width: 90 ,hozAlign: "center" },
         { title: "확인자(작업자)", field: "kmp_checker", headerSort: false , width: 120 ,hozAlign: "center" }
       ],
       rowDblClick: function(e, row) {

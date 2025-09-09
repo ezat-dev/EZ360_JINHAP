@@ -561,8 +561,8 @@ public class MachineController {
     // 설비이력카드
     @RequestMapping(value = "/machine/repairStatus/list", method = RequestMethod.POST)
     @ResponseBody
-    public List<Machine> getRepairStatusList(Machine machine) {
-        System.out.println(">>> mch_name: " + machine.getMch_name());
+    public List<Machine> getRepairStatusList(@RequestBody Machine machine){
+    
 
         return machineService.getRepairStatusList(machine);
     }
@@ -571,11 +571,7 @@ public class MachineController {
     @RequestMapping(value = "/machine/repairStatus/insert", method = RequestMethod.POST)
     @ResponseBody
     public String insertRepairStatus(@ModelAttribute Machine machine) {
-        System.out.println(">>> 설비명: " + machine.getMch_name());
-        System.out.println(">>> 내용: " + machine.getContent());
-        //System.out.println(">>> 점검유형: " + machine.getCheck());
-        System.out.println(">>> 결과: " + machine.getResult());
-        System.out.println(">>> 비고: " + machine.getRemarks());
+
 
         machineService.insertRepairStatus(machine); 
 
@@ -587,7 +583,7 @@ public class MachineController {
         Map<String, Object> rtnMap = new HashMap<>();
         System.out.println("삭제 요청 받은 데이터: " + machine);
 
-        if (machine.getNo() == null) {
+        if (machine.getId() == null) {
             rtnMap.put("data", "행 선택하세요");
             return rtnMap;
         }

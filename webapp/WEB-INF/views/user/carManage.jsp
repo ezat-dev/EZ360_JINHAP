@@ -598,7 +598,10 @@
         } else {
           $("#dataList").hide();
           $(".car").hide();
-          $("#dataList2").show();
+          $("#dataList2").show().css({
+        	    "position": "relative",  // 또는 absolute/fixed 등 원하는 값
+        	    "z-index": -1            // 음수면 대부분 뒤로 밀림
+        	  });
           getDataList2();
         }
       });

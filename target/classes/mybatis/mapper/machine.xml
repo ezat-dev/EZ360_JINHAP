@@ -267,52 +267,98 @@ SELECT * FROM v_moniteolingling
 
 
 
-
 <insert id="insertRepairStatus" parameterType="Machine">
-    INSERT INTO tb_repair_status (
-        mch_name,
-        mch_code,
-        a_check,
-        maintenance,
-        content,
-        result,
-        remarks,
-        insert_date
-    )
-    VALUES (
-        #{mch_name},
-        #{mch_code},
-        #{a_check},
-        #{maintenance},
-        #{content},
-        #{result},
-        #{remarks},
-        NOW()
-    )
+    INSERT INTO tb_equipment_maintenance (
+        id, work_date, operator, equipment_name, inspection_type,
+        downtime_flag, downtime_minutes, category_mid, category_sub,
+        part_flag, action, action_detail, replacement_type,
+        part_name, part_replacement_flag, quantity, due_date,
+        replacement_date, prev_replacement_date, usage_days,
+        manufacturer, manager_name, contact, part_status,
+        safety_stock, current_stock, purchase_qty
+    ) VALUES (
+    #{id}, #{work_date}, #{operator}, #{equipment_name}, #{inspection_type},
+    #{downtime_flag}, #{downtime_minutes}, #{category_mid}, #{category_sub},
+    #{part_flag}, #{action}, #{action_detail}, #{replacement_type},
+    #{part_name}, #{part_replacement_flag}, #{quantity}, #{due_date},
+    #{replacement_date}, #{prev_replacement_date}, #{usage_days},
+    #{manufacturer}, #{manager_name}, #{contact}, #{part_status},
+    #{safety_stock}, #{current_stock}, #{purchase_qty}
+)
+
     ON DUPLICATE KEY UPDATE
-        a_check = VALUES(a_check),
-        maintenance = VALUES(maintenance),
-        result = VALUES(result),
-        remarks = VALUES(remarks),
-        insert_date = CURRENT_TIMESTAMP
+        work_date = VALUES(work_date),
+        operator = VALUES(operator),
+        equipment_name = VALUES(equipment_name),
+        inspection_type = VALUES(inspection_type),
+        downtime_flag = VALUES(downtime_flag),
+        downtime_minutes = VALUES(downtime_minutes),
+        category_mid = VALUES(category_mid),
+        category_sub = VALUES(category_sub),
+        part_flag = VALUES(part_flag),
+        action = VALUES(action),
+        action_detail = VALUES(action_detail),
+        replacement_type = VALUES(replacement_type),
+        part_name = VALUES(part_name),
+        part_replacement_flag = VALUES(part_replacement_flag),
+        quantity = VALUES(quantity),
+        due_date = VALUES(due_date),
+        replacement_date = VALUES(replacement_date),
+        prev_replacement_date = VALUES(prev_replacement_date),
+        usage_days = VALUES(usage_days),
+        manufacturer = VALUES(manufacturer),
+        manager_name = VALUES(manager_name),
+        contact = VALUES(contact),
+        part_status = VALUES(part_status),
+        safety_stock = VALUES(safety_stock),
+        current_stock = VALUES(current_stock),
+        purchase_qty = VALUES(purchase_qty)
 </insert>
 
-  <delete id="delRepairStatus" parameterType="Machine">
-    DELETE FROM tb_repair_status WHERE no = #{no}
-  </delete>
+<delete id="delRepairStatus" parameterType="Machine">
+    DELETE FROM tb_equipment_maintenance
+    WHERE id = #{id}
+</delete>
+
+
+
+
 
 
 <select id="getRepairStatusList" parameterType="Machine" resultType="Machine">
-    SELECT *
-    FROM tb_repair_status
-    WHERE 1=1
-      <if test="mch_name != 'ALL'">
-        AND mch_name = #{mch_name}
-      </if>
-      AND insert_date BETWEEN CONCAT(#{s_date}, ' 00:00:00') AND CONCAT(#{e_date}, ' 23:59:59')
-    ORDER BY insert_date DESC
-    LIMIT 200
+    SELECT
+        id, work_date, operator, equipment_name, inspection_type,
+        downtime_flag, downtime_minutes, category_mid, category_sub,
+        part_flag, action, action_detail, replacement_type,
+        part_name, part_replacement_flag, quantity, due_date,
+        replacement_date, prev_replacement_date, usage_days,
+        manufacturer, manager_name, contact, part_status,
+        safety_stock, current_stock, purchase_qty
+    FROM tb_equipment_maintenance
+    <where>
+       <if test="equipmentName != null and equipmentName != ''">
+    AND equipment_name = #{equipmentName}
+		</if>
+		
+		<if test="startDate != null and endDate != null">
+		    AND work_date BETWEEN #{startDate} AND #{endDate}
+		</if>
+		<if test="startDate != null and endDate == null">
+		    AND work_date &gt;= #{startDate}
+		</if>
+		<if test="endDate != null and startDate == null">
+		    AND work_date &lt;= #{endDate}
+		</if>
+
+    </where>
+    ORDER BY work_date DESC, id DESC
 </select>
+
+
+
+
+
+
 
 
  

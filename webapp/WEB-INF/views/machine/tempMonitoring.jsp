@@ -373,8 +373,14 @@ $(document).ready(function () {
 
     function formatDate(date) {
         const offset = date.getTimezoneOffset() * 60000;
-        const localDate = new Date(date.getTime() - offset);
-        return localDate.toISOString().slice(0, 16);
+        const localDate = new Date(date.getTime());
+        console.log("localDate", localDate);
+        const year = localDate.getFullYear();
+        const month = String(localDate.getMonth() + 1).padStart(2, '0');
+        const day = String(localDate.getDate()).padStart(2, '0');
+        const hours = String(localDate.getHours()).padStart(2, '0');
+        const minutes = String(localDate.getMinutes()).padStart(2, '0');
+        return year + "-" + month + "-" + day + " " + hours + ":" + minutes;
     }
 
     const now = new Date();

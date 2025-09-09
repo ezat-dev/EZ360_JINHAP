@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>후처리 액교반 관리일지</title>
+    <title>후처리 액투입 관리일지</title>
 <%@include file="../include/pluginpage.jsp" %>   
 <jsp:include page="../include/tabBar.jsp"/> 
 
@@ -190,7 +190,7 @@
 		    margin-left: auto;
 		    margin-right: 10px;
 		    margin-top: 40px;
-		    width: 1322px;
+		    width: 1422px;
 		}
 		.box1 {
 		    display: flex;
@@ -313,11 +313,11 @@
 	  <label for="mch_name" class="daylabel">설비명 :</label>
 			<select id="mch_name" class="mch_name" onchange="toggleTable()">
            
-                <option value="G600">지오메트 액교반(G600)</option>
-               <option value="G800">지오메트 액교반(G800)</option>
-                <option value="K_BLACK">후처리 액교반(K_BLACK)</option>
-                <option value="ML">후처리 액교반(ML)</option> 
-                <option value="PL">후처리 액교반(PL)</option>
+                <option value="지오메트">지오메트 액투입 </option>
+    
+                <option value="K_BLACK">후처리 액투입(K_BLACK)</option>
+                <option value="ML">후처리 액투입(ML)</option> 
+                <option value="PL">후처리 액투입(PL)</option>
                
             </select>
 	        
@@ -374,7 +374,7 @@
   <div id="modalContainer1" class="modal" style="display:none;">
   <div class="modal-content modal-content1">
     <span class="close close1">&times;</span>
-    <h2>G-600/G-800</h2>
+    <h2>지오메트</h2>
  <form id="corrForm1" autocomplete="off">
     
       <input type="hidden" name="id">
@@ -385,8 +385,8 @@
      
       <label>설비명</label>
       <select name="mch_name">
-        <option value="G800">G800</option>
-        <option value="G600">G600</option>
+        <option value="지오메트">지오메트</option>
+  
       </select>
 
      
@@ -468,15 +468,15 @@
   <div class="modal-content2">
     <span class="close close2">&times;</span>
 
-    <h2>액교반 및 탱크 일지()Table2</h2>
+    <h2>액투입 및 탱크 일지</h2>
     <form id="corrForm2" autocomplete="off">
       <input type="hidden" name="id">
 
       <label>설비명</label>
       <select name="mch_name">
            
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
+                <option value="지오메트">지오메트</option>
+      
                 <option value="K_BLACK">K_BLACK</option>
                 <option value="ML">ML</option>
                 <option value="PL">PL</option>
@@ -773,7 +773,7 @@
 
 
   window.addEventListener("DOMContentLoaded", () => {
-    $("#mch_name").val("G800");
+    $("#mch_name").val("지오메트");
     toggleTable();
   });
 

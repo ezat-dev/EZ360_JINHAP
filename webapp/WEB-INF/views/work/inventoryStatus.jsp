@@ -418,7 +418,7 @@ $(".select-button").click(handleSelectButtonClick);
 
 function getDataList() {
     const medicineUnits = {
-        "GEOMET G1": "Kg",
+/*         "GEOMET G1": "Kg",
         "GEOMET G2": "Kg",
         "ML(H)": "Kg",
         "ML(G)": "Kg",
@@ -435,7 +435,8 @@ function getDataList() {
         "중화제 (069)": "L",
         "방청유(P-210)": "DM",
         "열처리유(SQ70)": "DM",
-        "쇼트볼(SUS)": "포"
+        "쇼트볼(SUS)": "포" */
+            
     };
 
     dataTable = new Tabulator("#dataTable", {

@@ -291,6 +291,32 @@
       
         $('input[name="replacement_date"], select[name="replacement_cycle"]')
           .on('change', calcNextDate);
+
+        function formatDate(date) {
+            const offset = date.getTimezoneOffset() * 60000;
+            const localDate = new Date(date.getTime() - offset);
+
+            const year = localDate.getFullYear();
+            const month = String(localDate.getMonth() + 1).padStart(2, '0');
+            const day = String(localDate.getDate()).padStart(2, '0');
+
+            return year + "-" + month + "-" + day;
+        }
+
+        const now = new Date();
+        // 오늘
+        const ed = formatDate(now);
+
+        // 어제 (오늘에서 하루 빼기)
+        const yesterday = new Date(now);
+        yesterday.setDate(now.getDate() - 1);
+        const sd = formatDate(yesterday);
+
+        $("#startDate").val(sd);
+        $("#endDate").val(ed);
+
+        getDataList();
+        $(".select-button").click(); 
       });
 
 

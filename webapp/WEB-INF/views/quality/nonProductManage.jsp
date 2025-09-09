@@ -223,8 +223,8 @@
             <label class="daylabel">설비명 :</label>
             <select class="dayselect" id="equipment_name">
             <option value="ALL">전체</option>
-    			<option value="세척 1호기">탈유탈지 1호기</option>
-			    <option value="세척 2호기"">탈유탈지 2호기</option>
+    			<option value="세척 1호기">세척 1호기</option>
+			    <option value="세척 2호기"">세척 2호기</option>
 			    <option value="쇼트1호기">쇼트1호기</option>
 			    <option value="쇼트2호기">쇼트2호기</option>
 			    <option value="쇼트3호기">쇼트3호기</option>
