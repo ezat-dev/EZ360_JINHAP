@@ -290,11 +290,12 @@
 				    <option value="G02-GC04">쇼트4호기</option>
 				    <option value="G02-GC05">쇼트5호기</option>
 				    <option value="G02-GC06">쇼트6호기</option>
+				    <option value="G02-GC08">쇼트7호기</option>
 				    <option value="G03-GG03">G600</option>
 				    <option value="G03-GG01" selected>G800</option> <!-- 🔹 기본 선택값 -->
 				    <option value="G04-GG05">K-BLACK</option>
 				    <option value="G04-GG07">공용설비</option>
-				    	    <option value="G01-GW09">방청</option>
+				    	    <option value="G05-GU01">방청</option>
 				    	    <option value="G06-GE01">E코팅</option> 
  
 				</select>

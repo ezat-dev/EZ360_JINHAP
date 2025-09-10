@@ -367,9 +367,6 @@
   </div>
 </div>
 
-
-
-
 <div id="modalContainerClean" class="modal">
   <div class="modal-content">
     <span class="close">&times;</span>
@@ -378,7 +375,8 @@
       <label>날짜</label>
       <input type="text" class="daySet" autocomplete="off" name="car_date" readonly>
       <input type="text" name="idx" readonly>
-      <table>
+      
+      <table border="1" cellspacing="0" cellpadding="5" style="border-collapse: collapse; width:100%;">
         <thead>
           <tr>
             <th>번호</th>
@@ -550,11 +548,13 @@
           </tr>
         </tbody>
       </table>
+      
       <button type="submit" id="saveCleanStatus">저장</button>
       <button type="button" id="closeCleanModal">닫기</button>
     </form>
   </div>
 </div>
+
 
 
     <script>
@@ -599,8 +599,7 @@
           $("#dataList").hide();
           $(".car").hide();
           $("#dataList2").show().css({
-        	    "position": "relative",  // 또는 absolute/fixed 등 원하는 값
-        	    "z-index": -1            // 음수면 대부분 뒤로 밀림
+        	         // 음수면 대부분 뒤로 밀림
         	  });
           getDataList2();
         }
@@ -946,7 +945,11 @@
         	  $(selector)
         	    .css("z-index", 9999)  // 맨 앞으로
         	    .addClass("show");
+
+        	  // 모달 안의 모든 select 값을 "O"로 초기화
+        	  $(selector).find("select").val("O");
         	}
+
         	function closeModal(selector) {
         	  $(selector).removeClass("show");
         	}
@@ -966,7 +969,6 @@
         	$("#closeCleanModal, .close-clean-btn, .close").on("click", function() {
         	  closeModal("#modalContainerClean");
         	});
-
 
 
         $(document).ready(function () {

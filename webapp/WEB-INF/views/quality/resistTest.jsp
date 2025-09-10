@@ -49,7 +49,7 @@
 		.modal-content {
 		    background: white;
 			width: 100%;
-   			 max-width: 951px;
+   			 max-width: 1001px;
 		    max-height: 700px; /* 화면 높이에 맞게 제한 */
 		    overflow-y: auto;
 		    margin: 2% auto; /* 수평 중앙 정렬 */
@@ -205,6 +205,18 @@
 		    flex-direction: column;
 		}
 		
+		/* 모달 안 테이블 인풋 크기 조정 */
+	#modalContainer4 .test-table input[type="number"],
+	#modalContainer4 .test-table input[type="text"] {
+    width: 170px;
+    padding: 3px;
+    font-size: 13px;
+    text-align: right;
+    box-sizing: border-box;
+    height: 40px;
+	}
+			
+		
 		.modal-content1 label {
 		    font-weight: bold;
 		    margin: 10px 49px 5px;
@@ -231,6 +243,32 @@
 		.modal-content1 button:hover {
 		    background-color: #a9a9a9;
 		}
+		
+		/* 모달 안 테이블 인풋 크기 조정 */
+#modalContainer2 input[type="number"],
+#modalContainer2 input[type="text"],
+#modalContainer2 select,
+#modalContainer2 input[type="date"] {
+    width: 160px;
+    padding: 3px;
+    font-size: 13px;
+    text-align: right; /* 숫자는 오른쪽 정렬 */
+    box-sizing: border-box;
+    height: 40px;
+}
+
+#modalContainer7 input[type="number"],
+#modalContainer7 input[type="text"],
+#modalContainer7 select,
+#modalContainer7 input[type="date"] {
+    width: 160px;
+    padding: 3px;
+    font-size: 13px;
+    text-align: right; /* 숫자는 오른쪽 정렬 */
+    box-sizing: border-box;
+    height: 40px;
+}
+
 </style>
 <body>
 
@@ -242,8 +280,9 @@
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">1. 세척1.2호기  가성소다용액 농도
                 </button>
                 	         <button class="insert-button_2 boxCss">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">2. 이코팅 욕액 분석
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">2. CCT시험성적서
                 </button>
+
                 	         <button class="insert-button_3 boxCss">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">3. 지오메트 가열잔분 탱크액
                 </button>
@@ -253,8 +292,12 @@
                 	         <button class="insert-button_5 boxCss">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">5. 후처리 부착량
                 </button>
-                	         <button class="insert-button_6 boxCss">
+<!--                 	         <button class="insert-button_6 boxCss">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">6. 내수밀착성
+                </button> -->
+                
+                 <button class="insert-button_7 boxCss">
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">7. SST시험성적서
                 </button>
               </div>
                 
@@ -305,7 +348,7 @@
 		<div id="modalContainer1" class="modal">
     <div class="modal-content1">
         <span class="close">&times;</span>
-        <h2>가열잔분 탱크액 관리기준 정보</h2>
+        <h2>가성소다용액 농도</h2>
         <form  id="corrForm1"  autocomplete="off">
             <label>테스트 시험일자</label>
            <input type="text" name="date" class="daySet" placeholder="날짜 선택" style="text-align: left; width: 120px; margin-left: 45px;">
@@ -348,14 +391,16 @@
     </div>
 </div>
 
-		<!-- 3번 모달창 -->
-		<div id="modalContainer" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>가열잔분 탱크액 관리기준 정보</h2>
-        <form  id="corrForm"  autocomplete="off">
-            <label>테스트 시험일자</label>
-           <input type="text" name="date" class="daySet" placeholder="날짜 선택" style="text-align: left; width: 120px; margin-left: 5%;">
+	<!-- 3번 모달창 -->
+<div id="modalContainer3" class="modal">
+  <div class="modal-content" style="max-width: 1400px; max-height: 800px; overflow-y: auto;">
+    <span class="close">&times;</span>
+    <h2>가열잔분 탱크액 관리기준 정보</h2>
+    <form id="corrForm" autocomplete="off">
+      <label>테스트 시험일자</label>
+      <input type="text" name="date" class="daySet" placeholder="날짜 선택"
+             style="text-align: left; width: 120px; margin-left: 5%;">
+
       <table class="tank-table">
         <thead>
           <tr>
@@ -369,47 +414,128 @@
           </tr>
         </thead>
         <tbody>
+          <!-- G600 : 3줄 -->
           <tr>
-            <td>G600 <input type="hidden" name="mch_name" value="G600"></td>
-            <td><input type="number"  name="hafter_1" required></td>
-            <td><input type="number"  name="empty_2" required></td>
-            <td><input type="number"  name="hbefore_3" required></td>
+            <td>G600 코터기1 <input type="hidden" name="mch_name" value="G600_1"></td>
+            <td><input type="number" name="hafter_1" required></td>
+            <td><input type="number" name="empty_2" required></td>
+            <td><input type="number" name="hbefore_3" required></td>
             <td><input type="text" name="action"></td>
             <td><input type="text" name="min_spec" value="36.5"></td>
             <td><input type="text" name="max_spec" value="41.5"></td>
           </tr>
           <tr>
-            <td>G800 <input type="hidden" name="mch_name" value="G800"></td>
-            <td><input type="number"  name="hafter_1" required></td>
-            <td><input type="number"  name="empty_2" required></td>
-            <td><input type="number"  name="hbefore_3" required></td>
+            <td>G600 코터기2 <input type="hidden" name="mch_name" value="G600_2"></td>
+            <td><input type="number" name="hafter_1" required></td>
+            <td><input type="number" name="empty_2" required></td>
+            <td><input type="number" name="hbefore_3" required></td>
             <td><input type="text" name="action"></td>
             <td><input type="text" name="min_spec" value="36.5"></td>
             <td><input type="text" name="max_spec" value="41.5"></td>
           </tr>
           <tr>
-            <td>PLUS <input type="hidden" name="mch_name" value="PLUS"></td>
-            <td><input type="number"  name="hafter_1"></td>
-            <td><input type="number"  name="empty_2"></td>
-            <td><input type="number"  name="hbefore_3"></td>
+            <td>G600 코터기3 <input type="hidden" name="mch_name" value="G600_3"></td>
+            <td><input type="number" name="hafter_1" required></td>
+            <td><input type="number" name="empty_2" required></td>
+            <td><input type="number" name="hbefore_3" required></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+
+          <!-- G800 : 4줄 -->
+          <tr>
+            <td>G800 코터기1 <input type="hidden" name="mch_name" value="G800_1"></td>
+            <td><input type="number" name="hafter_1" required></td>
+            <td><input type="number" name="empty_2" required></td>
+            <td><input type="number" name="hbefore_3" required></td>
             <td><input type="text" name="action"></td>
             <td><input type="text" name="min_spec" value="36.5"></td>
             <td><input type="text" name="max_spec" value="41.5"></td>
           </tr>
           <tr>
-            <td>ML <input type="hidden" name="mch_name" value="ML"></td>
-            <td><input type="number"  name="hafter_1"></td>
-            <td><input type="number"  name="empty_2"></td>
-            <td><input type="number"  name="hbefore_3"></td>
+            <td>G800 코터기2 <input type="hidden" name="mch_name" value="G800_2"></td>
+            <td><input type="number" name="hafter_1" required></td>
+            <td><input type="number" name="empty_2" required></td>
+            <td><input type="number" name="hbefore_3" required></td>
             <td><input type="text" name="action"></td>
             <td><input type="text" name="min_spec" value="36.5"></td>
             <td><input type="text" name="max_spec" value="41.5"></td>
           </tr>
           <tr>
-            <td>K/B <input type="hidden" name="mch_name" value="K/B"></td>
-            <td><input type="number"  name="hafter_1"></td>
-            <td><input type="number"  name="empty_2"></td>
-            <td><input type="number"  name="hbefore_3"></td>
+            <td>G800 코터기3 <input type="hidden" name="mch_name" value="G800_3"></td>
+            <td><input type="number" name="hafter_1" required></td>
+            <td><input type="number" name="empty_2" required></td>
+            <td><input type="number" name="hbefore_3" required></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+          <tr>
+            <td>G800 코터기4 <input type="hidden" name="mch_name" value="G800_4"></td>
+            <td><input type="number" name="hafter_1" required></td>
+            <td><input type="number" name="empty_2" required></td>
+            <td><input type="number" name="hbefore_3" required></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+
+          <!-- PLUS : 2줄 -->
+          <tr>
+            <td>PLUS 코터기1 <input type="hidden" name="mch_name" value="PLUS_1"></td>
+            <td><input type="number" name="hafter_1"></td>
+            <td><input type="number" name="empty_2"></td>
+            <td><input type="number" name="hbefore_3"></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+          <tr>
+            <td>PLUS 코터기2 <input type="hidden" name="mch_name" value="PLUS_2"></td>
+            <td><input type="number" name="hafter_1"></td>
+            <td><input type="number" name="empty_2"></td>
+            <td><input type="number" name="hbefore_3"></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+
+          <!-- ML : 2줄 -->
+          <tr>
+            <td>ML 코터기1 <input type="hidden" name="mch_name" value="ML_1"></td>
+            <td><input type="number" name="hafter_1"></td>
+            <td><input type="number" name="empty_2"></td>
+            <td><input type="number" name="hbefore_3"></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+          <tr>
+            <td>ML 코터기2 <input type="hidden" name="mch_name" value="ML_2"></td>
+            <td><input type="number" name="hafter_1"></td>
+            <td><input type="number" name="empty_2"></td>
+            <td><input type="number" name="hbefore_3"></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+
+          <!-- K/B : 2줄 -->
+          <tr>
+            <td>K/B 코터기1 <input type="hidden" name="mch_name" value="KB_1"></td>
+            <td><input type="number" name="hafter_1"></td>
+            <td><input type="number" name="empty_2"></td>
+            <td><input type="number" name="hbefore_3"></td>
+            <td><input type="text" name="action"></td>
+            <td><input type="text" name="min_spec" value="36.5"></td>
+            <td><input type="text" name="max_spec" value="41.5"></td>
+          </tr>
+          <tr>
+            <td>K/B 코터기2 <input type="hidden" name="mch_name" value="KB_2"></td>
+            <td><input type="number" name="hafter_1"></td>
+            <td><input type="number" name="empty_2"></td>
+            <td><input type="number" name="hbefore_3"></td>
             <td><input type="text" name="action"></td>
             <td><input type="text" name="min_spec" value="36.5"></td>
             <td><input type="text" name="max_spec" value="41.5"></td>
@@ -419,20 +545,360 @@
 
       <input type="hidden" name="batchId" value="">
 			
-			<label>기준서(PDF)</label>
-			<input type="file" id="fileInput3" accept="application/pdf"  name="uploadFile" style="text-align: left; width: 180px; margin-left: 5%;">
+      <label>기준서(PDF)</label>
+      <input type="file" id="fileInput3" accept="application/pdf" name="uploadFile"
+             style="text-align: left; width: 180px; margin-left: 5%;">
 
-			<label style="display: none;">파일 이름</label>
-			<input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)" style="text-align: left; width: 120px; margin-left: 5%; display: none;">
+      <label style="display: none;">파일 이름</label>
+      <input type="text" name="t_url" id="fileName" placeholder="기준서(PDF)"
+             style="text-align: left; width: 120px; margin-left: 5%; display: none;">
+
+      <button type="submit" id="saveCorrStatus">저장</button>
+      <button type="button" id="closeModal">닫기</button>
+    </form>
+  </div>
+</div>
+
+
+<div id="modalContainer5" class="modal">
+    <div class="modal-content" style="max-width: 1400px;">
+        <span class="close">&times;</span>
+        <h2>후처리 부착량 테스트</h2>
+        <form id="turbidityForm" autocomplete="off">
+            <table class="turbidity-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">구분</th>
+                        <th colspan="2">PLUS</th>
+                        <th colspan="2">ML</th>
+                        <th colspan="2">K/B</th>
+                    </tr>
+                    <tr>
+                        <th>Spec. 20 (mg/dm³) ↓</th>
+                        <th>Spec. 800 (mg/dm³) ↓</th>
+                        <th>Spec. 20 (mg/dm³) ↓</th>
+                        <th>Spec. 800 (mg/dm³) ↓</th>
+                        <th>Spec. 20 (mg/dm³) ↓</th>
+                        <th>Spec. 800 (mg/dm³) ↓</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>① 가열 전 시료무게</td>
+                        <td><input type="number" name="plus_before_1" style="width: 120px;"></td>
+                        <td><input type="number" name="plus_before_2" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_before_1" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_before_2" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_before_1" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_before_2" style="width: 120px;"></td>
+                    </tr>
+                    <tr>
+                        <td>② 가열 후 시료무게</td>
+                        <td><input type="number" name="plus_after_1" style="width: 120px;"></td>
+                        <td><input type="number" name="plus_after_2" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_after_1" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_after_2" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_after_1" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_after_2" style="width: 120px;"></td>
+                    </tr>
+                    <tr>
+                        <td>③ 시료수</td>
+                        <td><input type="number" name="plus_sample_count_1" style="width: 120px;"></td>
+                        <td><input type="number" name="plus_sample_count_2" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_sample_count_1" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_sample_count_2" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_sample_count_1" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_sample_count_2" style="width: 120px;"></td>
+                    </tr>
+                    <tr>
+                        <td>④ 시료당 표면적</td>
+                        <td><input type="number" name="plus_surface_area_1" style="width: 120px;"></td>
+                        <td><input type="number" name="plus_surface_area_2" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_surface_area_1" style="width: 120px;"></td>
+                        <td><input type="number" name="ml_surface_area_2" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_surface_area_2" style="width: 120px;"></td>
+                        <td><input type="number" name="kb_surface_area_2" style="width: 120px;"></td>
+                    </tr>
+                    <tr>
+                        <td>⑤ 총표면적 (③*④)</td>
+                        <td><input type="number" name="plus_total_area_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="plus_total_area_2" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="ml_total_area_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="ml_total_area_2" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="kb_total_area_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="kb_total_area_2" readonly style="width: 120px;"></td>
+                    </tr>
+                    <tr>
+                        <td>⑥ (②-①)</td>
+                        <td><input type="number" name="plus_diff_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="plus_diff_2" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="ml_diff_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="ml_diff_2" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="kb_diff_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="kb_diff_2" readonly style="width: 120px;"></td>
+                    </tr>
+                    <tr>
+                        <td>⑦ (⑥ / ⑤) * 1000</td>
+                        <td><input type="number" name="plus_result_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="plus_result_2" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="ml_result_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="ml_result_2" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="kb_result_1" readonly style="width: 120px;"></td>
+                        <td><input type="number" name="kb_result_2" readonly style="width: 120px;"></td>
+                    </tr>
+                    <tr>
+                        <td>분석 결과(합/부) 판정</td>
+                        <td>결과값</td>
+                        <td>결과값</td>
+                        <td>결과값</td>
+                        <td>결과값</td>
+                        <td>결과값</td>
+                        <td>결과값</td>
+                    </tr>
+                    <tr>
+                        <td>조치사항</td>
+                        <td><input type="text" name="plus_action_1" style="width: 120px;"></td>
+                        <td><input type="text" name="plus_action_2" style="width: 120px;"></td>
+                        <td><input type="text" name="ml_action_1" style="width: 120px;"></td>
+                        <td><input type="text" name="ml_action_2" style="width: 120px;"></td>
+                        <td><input type="text" name="kb_action_1" style="width: 120px;"></td>
+                        <td><input type="text" name="kb_action_2" style="width: 120px;"></td>
+                    </tr>
+                </tbody>
+            </table>
+            <button type="submit" id="saveCorrStatus">저장</button>
+            <button type="button" id="closeModal">닫기</button>
+        </form>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+<div id="modalContainer4" class="modal">
+<div class="modal-content" style="max-width: 1400px; max-height: 800px; overflow-y: auto;">
+
+        <span class="close">&times;</span>
+     
+        <form id="turbidityForm" autocomplete="off">
+<!-- 지오메트 부착량 테스트 -->
+<h3>4. 지오메트 부착량테스트</h3>
+<p>Spec.200(mg/dm²)↑</p>
+
+<table class="test-table" border="1" cellspacing="0" cellpadding="5" style="width:100%; text-align:center; border-collapse:collapse;">
+  <thead>
+    <tr>
+      <th>산출</th>
+      <th>G600 코터기1</th>
+      <th>G600 코터기2</th>
+      <th>G600 코터기3</th>
+      <th>G800 코터기1</th>
+      <th>G800 코터기2</th>
+      <th>G800 코터기3</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>① 가열 전의 시료무게</td>
+      <td><input type="number" name="g600_1_before"></td>
+      <td><input type="number" name="g600_2_before"></td>
+      <td><input type="number" name="g600_3_before"></td>
+      <td><input type="number" name="g800_1_before"></td>
+      <td><input type="number" name="g800_2_before"></td>
+      <td><input type="number" name="g800_3_before"></td>
+    </tr>
+    <tr>
+      <td>② 가열 후의 시료무게</td>
+      <td><input type="number" name="g600_1_after"></td>
+      <td><input type="number" name="g600_2_after"></td>
+      <td><input type="number" name="g600_3_after"></td>
+      <td><input type="number" name="g800_1_after"></td>
+      <td><input type="number" name="g800_2_after"></td>
+      <td><input type="number" name="g800_3_after"></td>
+    </tr>
+    <tr>
+      <td>③ 시료수</td>
+      <td><input type="number" name="g600_1_count"></td>
+      <td><input type="number" name="g600_2_count"></td>
+      <td><input type="number" name="g600_3_count"></td>
+      <td><input type="number" name="g800_1_count"></td>
+      <td><input type="number" name="g800_2_count"></td>
+      <td><input type="number" name="g800_3_count"></td>
+    </tr>
+    <tr>
+      <td>④ 시료당 표면적</td>
+      <td><input type="number" name="g600_1_area"></td>
+      <td><input type="number" name="g600_2_area"></td>
+      <td><input type="number" name="g600_3_area"></td>
+      <td><input type="number" name="g800_1_area"></td>
+      <td><input type="number" name="g800_2_area"></td>
+      <td><input type="number" name="g800_3_area"></td>
+    </tr>
+    <tr>
+      <td>⑤ 총표면적 (③*④)</td>
+      <td><input type="number" name="g600_1_total_area"></td>
+      <td><input type="number" name="g600_2_total_area"></td>
+      <td><input type="number" name="g600_3_total_area"></td>
+      <td><input type="number" name="g800_1_total_area"></td>
+      <td><input type="number" name="g800_2_total_area"></td>
+      <td><input type="number" name="g800_3_total_area"></td>
+    </tr>
+    <tr>
+      <td>⑥ (① - ②)</td>
+      <td><input type="number" name="g600_1_diff"></td>
+      <td><input type="number" name="g600_2_diff"></td>
+      <td><input type="number" name="g600_3_diff"></td>
+      <td><input type="number" name="g800_1_diff"></td>
+      <td><input type="number" name="g800_2_diff"></td>
+      <td><input type="number" name="g800_3_diff"></td>
+    </tr>
+    <tr>
+      <td>⑦ (⑥ / ⑤) * 1000</td>
+      <td><input type="number" name="g600_1_calc"></td>
+      <td><input type="number" name="g600_2_calc"></td>
+      <td><input type="number" name="g600_3_calc"></td>
+      <td><input type="number" name="g800_1_calc"></td>
+      <td><input type="number" name="g800_2_calc"></td>
+      <td><input type="number" name="g800_3_calc"></td>
+    </tr>
+    <tr style="background-color:#d8c7e6;">
+      <td>분석 결과 (합/부) 판정</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>조치사항</td>
+      <td><input type="text" name="g600_1_action"></td>
+      <td><input type="text" name="g600_2_action"></td>
+      <td><input type="text" name="g600_3_action"></td>
+       <td><input type="text" name="g800_1_action"></td>
+       <td><input type="text" name="g800_2_action"></td>
+      <td><input type="text" name="g800_3_action"></td>
+    </tr>
+  </tbody>
+</table>
 
             <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
         </form>
     </div>
 </div>
-        <div class="view">
-            <div id="dataList1"></div>
-        </div>
+
+
+
+
+
+<div id="modalContainer7" class="modal">
+<div class="modal-content" style="max-width: 1400px; max-height: 800px; overflow-y: auto;">
+<span class="close">&times;</span>
+
+    <form id="sstForm" autocomplete="off">
+      <h3>S.S.T(염수분무시험기 테스트)</h3>
+
+      <table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse: collapse; text-align:center;">
+        <thead>
+          <tr>
+            <th rowspan="2">시료위치</th>
+            <th colspan="6">S.S.T(염수분무시험기 테스트) Spec. 1,000hr.</th>
+          </tr>
+          <tr>
+            <th>품번</th>
+            <th>품명</th>
+            <th>사양</th>
+            <th>투입일</th>
+            <th>종료일</th>
+            <th>합격 / 불합격</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2회/주</td>
+            <td><input type="text" name="part_no"></td>
+            <td><input type="text" name="part_name"></td>
+            <td><input type="text" name="spec"></td>
+            <td><input type="date" name="start_date"></td>
+            <td><input type="date" name="end_date"></td>
+            <td>
+              <select name="result">
+                <option value="">선택</option>
+                <option value="pass">합격</option>
+                <option value="fail">불합격</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button type="submit" id="saveSst">저장</button>
+      <button type="button" id="closeModal">닫기</button>
+    </form>
+  </div>
+</div>
+
+
+
+<div id="modalContainer2" class="modal">
+<div class="modal-content" style="max-width: 1400px; max-height: 800px; overflow-y: auto;">
+  <span class="close">&times;</span>
+
+    <form id="sstForm" autocomplete="off">
+      <h3>C.C.T</h3>
+
+      <table border="1" cellspacing="0" cellpadding="5" style="width:100%; border-collapse: collapse; text-align:center;">
+        <thead>
+          <tr>
+            <th rowspan="2">시료위치</th>
+            <th colspan="6">S.S.T(염수분무시험기 테스트) Spec. 1,000hr.</th>
+          </tr>
+          <tr>
+            <th>품번</th>
+            <th>품명</th>
+            <th>사양</th>
+            <th>투입일</th>
+            <th>종료일</th>
+            <th>합격 / 불합격</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2회/주</td>
+            <td><input type="text" name="part_no"></td>
+            <td><input type="text" name="part_name"></td>
+            <td><input type="text" name="spec"></td>
+            <td><input type="date" name="start_date"></td>
+            <td><input type="date" name="end_date"></td>
+            <td>
+              <select name="result">
+                <option value="">선택</option>
+                <option value="pass">합격</option>
+                <option value="fail">불합격</option>
+              </select>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <button type="submit" id="saveSst">저장</button>
+      <button type="button" id="closeModal">닫기</button>
+    </form>
+  </div>
+</div>
+
+		<div class="view">
+		    <div id="dataList1" style="margin-top:100px;"></div>
+		</div>
+
         <div class="view">
             <div id="dataList3"></div>
         </div>
@@ -488,21 +954,73 @@ let clicked;	//클릭 했는지 확인용
 		        modal.show();
 		        modal.addClass("show");
 		    });
+
+		    // 1번모달 열기
+		    $(".insert-button_5").click(function () {
+		    	$('#corrForm1')[0].reset();
+		        let modal = $("#modalContainer5");
+		        modal.show();
+		        modal.addClass("show");
+		    });
 		    
 		    // 3번모달 열기
 		    $(".insert-button_3").click(function () {
 		    	$('#corrForm')[0].reset();
-		        let modal = $("#modalContainer");
+		        let modal = $("#modalContainer3");
 		        modal.show();
 		        modal.addClass("show");
 		    });
 
-		    // 모달 닫기
-		    $(".close, #closeModal").click(function () {
-		        $("#modalContainer1").removeClass("show").hide();
-		        $("#modalContainer").removeClass("show").hide();
+
+
+		    $(".insert-button_4").click(function () {
+		    	$('#corrForm')[0].reset();
+		        let modal = $("#modalContainer4");
+		        modal.show();
+		        modal.addClass("show");
 		    });
 
+
+		    $(".insert-button_5").click(function () {
+		    	$('#corrForm')[0].reset();
+		        let modal = $("#modalContainer5");
+		        modal.show();
+		        modal.addClass("show");
+		    });
+
+
+		    $(".insert-button_6").click(function () {
+		    	$('#corrForm')[0].reset();
+		        let modal = $("#modalContainer4");
+		        modal.show();
+		        modal.addClass("show");
+		    });
+
+		    $(".insert-button_2").click(function () {
+		    	$('#corrForm')[0].reset();
+		        let modal = $("#modalContainer2");
+		        modal.show();
+		        modal.addClass("show");
+		    });
+		    $(".insert-button_7").click(function () {
+		    	$('#corrForm')[0].reset();
+		        let modal = $("#modalContainer7");
+		        modal.show();
+		        modal.addClass("show");
+		    });
+		    
+	          // 모달 닫기
+	          $(".close, #closeModal").click(function () {
+	              $("#modalContainer1").removeClass("show").hide();
+	              $("#modalContainer2").removeClass("show").hide();
+	              $("#modalContainer3").removeClass("show").hide();
+	              $("#modalContainer4").removeClass("show").hide();
+	              $("#modalContainer5").removeClass("show").hide();
+	              $("#modalContainer6").removeClass("show").hide();
+	              $("#modalContainer7").removeClass("show").hide();
+	              $("#modalContainer").removeClass("show").hide();
+	              
+	          });
 		    // 설비명 선택 시 로그
 		    $("#equipment_name").on("change", function () {
 		        console.log("선택된 설비명:", $(this).val());

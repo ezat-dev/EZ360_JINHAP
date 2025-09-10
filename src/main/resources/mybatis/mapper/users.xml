@@ -396,7 +396,7 @@
 	
 	
 	<!-- tb_work_team 조회 -->
-<select id="getWork_team_select" parameterType="String" resultType="Users">
+<select id="getWork_team_select" resultType="Users">
   SELECT
     id,
     date,
@@ -407,8 +407,9 @@
     sub_task,
     always_day_shift
   FROM tb_work_team
-  WHERE date LIKE CONCAT(#{s_time}, '%')
+  WHERE date = '2025-09-09'
 </select>
+
 
 
 <!-- tb_work_schedule 조회 -->

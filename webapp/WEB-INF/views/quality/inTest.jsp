@@ -303,7 +303,7 @@
 
   <!-- 항목 1~5 반복 -->
   <div class="item-box">
-    <h4>항목1</h4>
+    <h4>PH</h4>
     <label>최소값</label>
     <input type="number" id="in_1_min" placeholder="최소값" style="width: 80px;">
     <label>최대값</label>
@@ -313,7 +313,7 @@
   </div>
 
   <div class="item-box">
-    <h4>항목2</h4>
+    <h4>비중</h4>
     <label>최소값</label>
     <input type="number" id="in_2_min" placeholder="최소값" style="width: 80px;">
     <label>최대값</label>
@@ -323,7 +323,7 @@
   </div>
 
   <div class="item-box">
-    <h4>항목3</h4>
+    <h4>점도</h4>
     <label>최소값</label>
     <input type="number" id="in_3_min" placeholder="최소값" style="width: 80px;">
     <label>최대값</label>
@@ -333,7 +333,7 @@
   </div>
 
   <div class="item-box">
-    <h4>항목4</h4>
+    <h4>색상</h4>
     <label>최소값</label>
     <input type="number" id="in_4_min" placeholder="최소값" style="width: 80px;">
     <label>최대값</label>
@@ -343,7 +343,7 @@
   </div>
 
   <div class="item-box">
-    <h4>항목5</h4>
+    <h4>가열잔분(불휘발분)</h4>
     <label>최소값</label>
     <input type="number" id="in_5_min" placeholder="최소값" style="width: 80px;">
     <label>최대값</label>
@@ -482,11 +482,11 @@ function getDataList() {
 	        { title: "약품명", field: "medicine_name",  width: 140 },
 	        { title: "LOT번호", field: "lot_no",  width: 140 , headerSort: false },
 	        { title: "입고수량", field: "stock_in", hozAlign: "center",  width: 140 , headerSort: false },
-	        { title: "검사 항목1", field: "in_1",  width: 120 , headerSort: false },
-	        { title: "검사 항목2", field: "in_2",  width: 120 , headerSort: false },
-	        { title: "검사 항목3", field: "in_3",  width: 120 , headerSort: false },
-	        { title: "검사 항목4", field: "in_4",  width: 120 , headerSort: false },
-	        { title: "검사 항목5", field: "in_5",  width: 120 , headerSort: false },
+	        { title: "PH", field: "in_1",  width: 120 , headerSort: false },
+	        { title: "비중", field: "in_2",  width: 120 , headerSort: false },
+	        { title: "점도", field: "in_3",  width: 120 , headerSort: false },
+	        { title: "색상", field: "in_4",  width: 120 , headerSort: false },
+	        { title: "가열잔분<br>(불휘발분)", field: "in_5",  width: 120 , headerSort: false },
 	        { title: "파일", field: "in_5",  width: 140 , headerSort: false }
 	    ],
 	    rowDblClick: function (e, row) {
