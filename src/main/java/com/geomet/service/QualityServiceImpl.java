@@ -132,5 +132,16 @@ public class QualityServiceImpl implements QualityService {
 		return qualityDao.data1Delete(quality);
 	}
 
-
+	@Override
+	public List<Quality> getLiquidAnalyze(Quality quality) {
+		return qualityDao.getLiquidAnalyze(quality);
+	}
+	@Override
+	public boolean liquidAnalyzeInsert(Quality quality) {
+		return qualityDao.liquidAnalyzeInsert(quality);
+	}
+	@Override
+	public boolean deleteLiquidAnalyze(Quality quality) {
+		return qualityDao.deleteLiquidAnalyze(quality);
+	}
 }

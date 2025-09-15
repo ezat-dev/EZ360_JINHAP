@@ -2262,4 +2262,51 @@ public class QualityController {
 				    }
 					return qualityService.data1Insert(quality);
 				}
+				
+				// 액분석관리 조회
+				@RequestMapping(value = "/quality/liquidAnalyze/list", method = RequestMethod.POST)
+				@ResponseBody
+				public Map<String, Object> getLiquidAnalyzeLIst(@RequestBody Quality quality) {
+					Map<String, Object> rtnMap = new HashMap<String, Object>();
+					
+					quality.setMch_name("meq");
+					List<Quality> data1 = qualityService.getLiquidAnalyze(quality);
+					
+					quality.setMch_name("ph");
+					List<Quality> data2 = qualityService.getLiquidAnalyze(quality);
+					
+					quality.setMch_name("conductivity");
+					List<Quality> data3 = qualityService.getLiquidAnalyze(quality);
+					
+					rtnMap.put("table1", data1);
+					rtnMap.put("table2", data2);
+					rtnMap.put("table3", data3);
+
+					return rtnMap;
+				}
+				
+				 //액분석관리 추가
+					@RequestMapping(value = "/quality/liquidAnalyze/insert", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean liquidAnalyzeInsert(@ModelAttribute Quality quality) {
+System.out.println("quality.getMch_name(): "+quality.getMch_name());
+						return qualityService.liquidAnalyzeInsert(quality);
+					}
+					
+					//액분석관리 삭제
+					@RequestMapping(value = "/quality//liquidAnalyze/del", method = RequestMethod.POST)
+					@ResponseBody
+					public Map<String, Object> deleteLiquidAnalyze(@RequestBody Quality quality) {
+						Map<String, Object> rtnMap = new HashMap<>();
+
+						if (quality.getId() == null) {
+							rtnMap.put("data", "행 선택하세요");
+							return rtnMap;
+						}
+
+						boolean result = qualityService.deleteLiquidAnalyze(quality);
+
+						rtnMap.put("data", "success");
+						return rtnMap;
+					}
 }

@@ -179,15 +179,12 @@
 				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
 	
 	
-		         <label class="daylabel">검색일자 :</label>
-				<input type="text" autocomplete="off"class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+		         <label class="daylabel">검색 :</label>
+				<input type="text" autocomplete="off"class="monthSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 				
 				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 	
-				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
-	
-	
-	
+
 	            <label class="daylabel">설비명 :</label>
 	            <select class="dayselect mch_name_s">
 	            <option value="">전체</option>
@@ -241,7 +238,8 @@
     <span class="close">&times;</span>
     <h2>설비 이력 등록</h2>
     <form id="corrForm" autocomplete="off">
-      <input type="text" id="id" name="id" required>
+  <input type="text" id="id" name="id" required style="display:none;">
+
       <!-- 일자 -->
       <label for="work_date">일자</label>
       <input type="date" id="work_date" name="work_date" required>
@@ -392,49 +390,48 @@
     </form>
   </div>
 </div>
-
-
 <script>
 let now_page_code = "h03";
 var dataTable;
 var selectedRowData = null;
 
-// 날짜 포맷 함수: yyyy-MM-dd
-function formatDate(date) {
-    return date.getFullYear() + "-" 
-         + String(date.getMonth() + 1).padStart(2, '0') + "-" 
-         + String(date.getDate()).padStart(2, '0');
+// yyyy-MM 포맷 함수
+function formatYearMonth(date) {
+    return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0');
 }
 
-//Tabulator 데이터 로드 함수: 설비명 + 시작일 + 종료일
+// 오늘 날짜 (yyyy-MM-dd)
+function getTodayStr() {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+}
+
+// Tabulator 데이터 로드 함수: 설비명 + 시작월
 function loadTableData() {
     const mch_name = $('.dayselect').val();
-    const s_date = $('#startDate').val();
-    const e_date = $('#endDate').val();
+    const s_date = $('#startDate').val();   // yyyy-MM
 
-    console.log("보내는 파라미터:", { mch_name, s_date, e_date }); // <-- 여기 추가
+    console.log("보내는 파라미터:", { mch_name, startDate: s_date });
 
     if(dataTable){
-    	dataTable.setData("/geomet/machine/repairStatus/list", { 
-    	    equipmentName: mch_name,
-    	    startDate: s_date,
-    	    endDate: e_date
-    	});
-
-
+        dataTable.setData("/geomet/machine/repairStatus/list", { 
+            equipmentName: mch_name,
+            startDate: s_date
+        });
     }
 }
 
+$(document).ready(function() {
 
-$(function() {
-    // 페이지 로드 시 어제/오늘 날짜 자동 입력
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(today.getDate() - 1);
+	
 
-    $('#startDate').val(formatDate(yesterday));
-    $('#endDate').val(formatDate(today));
+    // startDate input에 이번 달 세팅
+    $("#startDate").val(formatYearMonth(new Date()));
 
+    
     // Tabulator 초기화
     dataTable = new Tabulator('#dataTable', {
         height: '790px',
@@ -482,45 +479,85 @@ $(function() {
             row.getElement().classList.add('row_select');
             selectedRowData = row.getData();
         },
+
         rowDblClick: function(e, row) {
-        	 var d = row.getData();
-        	    selectedRowData = d;
+            var d = row.getData();
+            selectedRowData = d;
 
-        	    // 폼 초기화
-        	    $('#corrForm')[0].reset();
+            // 폼 초기화
+            $('#corrForm')[0].reset();
 
-        	    // 모달 안 모든 input, textarea, select 요소에 값 넣기
-        	    $('#corrForm').find('input, textarea, select').each(function() {
-        	        var fieldId = $(this).attr('id');  // input의 id 가져오기
-        	        if (fieldId && d.hasOwnProperty(fieldId)) {
-        	            $(this).val(d[fieldId]);       // 데이터 객체에서 동일 key 값 가져와 넣기
-        	        }
-        	    });
+            // 모달 내 모든 input, textarea, select 요소에 값 넣기
+            $('#corrForm').find('input, textarea, select').each(function() {
+                var fieldId = $(this).attr('id');
+                if (fieldId && d.hasOwnProperty(fieldId)) {
+                    $(this).val(d[fieldId]);
+                }
+                // date input은 오늘 날짜로 초기화 (값이 없을 경우)
+                if ($(this).attr('type') === 'date' && !d[fieldId]) {
+                    $(this).val(getTodayStr());
+                }
+            });
 
-        	    // 모달 열기
-        	    $('#modalContainer').show().addClass('show');
+            $('#modalContainer').show().addClass('show');
         }
     });
 
-    // 페이지 로드 시 초기 조회
+    // 초기 조회
     loadTableData();
 
     // 조회 버튼
-    $('.select-button').click(function(){
-        loadTableData();
-    });
+    $('.select-button').click(loadTableData);
 
     // 셀렉트/날짜 변경 시 자동 조회
-    $('.dayselect, #startDate, #endDate').on('change', function(){
-        loadTableData();
-    });
+    $('.dayselect, #startDate').on('change', loadTableData);
 
+
+
+    function getTodayStr() {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        const dd = String(today.getDate()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd}`;
+    }
     // 추가 버튼
-    $('.insert-button').click(function(){
-        selectedRowData = null;
-        $('#corrForm')[0].reset();
-        $('#modalContainer').show().addClass('show');
+    
+$('.insert-button').click(function(){
+    selectedRowData = null;
+    const insertBtn = document.querySelector('.insert-button');
+    const modal = document.getElementById('modalContainer');
+    const corrForm = document.getElementById('corrForm');
+    const closeModalBtn = document.getElementById('closeModal');
+    const closeX = modal.querySelector('.close');
+
+    insertBtn.addEventListener('click', function() {
+        // 폼 초기화
+        corrForm.reset();
+
+        // id 비워서 AUTO_INCREMENT 처리
+        document.getElementById('id').value = '';
+
+        // 오늘 날짜 세팅 (yyyy-MM-dd) - 전통적인 문자열 연결
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        let mm = today.getMonth() + 1;
+        let dd = today.getDate();
+
+        // 한 자리 숫자일 경우 0 붙이기
+        if (mm < 10) mm = '0' + mm;
+        if (dd < 10) dd = '0' + dd;
+
+        const todayStr = yyyy + '-' + mm + '-' + dd;
+        document.getElementById('work_date').value = todayStr;
+
+        // 모달 표시
+        modal.style.display = 'block';
+        modal.classList.add('show');
     });
+});
+
+
 
     // 삭제 버튼
     $('.delete-button').click(function(){
@@ -547,7 +584,6 @@ $(function() {
                 alert('삭제 중 오류가 발생했습니다.');
             }
         });
-
     });
 
     // 모달 닫기
@@ -559,6 +595,13 @@ $(function() {
     $('#saveCorrStatus').click(function(event){
         event.preventDefault();
         var formData = new FormData($('#corrForm')[0]);
+
+        // 추가 시 id 비우기
+        if(!$('#id').val()) {
+            formData.delete('id');
+        }
+
+        // 수정 시 no 필드 추가
         if(selectedRowData && selectedRowData.no){
             formData.append('no', selectedRowData.no);
         }
@@ -582,8 +625,6 @@ $(function() {
     });
 });
 </script>
-
-
 
 </body>
 </html>

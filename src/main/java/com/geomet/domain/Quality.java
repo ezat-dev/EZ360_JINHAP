@@ -142,8 +142,73 @@ public class Quality {
 	    private String acid_reduce;
 	    private String naoh_density;
 	    
+	    //액분석관리
+	    private String auto_track;
+	    private String meq_min_spec;
+	    private String meq_max_spec;
+	    private String ph_input;
+	    private String ph_min_spec;
+	    private String ph_max_spec;
+	    private String conductivity_input;
+	    private String conductivity_min_spec;
+	    private String conductivity_max_spec;
 	    
 	    
+	    
+		public String getAuto_track() {
+			return auto_track;
+		}
+		public void setAuto_track(String auto_track) {
+			this.auto_track = auto_track;
+		}
+		public String getMeq_min_spec() {
+			return meq_min_spec;
+		}
+		public void setMeq_min_spec(String meq_min_spec) {
+			this.meq_min_spec = meq_min_spec;
+		}
+		public String getMeq_max_spec() {
+			return meq_max_spec;
+		}
+		public void setMeq_max_spec(String meq_max_spec) {
+			this.meq_max_spec = meq_max_spec;
+		}
+		public String getPh_input() {
+			return ph_input;
+		}
+		public void setPh_input(String ph_input) {
+			this.ph_input = ph_input;
+		}
+		public String getPh_min_spec() {
+			return ph_min_spec;
+		}
+		public void setPh_min_spec(String ph_min_spec) {
+			this.ph_min_spec = ph_min_spec;
+		}
+		public String getPh_max_spec() {
+			return ph_max_spec;
+		}
+		public void setPh_max_spec(String ph_max_spec) {
+			this.ph_max_spec = ph_max_spec;
+		}
+		public String getConductivity_input() {
+			return conductivity_input;
+		}
+		public void setConductivity_input(String conductivity_input) {
+			this.conductivity_input = conductivity_input;
+		}
+		public String getConductivity_min_spec() {
+			return conductivity_min_spec;
+		}
+		public void setConductivity_min_spec(String conductivity_min_spec) {
+			this.conductivity_min_spec = conductivity_min_spec;
+		}
+		public String getConductivity_max_spec() {
+			return conductivity_max_spec;
+		}
+		public void setConductivity_max_spec(String conductivity_max_spec) {
+			this.conductivity_max_spec = conductivity_max_spec;
+		}
 		public String getTest_num() {
 			return test_num;
 		}

@@ -254,11 +254,11 @@
         
            <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
            <label class="daylabel">점검 일자 :</label>
-			<input type="text" autocomplete="off"class="daySet" id="s_date" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
+			<input type="date" autocomplete="off"class="daySet2" id="s_date" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
 			
 			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-			<input type="text" autocomplete="off"class="daySet" id="e_date" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+			<input type="date" autocomplete="off"class="daySet2" id="e_date" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
            <label class="daylabel">설비명 :</label>
             <select class="dayselect">
@@ -313,53 +313,55 @@
           <tr>
             <td>1</td>
             <td>백레스트 설치상태</td>
-            <td><select name="a1"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b1"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a1"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b1"><option>O</option><option>X</option><option value=""> </option></select></td>
           </tr>
           <tr>
             <td>2</td>
             <td>헤드가드 설치상태</td>
-            <td><select name="a2"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b2"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a2"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b2"><option>O</option><option>X</option><option value=""> </option></select></td>
           </tr>
           <tr>
             <td>3</td>
             <td>(비상) 브레이크 작동상태</td>
-            <td><select name="a3"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b3"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a3"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b3"><option>O</option><option>X</option><option value=""> </option></select></td>
           </tr>
           <tr>
             <td>4</td>
             <td>후진 경보장치 작동상태</td>
-            <td><select name="a4"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b4"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a4"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b4"><option>O</option><option>X</option><option value=""> </option></select></td>
           </tr>
           <tr>
             <td>5</td>
             <td>전조등/후미등 작동상태</td>
-            <td><select name="a5"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b5"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a5"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b5"><option>O</option><option>X</option><option value=""> </option></select></td>
           </tr>
           <tr>
             <td>6</td>
             <td>안전벨트/경음기(혼) 작동상태</td>
-            <td><select name="a6"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b6"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a6"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b6"><option>O</option><option>X</option><option value=""> </option></select></td>
           </tr>
           <tr>
             <td>7</td>
             <td>무자격자 운전자 운행금지</td>
-            <td><select name="a7"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b7"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a7"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b7"><option>O</option><option>X</option><option value=""> </option></select></td>
           </tr>
           <tr>
             <td>8</td>
             <td>블루라이트/빔 상태(좌우전후)</td>
-            <td><select name="a8"><option>O</option><option>X</option><option>-</option></select></td>
-            <td><select name="b8"><option>O</option><option>X</option><option>-</option></select></td>
+            <td><select name="a8"><option>O</option><option>X</option><option value=""> </option></select></td>
+            <td><select name="b8"><option>O</option><option>X</option><option value=""> </option></select></td>
+            
           </tr>
         </tbody>
       </table>
+		<button type="button" id="resetAll">모두 취소</button>
 
       <button type="submit" id="saveCorrStatus">저장</button>
       <button type="button" id="closeModal">닫기</button>
@@ -393,12 +395,14 @@
               <select name="a_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                   <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="a_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -409,12 +413,14 @@
               <select name="b_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="b_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -425,12 +431,14 @@
               <select name="c_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                           <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="c_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -441,12 +449,14 @@
               <select name="d_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="d_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -457,12 +467,14 @@
               <select name="e_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="e_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -473,12 +485,14 @@
               <select name="f_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="f_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -489,12 +503,14 @@
               <select name="g_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="g_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -505,12 +521,14 @@
               <select name="h_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="h_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -521,12 +539,14 @@
               <select name="i_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="i_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
@@ -537,18 +557,20 @@
               <select name="j_1">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
             <td>
               <select name="j_2">
                 <option value="O" selected>O</option>
                 <option value="X">X</option>
+                <option value=""> </option>
               </select>
             </td>
           </tr>
         </tbody>
       </table>
-      
+      <button type="button" id="resetCleanAll">모두 취소</button>
       <button type="submit" id="saveCleanStatus">저장</button>
       <button type="button" id="closeCleanModal">닫기</button>
     </form>
@@ -561,6 +583,29 @@
 
     let now_page_code = "e03";
 
+
+
+
+    document.getElementById("resetAll").addEventListener("click", function () {
+    	  // 날짜 input 초기화
+
+    	  
+    	  // 모든 select 값 초기화
+    	  document.querySelectorAll("#corrForm select").forEach(sel => {
+    	    sel.value = ""; // 빈 옵션(null)으로 세팅
+    	  });
+    	});
+	    document.getElementById("resetCleanAll").addEventListener("click", function () {
+	    	  // 날짜 input 초기화
+
+	    	  
+	    	  // 모든 select 초기화
+	    	  document.querySelectorAll("#cleanForm select").forEach(sel => {
+	    	    sel.value = ""; // null (빈 값)으로 변경
+	    	  });
+	    	});
+
+    
     
         $(function() {
  
@@ -1001,7 +1046,22 @@
            
         });
 
-   	
+     // 조회 버튼 클릭 이벤트
+        $(".select-button").on("click", function() {
+            const selected = $(".dayselect").val();
+            if (selected === "1") {
+                $("#dataList").show();
+                $(".car").show();
+                $("#dataList2").hide();
+                getDataList();
+            } else {
+                $("#dataList").hide();
+                $(".car").hide();
+                $("#dataList2").show();
+                getDataList2();
+            }
+        });
+           	
 
 
         

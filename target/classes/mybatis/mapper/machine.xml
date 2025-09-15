@@ -324,7 +324,6 @@ SELECT * FROM v_moniteolingling
 
 
 
-
 <select id="getRepairStatusList" parameterType="Machine" resultType="Machine">
     SELECT
         id, work_date, operator, equipment_name, inspection_type,
@@ -337,19 +336,12 @@ SELECT * FROM v_moniteolingling
     FROM tb_equipment_maintenance
     <where>
        <if test="equipmentName != null and equipmentName != ''">
-    AND equipment_name = #{equipmentName}
-		</if>
-		
-		<if test="startDate != null and endDate != null">
-		    AND work_date BETWEEN #{startDate} AND #{endDate}
-		</if>
-		<if test="startDate != null and endDate == null">
-		    AND work_date &gt;= #{startDate}
-		</if>
-		<if test="endDate != null and startDate == null">
-		    AND work_date &lt;= #{endDate}
-		</if>
-
+            AND equipment_name = #{equipmentName}
+       </if>
+       
+       <if test="startDate != null and startDate != ''">
+            AND work_date LIKE CONCAT(#{startDate}, '%')
+       </if>
     </where>
     ORDER BY work_date DESC, id DESC
 </select>

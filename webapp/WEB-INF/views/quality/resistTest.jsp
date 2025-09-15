@@ -277,27 +277,28 @@
 	        
 	        <div class="bt_box">
 	         <button class="insert-button_1 boxCss">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">1. 세척1.2호기  가성소다용액 농도
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image"> 세척1.2호기  가성소다용액 농도
                 </button>
-                	         <button class="insert-button_2 boxCss">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">2. CCT시험성적서
-                </button>
+    
 
                 	         <button class="insert-button_3 boxCss">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">3. 지오메트 가열잔분 탱크액
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image"> 지오메트 가열잔분 탱크액
                 </button>
                 	         <button class="insert-button_4 boxCss">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">4. 지오메트 부착량
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">지오메트 부착량
                 </button>
                 	         <button class="insert-button_5 boxCss">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">5. 후처리 부착량
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">지오메트 후처리 부착량
                 </button>
 <!--                 	         <button class="insert-button_6 boxCss">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">6. 내수밀착성
                 </button> -->
                 
                  <button class="insert-button_7 boxCss">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">7. SST시험성적서
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">SST시험성적서
+                </button>
+                            	         <button class="insert-button_2 boxCss">
+                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image"> CCT시험성적서
                 </button>
               </div>
                 
@@ -1478,7 +1479,18 @@ let clicked;	//클릭 했는지 확인용
 				            	        }
 				            	    }
 				 		               },
-	              { title: "④ ((1-2)/3) * 100", field: "etc1", width: 160, hozAlign: "center" },
+				 		              { 
+				 		            	    title: "④ ((1-2)/3) * 100", 
+				 		            	    field: "etc1", 
+				 		            	    width: 160, 
+				 		            	    hozAlign: "center",
+				 		            	    formatter: function(cell) {
+				 		            	        let value = cell.getValue();
+				 		            	        if (value == null) return "";
+				 		            	        return Math.floor(value); // 소수점 제거
+				 		            	    }
+				 		            	},
+
 	              { title: "분석 결과(합, 부) 판정", field: "etc2", width: 150, hozAlign: "center",
 	            	    formatter: function(cell, formatterParams, onRendered){
 	            	        const value = cell.getValue();

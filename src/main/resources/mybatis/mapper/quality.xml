@@ -524,4 +524,56 @@
 		tb_clean12
 		WHERE test_num = #{test_num}
 	</delete>
+	
+		<!-- 액분석관리 -->
+		<select id="getLiquidAnalyze" parameterType="Quality"
+		resultType="Quality">
+		SELECT *
+		FROM tb_liquid_analyze
+		WHERE mch_name = #{mch_name} AND table_code = #{table_code}
+		AND date = #{date}
+	</select>
+
+<insert id="liquidAnalyzeInsert" parameterType="Quality">
+  INSERT INTO tb_liquid_analyze
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="date != null and date != ''">date,</if>
+    <if test="result != null and result != ''">result,</if>
+    <if test="auto_track != null and auto_track != ''">auto_track,</if>
+    <if test="action != null and action != ''">action,</if>
+    <if test="meq_min_spec != null and meq_min_spec != ''">meq_min_spec,</if>
+    <if test="meq_max_spec != null and meq_max_spec != ''">meq_max_spec,</if>
+    <if test="ph_input != null and ph_input != ''">ph_input,</if>
+    <if test="ph_min_spec != null and ph_min_spec != ''">ph_min_spec,</if>
+    <if test="ph_max_spec != null and ph_max_spec != ''">ph_max_spec,</if>
+    <if test="conductivity_input != null and conductivity_input != ''">conductivity_input,</if>
+    <if test="conductivity_min_spec != null and conductivity_min_spec != ''">conductivity_min_spec,</if>
+    <if test="conductivity_max_spec != null and conductivity_max_spec != ''">conductivity_max_spec,</if>
+    <if test="table_code != null and table_code != ''">table_code,</if>
+     <if test="mch_name != null and mch_name != ''">mch_name,</if>
+  </trim>
+  <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+    <if test="date != null and date != ''">#{date},</if>
+    <if test="result != null and result != ''">#{result},</if>
+    <if test="auto_track != null and auto_track != ''">#{auto_track},</if>
+    <if test="action != null and action != ''">#{action},</if>
+    <if test="meq_min_spec != null and meq_min_spec != ''">#{meq_min_spec},</if>
+    <if test="meq_max_spec != null and meq_max_spec != ''">#{meq_max_spec},</if>
+    <if test="ph_input != null and ph_input != ''">#{ph_input},</if>
+    <if test="ph_min_spec != null and ph_min_spec != ''">#{ph_min_spec},</if>
+    <if test="ph_max_spec != null and ph_max_spec != ''">#{ph_max_spec},</if>
+    <if test="conductivity_input != null and conductivity_input != ''">#{conductivity_input},</if>
+    <if test="conductivity_min_spec != null and conductivity_min_spec != ''">#{conductivity_min_spec},</if>
+    <if test="conductivity_max_spec != null and conductivity_max_spec != ''">#{conductivity_max_spec},</if>
+    <if test="table_code != null and table_code != ''">#{table_code},</if>
+    <if test="mch_name != null and mch_name != ''">#{mch_name},</if>
+  </trim>
+</insert>
+
+		<!-- 액분석관리 데이터 삭제 -->
+		<delete id="deleteLiquidAnalyze" parameterType="Quality">
+		DELETE FROM
+		tb_liquid_analyze
+		WHERE id = #{id}
+	</delete>
 </mapper>

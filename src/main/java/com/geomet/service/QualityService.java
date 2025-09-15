@@ -62,5 +62,10 @@ public interface QualityService {
     boolean data1Insert(Quality quality);
     boolean data1Delete(Quality quality);
     
+    //액분석관리
+    List<Quality> getLiquidAnalyze(Quality quality);
+    boolean liquidAnalyzeInsert(Quality quality);
+    boolean deleteLiquidAnalyze(Quality quality);
+    
     
 }

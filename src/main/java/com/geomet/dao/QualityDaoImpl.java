@@ -179,5 +179,27 @@ public class QualityDaoImpl implements QualityDao {
 		}
 		return true;
 	}
+	
+	//액분석관리
+	@Override
+	public List<Quality> getLiquidAnalyze(Quality quality) {
+		return sqlSession.selectList("quality.getLiquidAnalyze", quality);
+	}
+	@Override
+	public boolean liquidAnalyzeInsert(Quality quality) {
+		int result = sqlSession.insert("quality.liquidAnalyzeInsert", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public boolean deleteLiquidAnalyze(Quality quality) {
+		int result = sqlSession.insert("quality.deleteLiquidAnalyze", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
 }
 
