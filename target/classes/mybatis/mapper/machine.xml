@@ -674,7 +674,111 @@ SELECT * FROM v_moniteolingling
 </select>
 
 
-<select id="workReport3" parameterType="Work" resultType="Work">
+
+
+
+<select id="workReport1" parameterType="Machine" resultType="Machine">
+  <![CDATA[
+
+SELECT 
+
+    AAA.ch_idx,
+    AAA.facility_name,
+    BBB.L AS work_tong,  -- 작업통수
+    ROUND(BBB.weight * BBB.L, 1) AS now_weight, -- 현 생간량
+    (AAA.F * 170) as target_weight, -- 일 목표 생산량
+	ROUND(((BBB.weight * BBB.L) / (AAA.F * 170)) * 100, 1) AS per
+	 
+FROM
+(
+    -- AAA 서브쿼리 (설비 정보 + 가동시간)
+    SELECT 
+        facility_code,
+        facility_name,
+        facility_mach_code,
+        facility_comment,
+        c_t,
+        capa,
+        c_t_hour,
+        std_weight,
+        ch_idx,
+        division,
+        facility_name AS B,
+        CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+             ELSE (du.work_time*60) END AS C,
+        TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+             ELSE (du.work_time*60) END) * 60), '%H:%i') AS C_min,
+        c_t_hour AS D,
+        ROUND((c_t_hour * 12), 0) AS E,
+        ROUND((c_t_hour * 12), 0) * 2 AS F,
+        '01:20' AS G,
+        ROUND(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+             ELSE (du.work_time*60) END - TIME_TO_SEC('00:00')/60)/60),0) AS H,
+        TIME_FORMAT(SEC_TO_TIME((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+             ELSE (du.work_time*60) END - TIME_TO_SEC('00:00')/60)*60),'%H:%i') AS H_min,
+        FORMAT(((CASE WHEN work_gb = 0 THEN TIMESTAMPDIFF(MINUTE, CONCAT(CURDATE(), ' 08:00:00'), NOW())
+             ELSE (du.work_time*60) END - TIME_TO_SEC('00:00')/60)/60) * c_t_hour,1) AS I,
+        "없음" AS Q,
+        du.work_time,
+        work_gb
+    FROM
+    (
+        SELECT *, 'Z' AS Z FROM tb_facility WHERE ch_idx != 9999
+    ) AS fac
+    LEFT OUTER JOIN
+    (
+        SELECT 'Z' AS ZZ,
+            CASE WHEN DATE_FORMAT(SUBSTR(#{start_time},1,8),'%Y-%m-%d') = CURDATE() THEN TIMESTAMPDIFF(HOUR,
+                     CONCAT(DATE_FORMAT(LEFT(@start_time,8), '%Y-%m-%d'),' 08:00:00'), NOW())
+                 ELSE 24 END AS work_time,
+            CASE WHEN DATE_FORMAT(SUBSTR(#{start_time},1,8),'%Y-%m-%d') = CURDATE() THEN 0 ELSE 1 END work_gb
+    ) AS du
+    ON fac.Z = du.ZZ
+) AS AAA
+INNER JOIN
+(
+    -- BBB 서브쿼리 (생산량)
+    SELECT mach_code, weight,
+           SUM(CASE WHEN end_time >= #{start_time} AND end_time < #{end_time} THEN 1 ELSE 0 END) AS L,
+           SUM(CASE WHEN end_time >= CONCAT(SUBSTR(#{start_time}, 1, 8), '080000') 
+                    AND end_time < CONCAT(SUBSTR(#{start_time}, 1, 8), '200000') THEN 1 ELSE 0 END) AS J,
+           SUM(CASE WHEN end_time >= CONCAT(SUBSTR(#{start_time}, 1, 8), '200000') 
+                    AND end_time < CONCAT(DATE_FORMAT(DATE_ADD(STR_TO_DATE(SUBSTR(#{start_time}, 1, 8), '%Y%m%d'), INTERVAL 1 DAY), '%Y%m%d'), '080000') THEN 1 ELSE 0 END) AS K
+    FROM tb_lowdata_save
+    WHERE start_time IS NOT NULL
+      AND end_time IS NOT NULL
+      AND end_time >= #{start_time}
+      AND end_time < #{end_time}
+    GROUP BY mach_code
+) AS BBB
+ON AAA.facility_mach_code = BBB.mach_code
+ORDER BY AAA.ch_idx;
+  ]]>
+</select>
+
+<select id="workReport2_mmsql" parameterType="Machine" resultType="Machine">
+  <![CDATA[
+SELECT  resourceID, indirectCode,downtime_name, COUNT(*) AS cnt, SUM(DOWNTIME) AS downtime,
+        ROW_NUMBER() OVER (
+            PARTITION BY resourceID
+            ORDER BY COUNT(*) DESC
+        ) AS rn
+FROM (
+	SELECT *
+	FROM V_FEMS_IF_DOWNTIME A
+	WHERE ResourceID LIKE 'G0%'
+	  AND StartTime >= #{start_time}
+	  AND EndTime   <= #{end_time}
+) AS A
+GROUP BY resourceID, indirectCode　,downtime_name
+	  ;
+
+  ]]>
+</select>
+
+
+
+<select id="workReport3" parameterType="Machine" resultType="Machine">
   <![CDATA[
 WITH err_counts AS (
     SELECT
@@ -719,9 +823,6 @@ ORDER BY
     ec.mach_code, ec.err_count DESC
   ]]>
 </select>
-
-
-
 
 </mapper>
 

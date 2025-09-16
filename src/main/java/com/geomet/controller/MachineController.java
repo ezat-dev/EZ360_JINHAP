@@ -3,12 +3,13 @@ package com.geomet.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -20,11 +21,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.HorizontalAlignment;
-import org.apache.poi.ss.usermodel.IndexedColors;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
-import org.apache.poi.xssf.usermodel.XSSFFont;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
@@ -39,10 +38,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import com.geomet.domain.Machine;
-
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Work;
 import com.geomet.service.MachineService;
 
 
@@ -1460,5 +1458,64 @@ public class MachineController {
 			}
 			os.flush();
 		}
+	}
+	
+	@RequestMapping(value = "/work/workReport/list3", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getList3(@ModelAttribute Machine machine) {
+		//System.out.println("testTankList 컨트롤러 도착");
+		//System.out.println("quality.getDate()" + quality.getDate());
+
+		Map<String, Object> rtnMap = new HashMap<String, Object>();
+		String baseDateStr = machine.getStart_time();
+	    try {
+	        // 2. 날짜 형식을 정의합니다.
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        
+	        // 3. String 형태의 날짜를 Date 객체로 변환합니다.
+	        Date baseDate = dateFormat.parse(baseDateStr);
+
+	        // 4. Calendar 객체를 사용해 날짜를 계산합니다.
+	        Calendar cal = Calendar.getInstance();
+	        cal.setTime(baseDate);
+
+	        // 5. 시작 날짜를 전날로 설정하고 시간을 08:00:00으로 맞춥니다.
+	        cal.add(Calendar.DATE, -1);
+	        cal.set(Calendar.HOUR_OF_DAY, 8);
+	        cal.set(Calendar.MINUTE, 0);
+	        cal.set(Calendar.SECOND, 0);
+	        Date startDate = cal.getTime();
+
+	        // 6. 종료 날짜를 오늘로 설정하고 시간을 07:59:00으로 맞춥니다.
+	        cal.setTime(baseDate); // 기준 날짜로 재설정
+	        cal.set(Calendar.HOUR_OF_DAY, 7);
+	        cal.set(Calendar.MINUTE, 59);
+	        cal.set(Calendar.SECOND, 0);
+	        Date endDate = cal.getTime();
+
+	        // 7. SimpleDateFormat을 사용하여 원하는 형식의 String으로 변환합니다.
+	        SimpleDateFormat fullDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	        String formattedStartDate = fullDateFormat.format(startDate);
+	        String formattedEndDate = fullDateFormat.format(endDate);
+
+	        // 8. Work 객체에 설정된 시작 및 종료 시간을 적용합니다.
+	        machine.setStart_time(formattedStartDate);
+	        machine.setEnd_time(formattedEndDate);
+
+	        // 디버깅을 위해 설정된 값 출력
+	        System.out.println("설정된 시작 시간: " + machine.getStart_time());
+	        System.out.println("설정된 종료 시간: " + machine.getEnd_time());
+	        
+	        // 9. machineService를 호출하여 데이터를 가져옵니다.
+	        List<Work> data3 = machineService.workReport3(machine);
+	        System.out.println("getNonProductManageList.size() " + data3.size());
+	        
+	        rtnMap.put("data3", data3);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        // 예외 처리 로직 추가 (예: 오류 메시지 반환)
+	    }
+		return rtnMap;
 	}
 }

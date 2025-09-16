@@ -570,11 +570,40 @@ public class Work {
 	 * public String ar; public String ws; public String no;
 	 */
     
+    private String err_name;
+    private String err_count;
+    private String total_seconds;
+    private String total_time_hms;
+    
     
     
     
 
 
+	public String getErr_name() {
+		return err_name;
+	}
+	public void setErr_name(String err_name) {
+		this.err_name = err_name;
+	}
+	public String getErr_count() {
+		return err_count;
+	}
+	public void setErr_count(String err_count) {
+		this.err_count = err_count;
+	}
+	public String getTotal_seconds() {
+		return total_seconds;
+	}
+	public void setTotal_seconds(String total_seconds) {
+		this.total_seconds = total_seconds;
+	}
+	public String getTotal_time_hms() {
+		return total_time_hms;
+	}
+	public void setTotal_time_hms(String total_time_hms) {
+		this.total_time_hms = total_time_hms;
+	}
 	public String getLine_cd() {
 		return line_cd;
 	}

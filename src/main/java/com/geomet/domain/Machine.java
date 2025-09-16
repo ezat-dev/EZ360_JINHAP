@@ -3,9 +3,27 @@ package com.geomet.domain;
 public class Machine {
 	
 	
+    // workReport1 컬럼
+
+	    private int work_tong;       // 작업통수
+	    private double now_weight;   // 현재 생산량
+	    private double target_weight; // 목표 생산량
+	    private double per;         // 달성률
 	
+	    // workReport2 컬럼
+	    private String resourceID;
+	    private String indirectCode;
+	    private String downtime_name;
+	    private int cnt;
+	    private double downtime;
+	    private int rn;
 	
-	 
+	    // workReport3 컬럼
+	
+	    private int err_count;
+	    private long total_seconds;
+	    private String total_time_hms;
+
 
 	    private String work_date;
 	    private String operator;
@@ -77,7 +95,110 @@ public class Machine {
 
 
 	
-	
+	public int getWork_tong() {
+		return work_tong;
+	}
+
+	public void setWork_tong(int work_tong) {
+		this.work_tong = work_tong;
+	}
+
+	public double getNow_weight() {
+		return now_weight;
+	}
+
+	public void setNow_weight(double now_weight) {
+		this.now_weight = now_weight;
+	}
+
+	public double getTarget_weight() {
+		return target_weight;
+	}
+
+	public void setTarget_weight(double target_weight) {
+		this.target_weight = target_weight;
+	}
+
+	public double getPer() {
+		return per;
+	}
+
+	public void setPer(double per) {
+		this.per = per;
+	}
+
+	public String getResourceID() {
+		return resourceID;
+	}
+
+	public void setResourceID(String resourceID) {
+		this.resourceID = resourceID;
+	}
+
+	public String getIndirectCode() {
+		return indirectCode;
+	}
+
+	public void setIndirectCode(String indirectCode) {
+		this.indirectCode = indirectCode;
+	}
+
+	public String getDowntime_name() {
+		return downtime_name;
+	}
+
+	public void setDowntime_name(String downtime_name) {
+		this.downtime_name = downtime_name;
+	}
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
+	public double getDowntime() {
+		return downtime;
+	}
+
+	public void setDowntime(double downtime) {
+		this.downtime = downtime;
+	}
+
+	public int getRn() {
+		return rn;
+	}
+
+	public void setRn(int rn) {
+		this.rn = rn;
+	}
+
+	public int getErr_count() {
+		return err_count;
+	}
+
+	public void setErr_count(int err_count) {
+		this.err_count = err_count;
+	}
+
+	public long getTotal_seconds() {
+		return total_seconds;
+	}
+
+	public void setTotal_seconds(long total_seconds) {
+		this.total_seconds = total_seconds;
+	}
+
+	public String getTotal_time_hms() {
+		return total_time_hms;
+	}
+
+	public void setTotal_time_hms(String total_time_hms) {
+		this.total_time_hms = total_time_hms;
+	}
+
 	public String getS_date() {
 		return s_date;
 	}

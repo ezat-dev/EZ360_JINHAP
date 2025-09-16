@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.geomet.dao.MachineDao;
 import com.geomet.domain.Machine;
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Work;
 
 
 
@@ -151,4 +152,9 @@ public class MachineServiceImpl implements MachineService {
 	      public List<Machine> getdetailMonitoring(Machine machine) {
 	           return machineDao.getdetailMonitoring(machine); 	   
 	      }
+	      
+		 	@Override
+		    public List<Work> workReport3(Machine machine) {
+		        return machineDao.workReport3(machine);
+		    }
 }

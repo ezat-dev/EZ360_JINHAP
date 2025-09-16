@@ -9,54 +9,95 @@
 
     <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
-    <style>
-        .container {
-            display: flex;
-            justify-content: space-between;
-            padding: 20px;
-            margin-left: 1008px;
-            margin-top: 200px;
-        }
-        .view {
-            flex-direction: column; /* 세로 배치 */
-          align-items: center; /* 중앙 정렬 */
-          margin-top: 1%;
-        }
-        .tab {
-            width: 100%;
-            margin-bottom: 37px;
-            margin-top: 35px;
-            height: 45px;
-            border-radius: 6px 6px 0px 0px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-        .modal {
+<style>
+    .tab {
+        width: 99%;
+        margin-bottom: 37px;
+        margin-top: 5px;
+        height: 55px;
+        border-radius: 6px 6px 0px 0px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .view {
+        width: 80%;
+        margin-left: 150px;
+
+    }
+
+
+    .tab-header {
+        display: flex;
+        align-items: center;
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .tab-controls {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 16px;
+    }
+
+	.tab-controls label {
+	    margin-right: 5px;
+	    font-weight: 500;
+	   	font-size: 19px;
+	}
+	
+.tab-controls input.daySet {
+    margin-top: 10px;
+    padding: 6px 12px;
+    font-size: 19px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 150px;
+    text-align: center;
+    height: 25px;
+}
+
+
+
+    .button-image {
+        width: 16px;
+        height: 16px;
+        margin-right: 5px;
+    }
+
+    #m_code {
+        display: none;
+    }
+    h2 {
+    margin-left: 20px;
+	}
+   .modal {
             display: none;
             position: fixed;
             left: 0;
             top: 0;
             width: 100%;
             height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
+        
             transition: opacity 0.3s ease-in-out;
         }
-       .modal-content {
-           background: white;
-           width: 24%;
-           max-width: 500px;
-           height: 80vh; 
-           overflow-y: auto; 
-           margin: 6% auto 0;
-           padding: 20px;
-           border-radius: 10px;
-           position: relative;
-           box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-           transform: scale(0.8);
-           transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-           opacity: 0;
-       }
+	    .modal-content {
+	        background: white;
+	        width: 24%;
+	        max-width: 500px;
+	        height: 80vh; 
+	        overflow-y: auto; 
+	        margin: 6% auto 0;
+	        padding: 20px;
+	        border-radius: 10px;
+	        position: relative;
+	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+	        transform: scale(0.8);
+	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+	        opacity: 0;
+	    }
         .modal.show {
             display: block;
             opacity: 1;
@@ -97,41 +138,42 @@
             border-radius: 5px;
         }
         .modal-content button {
-            background-color: #d3d3d3;
+       
             color: black;
             padding: 10px;
             border: none;
             border-radius: 5px;
             margin-top: 10px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+          
         }
         .modal-content button:hover {
-            background-color: #a9a9a9;
+  
         }
         .button-container {
-          display: flex;
-          gap: 10px;
-          margin-left: auto;
-          margin-right: 10px;
-          margin-top: 40px;
-      }
-      .box1 {
-          display: flex;
-          justify-content: right;
-          align-items: center;
-          width: 1000px;
-          margin-right: 5px;
-          margin-top:4px;
-      }
+        	width: 88%;
+    		display: flex;
+		    gap: 10px;
+		    margin-left: auto;
+		    margin-right: 10px;
+		    margin-top: 40px;
+		}
+		.box1 {
+		    display: flex;
+		    justify-content: right;
+		    align-items: center;
+		    width: 800px;
+		    margin-right: 20px;
+		    margin-top:4px;
+		}
         .dayselect {
             width: 20%;
             text-align: center;
             font-size: 15px;
         }
         .daySet {
-           width: 20%;
-            text-align: center;
+        	width: 20%;
+      		text-align: center;
             height: 16px;
             padding: 8px;
             margin-bottom: 10px;
@@ -148,72 +190,18 @@
         button-container.button{
         height: 16px;
         }
-        .mid{
+         .mid{
         margin-right: 9px;
-       font-size: 20px;
-       font-weight: bold;
-   
-       height: 42px;
-       margin-left: 9px;
+	    font-size: 20px;
+	    font-weight: bold;
+	
+	    height: 42px;
+	    margin-left: 9px;
         }
-        
-      .status {
-          display: flex;
-          align-items: center;
-          font-size: 18px; 
-          margin-right: 15px;
-          margin-bottom: 13px;
-      }
-      
-      .status span {
-          width: 17px; 
-          height: 17px; 
-          border-radius: 50%;
-          display: inline-block;
-          margin-right: 8px;
-         
-      }
-      .running {
-          background-color: green;
-      }
-      
-      .changing {
-          background-color: orange;
-      }
-      
-      .stopped {
-          background-color: red;
-      }
-      
-      .unit {
-          margin-left: 10px;
-          font-size: 18px; 
-          color: gray;
-           margin-bottom: 17px;
-      }
-      
-      .tabulator-row .tabulator-cell {
-
-       padding: 11px;
-
-   }
-   #dataList{
-   marign-top:50px;
-   }
-    .tabulator .tabulator-header .tabulator-col {
-        font-size: 16pt;
-        font-weight: bold;
-        height: 38px;
-    }
-
- 
-    .tabulator .tabulator-cell {
-        font-size: 16pt;
-        font-weight: bold;
-        height: 38px;
-        vertical-align: middle;
-    }
-    </style>
+        .row_select {
+	    background-color: #ffeeba !important;
+	    }
+</style>
 </head>
 
 <body>
@@ -230,7 +218,18 @@
        
            
          </div>
-          
+                              <label class="daylabel">검색일자 :</label>
+                    <input type="text" 
+                           autocomplete="off" 
+                           class="daySet" 
+                           id="startDate" 
+                           style="font-size: 16px; margin-bottom:10px;" 
+                           placeholder="날짜 선택">
+     
+
+                <button class="select-button">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+                </button>
           <button class="excel-button">
                <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
             </button>
@@ -253,85 +252,134 @@
     <script>
 
     let now_page_code = "a06";
+    let dataTable3;
+    getDataList3();
+    // 조회 버튼 클릭 시
+    $('.select-button').click(function() {
+        const selectedDate = $('#startDate').val();
+        getDataList3();
+    });
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+    	   $('#startDate').val(new Date().toISOString().split('T')[0]);
+    	 let selectedDate = $('#startDate').val();
+    	    if (!selectedDate) {
+    	        alert("날짜를 선택해주세요.");
+    	        return;
+    	    }
+
+    	    let startDate = selectedDate.replace(/-/g, "");
+    	    let dateObj = new Date(selectedDate);
+    	    dateObj.setDate(dateObj.getDate() + 1);
+    	    let nextDate = dateObj.toISOString().split('T')[0].replace(/-/g, "");
+    	    let e_time = nextDate;
+    	    getDataList3();
+
+    	
+        // 깡통 데이터
+        const dummyData = [
+            { facility: "세척 1호기", part: "", qty: "", due: "" },
+            { facility: "세척 2호기", part: "", qty: "", due: "" },
+            { facility: "세척 합계", part: "", qty: "", due: "" },
+            { facility: "쇼드 1호기", part: "", qty: "", due: "" },
+            { facility: "쇼드 2호기", part: "", qty: "", due: "" },
+            { facility: "쇼드 3호기", part: "", qty: "", due: "" },
+            { facility: "쇼드 4호기", part: "", qty: "", due: "" },
+            { facility: "쇼드 5호기", part: "", qty: "", due: "" },
+            { facility: "쇼드 6호기", part: "", qty: "", due: "" },
+            { facility: "쇼드 합계", part: "", qty: "", due: "" },
+            { facility: "G600", part: "", qty: "", due: "" },
+            { facility: "G800", part: "", qty: "", due: "" },
+            { facility: "GEO 합계", part: "", qty: "", due: "" },
+            { facility: "공용설비", part: "", qty: "", due: "" },
+            { facility: "K-BLACK", part: "", qty: "", due: "" }
+        ];
+
+        // Tabulator 생성
+        const table = new Tabulator("#dataList4", {
+            height: "500px",
+            data: dummyData,
+            layout: "fitColumns",
+            columns: [
+                { title: "설비", field: "facility", hozAlign: "center" },
+                { title: "부품", field: "part", hozAlign: "center" },
+                { title: "수량", field: "qty", hozAlign: "center" },
+                { title: "납기", field: "due", hozAlign: "center" }
+            ]
+        });
+
+    });
 
 
 
 
-        function getDataList() {
-            dataTable = new Tabulator("#dataList", {
-                height: "660px",
-                layout: "fitDataFill", // 여유 공간을 균등 분배
-                columnMinWidth: 170, 
-                selectable: true,
-                tooltips: true,
-                columnHeaderVertAlign: "middle",
-                rowVertAlign: "middle",
-                selectableRangeMode: "click",
-                reactiveData: true,
-                headerHozAlign: "center",
-           
 
-                ajaxURL: "/geomet/machine/allMonitoring/list",
-                ajaxConfig: {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                },
+    
 
-                ajaxResponse: function (url, params, response) {
-                 //   console.log("받아온 데이터:", response.data);
-                    const cleanData = response.data.map(item => {
-                        const newItem = {};
-                        for (let key in item) {
-                            newItem[key] = (item[key] === null) ? 0 : item[key];
-                        }
-                        return newItem;
-                    });
+    
+        function getDataList3() {
+  	      dataTable3 = new Tabulator("#dataList3", {
+	          height: "200px",
+	          width: "600px",
+	          layout: "fitColumns",
+	          selectable: true,
+	          columnHeaderVertAlign: "middle",
+	          rowVertAlign: "middle",
+	          tooltips: true,
+	          selectableRangeMode: "click",
+	          reactiveData: true,
+	          headerHozAlign: "center",
+	          ajaxConfig: "POST",
+	          ajaxLoader: false,
+	          headerSort: false,
+	          ajaxURL: "/geomet/work/workReport/list3",
+	 
+	          ajaxParams: {
+	              //equipment_name: $("#equipment_name").val() || "",
+	              start_time: $("#startDate").val() || "",
+	              //endDate: $("#endDate").val() || "",
+	          },
+	          placeholder: "조회된 데이터가 없습니다.",
+	     
+	          ajaxResponse: function (url, params, response) {
+	              $("#dataList3 .tabulator-col.tabulator-sortable");
+	              return response.data3;
+	          },
+	          columns: [
+	              { title: "id", field: "id", visible: false },
+	              { title: "test_num", field: "test_num", visible: false },             
+	              { title: "설비코드", field: "mach_code", hozAlign: "center", width: 200, headerSort: false },
+	              { title: "설비명", field: "facility_name", hozAlign: "center", width: 200, headerSort: false },
+	              { title: "에러 내용", field: "err_name", hozAlign: "center",  headerSort: false },
+	              { title: "에러 횟수", field: "err_count", hozAlign: "center", width: 200, headerSort: false },
+	              { title: "총 시간(초)", field: "total_seconds", hozAlign: "center", width: 200, headerSort: false },
+	              { title: "총 시간(시분초)", field: "total_time_hms", hozAlign: "center", width: 200, headerSort: false }
+	          ],
+	          rowClick: function (e, row) {
+	              // 모든 행의 선택 해제 및 스타일 제거
+	              //$("#dataList .tabulator-row").removeClass("row_select");
+	              clicked = !clicked;
+	              // 클릭된 행의 test_num 값 가져오기
+	              const clicked_test_num = row.getData().test_num;
 
-                    return cleanData;
-                },
+					if(clicked === true){
+	              // test_num이 같은 모든 행을 선택하고 클래스 추가
+	              dataTable3.getRows().forEach(function(r) {
+	                  if (r.getData().test_num === clicked_test_num) {
+	                      r.select(); // Tabulator의 select() 메서드를 사용하여 선택 상태로 만듦
+	                      r.getElement().classList.add("row_select");
+	                  }
+	              });
+					}else{
+						$("#dataList3 .tabulator-row").removeClass("row_select");
+						}
 
-                rowFormatter: function(row) {
-                    row.getElement().style.height = "42px";
-                    row.getElement().style.fontWeight = "bold";
-                    row.getElement().style.fontSize = "15pt";
-                },
-
-                columns: [
-                     { title: "설비", field: "facility_name", sorter: "string", hozAlign: "center", headerSort: false, frozen: true },
-
-                     { title: "설비상태", field: "d", sorter: "string", hozAlign: "center", headerSort: false,
-                       formatter: function(cell) {
-                         const value = cell.getValue();
-                         if (value === "가동") {
-                           return "<span style='color:green; font-weight:bold;'>" + value + "</span>";
-                         } else if (value === "비가동") {
-                           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-                         }
-                         return value;
-                       }
-                     },
-
-                     { title: "관리기준 C/T(초)", field: "e", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "실제생산 C/T(초)", field: "f", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "CAPA(통)", field: "h", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "현 생산목표(통)", field: "i", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "현 생산실적(통)", field: "j", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "가동시간", field: "k", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "비가동 시간(분)", field: "l", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "생산 톤수(ton)", field: "m", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "손실 톤수(ton)", field: "n", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
-                     { title: "현재 달성률(%)", field: "o", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "월 생산 톤수(ton)", field: "p", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "월 생산 통수(통)", field: "q", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "월 손실 톤수(ton)", field: "r", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
-                     { title: "월 손실 통수(통)", field: "s", sorter: "string", hozAlign: "center", headerSort: false, formatter: customRedFormatter },
-                     { title: "월 달성률(ton %)", field: "t", sorter: "string", hozAlign: "center", headerSort: false },
-                     { title: "월 달성률(통 %)", field: "u", sorter: "string", hozAlign: "center", headerSort: false }
-                   ],
-
-            });
+	              // selectedRow 변수 업데이트
+	              selectedRow = row;
+	              console.log("선택된 test_num:", clicked_test_num);
+	          }
+	      });
         }
 
 

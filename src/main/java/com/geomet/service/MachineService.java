@@ -1,8 +1,10 @@
 package com.geomet.service;
 
 import java.util.List;
+
 import com.geomet.domain.Machine;
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Work;
 
 	
 
@@ -66,4 +68,6 @@ public interface MachineService {
 	
 	//설비별 모니터링
 	List<Machine> getdetailMonitoring(Machine machine);
+	
+    List<Work> workReport3(Machine machine);
 }
