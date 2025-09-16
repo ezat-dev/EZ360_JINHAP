@@ -60,6 +60,8 @@ public class WorkController {
 	
 	/*-----생산관리-----*/
 	
+
+	
 	//설비별 생산실적 현황
     @RequestMapping(value= "/work/machinePerformStatus", method = RequestMethod.GET)
     public String machinePerformStatus(Model model) {

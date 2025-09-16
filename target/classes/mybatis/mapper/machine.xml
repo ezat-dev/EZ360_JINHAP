@@ -673,5 +673,55 @@ SELECT * FROM v_moniteolingling
     v_geo_prodmon_view
 </select>
 
+
+<select id="workReport3" parameterType="Work" resultType="Work">
+  <![CDATA[
+WITH err_counts AS (
+    SELECT
+        e.mach_code,
+        e.err_name,
+        COUNT(*) AS err_count,
+        SUM(
+            TIMESTAMPDIFF(
+                SECOND,
+                STR_TO_DATE(e.start_time, '%Y%m%d%H%i%s'),
+                STR_TO_DATE(e.end_time,   '%Y%m%d%H%i%s')
+            )
+        ) AS total_seconds,
+        ROW_NUMBER() OVER (
+            PARTITION BY e.mach_code
+            ORDER BY COUNT(*) DESC
+        ) AS rn
+    FROM
+        ez_errdata_view_ch e
+    WHERE
+        e.position_cd = 'GEO'
+        AND STR_TO_DATE(e.start_time, '%Y%m%d%H%i%s') 
+            BETWEEN #{start_time} AND #{end_time}
+    GROUP BY
+        e.mach_code, e.err_name
+)
+SELECT
+    ec.mach_code,
+    f.facility_name,
+    ec.err_name,
+    ec.err_count,
+    ec.total_seconds,
+    SEC_TO_TIME(ec.total_seconds) AS total_time_hms
+FROM
+    err_counts ec
+LEFT JOIN
+    tb_facility f
+    ON ec.mach_code = f.facility_mach_code
+WHERE
+    ec.rn <= 3
+ORDER BY
+    ec.mach_code, ec.err_count DESC
+  ]]>
+</select>
+
+
+
+
 </mapper>
 

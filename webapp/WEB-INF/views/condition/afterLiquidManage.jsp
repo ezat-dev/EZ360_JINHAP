@@ -313,8 +313,8 @@
 	  <label for="mch_name" class="daylabel">설비명 :</label>
 			<select id="mch_name" class="mch_name" onchange="toggleTable()">
            
-                <option value="지오메트">지오메트 액투입 </option>
-    
+                <option value="G600">G600</option>
+    			<option value="G800">G800</option>
                 <option value="K_BLACK">후처리 액투입(K_BLACK)</option>
                 <option value="ML">후처리 액투입(ML)</option> 
                 <option value="PL">후처리 액투입(PL)</option>
@@ -475,8 +475,8 @@
       <label>설비명</label>
       <select name="mch_name">
            
-                <option value="지오메트">지오메트</option>
-      
+                <option value="G600">G600</option>
+     			<option value="G800">G800</option>
                 <option value="K_BLACK">K_BLACK</option>
                 <option value="ML">ML</option>
                 <option value="PL">PL</option>
@@ -773,7 +773,7 @@
 
 
   window.addEventListener("DOMContentLoaded", () => {
-    $("#mch_name").val("지오메트");
+    $("#mch_name").val("G600");
     toggleTable();
   });
 

@@ -124,9 +124,9 @@
 		    margin-top:4px;
 		}
         .dayselect {
-            width: 20%;
+            width: 25%;
             text-align: center;
-            font-size: 15px;
+            font-size: 14px;
         }
         .daySet {
         	width: 20%;
@@ -180,9 +180,13 @@
 	
 	
 		         <label class="daylabel">검색 :</label>
-				<input type="text" autocomplete="off"class="monthSet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-				
-				<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
+		<input type="text" autocomplete="off" class="monthSet" id="startDate"
+		       style="font-size: 16px; height: 28px; width: 150px; 
+				margin-bottom: 10px;
+		              border: 1px solid #ccc; border-radius: 4px; "
+		       placeholder="시작 날짜 선택">
+
+
 	
 
 	            <label class="daylabel">설비명 :</label>

@@ -59,6 +59,12 @@ public class MachineController {
         return "/machine/allMonitoring.jsp"; // 
     }
     
+	//설비별 생산실적 현황
+    @RequestMapping(value= "/machine/workReport", method = RequestMethod.GET)
+    public String workReport(Model model) {
+        return "/machine/workReport.jsp"; // 
+    }
+    
     //통합 모니터링
     @RequestMapping(value = "/machine/allMonitoring/list", method = RequestMethod.POST)
     @ResponseBody

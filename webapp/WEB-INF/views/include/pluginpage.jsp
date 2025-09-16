@@ -202,7 +202,7 @@ function pageObject(paramKey){
 	         "a03":["/geomet/machine/alarmMonitoring","경보 모니터링"],
 	         "a04":["/geomet/machine/alarmList","경보 발생빈도"],
 	         "a05":["/geomet/machine/tempMonitoring","온도경향 모니터링"],
-	         "a06":"",
+	         "a06":["/geomet/machine/workReport","업무 보고서"],
 	         "a07":"",
 	         "b01":["/geomet/work/machinePerformStatus","설비별 생산실적 현황"],
 	         "b02":["/geomet/work/machineEfficStatus","설비효율 관리"],

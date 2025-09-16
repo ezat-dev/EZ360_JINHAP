@@ -61,6 +61,7 @@
       <div class="control"><label for="a03">경보 모니터링</label><select id="a03" name="a03"><option value="N">없음</option><option value="R">조회</option></select></div>
       <div class="control"><label for="a04">경보 발생빈도</label><select id="a04" name="a04"><option value="N">없음</option><option value="R">조회</option></select></div>
       <div class="control"><label for="a05">온도경향 모니터링</label><select id="a05" name="a05"><option value="N">없음</option><option value="R">조회</option></select></div>
+      <div class="control"><label for="a06">업무 보고서</label><select id="a01" name="a01"><option value="N">없음</option><option value="R">조회</option></select></div>
     </div>
     <div class="section">
       <h3>생산관리</h3>
