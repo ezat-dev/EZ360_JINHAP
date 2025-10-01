@@ -17,7 +17,12 @@ public class MachineDaoImpl implements MachineDao{
 	    private SqlSession sqlSession;
 	 @Resource(name="orcleSession")
 		private SqlSession sessionOrcle;
-    
+	 @Resource(name = "sessionMssqlJinhap")
+	    private SqlSession sqlSessionMssqlJinhap;
+	    
+	 
+	 
+	 
     
 	//정기점검 계획/실적
     @Override
@@ -182,6 +187,16 @@ public class MachineDaoImpl implements MachineDao{
     public List<Machine> getdetailMonitoring(Machine machine) {
       
         return sqlSession.selectList("machine.getdetailMonitoring", machine);
+    }
+    
+    
+    @Override
+    public List<Work> workReport1(Machine machine) {
+        return sqlSession.selectList("machine.workReport1", machine);
+    }
+    @Override
+    public List<Work> workReport2(Machine machine) {
+        return sqlSessionMssqlJinhap.selectList("machine.workReport2_mmsql", machine);
     }
     
     @Override

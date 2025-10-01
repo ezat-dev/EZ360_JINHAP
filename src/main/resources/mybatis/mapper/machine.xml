@@ -685,9 +685,10 @@ SELECT
     AAA.ch_idx,
     AAA.facility_name,
     BBB.L AS work_tong,  -- 작업통수
-    ROUND(BBB.weight * BBB.L, 1) AS now_weight, -- 현 생간량
-    (AAA.F * 170) as target_weight, -- 일 목표 생산량
-	ROUND(((BBB.weight * BBB.L) / (AAA.F * 170)) * 100, 1) AS per
+    weight_day AS now_weight, -- 작업중량
+    12_hour  AS target_weight, -- 목표 통수
+
+	ROUND(BBB.L / 12_hour * 100,1) AS per
 	 
 FROM
 (
@@ -699,7 +700,7 @@ FROM
         facility_comment,
         c_t,
         capa,
-        c_t_hour,
+        c_t_hour * 24 AS 12_hour,
         std_weight,
         ch_idx,
         division,
@@ -720,18 +721,31 @@ FROM
              ELSE (du.work_time*60) END - TIME_TO_SEC('00:00')/60)/60) * c_t_hour,1) AS I,
         "없음" AS Q,
         du.work_time,
-        work_gb
+        work_gb,
+        weight_day
     FROM
     (
         SELECT *, 'Z' AS Z FROM tb_facility WHERE ch_idx != 9999
     ) AS fac
     LEFT OUTER JOIN
     (
-        SELECT 'Z' AS ZZ,
-            CASE WHEN DATE_FORMAT(SUBSTR(#{start_time},1,8),'%Y-%m-%d') = CURDATE() THEN TIMESTAMPDIFF(HOUR,
-                     CONCAT(DATE_FORMAT(LEFT(@start_time,8), '%Y-%m-%d'),' 08:00:00'), NOW())
-                 ELSE 24 END AS work_time,
-            CASE WHEN DATE_FORMAT(SUBSTR(#{start_time},1,8),'%Y-%m-%d') = CURDATE() THEN 0 ELSE 1 END work_gb
+     SELECT 
+    'Z' AS ZZ,
+    CASE 
+        WHEN DATE_FORMAT(SUBSTR(#{start_time},1,8), '%Y-%m-%d') = CURDATE() 
+        THEN TIMESTAMPDIFF(
+                HOUR, 
+                CONCAT(DATE_FORMAT(SUBSTR(#{start_time},1,8), '%Y-%m-%d'), ' 08:00:00'), 
+                NOW()
+             )
+        ELSE 24
+    END AS work_time,
+    CASE 
+        WHEN DATE_FORMAT(SUBSTR(#{start_time},1,8), '%Y-%m-%d') = CURDATE() 
+        THEN 0 
+        ELSE 1 
+    END AS work_gb
+
     ) AS du
     ON fac.Z = du.ZZ
 ) AS AAA
@@ -739,17 +753,28 @@ INNER JOIN
 (
     -- BBB 서브쿼리 (생산량)
     SELECT mach_code, weight,
-           SUM(CASE WHEN end_time >= #{start_time} AND end_time < #{end_time} THEN 1 ELSE 0 END) AS L,
-           SUM(CASE WHEN end_time >= CONCAT(SUBSTR(#{start_time}, 1, 8), '080000') 
-                    AND end_time < CONCAT(SUBSTR(#{start_time}, 1, 8), '200000') THEN 1 ELSE 0 END) AS J,
-           SUM(CASE WHEN end_time >= CONCAT(SUBSTR(#{start_time}, 1, 8), '200000') 
-                    AND end_time < CONCAT(DATE_FORMAT(DATE_ADD(STR_TO_DATE(SUBSTR(#{start_time}, 1, 8), '%Y%m%d'), INTERVAL 1 DAY), '%Y%m%d'), '080000') THEN 1 ELSE 0 END) AS K
-    FROM tb_lowdata_save
-    WHERE start_time IS NOT NULL
-      AND end_time IS NOT NULL
-      AND end_time >= #{start_time}
-      AND end_time < #{end_time}
-    GROUP BY mach_code
+SELECT
+    mach_code,
+    -- 전체 범위 내 개수
+    SUM(
+      CASE
+        WHEN end_time >= #{start_time} AND end_time < #{end_time}
+        THEN 1 ELSE 0
+      END
+    ) AS L
+    
+    CASE 
+         WHEN end_time >= #{start_time} AND end_time <= #{end_time} THEN ROUND(weight,1) 
+         ELSE 0 
+     END AS weight_day,
+     
+FROM tb_lowdata_save
+WHERE start_time IS NOT NULL
+  AND end_time IS NOT NULL
+  AND end_time >= #{start_time}
+  AND end_time <  #{end_time}
+GROUP BY mach_code
+
 ) AS BBB
 ON AAA.facility_mach_code = BBB.mach_code
 ORDER BY AAA.ch_idx;
@@ -758,20 +783,30 @@ ORDER BY AAA.ch_idx;
 
 <select id="workReport2_mmsql" parameterType="Machine" resultType="Machine">
   <![CDATA[
-SELECT  resourceID, indirectCode,downtime_name, COUNT(*) AS cnt, SUM(DOWNTIME) AS downtime,
-        ROW_NUMBER() OVER (
-            PARTITION BY resourceID
-            ORDER BY COUNT(*) DESC
-        ) AS rn
+SELECT resourceID,
+       indirectCode,
+       downtime_name,
+       cnt,
+       downtime
 FROM (
-	SELECT *
-	FROM V_FEMS_IF_DOWNTIME A
-	WHERE ResourceID LIKE 'G0%'
-	  AND StartTime >= #{start_time}
-	  AND EndTime   <= #{end_time}
-) AS A
-GROUP BY resourceID, indirectCode　,downtime_name
-	  ;
+    SELECT resourceID,
+           indirectCode,
+           downtime_name,
+           COUNT(*) AS cnt,
+           SUM(DOWNTIME) AS downtime,
+           ROW_NUMBER() OVER (
+                PARTITION BY resourceID
+                ORDER BY COUNT(*) DESC
+           ) AS rn
+    FROM V_FEMS_IF_DOWNTIME A
+    WHERE ResourceID LIKE 'G0%'
+      AND StartTime >= #{start_time}
+      AND EndTime   <= #{end_time}
+    GROUP BY resourceID, indirectCode, downtime_name
+) t
+WHERE rn <= 3
+ORDER BY resourceID, rn;
+
 
   ]]>
 </select>

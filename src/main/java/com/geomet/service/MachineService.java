@@ -68,6 +68,8 @@ public interface MachineService {
 	
 	//설비별 모니터링
 	List<Machine> getdetailMonitoring(Machine machine);
-	
+
+    List<Work> workReport1(Machine machine);
+	List<Work> workReport2(Machine machine);
     List<Work> workReport3(Machine machine);
 }

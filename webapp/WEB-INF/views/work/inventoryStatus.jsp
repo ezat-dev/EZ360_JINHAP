@@ -489,7 +489,7 @@ function getDataList() {
               hozAlign: "center", headerSort: false, width: 60 },
             { title: "No", formatter: "rownum", hozAlign: "center", width: 80 },
             { title: "ID", field: "id", visible: false },
-            { title: "날짜", field: "reg_date", editor: "input", hozAlign: "center", minWidth: 140, 1headerSort: true },
+            { title: "날짜", field: "reg_date", editor: "input", hozAlign: "center", minWidth: 140, headerSort: true },
             { title: "업체", field: "company_name", editor: "input", minWidth: 200, headerFilter: "input" },
             { title: "약품명", field: "medicine_name", editor: "input", minWidth: 200, headerFilter: "input" },
             { title: "LOT번호", field: "lot_no", editor: "input", minWidth: 200, headerFilter: "input" },
