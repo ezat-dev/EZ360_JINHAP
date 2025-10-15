@@ -684,12 +684,10 @@ SELECT
 
     AAA.ch_idx,
     AAA.facility_name,
-    BBB.L AS work_tong,  -- 작업통수
+    L AS work_tong,  -- 작업통수
     weight_day AS now_weight, -- 작업중량
     12_hour  AS target_weight, -- 목표 통수
-
-	ROUND(BBB.L / 12_hour * 100,1) AS per
-	 
+	ROUND(L / 12_hour * 100,1) AS per	 
 FROM
 (
     -- AAA 서브쿼리 (설비 정보 + 가동시간)
@@ -722,7 +720,7 @@ FROM
         "없음" AS Q,
         du.work_time,
         work_gb,
-        weight_day
+        weight_day,L
     FROM
     (
         SELECT *, 'Z' AS Z FROM tb_facility WHERE ch_idx != 9999
@@ -745,39 +743,36 @@ FROM
         THEN 0 
         ELSE 1 
     END AS work_gb
-
     ) AS du
     ON fac.Z = du.ZZ
+	INNER JOIN
+	(
+	    -- BBB 서브쿼리 (생산량)
+	SELECT 
+		mach_code, SUM(weight_day) AS weight_day, SUM(L) AS L
+	FROM (
+		SELECT
+		    mach_code,
+		    -- 전체 범위 내 개수
+		    CASE 
+		         WHEN end_time >= #{start_time} AND end_time <= #{end_time} THEN ROUND(weight,1) 
+		         ELSE 0 
+		     END AS weight_day,	    
+		      CASE
+		        WHEN end_time >= #{start_time} AND end_time < #{end_time}
+		        THEN 1 ELSE 0
+		      END AS L    
+		FROM tb_lowdata_save
+		WHERE start_time IS NOT NULL
+		  AND end_time IS NOT NULL
+		  AND end_time >= #{start_time}
+		  AND end_time <  #{end_time}
+	 ) AS AA
+	 GROUP BY mach_code	
+	) AS BBB
+	ON fac.facility_mach_code = BBB.mach_code    
 ) AS AAA
-INNER JOIN
-(
-    -- BBB 서브쿼리 (생산량)
-    SELECT mach_code, weight,
-SELECT
-    mach_code,
-    -- 전체 범위 내 개수
-    SUM(
-      CASE
-        WHEN end_time >= #{start_time} AND end_time < #{end_time}
-        THEN 1 ELSE 0
-      END
-    ) AS L
-    
-    CASE 
-         WHEN end_time >= #{start_time} AND end_time <= #{end_time} THEN ROUND(weight,1) 
-         ELSE 0 
-     END AS weight_day,
-     
-FROM tb_lowdata_save
-WHERE start_time IS NOT NULL
-  AND end_time IS NOT NULL
-  AND end_time >= #{start_time}
-  AND end_time <  #{end_time}
-GROUP BY mach_code
-
-) AS BBB
-ON AAA.facility_mach_code = BBB.mach_code
-ORDER BY AAA.ch_idx;
+ORDER BY AAA.ch_idx
   ]]>
 </select>
 
