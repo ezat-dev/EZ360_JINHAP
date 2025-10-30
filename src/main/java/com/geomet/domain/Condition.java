@@ -153,9 +153,16 @@ public class Condition {
 	    private String mach_sub_weight;
 	    private String kblack_weight;
 	    private String mlpl_weight;
+	    private String rpm;
 
 
 
+		public String getRpm() {
+			return rpm;
+		}
+		public void setRpm(String rpm) {
+			this.rpm = rpm;
+		}
 		public String getVisocosity1() {
 			return visocosity1;
 		}

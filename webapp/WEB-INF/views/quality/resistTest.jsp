@@ -268,6 +268,12 @@
     box-sizing: border-box;
     height: 40px;
 }
+.cleanText{
+transform: translate(59px, 100px);
+}
+.geometText{
+transform: translate(59px, 0px);
+}
 
 </style>
 <body>
@@ -895,11 +901,11 @@
     </form>
   </div>
 </div>
-
+<div class="cleanText">세척1,2호기 가성소다용액 농도</div>
 		<div class="view">
 		    <div id="dataList1" style="margin-top:100px;"></div>
 		</div>
-
+<div class="geometText">지오메트 후처리 부착량</div>
         <div class="view">
             <div id="dataList3"></div>
         </div>

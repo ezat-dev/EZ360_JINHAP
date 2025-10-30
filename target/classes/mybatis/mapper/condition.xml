@@ -222,7 +222,8 @@
     kmp_mixing_time,
     kmp_mch_visc,
     kmp_out_time,
-    kmp_checker
+    kmp_checker,
+    rpm
   )
   VALUES (
  	#{id},
@@ -252,7 +253,8 @@
     #{kmp_mixing_time},
     #{kmp_mch_visc},
     #{kmp_out_time},
-    #{kmp_checker}
+    #{kmp_checker},
+    #{rpm}
   )
   ON DUPLICATE KEY UPDATE
     in_date = VALUES(in_date),
@@ -281,7 +283,8 @@
     kmp_mixing_time = VALUES(kmp_mixing_time),
     kmp_mch_visc = VALUES(kmp_mch_visc),
     kmp_out_time = VALUES(kmp_out_time),
-    kmp_checker = VALUES(kmp_checker)
+    kmp_checker = VALUES(kmp_checker),
+    rpm = VALUES(rpm)
 </insert>
 
 	

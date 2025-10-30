@@ -248,6 +248,11 @@
     box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
     overflow: hidden;
 }
+.hogi{
+display: flex;
+    margin-left: 70px;
+    gap: 745px;/
+}
 
     </style>
 </head>
@@ -324,7 +329,10 @@
 
 
 
-
+<p class="hogi">
+<span>1호기</span>
+<span>2호기</span>
+</p>
         <div class="view">
             <div id="dataList"></div>
             <div id="dataList2"></div>
@@ -487,7 +495,7 @@ $("#saveCorrStatus").click(function (event) {
 
   function getDataList() {
 	  dataTable = new Tabulator("#dataList", {
-	    height: '550px',
+	    height: '750px',
 	    ajaxConfig: 'POST',
 	    ajaxURL: '/geomet/quality/getMedicineListStandardList1',
 	    columnHeaderVertAlign: 'middle',
@@ -578,7 +586,7 @@ $("#saveCorrStatus").click(function (event) {
 }
   function getDataList2() {
 	  dataTable = new Tabulator("#dataList2", {
-		    height: '550px',
+		    height: '700px',
 		    ajaxConfig: 'POST',
 		    ajaxURL: '/geomet/quality/getMedicineListStandardList2',
 		    columnHeaderVertAlign: 'middle',

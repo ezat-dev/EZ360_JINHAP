@@ -460,10 +460,10 @@ $('.pCodeBtn').click(function () {
 	         }
 	       },
 
-	       { title: '점도(40±10초)', field: 'visocosity', width: 310, hozAlign: 'center',
+	       { title: '점도(45±10초)', field: 'visocosity', width: 310, hozAlign: 'center',
 	         formatter: function(cell) {
 	           var value = parseFloat(cell.getValue());
-	           if (value < 30 || value > 50) {
+	           if (value < 35 || value > 55) {
 	             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
 	           } else {
 	             return value;
@@ -567,10 +567,10 @@ $('.pCodeBtn').click(function () {
      { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
      { title: '근무조', field: 'b_a', width: 200, hozAlign: 'center' },
 
-     { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 200, hozAlign: 'center',
+     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 200, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value > 38) {
+         if (value < 10 || value > 30) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
@@ -578,20 +578,20 @@ $('.pCodeBtn').click(function () {
        }
      },
 
-     { title: 'PLUS 점도(25±10초)', field: 'visocosity', width: 200, hozAlign: 'center',
+     { title: 'PLUS 점도(25±5초)', field: 'visocosity', width: 200, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value < 15 || value > 35) {
+         if (value < 20 || value > 30) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
          }
        }
      },
-     { title: 'ML 점도(35±10초)', field: 'visocosity1', width: 200, hozAlign: 'center',
+     { title: 'ML 점도(35±5초)', field: 'visocosity1', width: 200, hozAlign: 'center',
          formatter: function(cell) {
            var value = parseFloat(cell.getValue());
-           if (value < 25 || value > 45) {
+           if (value < 30 || value > 40) {
              return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
            } else {
              return value;
@@ -650,10 +650,10 @@ $('.pCodeBtn').click(function () {
      { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
      { title: '작업 시간', field: 'b_a', width: 200, hozAlign: 'center' },
      
-     { title: '액탱크 온도(38°C이하))', field: 'tank_temp', width: 310, hozAlign: 'center',
+     { title: '액탱크 온도(20±10℃))', field: 'tank_temp', width: 310, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value > 38) {
+         if (value < 10 || value > 30) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
@@ -661,10 +661,10 @@ $('.pCodeBtn').click(function () {
        }
      },
 
-     { title: '점도(44±11초)', field: 'visocosity', width: 310, hozAlign: 'center',
+     { title: '점도(48±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
        formatter: function(cell) {
          var value = parseFloat(cell.getValue());
-         if (value < 33 || value > 55) {
+         if (value < 43 || value > 53) {
            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
          } else {
            return value;
