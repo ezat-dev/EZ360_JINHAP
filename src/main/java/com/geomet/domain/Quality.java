@@ -152,9 +152,247 @@ public class Quality {
 	    private String conductivity_input;
 	    private String conductivity_min_spec;
 	    private String conductivity_max_spec;
+	    private String nv_baking;
+	    private String nv_foil;
+	    private String nv_paint;
+	    private String ash_baking;
+	    private String ash_do;
+	    private String ash_paint;
+	    private String meq_kcc;
+	    private String ash_kcc;
+	    private String nv_kcc;
+	    private String ph_kcc;
+	    private String conductivity_kcc;
+	    private String meq_result;
+	    private String ash_result;
+	    private String nv_result;
+	    private String ph_result;
+	    private String conductivity_result;
+	    
+	    private String regdate;
+	    private String sample;
+	    private String part_no;
+	    private String part_name;
+	    private String end_date;
+	    private String file;
+	    private String file_url;
+	    private String cct_id;
+	    private String sst_id;
+	    private String before_weight;
+	    private String after_weight;
+	    private String count;
+	    private String surface;
+	    private String viscosity;
+	    private String calc1;
+	    private String calc2;
+	    private String calc3;
+	    private String attachment_id;
 	    
 	    
-	    
+		public String getRegdate() {
+			return regdate;
+		}
+		public void setRegdate(String regdate) {
+			this.regdate = regdate;
+		}
+		public String getSample() {
+			return sample;
+		}
+		public void setSample(String sample) {
+			this.sample = sample;
+		}
+		public String getPart_no() {
+			return part_no;
+		}
+		public void setPart_no(String part_no) {
+			this.part_no = part_no;
+		}
+		public String getPart_name() {
+			return part_name;
+		}
+		public void setPart_name(String part_name) {
+			this.part_name = part_name;
+		}
+		public String getEnd_date() {
+			return end_date;
+		}
+		public void setEnd_date(String end_date) {
+			this.end_date = end_date;
+		}
+		public String getFile() {
+			return file;
+		}
+		public void setFile(String file) {
+			this.file = file;
+		}
+		public String getFile_url() {
+			return file_url;
+		}
+		public void setFile_url(String file_url) {
+			this.file_url = file_url;
+		}
+		public String getCct_id() {
+			return cct_id;
+		}
+		public void setCct_id(String cct_id) {
+			this.cct_id = cct_id;
+		}
+		public String getSst_id() {
+			return sst_id;
+		}
+		public void setSst_id(String sst_id) {
+			this.sst_id = sst_id;
+		}
+		public String getBefore_weight() {
+			return before_weight;
+		}
+		public void setBefore_weight(String before_weight) {
+			this.before_weight = before_weight;
+		}
+		public String getAfter_weight() {
+			return after_weight;
+		}
+		public void setAfter_weight(String after_weight) {
+			this.after_weight = after_weight;
+		}
+		public String getCount() {
+			return count;
+		}
+		public void setCount(String count) {
+			this.count = count;
+		}
+		public String getSurface() {
+			return surface;
+		}
+		public void setSurface(String surface) {
+			this.surface = surface;
+		}
+		public String getViscosity() {
+			return viscosity;
+		}
+		public void setViscosity(String viscosity) {
+			this.viscosity = viscosity;
+		}
+		public String getCalc1() {
+			return calc1;
+		}
+		public void setCalc1(String calc1) {
+			this.calc1 = calc1;
+		}
+		public String getCalc2() {
+			return calc2;
+		}
+		public void setCalc2(String calc2) {
+			this.calc2 = calc2;
+		}
+		public String getCalc3() {
+			return calc3;
+		}
+		public void setCalc3(String calc3) {
+			this.calc3 = calc3;
+		}
+		public String getAttachment_id() {
+			return attachment_id;
+		}
+		public void setAttachment_id(String attachment_id) {
+			this.attachment_id = attachment_id;
+		}
+		public String getNv_baking() {
+			return nv_baking;
+		}
+		public void setNv_baking(String nv_baking) {
+			this.nv_baking = nv_baking;
+		}
+		public String getNv_foil() {
+			return nv_foil;
+		}
+		public void setNv_foil(String nv_foil) {
+			this.nv_foil = nv_foil;
+		}
+		public String getNv_paint() {
+			return nv_paint;
+		}
+		public void setNv_paint(String nv_paint) {
+			this.nv_paint = nv_paint;
+		}
+		public String getAsh_baking() {
+			return ash_baking;
+		}
+		public void setAsh_baking(String ash_baking) {
+			this.ash_baking = ash_baking;
+		}
+		public String getAsh_do() {
+			return ash_do;
+		}
+		public void setAsh_do(String ash_do) {
+			this.ash_do = ash_do;
+		}
+		public String getAsh_paint() {
+			return ash_paint;
+		}
+		public void setAsh_paint(String ash_paint) {
+			this.ash_paint = ash_paint;
+		}
+		public String getMeq_kcc() {
+			return meq_kcc;
+		}
+		public void setMeq_kcc(String meq_kcc) {
+			this.meq_kcc = meq_kcc;
+		}
+		public String getAsh_kcc() {
+			return ash_kcc;
+		}
+		public void setAsh_kcc(String ash_kcc) {
+			this.ash_kcc = ash_kcc;
+		}
+		public String getNv_kcc() {
+			return nv_kcc;
+		}
+		public void setNv_kcc(String nv_kcc) {
+			this.nv_kcc = nv_kcc;
+		}
+		public String getPh_kcc() {
+			return ph_kcc;
+		}
+		public void setPh_kcc(String ph_kcc) {
+			this.ph_kcc = ph_kcc;
+		}
+		public String getConductivity_kcc() {
+			return conductivity_kcc;
+		}
+		public void setConductivity_kcc(String conductivity_kcc) {
+			this.conductivity_kcc = conductivity_kcc;
+		}
+		public String getMeq_result() {
+			return meq_result;
+		}
+		public void setMeq_result(String meq_result) {
+			this.meq_result = meq_result;
+		}
+		public String getAsh_result() {
+			return ash_result;
+		}
+		public void setAsh_result(String ash_result) {
+			this.ash_result = ash_result;
+		}
+		public String getNv_result() {
+			return nv_result;
+		}
+		public void setNv_result(String nv_result) {
+			this.nv_result = nv_result;
+		}
+		public String getPh_result() {
+			return ph_result;
+		}
+		public void setPh_result(String ph_result) {
+			this.ph_result = ph_result;
+		}
+		public String getConductivity_result() {
+			return conductivity_result;
+		}
+		public void setConductivity_result(String conductivity_result) {
+			this.conductivity_result = conductivity_result;
+		}
 		public String getAuto_track() {
 			return auto_track;
 		}

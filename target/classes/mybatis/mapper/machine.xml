@@ -45,8 +45,8 @@
 
 
 <update id="updatecheckPlan" parameterType="machine">
-    UPDATE tb_check_plan
-    SET 
+     UPDATE tb_check_plan
+    <set>
         equipment_name = #{equipment_name},
         inspection_date = #{updated_at},
         item_type = #{item_type},
@@ -65,6 +65,7 @@
         <if test="m11 != null">m11 = #{m11},</if>
         <if test="m12 != null">m12 = #{m12},</if>
         updated_at = NOW()
+    </set>
     WHERE equipment_name = #{equipment_name}
       AND item_type = #{item_type}
 </update>
@@ -266,25 +267,24 @@ SELECT * FROM v_moniteolingling
 
 
 
-
 <insert id="insertRepairStatus" parameterType="Machine">
     INSERT INTO tb_equipment_maintenance (
         id, work_date, operator, equipment_name, inspection_type,
         downtime_flag, downtime_minutes, category_mid, category_sub,
-        part_flag, action, action_detail, replacement_type,
-        part_name, part_replacement_flag, quantity, due_date,
-        replacement_date, prev_replacement_date, usage_days,
+       item_type, part_flag, action, action_detail, action_detail_2,
+        replacement_type, replacement_name, part_name, part_replacement_flag,
+        quantity, due_date, replacement_date, prev_replacement_date, usage_days,
         manufacturer, manager_name, contact, part_status,
         safety_stock, current_stock, purchase_qty
     ) VALUES (
-    #{id}, #{work_date}, #{operator}, #{equipment_name}, #{inspection_type},
-    #{downtime_flag}, #{downtime_minutes}, #{category_mid}, #{category_sub},
-    #{part_flag}, #{action}, #{action_detail}, #{replacement_type},
-    #{part_name}, #{part_replacement_flag}, #{quantity}, #{due_date},
-    #{replacement_date}, #{prev_replacement_date}, #{usage_days},
-    #{manufacturer}, #{manager_name}, #{contact}, #{part_status},
-    #{safety_stock}, #{current_stock}, #{purchase_qty}
-)
+        #{id}, #{work_date}, #{operator}, #{equipment_name}, #{inspection_type},
+        #{downtime_flag}, #{downtime_minutes}, #{category_mid}, #{category_sub},
+        #{item_type}, #{part_flag}, #{action}, #{action_detail}, #{action_detail_2},
+        #{replacement_type}, #{replacement_name}, #{part_name}, #{part_replacement_flag},
+        #{quantity}, #{due_date}, #{replacement_date}, #{prev_replacement_date}, #{usage_days},
+        #{manufacturer}, #{manager_name}, #{contact}, #{part_status},
+        #{safety_stock}, #{current_stock}, #{purchase_qty}
+    )
 
     ON DUPLICATE KEY UPDATE
         work_date = VALUES(work_date),
@@ -295,10 +295,14 @@ SELECT * FROM v_moniteolingling
         downtime_minutes = VALUES(downtime_minutes),
         category_mid = VALUES(category_mid),
         category_sub = VALUES(category_sub),
+     
+        item_type = VALUES(item_type),
         part_flag = VALUES(part_flag),
         action = VALUES(action),
         action_detail = VALUES(action_detail),
+        action_detail_2 = VALUES(action_detail_2),
         replacement_type = VALUES(replacement_type),
+        replacement_name = VALUES(replacement_name),
         part_name = VALUES(part_name),
         part_replacement_flag = VALUES(part_replacement_flag),
         quantity = VALUES(quantity),
@@ -315,6 +319,7 @@ SELECT * FROM v_moniteolingling
         purchase_qty = VALUES(purchase_qty)
 </insert>
 
+
 <delete id="delRepairStatus" parameterType="Machine">
     DELETE FROM tb_equipment_maintenance
     WHERE id = #{id}
@@ -324,15 +329,80 @@ SELECT * FROM v_moniteolingling
 
 
 
+<select id="getRepairStatusList_popup_i_equipment_name" parameterType="Machine" resultType="Machine">
+    SELECT DISTINCT i_equipment_name
+	FROM tb_equipment_maintenance_info
+	ORDER BY i_equipment_name;
+</select>
+
+
+
+
+
+
+<select id="getRepairStatusList_info" parameterType="Machine" resultType="Machine">
+    SELECT *
+    FROM tb_equipment_maintenance_info
+    <where>
+        <if test="i_equipment_name != null and i_equipment_name != ''">
+            AND i_equipment_name = #{i_equipment_name}
+        </if>
+
+    </where>
+    ORDER BY idx DESC
+</select>
+
+<insert id="insertRepairStatus_info" parameterType="Machine">
+    INSERT INTO tb_equipment_maintenance_info (
+        i_equipment_name,
+        i_category_mid,
+        i_category_sub,
+        i_part_name,
+        i_part_status,
+        i_safety_stock,
+        i_manufacturer,
+        i_manager_name,
+        i_contact,
+        i_due_date
+    ) VALUES (
+        #{i_equipment_name},
+        #{i_category_mid},
+        #{i_category_sub},
+        #{i_part_name},
+        #{i_part_status},
+        #{i_safety_stock},
+        #{i_manufacturer},
+        #{i_manager_name},
+        #{i_contact},
+        #{i_due_date}
+    )
+</insert>
+
+<update id="updateRepairStatus_info" parameterType="Machine">
+    UPDATE tb_equipment_maintenance_info
+    SET
+        i_equipment_name = #{i_equipment_name},
+        i_category_mid = #{i_category_mid},
+        i_category_sub = #{i_category_sub},
+        i_part_name = #{i_part_name},
+        i_part_status = #{i_part_status},
+        i_safety_stock = #{i_safety_stock},
+        i_manufacturer = #{i_manufacturer},
+        i_manager_name = #{i_manager_name},
+        i_contact = #{i_contact},
+        i_due_date = #{i_due_date}
+    WHERE idx = #{idx}
+</update>
+
+
+<delete id="delRepairStatus_info" parameterType="Machine">
+    DELETE FROM tb_equipment_maintenance_info
+    WHERE idx = #{idx}
+</delete>
+
+
 <select id="getRepairStatusList" parameterType="Machine" resultType="Machine">
-    SELECT
-        id, work_date, operator, equipment_name, inspection_type,
-        downtime_flag, downtime_minutes, category_mid, category_sub,
-        part_flag, action, action_detail, replacement_type,
-        part_name, part_replacement_flag, quantity, due_date,
-        replacement_date, prev_replacement_date, usage_days,
-        manufacturer, manager_name, contact, part_status,
-        safety_stock, current_stock, purchase_qty
+    SELECT *
     FROM tb_equipment_maintenance
     <where>
        <if test="equipmentName != null and equipmentName != ''">
@@ -353,24 +423,30 @@ SELECT * FROM v_moniteolingling
 
 
 
- 
-  <select id="getPartStatusList" parameterType="Machine" resultType="Machine">
-    SELECT *
-    FROM (
-      SELECT * 
-      FROM tb_part_status 
-      WHERE mch_name = #{mch_name}
+<select id="getPartStatusList" parameterType="Machine" resultType="Machine">
+  SELECT *
+  FROM tb_equipment_maintenance
+  <where>
+      AND action = '교체'
+      AND DATE_FORMAT(work_date, '%Y-%m') = #{month}
 
-      UNION ALL
+      <if test="mch_name != 'ALL'">
+          AND equipment_name = #{mch_name}
+      </if>
 
-      SELECT * 
-      FROM tb_part_status 
-      WHERE NOT EXISTS (
-        SELECT 1 FROM tb_part_status WHERE mch_name = #{mch_name}
-      )
-    ) AS sub
-    ORDER BY no DESC
-  </select>
+      <if test="where_bt == '조건'">
+          AND purchase_qty <![CDATA[<]]> 0
+      </if>
+  </where>
+  ORDER BY work_date ASC
+</select>
+
+
+
+
+
+
+
 
 	<insert id="insertPartStatus" parameterType="Machine">
 	  INSERT INTO tb_part_status
@@ -417,23 +493,24 @@ SELECT * FROM v_moniteolingling
 
 
 
-<select id="getspareStatusList" parameterType="Machine" resultType="Machine">
+<select id="getSpareStatusList" parameterType="Machine" resultType="Machine">
     SELECT *
-    FROM (
-        SELECT *
-        FROM tb_sparestatus_status
-        WHERE mch_name = #{mch_name}
+    FROM tb_equipment_maintenance
+    <where>
+        <if test="where_bt != null and where_bt == '조건'">
+            AND purchase_qty <![CDATA[<]]> 0
+        </if>
 
-        UNION ALL
+        AND part_status = '스페어'
+        AND DATE_FORMAT(work_date, '%Y-%m') = #{month}
 
-        SELECT *
-        FROM tb_sparestatus_status
-        WHERE NOT EXISTS (
-            SELECT 1 FROM tb_sparestatus_status WHERE mch_name = #{mch_name}
-        )
-    ) AS sub
-    ORDER BY no DESC
+        <if test="mch_name != 'ALL'">
+            AND equipment_name = #{mch_name}
+        </if>
+    </where>
+    ORDER BY work_date ASC
 </select>
+
 
 
 <insert id="insertspareStatus" parameterType="Machine">
@@ -493,13 +570,21 @@ SELECT * FROM v_moniteolingling
 
 
 <select id="getlogStatusList" parameterType="Machine" resultType="Machine">
-  SELECT *
-  FROM tb_log_status
-  WHERE LEFT(gong_date,4) = #{gong_date}
-  <if test="mch_name != null and mch_name != '' and mch_name != 'ALL'">
-    AND mch_name = #{mch_name}
-  </if>
-  ORDER BY gong_date DESC
+    SELECT *
+    FROM tb_equipment_maintenance
+    <where>
+        <if test="where_bt != null and where_bt == '조건'">
+           
+        </if>
+
+        AND replacement_type = '외주'
+        AND DATE_FORMAT(work_date, '%Y-%m') = #{month}
+
+        <if test="mch_name != 'ALL'">
+            AND equipment_name = #{mch_name}
+        </if>
+    </where>
+    ORDER BY work_date ASC
 </select>
 
 
@@ -806,7 +891,16 @@ ORDER BY resourceID, rn;
   ]]>
 </select>
 
-
+<select id="workReport2_nontime_mmsql" parameterType="Machine" resultType="Machine">
+  <![CDATA[
+SELECT *
+FROM V_FEMS_IF_DOWNTIME
+WHERE ResourceID LIKE 'G0%'
+  AND StartTime >= #{start_time}
+  AND EndTime   <= #{end_time}
+ORDER BY resourceID, downtime DESC
+  ]]>
+</select>
 
 <select id="workReport3" parameterType="Machine" resultType="Machine">
   <![CDATA[

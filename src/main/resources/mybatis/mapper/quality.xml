@@ -575,4 +575,307 @@
 		tb_liquid_analyze
 		WHERE id = #{id}
 	</delete>
+		<!-- 액분석관리 N.V 추가 -->
+		<insert id="liquidAnalyzeInsertNv" parameterType="Quality">
+		INSERT INTO tb_liquid_analyze
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="date != null and date != ''">date,</if>
+    <if test="action != null and action != ''">action,</if>
+    <if test="meq_min_spec != null and meq_min_spec != ''">meq_min_spec,</if>
+    <if test="meq_max_spec != null and meq_max_spec != ''">meq_max_spec,</if>
+    <if test="table_code != null and table_code != ''">table_code,</if>
+     <if test="mch_name != null and mch_name != ''">mch_name,</if>
+     <if test="nv_baking != null and nv_baking != ''">nv_baking,</if>
+     <if test="nv_foil != null and nv_foil != ''">nv_foil,</if>
+     <if test="nv_paint != null and nv_paint != ''">nv_paint,</if>
+     <if test="nv_baking != null and nv_baking != '' and 
+                      nv_foil != null and nv_foil != '' and 
+                      nv_paint != null and nv_paint != ''">
+                result,
+     </if>
+  </trim>
+  <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+    <if test="date != null and date != ''">#{date},</if>
+    <if test="action != null and action != ''">#{action},</if>
+    <if test="meq_min_spec != null and meq_min_spec != ''">#{meq_min_spec},</if>
+    <if test="meq_max_spec != null and meq_max_spec != ''">#{meq_max_spec},</if>
+    <if test="table_code != null and table_code != ''">#{table_code},</if>
+    <if test="mch_name != null and mch_name != ''">#{mch_name},</if>
+    <if test="nv_baking != null and nv_baking != ''">#{nv_baking},</if>
+    <if test="nv_foil != null and nv_foil != ''">#{nv_foil},</if>
+    <if test="nv_paint != null and nv_paint != ''">#{nv_paint},</if>
+    <if test="nv_baking != null and nv_baking != '' and 
+                      nv_foil != null and nv_foil != '' and 
+                      nv_paint != null and nv_paint != ''">
+                (#{nv_baking} - #{nv_foil}) / #{nv_paint} * 100,
+    </if>
+  </trim>
+	</insert>
+	<!-- 액분석관리 Ash 추가 -->
+<insert id="liquidAnalyzeInsertAsh" parameterType="Quality">
+    INSERT INTO tb_liquid_analyze
+    (
+        <trim suffixOverrides=",">
+            <if test="date != null and date != ''">date,</if>
+            <if test="action != null and action != ''">action,</if>
+            <if test="meq_min_spec != null and meq_min_spec != ''">meq_min_spec,</if>
+            <if test="meq_max_spec != null and meq_max_spec != ''">meq_max_spec,</if>
+            <if test="table_code != null and table_code != ''">table_code,</if>
+            <if test="mch_name != null and mch_name != ''">mch_name,</if>
+            
+            <if test="ash_baking != null and ash_baking != ''">ash_baking,</if>
+            
+            <if test="ash_do != null and ash_do != ''">ash_do,</if>
+            <if test="ash_paint != null and ash_paint != ''">ash_paint,</if>
+            
+            <if test="ash_baking != null and ash_baking != '' and 
+                      ash_do != null and ash_do != '' and 
+                      ash_paint != null and ash_paint != ''">
+                result,
+            </if>
+        </trim>
+    )
+    VALUES
+    (
+        <trim suffixOverrides=",">
+            <if test="date != null and date != ''">#{date},</if>
+            <if test="action != null and action != ''">#{action},</if>
+            <if test="meq_min_spec != null and meq_min_spec != ''">#{meq_min_spec},</if>
+            <if test="meq_max_spec != null and meq_max_spec != ''">#{meq_max_spec},</if>
+            <if test="table_code != null and table_code != ''">#{table_code},</if>
+            <if test="mch_name != null and mch_name != ''">#{mch_name},</if>
+            
+            <if test="ash_baking != null and ash_baking != ''">#{ash_baking},</if>
+            
+            <if test="ash_do != null and ash_do != ''">#{ash_do},</if>
+            <if test="ash_paint != null and ash_paint != ''">#{ash_paint},</if>
+            
+            <if test="ash_baking != null and ash_baking != '' and 
+                      ash_do != null and ash_do != '' and 
+                      ash_paint != null and ash_paint != ''">
+                (((#{ash_baking} - #{ash_do}) / (#{cause}/100 * #{ash_paint})) * 100),
+            </if>
+        </trim>
+    )
+</insert>
+		<!-- KCC 분석비교 -->
+		<select id="getKccList" parameterType="Quality"
+		resultType="Quality">
+		SELECT
+		    T.date,
+		    T.table_code,
+		    T.mch_name,
+			 T.id,
+		    MAX(CASE WHEN T.mch_name = 'meq' THEN T.auto_track ELSE NULL END) AS meq_result,
+		    MAX(CASE WHEN T.mch_name = 'ash' THEN T.result ELSE NULL END) AS ash_result,
+		    MAX(CASE WHEN T.mch_name = 'nv' THEN T.result ELSE NULL END) AS nv_result,
+		    MAX(CASE WHEN T.mch_name = 'ph' THEN T.ph_input ELSE NULL END) AS ph_result,
+		    MAX(CASE WHEN T.mch_name = 'conductivity' THEN T.conductivity_input ELSE NULL END) AS conductivity_result,
+			 
+			 MAX(CASE WHEN T.mch_name = 'meq' THEN T.meq_kcc ELSE NULL END) AS meq_kcc,   
+		    MAX(CASE WHEN T.mch_name = 'ash' THEN T.ash_kcc ELSE NULL END) AS ash_kcc,
+		    MAX(CASE WHEN T.mch_name = 'nv' THEN T.nv_kcc ELSE NULL END) AS nv_kcc,
+		    MAX(CASE WHEN T.mch_name = 'ph' THEN T.ph_kcc ELSE NULL END) AS ph_kcc,
+		    MAX(CASE WHEN T.mch_name = 'conductivity' THEN T.conductivity_kcc ELSE NULL END) AS conductivity_kcc,
+			 T.conductivity_kcc  
+		FROM
+		    tb_liquid_analyze T
+		<where>
+		<if test="date != null and date != '' and endDate != null and endDate != ''">
+            AND T.date BETWEEN #{date} AND #{endDate}
+        </if>
+    	</where>
+		GROUP BY
+		    T.date,
+		    T.table_code
+		ORDER BY T.date asc
+	</select>
+	<!-- kcc 업데이트 -->
+	<update id="updateKcc" parameterType="quality">
+		UPDATE tb_liquid_analyze
+		<set>
+			<if test="meq_kcc != null and meq_kcc != ''">meq_kcc = #{meq_kcc},</if>
+			<if test="nv_kcc != null and nv_kcc != ''">nv_kcc = #{nv_kcc},</if>
+			<if test="ph_kcc != null and ph_kcc != ''">ph_kcc = #{ph_kcc},</if>
+			<if test="ash_kcc != null and ash_kcc != ''">ash_kcc = #{ash_kcc},</if>
+			<if test="conductivity_kcc != null and conductivity_kcc != ''">conductivity_kcc = #{conductivity_kcc},</if>
+		</set>
+		WHERE date = #{date} 
+		AND mch_name = #{mch_name}
+		AND table_code = #{table_code}
+	</update>
+		<!-- cct 추가 -->
+			<insert id="insertCct" parameterType="Quality">
+		INSERT INTO tb_cct
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="sample != null and sample != ''">sample,</if>
+    <if test="part_no != null and part_no != ''">part_no,</if>
+    <if test="part_name != null and part_name != ''">part_name,</if>
+    <if test="spec != null and spec != ''">spec,</if>
+    <if test="start_date != null and start_date != ''">start_date,</if>
+     <if test="end_date != null and end_date != ''">end_date,</if>
+     <if test="result != null and result != ''">result,</if>
+     <if test="file_name != null and file_name != ''">file_name,</if>
+  </trim>
+  <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+    <if test="sample != null and sample != ''">#{sample},</if>
+    <if test="part_no != null and part_no != ''">#{part_no},</if>
+    <if test="part_name != null and part_name != ''">#{part_name},</if>
+    <if test="spec != null and spec != ''">#{spec},</if>
+    <if test="start_date != null and start_date != ''">#{start_date},</if>
+    <if test="end_date != null and end_date != ''">#{end_date},</if>
+    <if test="result != null and result != ''">#{result},</if>
+    <if test="file_name != null and file_name != ''">#{file_name},</if>
+  </trim>
+	</insert>
+	<!-- cct 시험성적서 조회 -->
+	<select id="getCctList" parameterType="Quality" resultType="Quality">
+SELECT * from tb_cct
+  WHERE 1 = 1
+  <if test="date != null and date != ''">
+    AND DATE(regdate) = #{date}
+  </if>
+</select>
+<!-- cct 삭제 -->
+		<delete id="deleteCct" parameterType="Quality">
+		DELETE FROM
+		tb_cct
+		WHERE cct_id = #{cct_id}
+	</delete>
+		<!-- sst 시험성적서 조회 -->
+	<select id="getSstList" parameterType="Quality" resultType="Quality">
+SELECT * from tb_sst
+  WHERE 1 = 1
+  <if test="date != null and date != ''">
+    AND DATE(regdate) = #{date}
+  </if>
+</select>
+	<!-- sst 추가 -->
+			<insert id="insertSst" parameterType="Quality">
+		INSERT INTO tb_sst
+  <trim prefix="(" suffix=")" suffixOverrides=",">
+    <if test="sample != null and sample != ''">sample,</if>
+    <if test="part_no != null and part_no != ''">part_no,</if>
+    <if test="part_name != null and part_name != ''">part_name,</if>
+    <if test="spec != null and spec != ''">spec,</if>
+    <if test="start_date != null and start_date != ''">start_date,</if>
+     <if test="end_date != null and end_date != ''">end_date,</if>
+     <if test="result != null and result != ''">result,</if>
+     <if test="file_name != null and file_name != ''">file_name,</if>
+  </trim>
+  <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+    <if test="sample != null and sample != ''">#{sample},</if>
+    <if test="part_no != null and part_no != ''">#{part_no},</if>
+    <if test="part_name != null and part_name != ''">#{part_name},</if>
+    <if test="spec != null and spec != ''">#{spec},</if>
+    <if test="start_date != null and start_date != ''">#{start_date},</if>
+    <if test="end_date != null and end_date != ''">#{end_date},</if>
+    <if test="result != null and result != ''">#{result},</if>
+    <if test="file_name != null and file_name != ''">#{file_name},</if>
+  </trim>
+	</insert>
+<!-- sst 삭제 -->
+		<delete id="deleteSst" parameterType="Quality">
+		DELETE FROM
+		tb_sst
+		WHERE sst_id = #{sst_id}
+	</delete>
+	<!-- 지오메트 후처리 추가 -->
+<insert id="insertAttachment" parameterType="Quality">
+    INSERT INTO tb_attachment
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+        <if test="mch_name != null and mch_name != ''">mch_name,</if>
+        <if test="before_weight != null and before_weight != ''">before_weight,</if>
+        <if test="after_weight != null and after_weight != ''">after_weight,</if>
+        <if test="count != null and count != ''">count,</if>
+        <if test="surface != null and surface != ''">surface,</if>
+        <if test="viscosity != null and viscosity != ''">viscosity,</if>
+        <if test="action != null and action != ''">action,</if>
+        <if test="group_id != null and group_id != ''">group_id,</if>
+        <if test="part_name != null and part_name != ''">part_name,</if>
+        <if test="spec != null and spec != ''">spec,</if>
+        <if test="count != null and count != '' and surface != null and surface != '' and before_weight != null and before_weight != '' and after_weight != null and after_weight != ''">
+            calc1, calc2, calc3, result,
+        </if>
+        <if test="date != null and date != ''">date,</if>
+    </trim>
+    <trim prefix="VALUES (" suffix=")" suffixOverrides=",">
+        <if test="mch_name != null and mch_name != ''">#{mch_name},</if>
+        <if test="before_weight != null and before_weight != ''">#{before_weight},</if>
+        <if test="after_weight != null and after_weight != ''">#{after_weight},</if>
+        <if test="count != null and count != ''">#{count},</if>
+        <if test="surface != null and surface != ''">#{surface},</if>
+        <if test="viscosity != null and viscosity != ''">#{viscosity},</if>
+        <if test="action != null and action != ''">#{action},</if>
+        <if test="group_id != null and group_id != ''">#{group_id},</if>
+        <if test="part_name != null and part_name != ''">#{part_name},</if>
+        <if test="spec != null and spec != ''">#{spec},</if>
+        <if test="count != null and count != '' and surface != null and surface != '' and before_weight != null and before_weight != '' and after_weight != null and after_weight != ''">
+            (#{count} * #{surface}),
+            (#{before_weight} - #{after_weight}),
+            
+            (ROUND(
+                (CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000)
+            , 2)),
+            
+            (CASE 
+                WHEN #{mch_name} LIKE 'G600%' OR #{mch_name} LIKE 'G800%'
+                    THEN (CASE WHEN 
+                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000), 2)) >= 200 
+                        THEN '합격' 
+                        ELSE '불합격' 
+                    END)
+                WHEN #{mch_name} LIKE '%PLUS%' OR #{mch_name} LIKE '%ML%'
+                    THEN (CASE WHEN 
+                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000), 2)) >= 20 
+                        THEN '합격' 
+                        ELSE '불합격' 
+                    END)
+                WHEN #{mch_name} LIKE '%K-BLACK%'
+                    THEN (CASE WHEN 
+                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000), 2)) >= 80
+                        THEN '합격' 
+                        ELSE '불합격' 
+                    END)
+                ELSE '불합격' 
+            END),
+        </if>
+        <if test="date != null and date != ''">#{date},</if>
+    </trim>
+</insert>
+	<!-- 지오메트 부착량 조회 -->
+		<select id="attachmentList" parameterType="Quality" resultType="Quality">
+SELECT * from tb_attachment
+  WHERE 1 = 1
+  AND (mch_name LIKE 'G600%' OR mch_name LIKE 'G800%')
+  <if test="date != null and date != ''">
+    AND DATE(date) = #{date}
+  </if>
+  order by mch_name asc
+</select>
+<!-- 지오메트 후처리 부착량 조회 -->
+		<select id="turbidityList" parameterType="Quality" resultType="Quality">
+SELECT * from tb_attachment
+  WHERE 1 = 1
+  AND (mch_name LIKE 'PLUS%' OR mch_name LIKE 'ML%' OR mch_name LIKE 'K/B%')
+  <if test="date != null and date != ''">
+    AND DATE(date) = #{date}
+  </if>
+  order by mch_name asc
+</select>
+<!-- 지오메트 부착량, 후처리 부착량 삭제 -->
+		<delete id="deleteAttachment" parameterType="Quality">
+		DELETE FROM
+		tb_attachment
+		WHERE date = #{date}
+		<choose>
+            <when test='mch_name != null and mch_name.contains("G")'>
+                AND mch_name LIKE '%G%'
+            </when>
+            
+            <otherwise>
+                AND mch_name NOT LIKE '%G%'
+            </otherwise>
+        </choose>
+	</delete>
 </mapper>

@@ -9,6 +9,12 @@
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
     <style>
+    #saveCorrStatus {
+     width: 120px;
+    }
+    #closeModal{
+    width: 120px;
+    }
         .container {
             display: flex;
             justify-content: space-between;
@@ -31,6 +37,16 @@
             align-items: center;
             justify-content: space-between;
         }
+        .move-button{
+		    height: 40px;
+		    padding: 0 11px;
+		    border: 1px solid rgb(53, 53, 53);
+		    border-radius: 4px;
+		    background-color: #ffffff;
+		    cursor: pointer;
+		    display: flex;
+		    align-items: center;
+		}
         .modal {
             display: none;
             position: fixed;
@@ -41,21 +57,52 @@
             background-color: rgba(0, 0, 0, 0.5);
             transition: opacity 0.3s ease-in-out;
         }
-	    .modal-content {
-	        background: white;
-	        width: 24%;
-	        max-width: 500px;
-	        height: 80vh; 
-	        overflow-y: auto; 
-	        margin: 6% auto 0;
-	        padding: 20px;
-	        border-radius: 10px;
-	        position: relative;
-	        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
-	        transform: scale(0.8);
-	        transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
-	        opacity: 0;
-	    }
+.modal-content {
+    background: white;
+    width: 24%;
+    max-width: 500px;
+    height: 90vh;
+    overflow-y: auto;
+    margin: 0%;
+    margin-left: 550px;
+    padding: 20px;
+    border-radius: 10px;
+    position: relative;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    transform: scale(0.8);
+    transition: transform 0.3s 
+ease-in-out, opacity 0.3s 
+ease-in-out;
+    opacity: 0;
+}
+
+
+.modal_info {
+    display: none;
+    position: fixed;
+    right: 0;
+    top: 0;
+
+    height: 100%;
+
+    z-index: 20000;       /* 최상단 */
+}
+.modal-content_info {
+    background: #ffffff;
+    height: 80%;
+    padding: 20px;
+    overflow-y: auto;
+    border-radius: 20px;   /* ← 둥글게 */
+    box-shadow: -3px 0px 10px rgba(0, 0, 0, 0.3);
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+
+.modal_info.show .modal-content_info {
+    transform: translateX(0);
+}
+
         .modal.show {
             display: block;
             opacity: 1;
@@ -158,6 +205,23 @@
         .row_select {
 	    background-color: #ffeeba !important;
 	    }
+	    .close_info {
+    font-size: 28px;        /* 크기 키움 */
+    font-weight: bold;      /* 굵게 */
+    cursor: pointer;        /* 마우스 손가락 모양 */
+    color: #333;
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    transition: transform 0.2s ease, color 0.2s ease;
+}
+
+/* 마우스 올리면 효과 */
+.close_info:hover {
+    color: #ff4d4d;         /* 빨간 느낌 */
+    transform: scale(1.2);  /* 약간 커짐 */
+}
+	    
     </style>
 </head>
 
@@ -190,27 +254,25 @@
 	
 
 	            <label class="daylabel">설비명 :</label>
-	            <select class="dayselect mch_name_s">
+	            <select class="dayselect mch_name">
 	            <option value="">전체</option>
            
-  					<option value="G800">G800</option>
-	                <option value="G600">G600</option>
-	                <option value="K-BLACK">K-BLACK</option>
-	                <option value="공용설비">공용설비</option>
-	                <option value="방청">방청</option>
-	                <option value="이코팅1호기">이코팅1호기</option>
-	                <option value="이코팅2호기">이코팅2호기</option>
-	                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-	                <option value="세척 1호기">세척 1호기</option>
-	                <option value="세척 2호기">세척 2호기</option>
-	                
-	                <option value="쇼트 1호기">쇼트 1호기</option>
-					<option value="쇼트 2호기">쇼트 2호기</option>
-					<option value="쇼트 3호기">쇼트 3호기</option>
-					<option value="쇼트 4호기">쇼트 4호기</option>
-					<option value="쇼트 5호기">쇼트 5호기</option>
-					<option value="쇼트 6호기">쇼트 6호기</option>
-					<option value="쇼트 7호기">쇼트 7호기</option>
+  					   
+					    <option value="600톤">600톤</option>
+					    <option value="800톤">800톤</option>
+					    <option value="G800">G800</option>
+					    <option value="K-BLACK">K-BLACK</option>
+					    <option value="공용설비">공용설비</option>
+					    <option value="기타">기타</option>
+					    <option value="설비추가">설비추가</option>
+					    <option value="쇼트 1호기">쇼트 1호기</option>
+					    <option value="쇼트 2호기">쇼트 2호기</option>
+					    <option value="쇼트 3호기">쇼트 3호기</option>
+					    <option value="쇼트 4호기">쇼트 4호기</option>
+					    <option value="쇼트 5호기">쇼트 5호기</option>
+					    <option value="쇼트 6호기">쇼트 6호기</option>
+					    <option value="쇼트 자동화 레일">쇼트 자동화 레일</option>
+					    <option value="지오메트 자동화 레일">지오메트 자동화 레일</option>
 
             </select>
 			</div>
@@ -225,17 +287,35 @@
 				</button>
                 
                 
-                <button class="excel-button">
+              <!--   <button class="excel-button">
                     <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
+	                </button> -->
+				<button class="move-button" onclick="location.href='/geomet/machine/repairStatus_info'">
+				    <img src="/geomet/css/tabBar/move.png" alt="move" class="button-image"> 설비 이력관리 기준정보
+				</button>
+
+
                 
             </div>
+            
+            
+            
         </div>
 
         <div class="view">
             <div id="dataTable"></div>
         </div>
     </main>
+    
+    
+<div id="infoModal" class="modal_info">
+  <div class="modal-content_info">
+    <span class="close_info">&times;</span>
+    <h3>기준정보 선택</h3>
+    <div id="dataTable_info"></div>
+  </div>
+</div>
+	
 	
 <div id="modalContainer" class="modal">
   <div class="modal-content">
@@ -252,28 +332,11 @@
       <label for="operator">조치자</label>
       <input type="text" id="operator" name="operator" placeholder="이름 입력">
 
+	 <button type="button" id="addTaskBtn" style="margin: 5px 0;">기준정보 불러오기</button>
+
       <!-- 설비명 -->
-      <label for="equipment_name">설비명</label>
-      <select name="equipment_name" id="equipment_name" required>
-        <option value="">-- 선택하세요 --</option>
-        <option value="G800">G800</option>
-        <option value="G600">G600</option>
-        <option value="K-BLACK">K-BLACK</option>
-        <option value="공용설비">공용설비</option>
-        <option value="방청">방청</option>
-        <option value="이코팅1호기">이코팅1호기</option>
-        <option value="이코팅2호기">이코팅2호기</option>
-        <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-        <option value="세척 1호기">세척 1호기</option>
-        <option value="세척 2호기">세척 2호기</option>
-        <option value="쇼트 1호기">쇼트 1호기</option>
-        <option value="쇼트 2호기">쇼트 2호기</option>
-        <option value="쇼트 3호기">쇼트 3호기</option>
-        <option value="쇼트 4호기">쇼트 4호기</option>
-        <option value="쇼트 5호기">쇼트 5호기</option>
-        <option value="쇼트 6호기">쇼트 6호기</option>
-        <option value="쇼트 7호기">쇼트 7호기</option>
-      </select>
+     <label for="equipment_name">설비명</label>
+	<input type="text" id="equipment_name" name="equipment_name" placeholder="설비명 입력" required>
 
       <!-- 점검 -->
       <label for="inspection_type">점검</label>
@@ -303,33 +366,48 @@
       <input type="text" id="category_sub" name="category_sub" placeholder="예: 베어링">
 
       <!-- 부품 유무 -->
-      <label for="part_flag">부품 유무</label>
+      <label for="part_flag">유/무</label>
       <select name="part_flag" id="part_flag">
         <option value="유">유</option>
         <option value="무">무</option>
       </select>
 
       <!-- 조치 -->
-      <label for="action">조치</label>
-      <input type="text" id="action" name="action" placeholder="예: 교체">
 
-      <!-- 내용 -->
-      <label for="action_detail">내용</label>
+    <label for="action">조치</label>
+      <select name="action" id="action">
+        <option value="교체">교체</option>
+        <option value="수리">수리</option>
+         <option value="교정">교정</option>
+      </select>
+
+
+      <!-- 교체 사유 -->
+      <label for="action_detail">교체 사유</label>
       <textarea id="action_detail" name="action_detail" rows="2" placeholder="상세 내용 입력"></textarea>
 
+      <label for="action_detail_2">개선 필요사항</label>
+      <input type="text" id="action_detail_2" name="action_detail_2" >
+
+
       <!-- 교체 주관 -->
-      <label for="replacement_type">교체 주관</label>
+      <label for="replacement_type">외주/자체</label>
       <select name="replacement_type" id="replacement_type">
-        <option value="자체">자체</option>
         <option value="외주">외주</option>
+        <option value="자체">자체</option>
+
       </select>
+    <!-- 압체명 -->
+      <label for="replacement_name">업체명</label>
+      <input type="text" id="replacement_name" name="replacement_name" >
+
 
       <!-- 부품명 -->
       <label for="part_name">부품명</label>
       <input type="text" id="part_name" name="part_name" placeholder="예: UF10">
 
       <!-- 교체 유무 -->
-      <label for="part_replacement_flag">교체 유무</label>
+      <label for="part_replacement_flag">부품 교체 유무</label>
       <select name="part_replacement_flag" id="part_replacement_flag">
         <option value="유">유</option>
         <option value="무">무</option>
@@ -341,14 +419,14 @@
 
       <!-- 납기 -->
       <label for="due_date">납기</label>
-      <input type="date" id="due_date" name="due_date">
+      <input type="text" id="due_date" name="due_date">
 
       <!-- 교체 일자 -->
-      <label for="replacement_date">교체 일자</label>
+      <label for="replacement_date">기존 교체 일자</label>
       <input type="date" id="replacement_date" name="replacement_date">
 
       <!-- 기존 교체 일자 -->
-      <label for="prev_replacement_date">기존 교체 일자</label>
+      <label for="prev_replacement_date">차기 교체 일자</label>
       <input type="date" id="prev_replacement_date" name="prev_replacement_date">
 
       <!-- 사용일 -->
@@ -365,13 +443,13 @@
 
       <!-- 연락처 -->
       <label for="contact">연락처</label>
-      <input type="tel" id="contact" name="contact" placeholder="010-0000-0000">
+      <input type="tel" id="contact" name="contact" placeholder="010-000-000">
 
       <!-- 부품 상태 -->
-      <label for="part_status">부품 상태</label>
+      <label for="part_status">부품 유무</label>
       <select name="part_status" id="part_status">
         <option value="스페어">스페어</option>
-        <option value="부품">부품</option>
+        <option value="소모품">소모품</option>
       </select>
 
       <!-- 안전재고 -->
@@ -395,48 +473,118 @@
   </div>
 </div>
 <script>
-let now_page_code = "h03";
-var dataTable;
-var selectedRowData = null;
-
-// yyyy-MM 포맷 함수
-function formatYearMonth(date) {
-    return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0');
-}
-
-// 오늘 날짜 (yyyy-MM-dd)
-function getTodayStr() {
-    const today = new Date();
-    const yyyy = today.getFullYear();
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const dd = String(today.getDate()).padStart(2, '0');
-    return `${yyyy}-${mm}-${dd}`;
-}
-
-// Tabulator 데이터 로드 함수: 설비명 + 시작월
-function loadTableData() {
-    const mch_name = $('.dayselect').val();
-    const s_date = $('#startDate').val();   // yyyy-MM
-
-    console.log("보내는 파라미터:", { mch_name, startDate: s_date });
-
-    if(dataTable){
-        dataTable.setData("/geomet/machine/repairStatus/list", { 
-            equipmentName: mch_name,
-            startDate: s_date
-        });
-    }
-}
-
 $(document).ready(function() {
+    // -------------------------------
+    // 전역 변수
+    // -------------------------------
+    let now_page_code = "h03";
+    let dataTable = null;
+    let selectedRowData = null;
 
-	
+    // -------------------------------
+    // 유틸 함수
+    // -------------------------------
+    function formatYearMonth(date) {
+        return date.getFullYear() + "-" + String(date.getMonth() + 1).padStart(2, '0');
+    }
 
-    // startDate input에 이번 달 세팅
+    const todayStr = new Date().toISOString().slice(0, 10);
+    console.log(todayStr); // 예: 2025-12-01
+
+    function calcPurchaseQty() {
+        const safety = parseInt($('#safety_stock').val()) || 0;
+        const current = parseInt($('#current_stock').val()) || 0;
+        $('#purchase_qty').val(safety - current);
+    }
+
+    function loadTableData() {
+        const mch_name = $('.dayselect').val();
+        const startDate = $('#startDate').val();
+
+        console.log("보내는 파라미터:", { mch_name, startDate });
+
+        if(dataTable){
+            dataTable.setData("/geomet/machine/repairStatus/list", { 
+                equipmentName: mch_name,
+                startDate: startDate
+            });
+        }
+    }
+
+    // -------------------------------
+    // 이벤트 등록
+    // -------------------------------
+    $('#safety_stock, #current_stock').on('input', calcPurchaseQty);
+
+    $('.select-button').click(loadTableData);
+    $('.dayselect, #startDate').on('change', loadTableData);
+
+    $('.insert-button').on('click', function () {
+        selectedRowData = null;
+        const corrForm = $('#corrForm')[0];
+        corrForm.reset();
+        $('#id').val('');
+        $('#work_date').val(todayStr);
+        $('#modalContainer').show().addClass('show');
+    });
+
+    $('.delete-button').click(function(){
+        if(!selectedRowData){
+            alert('삭제할 행을 먼저 클릭해 주세요.');
+            return;
+        }
+        if(!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
+
+        $.ajax({
+            url: "/geomet/machine/repairStatus/delete",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify({ id: selectedRowData.id }),
+            success: function(){
+                alert('삭제되었습니다.');
+                selectedRowData = null;
+                loadTableData();
+            },
+            error: function(){
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        });
+    });
+
+    $('#saveCorrStatus').click(function(event){
+        event.preventDefault();
+        const formData = new FormData($('#corrForm')[0]);
+
+        if(!$('#id').val()) formData.delete('id');
+        if(selectedRowData && selectedRowData.no) formData.append('no', selectedRowData.no);
+
+        $.ajax({
+            url: "/geomet/machine/repairStatus/insert",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(){
+                alert('저장되었습니다!');
+                $('#modalContainer').hide();
+                selectedRowData = null;
+                loadTableData(); 
+            },
+            error: function(){
+                alert('저장 중 오류가 발생했습니다.');
+            }
+        });
+    });
+
+    $('#closeModal, .close').click(function(){
+        $('#modalContainer').removeClass('show').hide();
+    });
+
+    // -------------------------------
+    // Tabulator 초기화
+    // -------------------------------
     $("#startDate").val(formatYearMonth(new Date()));
 
-    
-    // Tabulator 초기화
     dataTable = new Tabulator('#dataTable', {
         height: '790px',
         layout: 'fitDataFill',
@@ -450,24 +598,55 @@ $(document).ready(function() {
         placeholder: "조회된 데이터가 없습니다.",
         columns: [
             { title: "NO", field: "id", hozAlign: "center", width: 70 },
-            { title: "일자", field: "work_date", hozAlign: "center", width: 130  },
+            { 
+                title: "일자", 
+                field: "work_date", 
+                hozAlign: "center", 
+                width: 130, 
+                editor: "input",
+                mutator: function(value, data){
+                    return value || todayStr;
+                }
+            },
             { title: "조치자", field: "operator", hozAlign: "center", width: 130 },
-            { title: "설비명", field: "equipment_name", hozAlign: "center", width: 130 },
-            { title: "점검", field: "inspection_type", hozAlign: "center" , width: 130},
-            { title: "비가동 유무", field: "downtime_flag", hozAlign: "center" , width: 130},
-            { title: "비가동 시간(분)", field: "downtime_minutes", hozAlign: "right" , width: 130},
-            { title: "중분류", field: "category_mid", hozAlign: "center", width: 130 },
-            { title: "소분류", field: "category_sub", hozAlign: "center", width: 130 },
-            { title: "부품 유무", field: "part_flag", hozAlign: "center" , width: 130},
-            { title: "조치", field: "action", hozAlign: "center", width: 130 },
-            { title: "내용", field: "action_detail", hozAlign: "left" , width: 130},
-            { title: "교체 주관", field: "replacement_type", hozAlign: "center" , width: 130},
+            { title: "설비명", field: "equipment_name", hozAlign: "center", width: 180 },
+            { title: "점검</br>일상/돌발/예방", field: "inspection_type", hozAlign: "center" , width: 180},
+            {
+                title: "설비 비가동 유무",
+                columns: [
+                    { title: "유 / 무", field: "downtime_flag", hozAlign: "center", width: 130 },
+                    { title: "시간(분)", field: "downtime_minutes", hozAlign: "right", width: 130 }
+                ]
+            },
+            {
+                title: "구분",
+                columns: [
+                    { title: "중분류", field: "category_mid", hozAlign: "center", width: 180 },
+                    { title: "소분류", field: "category_sub", hozAlign: "center", width: 180 }
+                ]
+            },
+            {
+                title: "개선 필요",
+                columns: [
+                    { title: "유 / 무", field: "part_flag", hozAlign: "center", width: 130 },
+                    { title: "조치</br>교체/수리/교정", field: "action", hozAlign: "center", width: 180 },
+                    { title: "교체 사유", field: "action_detail", hozAlign: "left", width: 200 },
+                    { title: "개선 필요사항", field: "action_detail_2", hozAlign: "left", width: 200 }
+                ]
+            },
+            {
+                title: "교체 주관",
+                columns: [
+                    { title: "외주 / 자체", field: "replacement_type", hozAlign: "center", width: 130 },
+                    { title: "업체명", field: "replacement_name", hozAlign: "center", width: 130 }
+                ]
+            },
             { title: "부품명", field: "part_name", hozAlign: "center", width: 130 },
             { title: "교체 유무", field: "part_replacement_flag", hozAlign: "center", width: 130 },
             { title: "수량", field: "quantity", hozAlign: "right", width: 130 },
             { title: "납기", field: "due_date", hozAlign: "center", width: 130 },
-            { title: "교체 일자", field: "replacement_date", hozAlign: "center" , width: 130},
-            { title: "기존 교체 일자", field: "prev_replacement_date", hozAlign: "center", width: 130 },
+            { title: "기존 교체 일자", field: "replacement_date", hozAlign: "center" , width: 130},
+            { title: "차기 교체 일자", field: "prev_replacement_date", hozAlign: "center", width: 130 },
             { title: "사용일", field: "usage_days", hozAlign: "right" , width: 130},
             { title: "제작업체", field: "manufacturer", hozAlign: "center", width: 130 },
             { title: "담당자", field: "manager_name", hozAlign: "center", width: 130 },
@@ -478,155 +657,110 @@ $(document).ready(function() {
             { title: "구매 필요 수량", field: "purchase_qty", hozAlign: "right", width: 130 }
         ],
 
-        rowClick: function(e, row) {
-            $('#dataTable .tabulator-row').removeClass('row_select');
-            row.getElement().classList.add('row_select');
-            selectedRowData = row.getData();
-        },
-
         rowDblClick: function(e, row) {
-            var d = row.getData();
+            const d = row.getData();
             selectedRowData = d;
 
-            // 폼 초기화
-            $('#corrForm')[0].reset();
+            const corrForm = $('#corrForm')[0];
+            corrForm.reset(); // 기존 값 초기화
 
-            // 모달 내 모든 input, textarea, select 요소에 값 넣기
             $('#corrForm').find('input, textarea, select').each(function() {
-                var fieldId = $(this).attr('id');
-                if (fieldId && d.hasOwnProperty(fieldId)) {
+                const fieldId = $(this).attr('id');
+                if(!fieldId) return;
+
+                // 데이터가 있으면 채우기
+                if(d.hasOwnProperty(fieldId) && d[fieldId] !== null && d[fieldId] !== undefined) {
                     $(this).val(d[fieldId]);
                 }
-                // date input은 오늘 날짜로 초기화 (값이 없을 경우)
-                if ($(this).attr('type') === 'date' && !d[fieldId]) {
-                    $(this).val(getTodayStr());
+
+                // date 타입인데 값이 없으면 오늘 날짜
+                if($(this).attr('type') === 'date' && !$(this).val()) {
+                    $(this).val(todayStr);
                 }
             });
 
             $('#modalContainer').show().addClass('show');
         }
+
     });
 
+
+
+    
+
+ // 기준정보 불러오기 버튼 클릭
+    $('#addTaskBtn').on('click', function () {
+        // 기존 메인 모달 닫기
+        $('#modalContainer').hide().removeClass('show');
+
+        // 기준정보 모달 열기
+        $('#infoModal').show().addClass('show');
+
+        // 닫기 버튼 클릭 시 모달 닫기
+        $('.close_info').off('click').on('click', function () {
+            $('#infoModal').hide().removeClass('show');
+        });
+
+        // 기준정보 Tabulator 초기화 (최초 한 번만)
+        if (!$('#dataTable_info').data('tabulator-initialized')) {
+            const infoTable = new Tabulator('#dataTable_info', {
+                height: '660px',
+                layout: 'fitDataFill',
+                headerSort: false,
+                columnHeaderVertAlign: "middle",
+                rowVertAlign: "middle",
+                reactiveData: true,
+                headerHozAlign: 'center',
+                ajaxConfig: { method: 'POST' },
+                ajaxContentType: "json",
+                placeholder: "조회된 데이터가 없습니다.",
+                columns: [
+                    { title: "순번", hozAlign: "center", width: 80, formatter: cell => cell.getRow().getPosition(true) + 1 },
+                    { title: "idx", field: "idx", headerFilter: "input" },
+                    { title: "설비명", field: "i_equipment_name", width: 220, headerFilter: "input" },
+                    { title: "중분류", field: "i_category_mid", width: 220, headerFilter: "input" },
+                    { title: "소분류-조치부품", field: "i_category_sub", width: 220, headerFilter: "input" },
+                    { title: "규격(부품명)", field: "i_part_name", width: 220, headerFilter: "input" },
+                    { title: "구분(스페어/소모품)", field: "i_part_status", hozAlign: "center", width: 150, headerFilter: "input" },
+                    { title: "안전재고", field: "i_safety_stock", hozAlign: "right", width: 100, headerFilter: "input" },
+                    { title: "제작업체", field: "i_manufacturer", hozAlign: "center", width: 150, headerFilter: "input" },
+                    { title: "담당자", field: "i_manager_name", hozAlign: "center", width: 130, headerFilter: "input" },
+                    { title: "연락처", field: "i_contact", hozAlign: "center", width: 130, headerFilter: "input" },
+                    { title: "납기", field: "i_due_date", hozAlign: "center", width: 130, headerFilter: "input" }
+                ],
+
+                rowDblClick: function(e, row){
+                    const d = row.getData();
+                    // 선택한 값 폼에 채우기
+                    $('#equipment_name').val(d.i_equipment_name);
+                    $('#category_mid').val(d.i_category_mid);
+                    $('#category_sub').val(d.i_category_sub);
+                    $('#part_name').val(d.i_part_name);
+                    $('#part_status').val(d.i_part_status);
+                    $('#safety_stock').val(d.i_safety_stock);
+                    $('#manufacturer').val(d.i_manufacturer);
+                    $('#manager_name').val(d.i_manager_name);
+                    $('#contact').val(d.i_contact);
+                    $('#due_date').val(d.i_due_date);
+
+                    // 모달 닫고 원래 모달 다시 열기
+                    $('#infoModal').hide().removeClass('show');
+                    $('#modalContainer').show().addClass('show');
+                }
+            });
+
+            // 데이터 로드
+            infoTable.setData('/geomet/machine/repairStatus_info/list');
+
+            // Tabulator 초기화 여부 기록
+            $('#dataTable_info').data('tabulator-initialized', true);
+        }
+    });
+
+
+    
     // 초기 조회
     loadTableData();
-
-    // 조회 버튼
-    $('.select-button').click(loadTableData);
-
-    // 셀렉트/날짜 변경 시 자동 조회
-    $('.dayselect, #startDate').on('change', loadTableData);
-
-
-
-    function getTodayStr() {
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        const mm = String(today.getMonth() + 1).padStart(2, '0');
-        const dd = String(today.getDate()).padStart(2, '0');
-        return `${yyyy}-${mm}-${dd}`;
-    }
-    // 추가 버튼
-    
-$('.insert-button').click(function(){
-    selectedRowData = null;
-    const insertBtn = document.querySelector('.insert-button');
-    const modal = document.getElementById('modalContainer');
-    const corrForm = document.getElementById('corrForm');
-    const closeModalBtn = document.getElementById('closeModal');
-    const closeX = modal.querySelector('.close');
-
-    insertBtn.addEventListener('click', function() {
-        // 폼 초기화
-        corrForm.reset();
-
-        // id 비워서 AUTO_INCREMENT 처리
-        document.getElementById('id').value = '';
-
-        // 오늘 날짜 세팅 (yyyy-MM-dd) - 전통적인 문자열 연결
-        const today = new Date();
-        const yyyy = today.getFullYear();
-        let mm = today.getMonth() + 1;
-        let dd = today.getDate();
-
-        // 한 자리 숫자일 경우 0 붙이기
-        if (mm < 10) mm = '0' + mm;
-        if (dd < 10) dd = '0' + dd;
-
-        const todayStr = yyyy + '-' + mm + '-' + dd;
-        document.getElementById('work_date').value = todayStr;
-
-        // 모달 표시
-        modal.style.display = 'block';
-        modal.classList.add('show');
-    });
-});
-
-
-
-    // 삭제 버튼
-    $('.delete-button').click(function(){
-        if(!selectedRowData){
-            alert('삭제할 행을 먼저 클릭해 주세요.');
-            return;
-        }
-        if(!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
-
-        $.ajax({
-            url: "/geomet/machine/repairStatus/delete",
-            type: "POST",
-            contentType: "application/json",
-            data: JSON.stringify({ id: selectedRowData.id }),
-            beforeSend: function() {
-                console.log("삭제 요청 데이터:", { id: selectedRowData.id });
-            },
-            success: function(){
-                alert('삭제되었습니다.');
-                selectedRowData = null;
-                loadTableData();
-            },
-            error: function(){
-                alert('삭제 중 오류가 발생했습니다.');
-            }
-        });
-    });
-
-    // 모달 닫기
-    $('.close, #closeModal').click(function(){
-        $('#modalContainer').removeClass('show').hide();
-    });
-
-    // 저장 (추가/수정)
-    $('#saveCorrStatus').click(function(event){
-        event.preventDefault();
-        var formData = new FormData($('#corrForm')[0]);
-
-        // 추가 시 id 비우기
-        if(!$('#id').val()) {
-            formData.delete('id');
-        }
-
-        // 수정 시 no 필드 추가
-        if(selectedRowData && selectedRowData.no){
-            formData.append('no', selectedRowData.no);
-        }
-
-        $.ajax({
-            url: "/geomet/machine/repairStatus/insert",
-            type: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(){
-                alert('저장되었습니다!');
-                $('#modalContainer').hide();
-                selectedRowData = null;
-                loadTableData();
-            },
-            error: function(){
-                alert('저장 중 오류가 발생했습니다.');
-            }
-        });
-    });
 });
 </script>
 

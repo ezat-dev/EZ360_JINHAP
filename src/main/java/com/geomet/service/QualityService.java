@@ -66,6 +66,18 @@ public interface QualityService {
     List<Quality> getLiquidAnalyze(Quality quality);
     boolean liquidAnalyzeInsert(Quality quality);
     boolean deleteLiquidAnalyze(Quality quality);
-    
-    
+    boolean liquidAnalyzeInsertNv(Quality quality);
+    boolean liquidAnalyzeInsertAsh(Quality quality);
+    List<Quality> getKccList(Quality quality);
+    boolean updateKcc(Quality quality);
+    boolean insertCct(Quality quality);
+    List<Quality> getCctList(Quality quality);
+    boolean deleteCct(Quality quality);
+    List<Quality> getSstList(Quality quality);
+    boolean insertSst(Quality quality);
+    boolean deleteSst(Quality quality);
+    boolean insertAttachment(Quality quality);
+    List<Quality> attachmentList(Quality quality);
+    List<Quality> turbidityList(Quality quality);
+    boolean deleteAttachment(Quality quality);
 }

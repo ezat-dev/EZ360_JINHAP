@@ -74,6 +74,24 @@ public class MachineServiceImpl implements MachineService {
 	public void delRepairStatus(Machine machine) {
 		machineDao.delRepairStatus(machine); 	   
 	}
+	//설비 이력
+	@Override
+	public List<Machine> getRepairStatusList_info(Machine machine) {
+		return machineDao.getRepairStatusList_info(machine); 	   
+	}
+	@Override
+	public void insertRepairStatus_info(Machine machine) {
+		machineDao.insertRepairStatus_info(machine); 	   
+	}
+	
+	@Override
+	public void updateRepairStatus_info(Machine machine) {
+		machineDao.updateRepairStatus_info(machine); 	   
+	}
+	@Override
+	public void delRepairStatus_info(Machine machine) {
+		machineDao.delRepairStatus_info(machine); 	   
+	}
 
 	//부품 교체이력
 	@Override
@@ -163,5 +181,10 @@ public class MachineServiceImpl implements MachineService {
 	@Override
 	public List<Work> workReport2(Machine machine) {
 		return machineDao.workReport2(machine);
+	}
+	
+	@Override
+	public List<Work> workReport2_nonTime(Machine machine) {
+		return machineDao.workReport2_nonTime(machine);
 	}
 }

@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -36,6 +37,12 @@ import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -62,6 +69,19 @@ public class QualityController {
     private ExcelServiceTestInfo excelServiceTestInfo; 
     @Autowired
     private UserService UserService;
+	private Double parseDouble(Object obj) {
+	    if (obj == null) {
+	        return null;
+	    }
+	    try {
+	        if (obj instanceof Number) {
+	            return ((Number) obj).doubleValue();
+	        }
+	        return Double.parseDouble(obj.toString()); 
+	    } catch (NumberFormatException e) {
+	        return null;
+	    }
+	}
 
 	/*-----품질관리-----*/
 
@@ -2163,6 +2183,10 @@ public class QualityController {
 
 				    List<Quality> data1 = qualityService.getDataList1(quality);
 					List<Quality> data3 = qualityService.getTestTankList(quality);
+					List<Quality> cctList = qualityService.getCctList(quality);
+					List<Quality> sstList = qualityService.getSstList(quality);
+					List<Quality> attachmentList = qualityService.attachmentList(quality);
+					List<Quality> turbidityList = qualityService.turbidityList(quality);
 					System.out.println("getNonProductManageList.size()" + data3.size());
 					for(Quality v: data3) {
 						//System.out.println("v: " + v);
@@ -2174,6 +2198,10 @@ public class QualityController {
 
 					rtnMap.put("data1", data1);
 					rtnMap.put("data3", data3);
+					rtnMap.put("cctList", cctList);
+					rtnMap.put("sstList", sstList);
+					rtnMap.put("attachmentList", attachmentList);
+					rtnMap.put("turbidityList", turbidityList);
 				return rtnMap;
 			}
 			
@@ -2185,8 +2213,10 @@ public class QualityController {
 				//System.out.println("quality.getTest_num()" + quality.getTest_num());
 				
 				if(quality.getTest_num().contains("tb_test_tank")) {
-				return qualityService.testTankDelete(quality);
+				//지오메트 가열잔분 탱크액 삭제(tb_test_tank)
+					return qualityService.testTankDelete(quality);
 				}else {
+					//세척1,2호기 가성소다용액 삭제(tb_clean12)
 					return qualityService.data1Delete(quality);
 				}
 			}
@@ -2253,7 +2283,8 @@ public class QualityController {
 				        // 소수점 계산을 위해 Double.parseDouble 사용
 				        double a = Double.parseDouble(acid_reduce);
 				        a *= 0.8;
-				        quality.setNaoh_density(Double.toString(a));
+				        String formattedA = String.format("%.2f", a);
+				        quality.setNaoh_density(formattedA);
 				    } catch (NumberFormatException e) {
 				        // 숫자로 변환할 수 없는 경우 예외 처리
 				        System.err.println("`acid_reduce` 값을 숫자로 변환할 수 없습니다: " + acid_reduce);
@@ -2278,9 +2309,17 @@ public class QualityController {
 					quality.setMch_name("conductivity");
 					List<Quality> data3 = qualityService.getLiquidAnalyze(quality);
 					
+					quality.setMch_name("nv");
+					List<Quality> data5 = qualityService.getLiquidAnalyze(quality);
+					
+					quality.setMch_name("ash");
+					List<Quality> data4 = qualityService.getLiquidAnalyze(quality);
+					
 					rtnMap.put("table1", data1);
 					rtnMap.put("table2", data2);
 					rtnMap.put("table3", data3);
+					rtnMap.put("table5", data5);
+					rtnMap.put("table4", data4);
 
 					return rtnMap;
 				}
@@ -2289,7 +2328,7 @@ public class QualityController {
 					@RequestMapping(value = "/quality/liquidAnalyze/insert", method = RequestMethod.POST)
 					@ResponseBody
 					public boolean liquidAnalyzeInsert(@ModelAttribute Quality quality) {
-System.out.println("quality.getMch_name(): "+quality.getMch_name());
+						System.out.println("quality.getMch_name(): "+quality.getMch_name());
 						return qualityService.liquidAnalyzeInsert(quality);
 					}
 					
@@ -2309,4 +2348,531 @@ System.out.println("quality.getMch_name(): "+quality.getMch_name());
 						rtnMap.put("data", "success");
 						return rtnMap;
 					}
+					//액분석관리 N.V 추가
+					@RequestMapping(value = "/quality/liquidAnalyze/insertNv", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean insertNv(@ModelAttribute Quality quality) {
+						System.out.println("quality.getMch_name(): "+quality.getMch_name());
+						List<Quality> data = qualityService.getLiquidAnalyze(quality);
+						if(data != null && data.size() > 0) {
+							return false;
+						}
+						return qualityService.liquidAnalyzeInsertNv(quality);
+					}
+					//액분석관리 Ash 추가
+					@RequestMapping(value = "/quality/liquidAnalyze/insertAsh", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean insertAsh(@ModelAttribute Quality quality) {
+						System.out.println("quality.getMch_name(): "+quality.getMch_name());
+						String defaultMchName = quality.getMch_name();
+						quality.setMch_name("nv");
+						List<Quality> data = qualityService.getLiquidAnalyze(quality);
+						if(data == null || data.size() == 0) {
+							System.out.println("NV값 없음");
+							return false;
+						}
+						String nvResult = data.get(0).getResult();
+						System.out.println("조회한 NV값: " + nvResult);
+						quality.setMch_name(defaultMchName);
+						quality.setCause(nvResult);
+						return qualityService.liquidAnalyzeInsertAsh(quality);
+					}
+					// 액분석관리 kcc 조회
+					@RequestMapping(value = "/quality/liquidAnalyze/kccList", method = RequestMethod.POST)
+					@ResponseBody
+					public Map<String, Object> getKccList(@RequestBody Quality quality) {
+						Map<String, Object> rtnMap = new HashMap<String, Object>();
+
+						List<Quality> data = qualityService.getKccList(quality);
+						
+						rtnMap.put("data", data);
+
+						return rtnMap;
+					}
+					//kcc 업데이트
+					@RequestMapping(value = "/quality/liquidAnalyze/updateKcc", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean updateKcc(@RequestBody Quality quality) {
+						return qualityService.updateKcc(quality);
+					}
+					//kcc 엑셀
+					@RequestMapping(value = "/quality/liquidAnalyze/kccExcel", method = RequestMethod.POST)
+					@ResponseBody
+					public Map<String, Object> alarmMonitoringExcel(@RequestBody Quality quality) {
+						String start = quality.getDate();
+						String end = quality.getEndDate();
+
+						Map<String, Object> rtnMap = new HashMap<>();
+
+						// 날짜 및 파일명 생성
+						SimpleDateFormat format = new SimpleDateFormat("'액분석관리_KCC 분석 비교'_yyyyMMddHHmmss");
+						Date time = new Date();
+						String fileName = format.format(time) + ".xlsx";
+
+						FileOutputStream fos = null;
+						FileInputStream fis = null;
+						String openPath = "D:/GEOMET양식/";
+						String savePath = "D:/GEOMET양식/액 분석관리/";
+
+						List<Quality> datas = qualityService.getKccList(quality);
+
+						System.out.println("조회된 데이터 개수: " + (datas != null ? datas.size() : "null"));
+						if (datas != null && !datas.isEmpty()) {
+							System.out.println("첫번째 데이터: " + datas.get(0).toString()); // toString() 오버라이딩 필요
+						}
+						if (datas == null || datas.isEmpty()) {
+							rtnMap.put("error", "데이터 없음");
+							return rtnMap;
+						}
+
+						try {
+							fis = new FileInputStream(openPath + "액분석관리양식.xlsx");
+							XSSFWorkbook workbook = new XSSFWorkbook(fis);
+							XSSFSheet sheet = workbook.getSheetAt(0);
+
+							XSSFCellStyle styleCenterBorder = workbook.createCellStyle();
+							styleCenterBorder.setAlignment(HorizontalAlignment.CENTER);
+							styleCenterBorder.setBorderTop(BorderStyle.THIN);
+							styleCenterBorder.setBorderBottom(BorderStyle.THIN);
+							styleCenterBorder.setBorderLeft(BorderStyle.THIN);
+							styleCenterBorder.setBorderRight(BorderStyle.THIN);
+
+							String[] fields = {
+									"date", "table_code", "meq_result", "meq_kcc", "d_meq", "ash_result",
+									"ash_kcc", "d_ash", "nv_result", "nv_kcc", "d_nv", "ph_result", "ph_kcc",
+									"d_ph", "conductivity_result", "conductivity_kcc", "d_conductivity"
+							};
+
+							// 시분초 제거 (예: "2025-07-28 00:00:00" → "2025-07-28")
+							if (start != null && start.length() >= 10) {
+								start = start.substring(0, 10);
+							}
+							if (end != null && end.length() >= 10) {
+								end = end.substring(0, 10);
+							}
+
+							// G5 = 4행 6열 (인덱스 기준 0부터 시작)
+							XSSFRow row5 = sheet.getRow(4);
+							if (row5 == null) row5 = sheet.createRow(4);
+							XSSFCell cell15 = row5.getCell(14);
+							if (cell15 == null) cell15 = row5.createCell(8);
+							cell15.setCellValue(start + " ~ " + end);
+
+							int startRow = 8; 
+							int startCol = 0; // A
+
+							for (int i = 0; i < datas.size(); i++) {
+								Quality item = datas.get(i);
+								XSSFRow row = sheet.createRow(startRow + i);
+
+								for (int j = 0; j < fields.length; j++) {
+									XSSFCell cell = row.createCell(startCol + j);
+							        Object cellValue = null; // String이 아닌 Object로 초기화
+							        String fieldName = fields[j];
+									
+									if ("no".equals(fields[j])) {
+										cellValue = String.valueOf(i + 1); // 행 번호 (1부터 시작)
+									} 
+										// ⭐ 2. 편차 필드 (d_로 시작) 계산 로직
+								        else if (fieldName.startsWith("d_")) {
+								            
+								            // 편차 계산에 사용될 result와 kcc 필드 이름은 직전 두 필드에 있습니다.
+								            String resultField = fields[j - 2]; 
+								            String kccField = fields[j - 1];   
+								            
+								            try {
+								                // Reflection을 사용하여 result 값 가져오기
+								                Field resField = Quality.class.getDeclaredField(resultField);
+								                resField.setAccessible(true);
+								                Object resObj = resField.get(item);
+								                
+								                // Reflection을 사용하여 kcc 값 가져오기
+								                Field kccFieldObj = Quality.class.getDeclaredField(kccField);
+								                kccFieldObj.setAccessible(true);
+								                Object kccObj = kccFieldObj.get(item);
+
+								                // 값 파싱 및 계산
+								                Double result = (resObj != null) ? parseDouble(resObj) : null;
+								                Double kcc = (kccObj != null) ? parseDouble(kccObj) : null;
+
+								                if (result != null && kcc != null) {
+								                    // 계산 결과를 Double로 저장
+								                	Double deviation = result - kcc;
+								                    
+								                    cellValue = String.format("%.2f", deviation);
+								                } else {
+								                    cellValue = ""; // 계산 불가
+								                }
+
+								            } catch (NoSuchFieldException | IllegalAccessException e) {
+								                cellValue = "";
+								                // System.err.println("d_ 필드 계산 오류: " + e.getMessage());
+								            }
+
+								        } 
+								        
+								        // 3. 일반 필드 처리 (기존 로직 유지)
+								        else {
+								            try {
+								                Field field = Quality.class.getDeclaredField(fieldName);
+								                field.setAccessible(true);
+								                cellValue = field.get(item); // Object 그대로 저장
+								                if ("table_code".equals(fieldName) && cellValue != null) {
+								                    cellValue = cellValue.toString() + "호기";
+								                }
+								            } catch (NoSuchFieldException | IllegalAccessException e) {
+								                cellValue = "";
+								            }
+								        }
+								        
+								        // 4. 셀에 값 설정 및 스타일 적용 (Double/String 타입 분리)
+								        if (cellValue instanceof Number) {
+								            // 편차 등 Double 값은 Numeric 타입으로 설정
+								            cell.setCellValue(((Number) cellValue).doubleValue());
+								        } else if (cellValue != null) {
+								            cell.setCellValue(cellValue.toString());
+								        } else {
+								            cell.setCellValue("");
+								        }
+								        
+								        cell.setCellStyle(styleCenterBorder);
+								    }
+								}
+
+							workbook.setForceFormulaRecalculation(true);
+							fos = new FileOutputStream(savePath + fileName);
+							workbook.write(fos);
+							workbook.close();
+							fos.flush();
+
+							// 클라이언트가 다운로드할 수 있도록 경로 반환
+							rtnMap.put("filename", fileName);
+							rtnMap.put("downloadPath",
+									"/geomet/download_liquidAnalyze_kccExcel?filename=" + URLEncoder.encode(fileName, "UTF-8"));
+
+						} catch (Exception e) {
+							e.printStackTrace();
+							rtnMap.put("error", "엑셀 파일 생성 중 오류 발생");
+						} finally {
+							try {
+								if (fis != null) fis.close();
+								if (fos != null) fos.close();
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						}
+
+						return rtnMap;
+					}
+
+					//엑셀 다운로드
+					@RequestMapping(value = "/download_liquidAnalyze_kccExcel", method = RequestMethod.GET)
+					public void downloadExcelAlarm(@RequestParam("filename") String filename,
+							HttpServletResponse response) throws IOException {
+
+						//파일이 저장될 경로
+						String baseDir = "D:/GEOMET양식/액 분석관리/";
+
+						//System.out.println("다운 주소 filename: " + filename);
+
+						//보안 체크
+						if (filename.contains("..") || filename.contains("/") || filename.contains("\\")) {
+							response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+							return;
+						}
+
+						//다운로드할 파일 객체 생성
+						File file = new File(baseDir + filename);
+						System.out.println("파일 전체 경로: " + file.getAbsolutePath());
+
+						//파일이 존재하지 않으면 에러 반환
+						if (!file.exists()) {
+							response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+							return;
+						}
+
+						//파일 확장자 자동 추정
+						String mimeType = Files.probeContentType(file.toPath());
+						if (mimeType == null) {
+							mimeType = "application/octet-stream";
+						}
+						response.setContentType(mimeType);
+						response.setContentLengthLong(file.length());
+
+						//파일명 인코딩
+						String encodedFilename = URLEncoder.encode(filename, "UTF-8").replaceAll("\\+", "%20");
+
+						//다운로드 되도록 브라우저에 알림
+						response.setHeader("Content-Disposition", "attachment; filename*=UTF-8''" + encodedFilename);
+
+						//파일을 바이트 스트림으로 클라이언트에 전송
+						try (FileInputStream fis = new FileInputStream(file);
+								OutputStream os = response.getOutputStream()) {
+							byte[] buffer = new byte[1024];
+							int len;
+							while ((len = fis.read(buffer)) != -1) {
+								os.write(buffer, 0, len);
+							}
+							os.flush();
+						}
+					}
+					
+					//cct 추가
+					@RequestMapping(value = "/quality/testTank/insertCct", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean insertCct(@ModelAttribute Quality quality,
+							@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile) {
+						
+						String test_num = LocalDateTime.now()
+								.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+						test_num += "tb_test_tank";
+						quality.setTest_num(test_num);
+						
+						try {
+							if (uploadFile != null) {
+								String uploadDir = "D:/GEOMET양식/CCT(염수분무시험기 테스트)";
+
+								File directory = new File(uploadDir);
+								if (!directory.exists()) {
+									directory.mkdirs();
+								}
+
+									if (!uploadFile.isEmpty()) {
+										String originalFilename = uploadFile.getOriginalFilename();
+
+										// 현재 시간(파일명에 추가할거)
+										String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+										// 확장자 분리
+										String ext = "";
+										int dotIndex = originalFilename.lastIndexOf('.');
+										if (dotIndex > 0) {
+											ext = originalFilename.substring(dotIndex); // ".pdf", ".xlsx" 등
+											originalFilename = originalFilename.substring(0, dotIndex); // 확장자 제외한 이름
+										}
+
+										// 새 파일명 생성
+										String savedFilename = originalFilename + "_" + timestamp + ext;
+
+										// 파일 저장
+										File destination = new File(uploadDir + "/" + savedFilename);
+										uploadFile.transferTo(destination);
+
+										//db 저장되도록 file_name 갱신
+										quality.setFile_name(savedFilename);
+									}
+								}
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
+
+						return qualityService.insertCct(quality);
+					}
+					//cct 파일 열기
+					@RequestMapping(value = "/download/cctPdf", method = RequestMethod.GET)
+					public ResponseEntity<Resource> downloadCctPdfFile(@RequestParam("fileName") String fileName) {
+						String UPLOAD_DIR = "D:/GEOMET양식/CCT(염수분무시험기 테스트)";
+				        // 1. D:/ 경로에서 파일을 찾습니다.
+				        try {
+				            Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+				            Resource resource = new UrlResource(filePath.toUri());
+
+				            if (!resource.exists() || !resource.isReadable()) {
+				                // 파일이 없거나 읽을 수 없는 경우 404 반환
+				                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				            }
+
+				            // 2. 응답 헤더 설정 (미리보기 설정)
+				            String contentType = "application/pdf";
+				            
+				            // 파일명 인코딩 (한글 파일명 처리 및 HTTP 표준 준수)
+				            String encodedFileName = URLEncoder.encode(resource.getFilename(), StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+				            
+				            // 3. ResponseEntity 반환
+				            // Content-Disposition: "inline"은 브라우저에게 파일을 다운로드하지 말고 미리보기 하라고 지시합니다.
+				            return ResponseEntity.ok()
+				                    .contentType(MediaType.parseMediaType(contentType))
+				                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename*=UTF-8''" + encodedFileName)
+				                    .body(resource);
+
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				        }
+				    }
+					//cct 삭제
+					@RequestMapping(value = "/quality/deleteCct", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean deleteCct(@RequestBody Quality quality) {
+						return qualityService.deleteCct(quality);
+					}
+					//sst 추가
+					@RequestMapping(value = "/quality/testTank/insertSst", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean insertSst(@ModelAttribute Quality quality,
+							@RequestParam(value = "uploadFile", required = false) MultipartFile uploadFile) {
+						
+						String test_num = LocalDateTime.now()
+								.format(DateTimeFormatter.ofPattern("yyyyMMddHHmmss"));
+						test_num += "tb_test_tank";
+						quality.setTest_num(test_num);
+						
+						try {
+							if (uploadFile != null) {
+								String uploadDir = "D:/GEOMET양식/SST(염수분무시험기 테스트)";
+
+								File directory = new File(uploadDir);
+								if (!directory.exists()) {
+									directory.mkdirs();
+								}
+
+									if (!uploadFile.isEmpty()) {
+										String originalFilename = uploadFile.getOriginalFilename();
+
+										// 현재 시간(파일명에 추가할거)
+										String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+
+										// 확장자 분리
+										String ext = "";
+										int dotIndex = originalFilename.lastIndexOf('.');
+										if (dotIndex > 0) {
+											ext = originalFilename.substring(dotIndex); // ".pdf", ".xlsx" 등
+											originalFilename = originalFilename.substring(0, dotIndex); // 확장자 제외한 이름
+										}
+
+										// 새 파일명 생성
+										String savedFilename = originalFilename + "_" + timestamp + ext;
+
+										// 파일 저장
+										File destination = new File(uploadDir + "/" + savedFilename);
+										uploadFile.transferTo(destination);
+
+										//db 저장되도록 file_name 갱신
+										quality.setFile_name(savedFilename);
+									}
+								}
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
+
+						return qualityService.insertSst(quality);
+					}
+					//sst 삭제
+					@RequestMapping(value = "/quality/deleteSst", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean deleteSst(@RequestBody Quality quality) {
+						return qualityService.deleteSst(quality);
+					}
+					//sst 파일 열기
+					@RequestMapping(value = "/download/sstPdf", method = RequestMethod.GET)
+					public ResponseEntity<Resource> downloadSstPdfFile(@RequestParam("fileName") String fileName) {
+						String UPLOAD_DIR = "D:/GEOMET양식/SST(염수분무시험기 테스트)";
+				        // 1. D:/ 경로에서 파일을 찾습니다.
+				        try {
+				            Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+				            Resource resource = new UrlResource(filePath.toUri());
+
+				            if (!resource.exists() || !resource.isReadable()) {
+				                // 파일이 없거나 읽을 수 없는 경우 404 반환
+				                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				            }
+
+				            // 2. 응답 헤더 설정 (미리보기 설정)
+				            String contentType = "application/pdf";
+				            
+				            // 파일명 인코딩 (한글 파일명 처리 및 HTTP 표준 준수)
+				            String encodedFileName = URLEncoder.encode(resource.getFilename(), StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+				            
+				            // 3. ResponseEntity 반환
+				            // Content-Disposition: "inline"은 브라우저에게 파일을 다운로드하지 말고 미리보기 하라고 지시합니다.
+				            return ResponseEntity.ok()
+				                    .contentType(MediaType.parseMediaType(contentType))
+				                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename*=UTF-8''" + encodedFileName)
+				                    .body(resource);
+
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				        }
+				    }
+					//지오메트 부착량 추가
+					@RequestMapping(value = "/quality/testTank/insertAttachment", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean testTankInsertAttachment(@ModelAttribute Quality quality) {
+
+						return qualityService.insertAttachment(quality);
+					}
+					//지오메트 부착량, 후처리 부착량 삭제
+					@RequestMapping(value = "/quality/deleteAttachment", method = RequestMethod.POST)
+					@ResponseBody
+					public boolean deleteAttachment(@RequestBody Quality quality) {
+						System.out.println("mch_name: " + quality.getMch_name());
+						return qualityService.deleteAttachment(quality);
+					}
+					//세척 1, 2호기  파일 열기
+					@RequestMapping(value = "/download/clean12Pdf", method = RequestMethod.GET)
+					public ResponseEntity<Resource> clean12Pdf(@RequestParam("fileName") String fileName) {
+						String UPLOAD_DIR = "D:/GEOMET양식/세척1, 2호기 가성소다용액 농도 분석 기준 정보";
+				        // 1. D:/ 경로에서 파일을 찾습니다.
+				        try {
+				            Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+				            Resource resource = new UrlResource(filePath.toUri());
+
+				            if (!resource.exists() || !resource.isReadable()) {
+				                // 파일이 없거나 읽을 수 없는 경우 404 반환
+				                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				            }
+
+				            // 2. 응답 헤더 설정 (미리보기 설정)
+				            String contentType = "application/pdf";
+				            
+				            // 파일명 인코딩 (한글 파일명 처리 및 HTTP 표준 준수)
+				            String encodedFileName = URLEncoder.encode(resource.getFilename(), StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+				            
+				            // 3. ResponseEntity 반환
+				            // Content-Disposition: "inline"은 브라우저에게 파일을 다운로드하지 말고 미리보기 하라고 지시합니다.
+				            return ResponseEntity.ok()
+				                    .contentType(MediaType.parseMediaType(contentType))
+				                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename*=UTF-8''" + encodedFileName)
+				                    .body(resource);
+
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				        }
+				    }
+					//지오메트 가열잔분 탱크액  파일 열기
+					@RequestMapping(value = "/download/tankPdf", method = RequestMethod.GET)
+					public ResponseEntity<Resource> tankPdf(@RequestParam("fileName") String fileName) {
+						String UPLOAD_DIR = "D:/GEOMET양식/가열잔분 탱크액 관리기준 정보";
+				        // 1. D:/ 경로에서 파일을 찾습니다.
+				        try {
+				            Path filePath = Paths.get(UPLOAD_DIR).resolve(fileName).normalize();
+				            Resource resource = new UrlResource(filePath.toUri());
+
+				            if (!resource.exists() || !resource.isReadable()) {
+				                // 파일이 없거나 읽을 수 없는 경우 404 반환
+				                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+				            }
+
+				            // 2. 응답 헤더 설정 (미리보기 설정)
+				            String contentType = "application/pdf";
+				            
+				            // 파일명 인코딩 (한글 파일명 처리 및 HTTP 표준 준수)
+				            String encodedFileName = URLEncoder.encode(resource.getFilename(), StandardCharsets.UTF_8.toString()).replaceAll("\\+", "%20");
+				            
+				            // 3. ResponseEntity 반환
+				            // Content-Disposition: "inline"은 브라우저에게 파일을 다운로드하지 말고 미리보기 하라고 지시합니다.
+				            return ResponseEntity.ok()
+				                    .contentType(MediaType.parseMediaType(contentType))
+				                    .header(HttpHeaders.CONTENT_DISPOSITION, "inline; filename*=UTF-8''" + encodedFileName)
+				                    .body(resource);
+
+				        } catch (Exception e) {
+				            e.printStackTrace();
+				            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+				        }
+				    }
 }

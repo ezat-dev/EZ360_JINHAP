@@ -283,7 +283,14 @@
     // 조회 버튼 클릭 시
     $('.select-button').click(function() {
         const selectedDate = $('#startDate').val();
-        getDataList1();
+        $('.select-button').click(function() {
+            const selectedDate = $('#startDate').val();
+            getDataList1();
+            getDataList3();
+            getDataList2();
+        });
+
+          getDataList1();
         getDataList3();
         getDataList2();
     });

@@ -105,27 +105,6 @@
             cursor: pointer;
             transition: background-color 0.3s ease;
         }
-         .yearselect {
-        width: 20%;
-        text-align: center;
-        font-size: 15px;
-    }
-    .yearSet {
-        width: 20%;
-        text-align: center;
-        height: 16px;
-        padding: 8px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        font-size: 15px;
-    }
-    .yearlabel {
-        margin-right: 10px;
-        margin-bottom: 13px;
-        font-size: 18px;
-        margin-left: 20px;
-    }
         .modal-content button:hover {
             background-color: #a9a9a9;
         }
@@ -179,6 +158,23 @@
         .row_select {
 	    background-color: #ffeeba !important;
 	    }
+	    
+	.where_bt {
+	    height: 40px;
+	    padding: 0 11px;
+	    border: 1px solid rgb(53, 53, 53);
+	    border-radius: 4px;
+	    background-color: #ffffff;
+	    cursor: pointer;
+	    display: flex;
+	    align-items: center;
+	    transition: background-color 0.2s, border-color 0.2s; /* 부드러운 효과 */
+	}
+	
+	.where_bt:hover {
+	    background-color: rgb(240, 240, 240); /* 호버 시 배경색 */
+	    border-color: rgb(30, 30, 30);       /* 호버 시 테두리 색 */
+	}
     </style>
 </head>
 
@@ -198,43 +194,45 @@
 				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 	
 				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
-	 		<label class="yearlabel">점검 연도 선택 :</label>
-			<input type="text"autocomplete="off" class="yearSet" id="gong_date" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-	
-	
-	
 	
 	            <label class="daylabel">설비명 :</label>
-	            <select class="dayselect">
-	            <option value="ALL">전체</option>
-           
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
+	<select class="dayselect">
+	    <option value="ALL">전체</option>
+	    <option value="600톤">600톤</option>
+	    <option value="800톤">800톤</option>
+	    <option value="G800">G800</option>
+	    <option value="K-BLACK">K-BLACK</option>
+	    <option value="공용설비">공용설비</option>
+	    <option value="기타">기타</option>
+	    <option value="설비추가">설비추가</option>
+	    <option value="쇼트 1호기">쇼트 1호기</option>
+	    <option value="쇼트 2호기">쇼트 2호기</option>
+	    <option value="쇼트 3호기">쇼트 3호기</option>
+	    <option value="쇼트 4호기">쇼트 4호기</option>
+	    <option value="쇼트 5호기">쇼트 5호기</option>
+	    <option value="쇼트 6호기">쇼트 6호기</option>
+	    <option value="쇼트 자동화 레일">쇼트 자동화 레일</option>
+	    <option value="지오메트 자동화 레일">지오메트 자동화 레일</option>
+	</select>
+
+
+		         <label class="daylabel">검색 :</label>
+		<input type="text" autocomplete="off" class="monthSet" id="startDate"
+		       style="font-size: 16px; height: 28px; width: 150px; 
+				margin-bottom: 10px;
+		              border: 1px solid #ccc; border-radius: 4px; "
+		       placeholder="시작 날짜 선택">
+
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+                
+<!--                 <button class="where_bt ">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">소모품 관리
                 </button>
-                <button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
-				</button>
-                
-                
-                <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
-                
+                              -->
+  
             </div>
         </div>
 
@@ -243,209 +241,87 @@
         </div>
     </main>
 	
-	  <div id="modalContainer" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>공무일지 등록</h2>
-    <form id="corrForm" autocomplete="off">
-    
-      <label>일자</label>
-      <input type="text" class="daySet" name="gong_date" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
-    
-    
-    
-      <label>설비명</label>
-      <select name="mch_name">
-        <option value="G800">G800</option>
-        <option value="G600">G600</option>
-        <option value="K-BLACK">K-BLACK</option>
-        <option value="공용설비">공용설비</option>
-        <option value="방청">방청</option>
-        <option value="이코팅1호기">이코팅1호기</option>
-        <option value="이코팅2호기">이코팅2호기</option>
-        <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-        <option value="세척 1호기">세척 1호기</option>
-        <option value="세척 2호기">세척 2호기</option>
-      </select>
-
-      <label>점검 및 정비 결과</label>
-      <input type="text"placeholder="(결과 입력)" name="result">
-
-      <label>구분 (점검/정비)</label>
-      <select name="g_b">
-        <option value="점검">점검</option>
-        <option value="정비">정비</option>
-      </select>
-     
-
-      <label>정비형식(예방/돌발)</label>
-     <select name="gong_type">
-        <option value="예방">예방</option>
-        <option value="돌발">돌발</option>
-      </select>
-
-      <label>정비시간</label>
-		<input type="number" name="gong_hr" placeholder="(시간 입력)" min="0">
-
-      <label>비고</label>
-      <textarea name="remark" rows="3"></textarea>
-
-      <button type="submit" id="saveCorrStatus">저장</button>
-      <button type="button" id="closeModal">닫기</button>
-    </form>
-  </div>
-</div>
-
 
 
 <script>
-
 let now_page_code = "h06";
+var dataTable; // 전역 변수
+var selectedRowData = null;
 
 $(function() {
-  var dataTable;
-  var selectedRowData = null;
-  var currentYear = new Date().getFullYear().toString();
-  $('.yearSet').val(currentYear);
 
-  dataTable = new Tabulator('#dataTable', {
-    height: '790px',
-    layout: 'fitDataFill',
-    headerSort: false,
-    reactiveData: true,
-    columnHeaderVertAlign: "middle",
-    rowVertAlign: "middle",
-    headerHozAlign: 'center',
-    ajaxConfig: { method: 'POST' },
-    ajaxURL: '/geomet/machine/logStatus/list',
-    ajaxParams: {
-      gong_date: currentYear,
-      mch_name: 'ALL'
-    },
-    placeholder: '조회된 데이터가 없습니다.',
-    columns: [
-      { title: 'no',             field: 'no',         visible: false },
-      { title: 'NO',             formatter: 'rownum', width: 70,  hozAlign: 'center' },
-      { title: 'db_NO',          field: 'no',         width: 100, hozAlign: 'center', visible: false },
-      { title: '일자',           field: 'gong_date',  width: 150, hozAlign: 'center' },
-      { title: '설비',           field: 'mch_name',   width: 140, hozAlign: 'center' },
-      { title: '점검 및<br>정비 결과', field: 'result',      width: 300, hozAlign: 'center' },
-      { title: '구분<br>(점검/정비)',  field: 'g_b',         width: 140, hozAlign: 'center' },
-      { title: '정비형식<br>(예방/돌발)', field: 'gong_type', width: 150, hozAlign: 'center' },
-      { 
-  	    title: '정비시간<br>(HR)', 
-  	    field: 'gong_hr',    
-  	    width: 100, 
-  	    hozAlign: 'center',
-  	    formatter: function(cell) {
-  	      var v = cell.getValue();
-  	      return v != null && v !== "" ? v + '시간' : '';
-  	    }
-  	  },
-      { title: '비고',            field: 'remark',      width: 380, hozAlign: 'center' }
-    ],
-    rowClick: function(e, row) {
-      $('#dataTable .tabulator-row').removeClass('row_select');
-      row.getElement().classList.add('row_select');
-      selectedRowData = row.getData();
-    },
-    rowDblClick: function(e, row) {
-      var d = row.getData();
-      selectedRowData = d;
-      $('#corrForm')[0].reset();
-      $('input[name="gong_date"]').val(d.gong_date);
-      $('select[name="mch_name"]').val(d.mch_name);
-      $('input[name="result"]').val(d.result);
-      $('select[name="g_b"]').val(d.g_b);
-      $('input[name="standard"]').val(d.standard);
-      $('select[name="gong_type"]').val(d.gong_type);
-     
-      $('input[name="gong_hr"]').val(d.gong_hr);
-      $('textarea[name="remark"]').val(d.remark);
-      $('#modalContainer').show().addClass('show');
+    // 오늘 날짜 기준 월을 yyyy-MM 형태로 반환
+    function getMonthStr() {
+        const today = new Date();
+        const yyyy = today.getFullYear();
+        const mm = String(today.getMonth() + 1).padStart(2, '0');
+        return `${yyyy}-${mm}`;
     }
-  });
 
-  $('.select-button').click(function() {
-    var year = $('.yearSet').val();
-    var mch  = $('.dayselect').val();
-    console.log({ gong_date: year, mch_name: mch });
-    dataTable.setData(
-      '/geomet/machine/logStatus/list',
-      { gong_date: year, mch_name: mch }
-    );
-  });
+    const todayStr = new Date().toISOString().slice(0, 7);
 
-  $('.insert-button').click(function() {
-    selectedRowData = null;
-    $('#corrForm')[0].reset();
-    $('#modalContainer').show().addClass('show');
-  });
+    // startDate input에 기본값 세팅
+    $('#startDate').val(todayStr);
 
-  $('.delete-button').click(function() {
-    if (!selectedRowData) {
-      alert('삭제할 행을 먼저 클릭해 주세요.');
-      return;
-    }
-    if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
+    // Tabulator 초기화
+    dataTable = new Tabulator('#dataTable', {
+        height: '790px',
+        layout: 'fitDataFill',
+        headerSort: false,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        reactiveData: true,
+        headerHozAlign: 'center',
+        ajaxConfig: { method: 'POST' },
+        ajaxURL: "/geomet/machine/logStatus/list",
+        ajaxParams: { 
+            mch_name: $('.dayselect').val() || 'ALL',
+            month: $('#startDate').val().slice(0,7) || getMonthStr()
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        columns: [
+            { title: "NO", field: "id", hozAlign: "center", width: 70 },
+            { title: "일자(1)", field: "work_date", hozAlign: "center", width: 180 },
+            { title: "설비명(3)", field: "equipment_name", hozAlign: "center", width: 180 },
+            { title: "중분류(7)", field: "category_mid", hozAlign: "left", width: 200 },
+            { title: "소분류(8)", field: "category_sub", hozAlign: "left", width: 200 },
+            { title: "점검(4)", field: "inspection_type", hozAlign: "right", width: 130 },
+            { title: "진행 업체(14)", field: "replacement_name", hozAlign: "right", width: 130 },
+            { title: "정비시간(6)", field: "downtime_minutes", hozAlign: "right", width: 130 },
+            { title: "비고(입력)", field: "", hozAlign: "right", width: 130 }
+        ],
 
-    $.ajax({
-      url: '/geomet/machine/logStatus/delete',
-      type: 'POST',
-      contentType: 'application/json',
-      data: JSON.stringify({ no: selectedRowData.no }),
-      success: function() {
-        alert('삭제되었습니다.');
-        var year = $('.yearSet').val() || currentYear;
-        var mch  = $('.dayselect').val() || 'ALL';
-        dataTable.setData(
-          '/geomet/machine/logStatus/list',
-          { gong_date: year, mch_name: mch }
-        );
-        selectedRowData = null;
-      },
-      error: function() {
-        alert('삭제 중 오류가 발생했습니다.');
-      }
+        rowClick: function(e, row) {
+            $('#dataTable .tabulator-row').removeClass('row_select');
+            row.getElement().classList.add('row_select');
+            selectedRowData = row.getData();
+        }
     });
-  });
 
-  $('.close, #closeModal').click(function() {
-    $('#modalContainer').removeClass('show').hide();
-  });
-
-  $('#saveCorrStatus').click(function(event) {
-    event.preventDefault();
-    var formData = new FormData($('#corrForm')[0]);
-    if (selectedRowData && selectedRowData.no) {
-      formData.append('no', selectedRowData.no);
-    }
-    $.ajax({
-      url: '/geomet/machine/logStatus/insert',
-      type: 'POST',
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function() {
-        alert('저장되었습니다!');
-        $('#modalContainer').hide();
-        var year = $('.yearSet').val() || currentYear;
-        var mch  = $('.dayselect').val() || 'ALL';
-        dataTable.setData(
-          '/geomet/machine/logStatus/list',
-          { gong_date: year, mch_name: mch }
-        );
-        selectedRowData = null;
-      },
-      error: function() {
-        alert('저장 중 오류가 발생했습니다.');
-      }
+    // 조회 버튼
+    $('.select-button').click(function() {
+        const selMch = $('.dayselect').val() || 'ALL';
+        const selMonth = $('#startDate').val().slice(0,7) || getMonthStr();
+        dataTable.setData("/geomet/machine/logStatus/list", { 
+            mch_name: selMch,
+            month: selMonth
+        });
     });
-  });
+
+    // 소모품 관리 버튼 클릭
+    $('.where_bt').click(function() {
+        const selMch = $('.dayselect').val() || 'ALL';
+        const selMonth = $('#startDate').val().slice(0,7) || getMonthStr();
+
+        dataTable.setData("/geomet/machine/logStatus/list", { 
+            mch_name: selMch,
+            month: selMonth,
+            where_bt: '조건'  // MyBatis에서 <if test="where_bt == '조건'"> 적용
+        });
+    });
+
 });
 </script>
-
-
 
 </body>
 </html>

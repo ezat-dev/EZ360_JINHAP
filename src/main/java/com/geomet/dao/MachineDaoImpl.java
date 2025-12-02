@@ -93,6 +93,26 @@ public class MachineDaoImpl implements MachineDao{
            sqlSession.insert("machine.delRepairStatus", machine);
     }
     
+    //설비카드
+    @Override
+    public List<Machine> getRepairStatusList_info(Machine machine) {
+      
+        return sqlSession.selectList("machine.getRepairStatusList_info", machine);
+    }
+    @Override
+    public void insertRepairStatus_info(Machine machine) {
+           sqlSession.insert("machine.insertRepairStatus_info", machine);
+    }
+    @Override
+    public void updateRepairStatus_info(Machine machine) {
+           sqlSession.insert("machine.updateRepairStatus_info", machine);
+    }    
+    @Override
+    public void delRepairStatus_info(Machine machine) {
+           sqlSession.insert("machine.delRepairStatus_info", machine);
+    }
+    
+    
     
     
     
@@ -118,7 +138,7 @@ public class MachineDaoImpl implements MachineDao{
     @Override
     public List<Machine> getspareStatusList(Machine machine) {
       
-        return sqlSession.selectList("machine.getspareStatusList", machine);
+        return sqlSession.selectList("machine.getSpareStatusList", machine);
     }
     @Override
     public void insertspareStatus(Machine machine) {
@@ -202,5 +222,11 @@ public class MachineDaoImpl implements MachineDao{
     @Override
     public List<Work> workReport3(Machine machine) {
         return sqlSession.selectList("machine.workReport3", machine);
+    }
+    
+    
+    @Override
+    public List<Work> workReport2_nonTime(Machine machine) {
+        return sqlSessionMssqlJinhap.selectList("machine.workReport2_nontime_mmsql", machine);
     }
 }

@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>부품교체 이력관리</title>
+    <title>스페어 이력관리</title>
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
     <style>
@@ -158,6 +158,22 @@
         .row_select {
 	    background-color: #ffeeba !important;
 	    }
+	.where_bt {
+	    height: 40px;
+	    padding: 0 11px;
+	    border: 1px solid rgb(53, 53, 53);
+	    border-radius: 4px;
+	    background-color: #ffffff;
+	    cursor: pointer;
+	    display: flex;
+	    align-items: center;
+	    transition: background-color 0.2s, border-color 0.2s; /* 부드러운 효과 */
+	}
+	
+	.where_bt:hover {
+	    background-color: rgb(240, 240, 240); /* 호버 시 배경색 */
+	    border-color: rgb(30, 30, 30);       /* 호버 시 테두리 색 */
+	}
     </style>
 </head>
 
@@ -179,36 +195,43 @@
 				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
 	
 	            <label class="daylabel">설비명 :</label>
-	            <select class="dayselect">
-	            <option value="ALL">전체</option>
-           
-                <option value="G800">G800</option>
-                <option value="G600">G600</option>
-                <option value="K-BLACK">K-BLACK</option>
-                <option value="공용설비">공용설비</option>
-                <option value="방청">방청</option>
-                <option value="이코팅1호기">이코팅1호기</option>
-                <option value="이코팅2호기">이코팅2호기</option>
-                <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-                <option value="세척 1호기">세척 1호기</option>
-                <option value="세척 2호기">세척 2호기</option>
-            </select>
+	<select class="dayselect">
+	    <option value="ALL">전체</option>
+	    <option value="600톤">600톤</option>
+	    <option value="800톤">800톤</option>
+	    <option value="G800">G800</option>
+	    <option value="K-BLACK">K-BLACK</option>
+	    <option value="공용설비">공용설비</option>
+	    <option value="기타">기타</option>
+	    <option value="설비추가">설비추가</option>
+	    <option value="쇼트 1호기">쇼트 1호기</option>
+	    <option value="쇼트 2호기">쇼트 2호기</option>
+	    <option value="쇼트 3호기">쇼트 3호기</option>
+	    <option value="쇼트 4호기">쇼트 4호기</option>
+	    <option value="쇼트 5호기">쇼트 5호기</option>
+	    <option value="쇼트 6호기">쇼트 6호기</option>
+	    <option value="쇼트 자동화 레일">쇼트 자동화 레일</option>
+	    <option value="지오메트 자동화 레일">지오메트 자동화 레일</option>
+	</select>
+
+
+		         <label class="daylabel">검색 :</label>
+		<input type="text" autocomplete="off" class="monthSet" id="startDate"
+		       style="font-size: 16px; height: 28px; width: 150px; 
+				margin-bottom: 10px;
+		              border: 1px solid #ccc; border-radius: 4px; "
+		       placeholder="시작 날짜 선택">
+
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
-                <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
+            	<button class="where_bt ">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">스페어 부품 관리
                 </button>
-                <button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
-				</button>
-                
-                
-                <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-                </button>
-                
+                           
+                           
+  
             </div>
         </div>
 
@@ -217,213 +240,146 @@
         </div>
     </main>
 	
-	  <div id="modalContainer" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <h2>부품교체 이력 등록</h2>
-    <form id="corrForm" autocomplete="off">
-      <label>설비명</label>
-      <select name="mch_name">
-        <option value="G800">G800</option>
-        <option value="G600">G600</option>
-        <option value="K-BLACK">K-BLACK</option>
-        <option value="공용설비">공용설비</option>
-        <option value="방청">방청</option>
-        <option value="이코팅1호기">이코팅1호기</option>
-        <option value="이코팅2호기">이코팅2호기</option>
-        <option value="세척 공통 (열병합)">세척 공통 (열병합)</option>
-        <option value="세척 1호기">세척 1호기</option>
-        <option value="세척 2호기">세척 2호기</option>
-      </select>
-
-      <label>부품명</label>
-      <input type="text" name="mch_parts">
-
-      <label>사용처</label>
-      <input type="text"  name="a_usage"  style="text-align: left;" autocomplete="off">
-
-      <label>규격</label>
-      <input type="text" name="standard">
-
-      <label>제작업체</label>
-      <input type="text" name="producer">
-
-      <label>교체 상기/정기</label>
-      	<select name="replacement">
-	     <option value="상기">상기</option>
-	     <option value="정기">정기</option>           
-	    </select>
-
-      <label>구매주기 월/반기/년</label>
-   		<select name="buy_cycle">
-	     <option value="월">월</option>
-	     <option value="반기">반기</option>    
-	     <option value="년">년</option>
-	     <option value="수시">수시</option>          
-	    </select>
-
-      <label>현재고</label>
-      <input type="text" name="now_stock" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
-
-      <label>안전재고</label>
-      <input type="text" name="stock" placeholder="차기 교체일자 선택" style="text-align: left;" autocomplete="off">
-
-
-
-      <label>비고</label>
-      <textarea name="remark" rows="4"></textarea>
-
-      <button type="submit" id="saveCorrStatus">저장</button>
-      <button type="button" id="closeModal">닫기</button>
-    </form>
-  </div>
-</div>
-
 
 
 <script>
-  let now_page_code = "h05";
+
+let now_page_code = "h05";
+
 
   var dataTable;
   var selectedRowData = null;
 
-  $(function() {
-
-    dataTable = new Tabulator('#dataTable', {
-      height: '790px',
-      layout: 'fitDataFill',
-      headerSort: false,
-      reactiveData: true,
-      columnHeaderVertAlign: "middle",
-      rowVertAlign: "middle",
-      headerHozAlign: 'center',
-      ajaxConfig: { method: 'POST' },
-      ajaxURL: "/geomet/machine/spareStatus/list",
-      ajaxParams: { mch_name: "ALL" },
-      placeholder: "조회된 데이터가 없습니다.",
-      columns: [
-          { title: "no", field: "no", visible: false }, 
-          { 
-            title: "NO", 
-            formatter: "rownum", 
-            width: 70, 
-            hozAlign: "center" 
-          },
-        { title: "db_NO",                     field: "no",             width: 100, hozAlign: "center",visible: false },
-        { title: "설비명",              field: "mch_name",       width: 150, hozAlign: "center" },
-        { title: "부품명",               field: "mch_parts",    width: 150, hozAlign: "center" },
-        { title: "사용처",               field: "a_usage",       width: 150, hozAlign: "center" },
-        { title: "규격",    			field: "standard",         width: 150, hozAlign: "center" },
-        { title: "제작업체",           field: "producer",  width: 150, hozAlign: "center" },
-        { title: "교체<br>상기/정기",    field: "replacement",    width: 110, hozAlign: "center" },
-        { title: "구매주기<br>월/반기/년", field: "buy_cycle",      width: 110, hozAlign: "center" },
-        { title: "현재고",                field: "now_stock",   width: 110, hozAlign: "center" },
-        { title: "안전재고",                field: "stock",   width: 110, hozAlign: "center" },
-        { title: "비고",                  field: "remark",         width: 350, hozAlign: "center" }
-      ],
-
-      rowClick: function(e, row) {
-        $('#dataTable .tabulator-row').removeClass('row_select');
-        row.getElement().classList.add('row_select');
-        selectedRowData = row.getData();
-      },
-
-      rowDblClick: function(e, row) {
-    	  var d = row.getData();
-    	  selectedRowData = d;
-    	  $('#corrForm')[0].reset();
-
-    	  $('select[name="mch_name"]').val(d.mch_name);
-    	  $('input[name="mch_parts"]').val(d.mch_parts);
-    	  $('input[name="a_usage"]').val(d.a_usage);
-    	  $('input[name="standard"]').val(d.standard);
-    	  $('input[name="producer"]').val(d.producer);
-    	  $('select[name="replacement"]').val(d.replacement);
-    	  $('select[name="buy_cycle"]').val(d.buy_cycle);
-    	  $('input[name="now_stock"]').val(d.now_stock);
-    	  $('input[name="stock"]').val(d.stock);
-    	  $('textarea[name="remark"]').val(d.remark);
-
-    	  $('#modalContainer').show().addClass('show');
-    	}
-
-    });
-
-    $('.select-button').click(function() {
-      var sel = $('.dayselect').val();
-      dataTable.setData("/geomet/machine/spareStatus/list", { mch_name: sel });
-    });
-
-    $('.insert-button').click(function() {
-      selectedRowData = null;
-      $('#corrForm')[0].reset();
-      $('#modalContainer').show().addClass('show');
-    });
-
-    $('.delete-button').click(function() {
-      if (!selectedRowData) {
-        alert('삭제할 행을 먼저 클릭해 주세요.');
-        return;
-      }
-      if (!confirm('선택된 항목을 정말 삭제하시겠습니까?')) return;
-
-      $.ajax({
-        url: "/geomet/machine/spareStatus/delete",
-        type: "POST",
-        contentType: "application/json",
-        data: JSON.stringify({ no: selectedRowData.no }),
-        success: function(res) {
-          alert('삭제되었습니다.');
-          var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/machine/spareStatus/list", { mch_name: currentFilter });
-          selectedRowData = null;
-        },
-        error: function() {
-          alert('삭제 중 오류가 발생했습니다.');
-        }
-      });
-    });
-
-    $('.close, #closeModal').click(function() {
-      $('#modalContainer').removeClass('show').hide();
-    });
-
-    $('#saveCorrStatus').click(function(event) {
-      event.preventDefault();
-      var formData = new FormData($('#corrForm')[0]);
-      if (selectedRowData && selectedRowData.no) {
-        formData.append('no', selectedRowData.no);
-      }
-      $.ajax({
-        url: "/geomet/machine/spareStatus/insert",
-        type: "POST",
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function() {
-          alert("저장되었습니다!");
-          $('#modalContainer').hide();
-          var currentFilter = $('.dayselect').val() || 'ALL';
-          dataTable.setData("/geomet/machine/spareStatus/list", { mch_name: currentFilter });
-          selectedRowData = null;
-        },
-        error: function() {
-          alert('저장 중 오류가 발생했습니다.');
-        }
-      });
-    });
-
-
-  });
-
-
-
- 
-
-
 
 
   
+  $(function() {
+
+	    // 오늘 날짜 기준 월을 yyyy-MM 형태로 반환
+	    function getMonthStr() {
+	        const today = new Date();
+	        const yyyy = today.getFullYear();
+	        const mm = String(today.getMonth() + 1).padStart(2, '0');
+	        return `${yyyy}-${mm}`;
+	    }
+
+	    const todayStr = new Date().toISOString().slice(0, 7);
+
+	    // startDate input에 오늘 날짜 기본값 세팅
+	    $('#startDate').val(todayStr);
+
+	    var dataTable = new Tabulator('#dataTable', {
+	        height: '790px',
+	        layout: 'fitDataFill',
+	        headerSort: false,
+	        columnHeaderVertAlign: "middle",
+	        rowVertAlign: "middle",
+	        reactiveData: true,
+	        headerHozAlign: 'center',
+	        ajaxConfig: { method: 'POST' },
+	        ajaxURL: "/geomet/machine/spareStatus/list",
+	        ajaxParams: { 
+	            mch_name: $('.dayselect').val() || 'ALL',
+	            month: $('#startDate').val().slice(0,7) || getMonthStr() // yyyy-MM
+	        },
+	        placeholder: "조회된 데이터가 없습니다.",
+	        columns: [
+	            { title: "NO", field: "id", hozAlign: "center", width: 70 },
+	            { title: "대상 설비(3)", field: "equipment_name", hozAlign: "center", width: 180 },
+	            { title: "부품명(8)", field: "category_sub", hozAlign: "center", width: 180 },
+	            { title: "사용처(7)", field: "category_mid", hozAlign: "left", width: 200 },
+	            { title: "규격(15)", field: "part_name", hozAlign: "left", width: 200 },
+	            { title: "제작 업체(22)", field: "manufacturer", hozAlign: "right", width: 130 },
+	            { title: "교체(입력)</br>상시 / 정기", field: "", hozAlign: "right", width: 130 },
+	            { title: "구매주기</br>월/반기/년(27)", field: "", hozAlign: "right", width: 130 },
+	            { title: "현재고(27)", field: "current_stock", hozAlign: "right", width: 130 },
+	            { title: "안전재고(26)", field: "safety_stock", hozAlign: "right", width: 130 },
+	            { title: "구매 필요수량(26-27)</br>외주 / 자체", field: "purchase_qty", hozAlign: "right", width: 130 }
+	           
+	        ],
+	        rowClick: function(e, row) {
+	            $('#dataTable .tabulator-row').removeClass('row_select');
+	            row.getElement().classList.add('row_select');
+	            selectedRowData = row.getData();
+	        },
+	        rowDblClick: function(e, row) {
+	            var d = row.getData();
+	            selectedRowData = d;
+	            $('#corrForm')[0].reset();
+	            $('input[name="no"]').val(d.no);
+	            $('select[name="mch_name"]').val(d.mch_name);
+	            $('#modalContainer').show().addClass('show');
+	        }
+	    });
+
+	    // 조회 버튼
+	    $('.select-button').click(function() {
+	        const selMch = $('.dayselect').val() || 'ALL';
+	        const selMonth = $('#startDate').val().slice(0,7) || getMonthStr(); // yyyy-MM
+	        dataTable.setData("/geomet/machine/spareStatus/list", { 
+	            mch_name: selMch,
+	            month: selMonth
+	        });
+	    });
+
+	    // 소모품 관리 버튼 클릭
+	    $('.where_bt').click(function() {
+	        const selMch = $('.dayselect').val() || 'ALL';
+	        const selMonth = $('#startDate').val().slice(0,7) || getMonthStr();
+
+	        dataTable.setData("/geomet/machine/spareStatus/list", { 
+	            mch_name: selMch,
+	            month: selMonth,
+	            where_bt: '조건'  // MyBatis에서 <if test="where_bt == '조건'"> 적용
+	        });
+	    });
+	    
+
+	    // 신규 추가
+	    $('.insert-button').click(function() {
+	        selectedRowData = null;
+	        $('#corrForm')[0].reset();
+	        $('#modalContainer').show().addClass('show');
+	    });
+
+	    // 모달 닫기
+	    $('.close, #closeModal').click(function() {
+	        $('#modalContainer').removeClass('show').hide();
+	    });
+
+	    // 저장
+	    $('#saveCorrStatus').click(function(event) {
+	        event.preventDefault();
+	        var formData = new FormData($('#corrForm')[0]);
+	        if (selectedRowData && selectedRowData.no) {
+	            formData.append('no', selectedRowData.no);
+	        }
+	        $.ajax({
+	            url: "/geomet/machine/spareStatus/insert",
+	            type: "POST",
+	            data: formData,
+	            processData: false,
+	            contentType: false,
+	            success: function() {
+	                alert("저장되었습니다!");
+	                $('#modalContainer').hide();
+	                const currentFilter = $('.dayselect').val() || 'ALL';
+	                const currentMonth = $('#startDate').val().slice(0,7) || getMonthStr();
+	                dataTable.setData("/geomet/machine/spareStatus/list", { 
+	                    mch_name: currentFilter,
+	                    month: currentMonth
+	                });
+	                selectedRowData = null;
+	            },
+	            error: function() {
+	                alert('저장 중 오류가 발생했습니다.');
+	            }
+	        });
+	    });
+
+	});
+
+
 </script>
 
 

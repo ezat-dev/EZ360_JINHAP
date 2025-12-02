@@ -563,6 +563,11 @@ public class MachineController {
 	public String repairStatus(Model model) {
 		return "/machine/repairStatus.jsp"; // 
 	}
+	//설비이력카드(돌발고장, 정기점검, 정기교체), 부품교체 이력관리, 스페어부품(안전보호구 포함)
+	@RequestMapping(value= "/machine/repairStatus_info", method = RequestMethod.GET)
+	public String repairStatus_info(Model model) {
+		return "/machine/repairStatus_info.jsp"; // 
+	}
 
 	// 설비이력카드
 	@RequestMapping(value = "/machine/repairStatus/list", method = RequestMethod.POST)
@@ -599,6 +604,59 @@ public class MachineController {
 		rtnMap.put("data", "success");
 		return rtnMap;
 	}
+	
+	
+	
+	
+	// 설비이력카드
+	@RequestMapping(value = "/machine/repairStatus_info/list", method = RequestMethod.POST)
+	@ResponseBody
+	public List<Machine> getRepairStatusList_info(@RequestBody Machine machine){
+
+
+		return machineService.getRepairStatusList_info(machine);
+	}
+
+
+	@RequestMapping(value = "/machine/repairStatus_info/delete", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> delRepairStatus_info(@RequestBody Machine machine) {
+		Map<String, Object> rtnMap = new HashMap<>();
+		System.out.println("삭제 요청 받은 데이터: " + machine.getIdx());
+
+		if (machine.getIdx() == null) {
+			rtnMap.put("data", "행 선택하세요");
+			return rtnMap;
+		}
+
+		machineService.delRepairStatus_info(machine);
+
+		rtnMap.put("data", "success");
+		return rtnMap;
+	}
+	
+
+	@RequestMapping(value = "/machine/repairStatus_info/insert", method = RequestMethod.POST)
+	@ResponseBody
+	public String insertRepairStatus_info(@ModelAttribute Machine machine) {
+		System.out.println("추가요청 받은 데이터: " + machine.getIdx());
+
+		machineService.insertRepairStatus_info(machine); 
+
+		return "success";
+	}
+	
+	@RequestMapping(value = "/machine/repairStatus_info/update", method = RequestMethod.POST)
+	@ResponseBody
+	public String updateRepairStatus_info(@ModelAttribute Machine machine) {
+	    if (machine.getIdx() == null) return "idx 없음";
+	    machineService.updateRepairStatus_info(machine);
+	    return "success";
+	}
+
+	
+	
+	
 
 	//부품교체 이력
 	@RequestMapping(value= "/machine/partStatus", method = RequestMethod.GET)
@@ -610,8 +668,9 @@ public class MachineController {
 	@RequestMapping(value = "/machine/partStatus/list", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Machine> getPartStatusList(Machine machine) {
-		System.out.println(">>> mch_name: " + machine.getMch_name());
-		System.out.println(">>> change_item: " + machine.getContent());
+		System.out.println(">>> 부품이력 mch_name: " + machine.getMch_name());
+		System.out.println(">>> month: " + machine.getMonth());
+		System.out.println(">>> 조조건: " + machine.getWhere_bt());
 		return machineService.getPartStatusList(machine);
 	}
 
@@ -653,8 +712,8 @@ public class MachineController {
 	@RequestMapping(value = "/machine/spareStatus/list", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Machine> getspareStatusList(Machine machine) {
-		System.out.println(">>> mch_name: " + machine.getMch_name());
-		System.out.println(">>> change_item: " + machine.getContent());
+		
+
 		return machineService.getspareStatusList(machine);
 	}
 
@@ -695,8 +754,7 @@ public class MachineController {
 	@RequestMapping(value = "/machine/logStatus/list", method = RequestMethod.POST)
 	@ResponseBody
 	public List<Machine> getlogStatusList(Machine machine) {
-		System.out.println(">>> mch_name: " + machine.getMch_name());
-		System.out.println(">>> change_item: " + machine.getContent());
+		
 		return machineService.getlogStatusList(machine);
 	}
 
@@ -1622,4 +1680,40 @@ public class MachineController {
 		}
 		return rtnMap;
 	}
+	
+	@RequestMapping(value = "/work/workReport/list2_nontime", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getList2_nonTime(@ModelAttribute Machine machine) {
+
+	    Map<String, Object> rtnMap = new HashMap<>();
+
+	    try {
+	        // 받은 값 그대로 출력
+	        System.out.println("list2_nontime 받은 start_time: " + machine.getStart_time());
+	        System.out.println("list2_nontime 받은 end_time: " + machine.getEnd_time());
+
+	        // end_time 하루 더하기
+	        LocalDate endDate = LocalDate.parse(machine.getEnd_time());
+	        LocalDate newEndDate = endDate.plusDays(1);
+	        machine.setEnd_time(newEndDate.toString());
+
+	        System.out.println("하루 더한 end_time: " + machine.getEnd_time());
+
+	        // DB 조회
+	        List<Work> dataList = machineService.workReport2_nonTime(machine);
+
+	        // 조회된 행 갯수 출력
+	        System.out.println("조회된 행 갯수: " + dataList.size());
+
+	        rtnMap.put("data3", dataList);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        rtnMap.put("data3", Collections.emptyList());
+	    }
+
+	    return rtnMap;
+	}
+
+
 }

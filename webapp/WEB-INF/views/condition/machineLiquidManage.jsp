@@ -1082,18 +1082,19 @@
 
     	        let min, max, displayText;
     	        if(data.mch_name === "K_BLACK"){
-    	          min = 35; max = 55;
-    	          displayText = "K_B점도 (" + min + "~" + max + "): " + value;
+    	            min = 35; max = 55;
+    	            displayText = "K_B점도 (" + min + "~" + max + "): " + value;
     	        } else if(data.mch_name === "ML"){
-    	          min = 35; max = 45;
-    	          displayText = "ML점도 (" + min + "~" + max + "): " + value;
+    	            min = 25; max = 45;  // 변경
+    	            displayText = "ML점도 (" + min + "~" + max + "): " + value;
     	        } else if(data.mch_name === "PL"){
-    	          min = 20; max = 30;
-    	          displayText = "PL점도 (" + min + "~" + max + "): " + value;
+    	            min = 15; max = 35;  // 변경
+    	            displayText = "PL점도 (" + min + "~" + max + "): " + value;
     	        } else {
-    	          min = 0; max = 100;
-    	          displayText = value;
+    	            min = 0; max = 100;
+    	            displayText = value;
     	        }
+
 
     	        if(value < min || value > max){
     	          return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";

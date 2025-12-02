@@ -35,7 +35,10 @@ public interface MachineDao {
 		List<Machine> getRepairStatusList(Machine machine);
 		void insertRepairStatus(Machine machine); 
 		void delRepairStatus(Machine machine); 
-		
+		List<Machine> getRepairStatusList_info(Machine machine);
+		void insertRepairStatus_info(Machine machine); 
+		void delRepairStatus_info(Machine machine); 
+		void updateRepairStatus_info(Machine machine); 
 		
 		//부품 교체이력
 		List<Machine> getPartStatusList(Machine machine);
@@ -67,4 +70,6 @@ public interface MachineDao {
 	    List<Work> workReport1(Machine machine);
 		 List<Work> workReport2(Machine machine);
 	    List<Work> workReport3(Machine machine);
+	    
+		List<Work> workReport2_nonTime(Machine machine);
 }

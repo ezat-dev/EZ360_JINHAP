@@ -1,10 +1,32 @@
 package com.geomet.domain;
 
 public class Machine {
-	
-	
+
     // workReport1 컬럼
 
+	
+	
+		private Integer idx;                // 순번
+		private String i_equipment_name;    // 설비명
+		private String i_category_mid;      // 중분류
+		private String i_category_sub;      // 소분류-조치부품
+		private String i_part_name;         // 규격(부품명)
+		private String i_part_status;       // 구분(스페어/소모품)
+		private String i_safety_stock;      // 안전재고
+		private String i_manufacturer;      // 제작업체
+		private String i_manager_name;      // 담당자
+		private String i_contact;           // 연락처
+		private String i_due_date;       // 납기 (DATE)
+		private String regtime;      // 등록일 (DATETIME)
+		private String month;
+
+	
+	
+	
+		private String action_detail_2;
+		private String replacement_name;
+		private String startTime;
+		private String endTime;
 	    private int work_tong;       // 작업통수
 	    private double now_weight;   // 현재 생산량
 	    private double target_weight; // 목표 생산량
@@ -51,13 +73,29 @@ public class Machine {
 	    private Integer safety_stock;
 	    private Integer current_stock;
 	    private Integer purchase_qty;
+	    private String where_bt;
 	
 	
 	
 	
 	
 	
-	
+	public String getWhere_bt() {
+			return where_bt;
+		}
+
+		public void setWhere_bt(String where_bt) {
+			this.where_bt = where_bt;
+		}
+
+	public String getMonth() {
+			return month;
+		}
+
+		public void setMonth(String month) {
+			this.month = month;
+		}
+
 	private String work_time2;
 	private String mach_cod;
 	private String target;
@@ -95,6 +133,118 @@ public class Machine {
 
 
 	
+	public Integer getIdx() {
+		return idx;
+	}
+
+	public void setIdx(Integer idx) {
+		this.idx = idx;
+	}
+
+	public String getI_equipment_name() {
+		return i_equipment_name;
+	}
+
+	public void setI_equipment_name(String i_equipment_name) {
+		this.i_equipment_name = i_equipment_name;
+	}
+
+	public String getI_category_mid() {
+		return i_category_mid;
+	}
+
+	public void setI_category_mid(String i_category_mid) {
+		this.i_category_mid = i_category_mid;
+	}
+
+	public String getI_category_sub() {
+		return i_category_sub;
+	}
+
+	public void setI_category_sub(String i_category_sub) {
+		this.i_category_sub = i_category_sub;
+	}
+
+	public String getI_part_name() {
+		return i_part_name;
+	}
+
+	public void setI_part_name(String i_part_name) {
+		this.i_part_name = i_part_name;
+	}
+
+	public String getI_part_status() {
+		return i_part_status;
+	}
+
+	public void setI_part_status(String i_part_status) {
+		this.i_part_status = i_part_status;
+	}
+
+	public String getI_safety_stock() {
+		return i_safety_stock;
+	}
+
+	public void setI_safety_stock(String i_safety_stock) {
+		this.i_safety_stock = i_safety_stock;
+	}
+
+	public String getI_manufacturer() {
+		return i_manufacturer;
+	}
+
+	public void setI_manufacturer(String i_manufacturer) {
+		this.i_manufacturer = i_manufacturer;
+	}
+
+	public String getI_manager_name() {
+		return i_manager_name;
+	}
+
+	public void setI_manager_name(String i_manager_name) {
+		this.i_manager_name = i_manager_name;
+	}
+
+	public String getI_contact() {
+		return i_contact;
+	}
+
+	public void setI_contact(String i_contact) {
+		this.i_contact = i_contact;
+	}
+
+	public String getI_due_date() {
+		return i_due_date;
+	}
+
+	public void setI_due_date(String i_due_date) {
+		this.i_due_date = i_due_date;
+	}
+
+	public String getRegtime() {
+		return regtime;
+	}
+
+	public void setRegtime(String regtime) {
+		this.regtime = regtime;
+	}
+
+	public String getAction_detail_2() {
+		return action_detail_2;
+	}
+
+	public void setAction_detail_2(String action_detail_2) {
+		this.action_detail_2 = action_detail_2;
+	}
+
+	public String getReplacement_name() {
+		return replacement_name;
+	}
+
+	public void setReplacement_name(String replacement_name) {
+		this.replacement_name = replacement_name;
+	}
+
 	public int getWork_tong() {
 		return work_tong;
 	}
@@ -430,6 +580,24 @@ public class Machine {
 
     
 
+
+
+
+	public String getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
+	}
+
+	public String getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
+	}
 
 	public String getInspectionType() {
 		return inspectionType;

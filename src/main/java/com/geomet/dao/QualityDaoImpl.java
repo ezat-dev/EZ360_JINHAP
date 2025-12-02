@@ -201,5 +201,97 @@ public class QualityDaoImpl implements QualityDao {
 		}
 		return true;
 	}
+	@Override
+	public boolean liquidAnalyzeInsertNv(Quality quality) {
+		int result = sqlSession.insert("quality.liquidAnalyzeInsertNv", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public boolean liquidAnalyzeInsertAsh(Quality quality) {
+		int result = sqlSession.insert("quality.liquidAnalyzeInsertAsh", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public List<Quality> getKccList(Quality quality) {
+		return sqlSession.selectList("quality.getKccList", quality);
+	}
+	@Override
+	public boolean updateKcc(Quality quality) {
+		int result = sqlSession.update("quality.updateKcc", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public boolean insertCct(Quality quality) {
+		int result = sqlSession.insert("quality.insertCct", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public List<Quality> getCctList(Quality quality) {
+		return sqlSession.selectList("quality.getCctList", quality);
+	}
+	@Override
+	public boolean deleteCct(Quality quality) {
+		int result = sqlSession.delete("quality.deleteCct", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public List<Quality> getSstList(Quality quality) {
+		return sqlSession.selectList("quality.getSstList", quality);
+	}
+	@Override
+	public boolean insertSst(Quality quality) {
+		int result = sqlSession.insert("quality.insertSst", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public boolean deleteSst(Quality quality) {
+		int result = sqlSession.delete("quality.deleteSst", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public boolean insertAttachment(Quality quality) {
+		int result = sqlSession.insert("quality.insertAttachment", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
+	@Override
+	public List<Quality> attachmentList(Quality quality) {
+		return sqlSession.selectList("quality.attachmentList", quality);
+	}
+	@Override
+	public List<Quality> turbidityList(Quality quality) {
+		return sqlSession.selectList("quality.turbidityList", quality);
+	}
+	@Override
+	public boolean deleteAttachment(Quality quality) {
+		int result = sqlSession.delete("quality.deleteAttachment", quality);
+		if(result <= 0) {
+			return false;
+		}
+		return true;
+	}
 }
 

@@ -307,17 +307,16 @@
         // 오늘
         const ed = formatDate(now);
 
-        // 어제 (오늘에서 하루 빼기)
-        const yesterday = new Date(now);
-        yesterday.setDate(now.getDate() - 1);
-        const sd = formatDate(yesterday);
+        // 시작일: 해당 연도 1월 1일
+        const startOfYear = new Date(now.getFullYear(), 0, 1); // month는 0부터 시작
+        const sd = formatDate(startOfYear);
 
         $("#startDate").val(sd);
         $("#endDate").val(ed);
 
         getDataList();
         $(".select-button").click(); 
-      });
+    });
 
 
     

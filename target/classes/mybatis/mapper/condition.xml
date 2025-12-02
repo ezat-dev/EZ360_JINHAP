@@ -15,7 +15,8 @@
 		    
 		    
 		    	<if test="group_id != null and group_id != ''">
-	            	AND GROUP_ID LIKE '%'||#{group_id}||'%'
+	            	<!-- AND GROUP_ID LIKE '%'||#{group_id}||'%' -->
+	            	AND GROUP_ID = #{group_id}
 		        </if>
 		        <if test="item_cd != null and item_cd != ''">
 		            AND ITEM_CD LIKE '%'||#{item_cd}||'%'

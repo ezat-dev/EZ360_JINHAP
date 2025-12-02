@@ -13,15 +13,17 @@
 	</delete>
 
 
-   <select id="getInventoryStatusList" parameterType="Work" resultType="Work">
-		    SELECT * 
+<select id="getInventoryStatusList" parameterType="Work" resultType="Work">
+    SELECT * 
     FROM v_inventory_balance
     WHERE `reg_date` LIKE CONCAT(#{startDate}, '%')
       AND `lot_no` IS NOT NULL
       <if test="medicine_name != null and medicine_name != '' and medicine_name != '전체'">
           AND `medicine_name` = #{medicine_name}
       </if>
-   </select>
+    ORDER BY STR_TO_DATE(`reg_date`, '%Y-%m-%d %H:%i:%s') ASC
+</select>
+
 
 
    <!-- 재고관리 업데이트 -->
@@ -113,7 +115,7 @@
 <select id="getWorkDailyList" parameterType="Work" resultType="Work">
 SELECT
   ROW_NUMBER() OVER(ORDER BY bb.end_time) AS r_num,
-  IFNULL(bb.division_num,'0') AS a,       -- 🔹 ez_geo_hst.division_num 가져오기
+  IFNULL(bb.division_num,'2') AS a,       -- 🔹 ez_geo_hst.division_num 가져오기
   bb.group_id,
   bb.start_time,
   bb.end_time,
@@ -193,11 +195,11 @@ FROM (
     ON aa.item_cd = ab.item_cd
   LEFT JOIN
     (
-    	SELECT barcode_no AS hst2_barcode, MAX(division_num) AS division_num
-  		FROM ez_geo_hst2_save3 
-  		WHERE mach_code = #{m_code}
-  		AND wrk_gbn_state = 'IN'
-  		GROUP BY barcode_no
+  	 	SELECT barcode_no AS hst2_barcode, MAX(division_num) AS division_num
+		FROM ez_geo_hst2
+		WHERE mach_code = #{m_code}
+		  AND wrk_gbn_state = 'IN'
+		GROUP BY barcode_no
   	) AS eh
     ON aa.barcode_no = eh.hst2_barcode   -- 🔹 division_num 가져오는 위치를 이쪽으로 옮김
 ) AS bb
@@ -450,7 +452,12 @@ FROM (
 			WHEN b_a = '오후' THEN CONCAT(date, ' 15:00:00')
 			WHEN b_a = '야간' THEN CONCAT(date, ' 22:00:00')
 		END AS dssa,
-		(tank_temp + visocosity + specific_gravity + chiller_temp) AS row_sum
+		(
+			CAST(tank_temp AS DECIMAL(10,3)) +
+			CAST(visocosity AS DECIMAL(10,3)) +
+			CAST(specific_gravity AS DECIMAL(10,3)) +
+			CAST(chiller_temp AS DECIMAL(10,3))
+		) AS row_sum
 		FROM tb_part_temp
 	) AS A
 	WHERE date = #{s_time2}
@@ -462,7 +469,7 @@ LEFT OUTER JOIN
 	SELECT t.*
 	FROM tb_temp_data t
 	JOIN (
-	    -- HOUR = 6, 15, 22 별로 가장 빠른
+	    -- HOUR = 6, 15, 22 별로 가장 빠른 temp_time만 추출
 	    SELECT 
 	      MIN(temp_time) AS tm
 	    FROM tb_temp_data
@@ -472,7 +479,7 @@ LEFT OUTER JOIN
 	) AS m
 	ON t.temp_time = m.tm
 ) AS BB
-ON LEFT(dssa, 16) = LEFT(temp_time, 16);
+ON LEFT(AA.dssa, 16) = LEFT(BB.temp_time, 16);
   ]]>
 </select>
 

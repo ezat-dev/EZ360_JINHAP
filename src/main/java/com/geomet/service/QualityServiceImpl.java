@@ -144,4 +144,60 @@ public class QualityServiceImpl implements QualityService {
 	public boolean deleteLiquidAnalyze(Quality quality) {
 		return qualityDao.deleteLiquidAnalyze(quality);
 	}
+	@Override
+	public boolean liquidAnalyzeInsertNv(Quality quality) {
+		return qualityDao.liquidAnalyzeInsertNv(quality);
+	}
+	@Override
+	public boolean liquidAnalyzeInsertAsh(Quality quality) {
+		return qualityDao.liquidAnalyzeInsertAsh(quality);
+	}
+	@Override
+	public List<Quality> getKccList(Quality quality) {
+		return qualityDao.getKccList(quality);
+	}
+	@Override
+	public boolean updateKcc(Quality quality) {
+		return qualityDao.updateKcc(quality);
+	}
+	@Override
+	public boolean insertCct(Quality quality) {
+		return qualityDao.insertCct(quality);
+	}
+	@Override
+	public List<Quality> getCctList(Quality quality) {
+		return qualityDao.getCctList(quality);
+	}
+	@Override
+	public boolean deleteCct(Quality quality) {
+		return qualityDao.deleteCct(quality);
+	}
+	@Override
+	public List<Quality> getSstList(Quality quality) {
+		return qualityDao.getSstList(quality);
+	}
+	@Override
+	public boolean insertSst(Quality quality) {
+		return qualityDao.insertSst(quality);
+	}
+	@Override
+	public boolean deleteSst(Quality quality) {
+		return qualityDao.deleteSst(quality);
+	}
+	@Override
+	public boolean insertAttachment(Quality quality) {
+		return qualityDao.insertAttachment(quality);
+	}
+	@Override
+	public List<Quality> attachmentList(Quality quality) {
+		return qualityDao.attachmentList(quality);
+	}
+	@Override
+	public List<Quality> turbidityList(Quality quality) {
+		return qualityDao.turbidityList(quality);
+	}
+	@Override
+	public boolean deleteAttachment(Quality quality) {
+		return qualityDao.deleteAttachment(quality);
+	}
 }
