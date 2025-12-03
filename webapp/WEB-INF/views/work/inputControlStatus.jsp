@@ -208,9 +208,9 @@ let now_page_code = "f02";
 $(function() {
     var today = new Date();
 
-    // 하루 전 날짜 계산
-    var oneDayAgo = new Date(today);
-    oneDayAgo.setDate(today.getDate() - 1);
+    // 한 달 전 날짜 계산
+    var oneMonthAgo = new Date(today);
+    oneMonthAgo.setMonth(today.getMonth() - 1);
 
     function formatDate(date) {
         var year = date.getFullYear();
@@ -219,8 +219,8 @@ $(function() {
         return year + "-" + month + "-" + day;
     }
 
-    $('#startDate').val(formatDate(oneDayAgo));
-    $('#endDate').val(formatDate(today));
+    $('#startDate').val(formatDate(oneMonthAgo)); // 오늘 기준 한 달 전
+    $('#endDate').val(formatDate(today));         // 오늘
 
     getDataList();
     getDataList2();

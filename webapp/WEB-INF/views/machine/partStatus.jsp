@@ -290,7 +290,22 @@ $(function() {
             { title: "구매주기</br>월/반기/년(27)", field: "", hozAlign: "right", width: 130 },
             { title: "현재고(27)", field: "current_stock", hozAlign: "right", width: 130 },
             { title: "안전재고(26)", field: "safety_stock", hozAlign: "right", width: 130 },
-            { title: "구매 필요수량(26-27)</br>외주 / 자체", field: "purchase_qty", hozAlign: "right", width: 130 }
+            { 
+                title: "구매 필요수량(26-27)</br>외주 / 자체", 
+                field: "purchase_qty", 
+                hozAlign: "right", 
+                width: 130,
+                formatter: function(cell, formatterParams, onRendered){
+                    const value = cell.getValue();
+                    if(value > 0){
+                        cell.getElement().style.color = "blue"; // 양수면 파란 글씨
+                    } else {
+                        cell.getElement().style.color = "red"; // 나머지는 검정
+                    }
+                    return value;
+                }
+            }
+
         ],
 
         rowClick: function(e, row) {

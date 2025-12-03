@@ -654,7 +654,19 @@ $(document).ready(function() {
             { title: "부품 유무", field: "part_status", hozAlign: "center" , width: 130},
             { title: "안전재고", field: "safety_stock", hozAlign: "right", width: 130 },
             { title: "현재고", field: "current_stock", hozAlign: "right" , width: 130},
-            { title: "구매 필요 수량", field: "purchase_qty", hozAlign: "right", width: 130 }
+            { title: "구매 필요 수량",   field: "purchase_qty", 
+                hozAlign: "right", 
+                width: 130,
+                formatter: function(cell, formatterParams, onRendered){
+                    const value = cell.getValue();
+                    if(value > 0){
+                        cell.getElement().style.color = "blue"; // 양수면 파란 글씨
+                    } else {
+                        cell.getElement().style.color = "red"; // 나머지는 검정
+                    }
+                    return value;
+                }
+            }
         ],
 
         rowDblClick: function(e, row) {

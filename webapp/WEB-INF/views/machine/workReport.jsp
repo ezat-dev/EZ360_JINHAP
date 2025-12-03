@@ -273,342 +273,203 @@
 
 
 
-    <script>
-
-    let now_page_code = "a06";
-    let dataTable1;
-    let dataTable3;
+  <script>
+let now_page_code = "a06";
+let dataTable1;
+let dataTable2;
+let dataTable3;
+let dataTable4;
+// DOMContentLoaded 시 초기화
+document.addEventListener("DOMContentLoaded", function() {
+    $('#startDate').val(new Date().toISOString().split('T')[0]);
     getDataList1();
+    getDataList2();
     getDataList3();
-    // 조회 버튼 클릭 시
-    $('.select-button').click(function() {
-        const selectedDate = $('#startDate').val();
-        $('.select-button').click(function() {
-            const selectedDate = $('#startDate').val();
-            getDataList1();
-            getDataList3();
-            getDataList2();
-        });
+    getDataList4();  // 4번 테이블 추가
+});
 
-          getDataList1();
-        getDataList3();
-        getDataList2();
-    });
+$('.select-button').click(function() {
+    getDataList1();
+    getDataList2();
+    getDataList3();
+    getDataList4();  // 4번 테이블 추가
+});
 
 
-    document.addEventListener("DOMContentLoaded", function() {
-    	   $('#startDate').val(new Date().toISOString().split('T')[0]);
-    	 let selectedDate = $('#startDate').val();
-    	    if (!selectedDate) {
-    	        alert("날짜를 선택해주세요.");
-    	        return;
-    	    }
+// ----------------- 데이터 테이블 1 -----------------
+function getDataList1() {
+    if (dataTable1) dataTable1.destroy();
 
-    	    let startDate = selectedDate.replace(/-/g, "");
-    	    let dateObj = new Date(selectedDate);
-    	    dateObj.setDate(dateObj.getDate() + 1);
-    	    let nextDate = dateObj.toISOString().split('T')[0].replace(/-/g, "");
-    	    let e_time = nextDate;
-    	    getDataList3();
-    	    getDataList2();
-    	    getDataList1();
-
-    	
-        // 깡통 데이터
-        const dummyData = [
-            { facility: "세척 1호기", part: "", qty: "", due: "" },
-            { facility: "세척 2호기", part: "", qty: "", due: "" },
-            { facility: "세척 합계", part: "", qty: "", due: "" },
-            { facility: "쇼트 1호기", part: "", qty: "", due: "" },
-            { facility: "쇼트 2호기", part: "", qty: "", due: "" },
-            { facility: "쇼트 3호기", part: "", qty: "", due: "" },
-            { facility: "쇼트 4호기", part: "", qty: "", due: "" },
-            { facility: "쇼트 5호기", part: "", qty: "", due: "" },
-            { facility: "쇼트 6호기", part: "", qty: "", due: "" },
-            { facility: "쇼트 7호기", part: "", qty: "", due: "" },
-            { facility: "쇼트 합계", part: "", qty: "", due: "" },
-            { facility: "G600", part: "", qty: "", due: "" },
-            { facility: "G800", part: "", qty: "", due: "" },
-            { facility: "GEO 합계", part: "", qty: "", due: "" },
-            { facility: "공용설비", part: "", qty: "", due: "" },
-            { facility: "K-BLACK", part: "", qty: "", due: "" }
-        ];
-
-        // Tabulator 생성
-        const table = new Tabulator("#dataList4", {
-            height: "440px",
-            data: dummyData,
-            layout: "fitColumns",
-            columns: [
-                { title: "설비명", field: "facility", hozAlign: "center" },
-                { title: "부품", field: "part", hozAlign: "center" },
-                { title: "수량", field: "qty", hozAlign: "center" },
-                { title: "납기", field: "due", hozAlign: "center" }
-            ]
-        });
-
-    });
-
-    function getDataList1() {
-	      dataTable1 = new Tabulator("#dataList1", {
-	          height: "400px",
-	          width: "580px",
-	          layout: "fitColumns",
-	          selectable: true,
-	          columnHeaderVertAlign: "middle",
-	          rowVertAlign: "middle",
-	          tooltips: true,
-	          selectableRangeMode: "click",
-	          reactiveData: true,
-	          headerHozAlign: "center",
-	          ajaxConfig: "POST",
-	          ajaxLoader: false,
-	          headerSort: false,
-	          ajaxURL: "/geomet/work/workReport/list1",
-	 
-	          ajaxParams: {
-	              //equipment_name: $("#equipment_name").val() || "",
-	              start_time: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
-	          },
-	          placeholder: "조회된 데이터가 없습니다.",
-	     
-	          ajaxResponse: function (url, params, response) {
-	              $("#dataList1 .tabulator-col.tabulator-sortable");
-	              return response.data1;
-	          },
-	          columns: [
-	        	    { title: "ch_idx", field: "ch_idx", visible: false },     
-	        	    { title: "설비명", field: "facility_name", hozAlign: "center", width: 200, headerSort: false },  
-	        	    {
-	        	        title: "목표작업 통수",
-	        	        field: "target_weight",
-	        	        hozAlign: "center",
-	        	        width: 200,
-	        	        headerSort: false,
-	        	        formatter: function(cell) {
-	        	            let value = cell.getValue();
-	        	            if (value == null) return "";
-	        	            return value.toLocaleString();
-	        	        }
-	        	    },
-	        	         
-	        	    { title: "일작업 통수", field: "work_tong", hozAlign: "center", width: 200, headerSort: false },
-	        	    {
-	        	        title: "일생산 중량(Kg)",
-	        	        field: "now_weight",
-	        	        hozAlign: "center",
-	        	        headerSort: false,
-	        	        width: 320,
-	        	        formatter: function(cell) {
-	        	            let value = cell.getValue();
-	        	            if (value == null) return "";
-	        	            return value.toLocaleString();   // 천단위 구분자 자동
-	        	        }
-	        	    },
-	        	  
-
-
-	        	    { 
-	        	        title: "달성률(%)", 
-	        	        field: "per", 
-	        	     
-	        	        headerSort: false,
-	        	        formatter: "progress",        // 막대 그래프
-	        	        formatterParams: {
-	        	            min: 0,
-	        	            max: 100,                   // per 값이 0~1이라면
-	        	            color: ["#FFAAAA", "#B7EB8F"],
-	        	            // 텍스트를 퍼센트로 표시
-	        	            legend: true,
-	        	            legendFormatter: function(cell) {
-	        	                let value = cell.getValue() * 100;  // 0~1 -> 0~100%
-	        	                return value.toFixed(1) + "%";
-	        	            }
-	        	        }
-	        	    }
-
-	        	],
-
-	          rowClick: function (e, row) {
-	              // 모든 행의 선택 해제 및 스타일 제거
-	              //$("#dataList .tabulator-row").removeClass("row_select");
-	              clicked = !clicked;
-	              // 클릭된 행의 test_num 값 가져오기
-	              const clicked_test_num = row.getData().test_num;
-
-					if(clicked === true){
-	              // test_num이 같은 모든 행을 선택하고 클래스 추가
-	              dataTable3.getRows().forEach(function(r) {
-	                  if (r.getData().test_num === clicked_test_num) {
-	                      r.select(); // Tabulator의 select() 메서드를 사용하여 선택 상태로 만듦
-	                      r.getElement().classList.add("row_select");
-	                  }
-	              });
-					}else{
-						$("#dataList3 .tabulator-row").removeClass("row_select");
-						}
-
-	              // selectedRow 변수 업데이트
-	              selectedRow = row;
-	              console.log("선택된 test_num:", clicked_test_num);
-	          }
-	      });
-    }
-
-    function getDataList2() {
-        const RESOURCE_ID_MAP = {
-            "W0100": "세척 1호기",
-            "G01-GW21": "세척 2호기",
-            "S0100": "쇼트 1호기",
-            "S0200": "쇼트 2호기",
-            "S0300": "쇼트 3호기",
-            "S0400": "쇼트 4호기",
-            "50500": "쇼트 5호기",
-            "S0600": "쇼트 6호기",
-            "G03-GG03": "G600",
-            "G03-GG01": "G800",
-            "G04-GG05": "K-BLACK",
-            "G04-GG07": "공용설비",
-            "G04-GG04": "공용설비"
-        };
-
-        dataTable3 = new Tabulator("#dataList2", {
-            height: "200px",
-            width: "600px",
-            layout: "fitColumns",
-            selectable: true,
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
-            tooltips: true,
-            selectableRangeMode: "click",
-            reactiveData: true,
-            headerHozAlign: "center",
-            ajaxConfig: "POST",
-            ajaxLoader: false,
-            headerSort: false,
-            ajaxURL: "/geomet/work/workReport/list2",
-
-            ajaxParams: {           
-                start_time: $("#startDate").val() || "",	        
+    dataTable1 = new Tabulator("#dataList1", {
+        height: "400px",
+        width: "580px",
+        layout: "fitColumns",
+        selectable: true,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        tooltips: true,
+        selectableRangeMode: "click",
+        reactiveData: true,
+        headerHozAlign: "center",
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        headerSort: false,
+        ajaxURL: "/geomet/work/workReport/list1",
+        ajaxParams: {
+            start_time: $("#startDate").val() || "",
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function (url, params, response) {
+            return response.data1 || [];
+        },
+        columns: [
+            { title: "ch_idx", field: "ch_idx", visible: false },
+            { title: "설비명", field: "facility_name", hozAlign: "center", width: 200 },
+            { title: "목표작업 통수", field: "target_weight", hozAlign: "center", width: 200,
+              formatter: function(cell) {
+                  let value = cell.getValue();
+                  return value != null ? value.toLocaleString() : "";
+              }
             },
-            placeholder: "조회된 데이터가 없습니다.",
-
-            ajaxResponse: function (url, params, response) {
-                return response.data3;
+            { title: "일작업 통수", field: "work_tong", hozAlign: "center", width: 200 },
+            { title: "일생산 중량(Kg)", field: "now_weight", hozAlign: "center", width: 320,
+              formatter: function(cell) {
+                  let value = cell.getValue();
+                  return value != null ? value.toLocaleString() : "";
+              }
             },
-
-            ajaxRequesting: function (url, params) {
-                console.log("테이블2 URL:", url);
-                console.log("보내는2 Params:", params);
-            },
-
-            columns: [
-                { 
-                    title: "설비", 
-                    field: "resourceID", 
-                    hozAlign: "center",
-                    width: 200,
-                    formatter: function(cell) {
-                        const val = cell.getValue();
-                        return RESOURCE_ID_MAP[val] || val; // 매핑 없으면 그대로 표시
-                    }
-                },             
-                { title: "발생건수", field: "cnt", hozAlign: "center", width: 200, headerSort: false },
-                { title: "발생시간(분)", field: "downtime", hozAlign: "center",  width: 200, headerSort: false },
-                { title: "내용", field: "downtime_name",  headerSort: false }
-            ],
-
-            rowClick: function (e, row) {
-                clicked = !clicked;
-                const clicked_test_num = row.getData().test_num;
-
-                if(clicked === true){
-                    dataTable3.getRows().forEach(function(r) {
-                        if (r.getData().test_num === clicked_test_num) {
-                            r.select();
-                            r.getElement().classList.add("row_select");
-                        }
-                    });
-                } else {
-                    $("#dataList3 .tabulator-row").removeClass("row_select");
-                }
-
-                selectedRow = row;
-                console.log("선택된 test_num:", clicked_test_num);
+            { title: "달성률(%)", field: "per", hozAlign: "left",
+              formatter: "progress",
+              formatterParams: {
+                  min: 0,
+                  max: 100,
+                  color: ["#FFAAAA", "#B7EB8F"],
+                  legend: true,
+                  legendFormatter: function(cell) {
+                      let value = cell.getValue() * 100;
+                      return value.toFixed(1) + "%";
+                  }
+              }
             }
-        });
-    }
+        ]
+    });
+}
 
+// ----------------- 데이터 테이블 2 -----------------
+function getDataList2() {
+    const RESOURCE_ID_MAP = {
+        "W0100": "세척 1호기",
+        "G01-GW21": "세척 2호기",
+        "S0100": "쇼트 1호기",
+        "S0200": "쇼트 2호기",
+        "S0300": "쇼트 3호기",
+        "S0400": "쇼트 4호기",
+        "50500": "쇼트 5호기",
+        "S0600": "쇼트 6호기",
+        "G03-GG03": "G600",
+        "G03-GG01": "G800",
+        "G04-GG05": "K-BLACK",
+        "G04-GG07": "공용설비",
+        "G04-GG04": "공용설비"
+    };
 
-    
-        function getDataList3() {
-  	      dataTable3 = new Tabulator("#dataList3", {
-	          height: "200px",
-	          width: "500px",
-	          layout: "fitColumns",
-	          selectable: true,
-	          columnHeaderVertAlign: "middle",
-	          rowVertAlign: "middle",
-	          tooltips: true,
-	          selectableRangeMode: "click",
-	          reactiveData: true,
-	          headerHozAlign: "center",
-	          ajaxConfig: "POST",
-	          ajaxLoader: false,
-	          headerSort: false,
-	          ajaxURL: "/geomet/work/workReport/list3",
-	 
-	          ajaxParams: {
-	              //equipment_name: $("#equipment_name").val() || "",
-	              start_time: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
-	          },
-	          placeholder: "조회된 데이터가 없습니다.",
-	     
-	          ajaxResponse: function (url, params, response) {
-	              $("#dataList3 .tabulator-col.tabulator-sortable");
-	              return response.data3;
-	          },
-	          columns: [
-	              { title: "id", field: "id", visible: false },
-	              { title: "test_num", field: "test_num", visible: false },             
-	          //    { title: "설비코드", field: "mach_code", hozAlign: "center", width: 200, headerSort: false },
-	              { title: "설비명", field: "facility_name", hozAlign: "center", width: 200, headerSort: false },
-	              { title: "에러 내용", field: "err_name",width: 400,  headerSort: false },
-	              { title: "에러 횟수", field: "err_count", hozAlign: "center", width: 200, headerSort: false },
-	              { title: "총 시간(초)", field: "total_seconds", hozAlign: "center", width: 200, headerSort: false },
-	              { title: "총 시간(시분초)", field: "total_time_hms", hozAlign: "center", width: 200, headerSort: false }
-	          ],
-	          rowClick: function (e, row) {
-	              // 모든 행의 선택 해제 및 스타일 제거
-	              //$("#dataList .tabulator-row").removeClass("row_select");
-	              clicked = !clicked;
-	              // 클릭된 행의 test_num 값 가져오기
-	              const clicked_test_num = row.getData().test_num;
+    if (dataTable2) dataTable2.destroy();
 
-					if(clicked === true){
-	              // test_num이 같은 모든 행을 선택하고 클래스 추가
-	              dataTable3.getRows().forEach(function(r) {
-	                  if (r.getData().test_num === clicked_test_num) {
-	                      r.select(); // Tabulator의 select() 메서드를 사용하여 선택 상태로 만듦
-	                      r.getElement().classList.add("row_select");
-	                  }
-	              });
-					}else{
-						$("#dataList3 .tabulator-row").removeClass("row_select");
-						}
+    dataTable2 = new Tabulator("#dataList2", {
+        height: "200px",
+        width: "600px",
+        layout: "fitColumns",
+        selectable: true,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        tooltips: true,
+        selectableRangeMode: "click",
+        reactiveData: true,
+        headerHozAlign: "center",
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        headerSort: false,
+        ajaxURL: "/geomet/work/workReport/list2",
+        ajaxParams: { start_time: $("#startDate").val() || "" },
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function (url, params, response) {
+            return response.data3 || [];
+        },
+        columns: [
+            { title: "설비", field: "resourceID", hozAlign: "center", width: 200,
+              formatter: function(cell) {
+                  const val = cell.getValue();
+                  return RESOURCE_ID_MAP[val] || val;
+              }
+            },
+            { title: "발생건수", field: "cnt", hozAlign: "center", width: 200 },
+            { title: "발생시간(분)", field: "downtime", hozAlign: "center", width: 200 },
+            { title: "내용", field: "downtime_name" }
+        ]
+    });
+}
 
-	              // selectedRow 변수 업데이트
-	              selectedRow = row;
-	              console.log("선택된 test_num:", clicked_test_num);
-	          }
-	      });
-        }
+// ----------------- 데이터 테이블 3 -----------------
+function getDataList3() {
+    if (dataTable3) dataTable3.destroy();
 
+    dataTable3 = new Tabulator("#dataList3", {
+        height: "200px",
+        width: "500px",
+        layout: "fitColumns",
+        selectable: true,
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        tooltips: true,
+        selectableRangeMode: "click",
+        reactiveData: true,
+        headerHozAlign: "center",
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        headerSort: false,
+        ajaxURL: "/geomet/work/workReport/list3",
+        ajaxParams: { start_time: $("#startDate").val() || "" },
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function (url, params, response) {
+            return response.data3 || [];
+        },
+        columns: [
+            { title: "id", field: "id", visible: false },
+            { title: "test_num", field: "test_num", visible: false },
+            { title: "설비명", field: "facility_name", hozAlign: "center", width: 200 },
+            { title: "에러 내용", field: "err_name", width: 400 },
+            { title: "에러 횟수", field: "err_count", hozAlign: "center", width: 200 },
+            { title: "총 시간(초)", field: "total_seconds", hozAlign: "center", width: 200 },
+            { title: "총 시간(시분초)", field: "total_time_hms", hozAlign: "center", width: 200 }
+        ]
+    });
+}
 
-        
-    </script>
+function getDataList4() {
+    if (dataTable4) dataTable4.destroy();
+
+    dataTable4 = new Tabulator("#dataList4", {
+        height: "440px",
+        layout: "fitColumns",
+        ajaxURL: "/geomet/work/workReport/list4",
+        ajaxConfig: "POST",
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function(url, params, response) {
+            console.log("서버 응답:", response);
+            if (!response.data4 || !Array.isArray(response.data4)) return [];
+            // null이 섞인 경우 제거
+            return response.data4.filter(item => item !== null);
+        },
+        columns: [
+            { title: "설비명", field: "equipment_name", hozAlign: "center" },
+            { title: "부품명", field: "category_mid", hozAlign: "center" },
+            { title: "사용처", field: "category_sub", hozAlign: "center" },
+            { title: "규격", field: "part_name", hozAlign: "center" },
+            { title: "필요 수량", field: "purchase_qty", hozAlign: "center" }
+        ]
+    });
+}
+</script>
 
 </body>
 </html>

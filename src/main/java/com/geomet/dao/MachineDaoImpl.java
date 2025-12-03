@@ -224,7 +224,11 @@ public class MachineDaoImpl implements MachineDao{
         return sqlSession.selectList("machine.workReport3", machine);
     }
     
-    
+    @Override
+    public List<Machine> workReport4() {
+
+        return sqlSession.selectList("machine.workReport4");
+    }
     @Override
     public List<Work> workReport2_nonTime(Machine machine) {
         return sqlSessionMssqlJinhap.selectList("machine.workReport2_nontime_mmsql", machine);

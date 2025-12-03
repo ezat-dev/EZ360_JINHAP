@@ -435,7 +435,7 @@ SELECT * FROM v_moniteolingling
       </if>
 
       <if test="where_bt == '조건'">
-          AND purchase_qty <![CDATA[<]]> 0
+          AND purchase_qty <![CDATA[>]]> 0
       </if>
   </where>
   ORDER BY work_date ASC
@@ -444,7 +444,15 @@ SELECT * FROM v_moniteolingling
 
 
 
-
+<select id="workReport4" resultType="Machine">
+    SELECT 
+        equipment_name,
+        category_mid,
+        category_sub,
+        part_name,
+        purchase_qty
+    FROM v_equipment_maintenance1203
+</select>
 
 
 
@@ -498,7 +506,7 @@ SELECT * FROM v_moniteolingling
     FROM tb_equipment_maintenance
     <where>
         <if test="where_bt != null and where_bt == '조건'">
-            AND purchase_qty <![CDATA[<]]> 0
+            AND purchase_qty <![CDATA[>]]> 0
         </if>
 
         AND part_status = '스페어'

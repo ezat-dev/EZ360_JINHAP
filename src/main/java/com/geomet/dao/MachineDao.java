@@ -68,8 +68,9 @@ public interface MachineDao {
 		List<Machine> getdetailMonitoring(Machine machine);
 		
 	    List<Work> workReport1(Machine machine);
-		 List<Work> workReport2(Machine machine);
+		List<Work> workReport2(Machine machine);
 	    List<Work> workReport3(Machine machine);
+	    List<Machine> workReport4();
 	    
 		List<Work> workReport2_nonTime(Machine machine);
 }

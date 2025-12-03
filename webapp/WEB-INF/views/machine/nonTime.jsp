@@ -283,18 +283,31 @@ function getDataList3() {
             console.log("보내는 Params:", params);
         },
         columns: [
-            { 
-                title: "설비", 
-                field: "resourceID", 
-                hozAlign: "center", 
-                width: 200, 
-                formatter: function(cell){
-                    return RESOURCE_ID_MAP[cell.getValue()] || cell.getValue();
-                },
-                headerFilter: "select",
-                headerFilterParams: Object.values(RESOURCE_ID_MAP),
-                headerSort: true
-            },
+        	{
+        	    title: "설비",
+        	    field: "resourceID",
+        	    hozAlign: "center",
+        	    width: 200,
+        	    formatter: function(cell){
+        	        return RESOURCE_ID_MAP[cell.getValue()] || cell.getValue();
+        	    },
+
+        	    headerFilter: "select",
+        	    headerFilterParams: {
+        	        values: Object.values(RESOURCE_ID_MAP) // 사용자에게 보이는 이름으로 select 구성
+        	    },
+
+        	    headerFilterFunc: function(headerValue, rowValue, rowData){
+        	        // rowValue는 원래 resourceID("W0100" 등)
+        	        const mappedValue = RESOURCE_ID_MAP[rowValue] || rowValue;
+
+        	        if (!headerValue) return true;            // 필터 선택 안함 → 전체 표시
+        	        return mappedValue === headerValue;       // "세척 1호기" 등 비교
+        	    },
+
+        	    headerSort: true
+        	},
+
             { 
                 title: "시작시간", 
                 field: "startTime", 

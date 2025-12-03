@@ -182,7 +182,10 @@ public class MachineServiceImpl implements MachineService {
 	public List<Work> workReport2(Machine machine) {
 		return machineDao.workReport2(machine);
 	}
-	
+	@Override
+    public List<Machine> workReport4() {
+        return machineDao.workReport4();  // ← 파라미터 없음
+    }
 	@Override
 	public List<Work> workReport2_nonTime(Machine machine) {
 		return machineDao.workReport2_nonTime(machine);

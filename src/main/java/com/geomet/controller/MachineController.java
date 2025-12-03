@@ -1681,6 +1681,32 @@ public class MachineController {
 		return rtnMap;
 	}
 	
+	@RequestMapping(value = "/work/workReport/list4", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> getList4() {
+
+	    Map<String, Object> rtnMap = new HashMap<>();
+
+	    try {
+	        // 전체 조회
+	        List<Machine> data4 = machineService.workReport4();
+	        System.out.println("data4 size: " + data4.size());
+	        System.out.println("data4 content: " + data4);
+	        rtnMap.put("data4", data4);
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        rtnMap.put("data4", Collections.emptyList());
+	    }
+
+	    return rtnMap;
+	}
+
+
+	
+	
+	
+	
 	@RequestMapping(value = "/work/workReport/list2_nontime", method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, Object> getList2_nonTime(@ModelAttribute Machine machine) {
