@@ -1096,11 +1096,12 @@
     	        }
 
 
-    	        if(value < min || value > max){
-    	          return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
-    	        } else {
-    	          return displayText;
-    	        }
+    	        if (value !== "" && (value < min || value > max)) {
+    	        	  return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
+    	        	} else {
+    	        	  return displayText;
+    	        	}
+
     	      },
     	      headerSort: false
     	    },
@@ -1186,26 +1187,38 @@
   	        const data = cell.getData();
   	        const value = cell.getValue();
 
-  	        let min, max, displayText;
-  	        if(data.mch_name === "K_BLACK"){
-  	          min = 35; max = 55;
-  	          displayText = "K_B점도 (" + min + "~" + max + "): " + value;
-  	        } else if(data.mch_name === "ML"){
-  	          min = 25; max = 45;
-  	          displayText = "ML점도 (" + min + "~" + max + "): " + value;
-  	        } else if(data.mch_name === "PL"){
-  	          min = 15; max = 35;
-  	          displayText = "PL점도 (" + min + "~" + max + "): " + value;
-  	        } else {
-  	          min = 0; max = 100;
-  	          displayText = value;
-  	        }
+  	      let min, max, displayText;
 
-  	        if(value < min || value > max){
-  	          return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
-  	        } else {
-  	          return displayText;
-  	        }
+  	 // ✅ 설비명 정규화 (이 한 줄이 핵심)
+  	 const mch = (data.mch_name || "").trim();
+
+  	 // ✅ 값도 숫자로 변환
+  	 const numValue = Number(value);
+
+  	 if (mch === "K_BLACK") {
+  	   min = 35; max = 55;
+  	   displayText = "K_B점도 (" + min + "~" + max + "): " + value;
+
+  	 } else if (mch === "ML") {
+  	   min = 25; max = 45;
+  	   displayText = "ML점도 (" + min + "~" + max + "): " + value;
+
+  	 } else if (mch === "PL") {
+  	   min = 15; max = 35;
+  	   displayText = "PL점도 (" + min + "~" + max + "): " + value;
+
+  	 } else {
+  	   min = 0; max = 100;
+  	   displayText = value;
+  	 }
+
+  	 // ✅ ":" 뒤에 값 있을 때만 빨간색
+  	 if (value !== "" && (numValue < min || numValue > max)) {
+  	   return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
+  	 } else {
+  	   return displayText;
+  	 }
+
   	      },
   	      headerSort: false
   	    },

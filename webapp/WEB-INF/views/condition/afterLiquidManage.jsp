@@ -511,6 +511,9 @@
 
       <label>증류수 투입량</label>
       <input type="text" name="distilles_in">
+<label id="distillesLabel">증류수 투입량</label>
+<input type="text" name="distilles_in">
+
 
       <label>조치 1시간 후 점도</label>
       <input type="text" name="viscosity_after">
@@ -593,6 +596,32 @@
     return y + '-' + m + '-' + day;
   }
 
+
+
+  function updateDistillesTextByMachine() {
+	  const mch = $("#mch_name").val();
+	  const group1 = ["G800", "G600"];
+
+	  const isGroup1 = group1.includes(mch);
+
+	  // ✅ 모달 label 변경
+	  $("#distillesLabel").text(
+	    isGroup1 ? "점도 조절제 투입량" : "증류수 투입량"
+	  );
+
+	  // ✅ Tabulator 컬럼 타이틀 변경
+	  if (table2) {
+	    const col = table2.getColumn("distilles_in");
+	    if (col) {
+	      col.updateDefinition({
+	        title: isGroup1 ? "점도 조절제</br> 투입량" : "증류수 투입량"
+	      });
+	    }
+	  }
+	}
+
+
+
   $(function() {
 	  const now = new Date();
 	  console.log("now: ", now);
@@ -606,7 +635,7 @@
 	  $('#endDate').val(fmtDate(now));
     initTables();
     loadWorkDailyData();
-
+    updateDistillesTextByMachine();
 
     const today = new Date().toISOString().split('T')[0];
 
@@ -752,20 +781,20 @@
 
 	    $(".bt1_1").show();
 	    $(".bt3_3").hide();
-	    
+
 	  } else if (group2.includes(value)) {
 	    $("#table1").hide();
 	    $("#table3").show();
 	    $(".bt1").hide();
-	    //$(".bt3").show();
 
 	    $(".bt1_1").hide();
-	    //$(".bt3_3").show();
-	    
 	  } else {
 	    $("#table1, #table3").hide();
 	    $(".bt1, .bt3").hide();
 	  }
+
+	
+	  updateDistillesTextByMachine();
 
 	  loadWorkDailyData();
 	}

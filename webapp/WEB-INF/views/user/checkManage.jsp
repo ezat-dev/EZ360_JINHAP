@@ -370,204 +370,165 @@
 </div>
 
 
-  <script>
-    let now_page_code = "e04";
+ <script>
+let now_page_code = "e04";
 
-    $(function () {
-    	 var now    = new Date();
-    	    var year   = now.getFullYear();
-    	    var month  = String(now.getMonth() + 1).padStart(2, '0');
-    	    var yearMonth = year + '-' + month;
-    	    $('#monthSet').val(yearMonth).attr('placeholder', yearMonth);
-    	    
+/* ✅ 신규 등록용 초기화 함수 */
+function resetCleanForm() {
+    $("#cleanForm")[0].reset();          // select O로 리셋
+    $('input[name="idx"]').val("");     // 수정용 idx 제거
+    $('input[name="ck_date"]').val(""); // 날짜도 초기화(원하면 제거 가능)
+}
 
+$(function () {
 
-        getDataList2();
+    var now = new Date();
+    var year = now.getFullYear();
+    var month = String(now.getMonth() + 1).padStart(2, '0');
+    var yearMonth = year + '-' + month;
+    $('#monthSet').val(yearMonth).attr('placeholder', yearMonth);
 
-        $(".insert-button").on("click", function () {
-            openModal("#modalContainer");
-          
-        });
+    getDataList2();
 
-        $(".select-button").on("click", function () {
-            getDataList2();
-        });
-
-
-        $("#saveCleanStatus").click(function (event) {
-            event.preventDefault();
-
-            var cleanCarForm = new FormData($("#cleanForm")[0]);
-
-            cleanCarForm.forEach(function (value, key) {
-                console.log(key + ": " + value);
-            });
-
-            $.ajax({
-                url: "/geomet/user/CheckManage/insert",
-                type: "POST",
-                data: cleanCarForm,
-                dataType: "json",
-                processData: false,
-                contentType: false,
-                success: function (response) {
-                    alert("유해화학물질 성공적으로 저장되었습니다!");
-                    closeModal("#modalContainer");
-                    getDataList2();
-                },
-                error: function (xhr, status, error) {
-                    alert("저장 중 오류가 발생했습니다: " + error);
-                }
-            });
-        });
+    /* ✅ 신규 등록 버튼 */
+    $(".insert-button").on("click", function () {
+        resetCleanForm();                 // ✅ 무조건 O로 초기화
+        openModal("#modalContainer");
     });
 
-    function getDataList2() {
-        const monthSet_val = $('#monthSet').val();
+    $(".select-button").on("click", function () {
+        getDataList2();
+    });
 
-        console.log("getDataList2 보내는 값 → monthSet:", monthSet_val);
-        dataTable = new Tabulator("#dataList2", {
-            height: "720px",
-            layout: "fitColumns",
-            selectableRangeMode: "click",
-            columnHeaderVertAlign: "middle",
-            rowVertAlign: "middle",
-            headerHozAlign: "center",
-            columnDefaults: {
-                hozAlign: "center",
-                headerTooltip: false
-            },
-            ajaxConfig: "POST",
-            ajaxLoader: false,
-            ajaxURL: "/geomet/user/CheckManage/List",
-            ajaxParams: {
-                ck_date: monthSet_val
-            },
-            placeholder: "조회된 데이터가 없습니다.",
-            ajaxResponse: function (url, params, response) {
-                console.log("유해화학 서버 응답:", response);
-                return response;
-            },
-            columns: [
-                {
-                    title: "No", 
-                    formatter: function(cell) {
-                        return cell.getRow().getPosition() + 1; 
-                    },
-                    width: 50,
-                    hozAlign: "center",
-                    headerSort: false
-                },
-                {
-                    title: "id",
-                    field: "idx",
-                    sorter: "string",
-                    visible: false
-                },
-                { title: "점검일자", field: "ck_date", width: 120, hozAlign: "center" },
-                { 
-                    title: "1.유해화학물질 보관창고</br>출입문 시건 장치는 적정한가?", 
-                    field: "a_1", 
-                    width: 280, 
-                    hozAlign: "center",
-                    formatter: function(cell) {
-                        var val = cell.getValue();
-                        return val === "X" ? "<span style='color: red; font-weight: bold;'>" + val + "</span>" : val;
-                    }
-                },
-                { 
-                    title: "2.보관창고 안전휀스</br>상태는 적정한가?", 
-                    field: "a_2", 
-                    width: 280, 
-                    hozAlign: "center",
-                    formatter: function(cell) {
-                        var val = cell.getValue();
-                        return val === "X" ? "<span style='color: red; font-weight: bold;'>" + val + "</span>" : val;
-                    }
-                },
-                { 
-                    title: "3.보관창고 내 바닥</br>상태는 적정한가?", 
-                    field: "a_3", 
-                    width: 280, 
-                    hozAlign: "center",
-                    formatter: function(cell) {
-                        var val = cell.getValue();
-                        return val === "X" ? "<span style='color: red; font-weight: bold;'>" + val + "</span>" : val;
-                    }
-                },
-                { 
-                    title: "4.유해화학물질 유출</br>흔적이 있는가", 
-                    field: "a_4", 
-                    width: 280, 
-                    hozAlign: "center",
-                    formatter: function(cell) {
-                        var val = cell.getValue();
-                        return val === "X" ? "<span style='color: red; font-weight: bold;'>" + val + "</span>" : val;
-                    }
-                },
-                { 
-                    title: "5.안전보호구 보관상태는</br>적정한가", 
-                    field: "a_5", 
-                    width: 280, 
-                    hozAlign: "center",
-                    formatter: function(cell) {
-                        var val = cell.getValue();
-                        return val === "X" ? "<span style='color: red; font-weight: bold;'>" + val + "</span>" : val;
-                    }
-                }
-            ],
+    /* ✅ 저장 */
+    $("#saveCleanStatus").click(function (event) {
+        event.preventDefault();
 
+        var cleanCarForm = new FormData($("#cleanForm")[0]);
 
-            rowFormatter: function (row) {
-                row.getElement().style.fontWeight = "700";
-                row.getElement().style.backgroundColor = "#FFFFFF";
+        cleanCarForm.forEach(function (value, key) {
+            console.log(key + ": " + value);
+        });
+
+        $.ajax({
+            url: "/geomet/user/CheckManage/insert",
+            type: "POST",
+            data: cleanCarForm,
+            dataType: "json",
+            processData: false,
+            contentType: false,
+            success: function (response) {
+                alert("유해화학물질 성공적으로 저장되었습니다!");
+                closeModal("#modalContainer");
+                resetCleanForm();        // ✅ 저장 후도 초기화
+                getDataList2();
             },
-            rowDblClick: function (e, row) {
-                const data = row.getData();
-                $('input[name="ck_date"]').val(data.ck_date);
-                $('input[name="idx"]').val(data.idx);
-                $('select[name="a_1"]').val(data.a_1);
-                $('select[name="a_2"]').val(data.a_2);
-                $('select[name="a_3"]').val(data.a_3);
-                $('select[name="a_4"]').val(data.a_4);
-                $('select[name="a_5"]').val(data.a_5);
-                openModal("#modalContainer");
+            error: function (xhr, status, error) {
+                alert("저장 중 오류가 발생했습니다: " + error);
             }
         });
-    }
+    });
+});
 
-    function openModal(selector) {
-        $(selector).css("z-index", 9999).addClass("show");
-    }
+function getDataList2() {
 
-    function closeModal(selector) {
-    	  $(selector).removeClass("show");
-    	}
+    const monthSet_val = $('#monthSet').val();
+    console.log("getDataList2 보내는 값 → monthSet:", monthSet_val);
 
-    	// X 표시 닫기 버튼
-    	$("#modalContainer .close").on("click", function() {
-    	  closeModal("#modalContainer");
-    	});
+    dataTable = new Tabulator("#dataList2", {
+        height: "720px",
+        layout: "fitColumns",
+        selectableRangeMode: "click",
+        columnHeaderVertAlign: "middle",
+        rowVertAlign: "middle",
+        headerHozAlign: "center",
+        columnDefaults: {
+            hozAlign: "center",
+            headerTooltip: false
+        },
+        ajaxConfig: "POST",
+        ajaxLoader: false,
+        ajaxURL: "/geomet/user/CheckManage/List",
+        ajaxParams: {
+            ck_date: monthSet_val
+        },
+        placeholder: "조회된 데이터가 없습니다.",
+        ajaxResponse: function (url, params, response) {
+            console.log("유해화학 서버 응답:", response);
+            return response;
+        },
 
-    	// 폼 내 닫기 버튼
-    	$("#closeCleanModal").on("click", function() {
-    	  closeModal("#modalContainer");
-    	});
+        columns: [
+            {
+                title: "No",
+                formatter: function(cell) {
+                    return cell.getRow().getPosition() + 1;
+                },
+                width: 50,
+                hozAlign: "center",
+                headerSort: false
+            },
+            {
+                title: "id",
+                field: "idx",
+                visible: false
+            },
+            { title: "점검일자", field: "ck_date", width: 120 },
 
+            { title: "1.유해화학물질 보관창고", field: "a_1", width: 280,
+              formatter: v => v === "X" ? "<span style='color:red;font-weight:bold;'>X</span>" : "O"},
 
+            { title: "2.보관창고 안전휀스", field: "a_2", width: 280,
+              formatter: v => v === "X" ? "<span style='color:red;font-weight:bold;'>X</span>" : "O"},
 
+            { title: "3.보관창고 내 바닥", field: "a_3", width: 280,
+              formatter: v => v === "X" ? "<span style='color:red;font-weight:bold;'>X</span>" : "O"},
 
-    function fillFormData(data) {
-        for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                const $el = $(`[name="${key}"]`);
-                if ($el.length) {
-                    $el.val(data[key]);
-                }
-            }
+            { title: "4.유해화학물질 유출", field: "a_4", width: 280,
+              formatter: v => v === "X" ? "<span style='color:red;font-weight:bold;'>X</span>" : "O"},
+
+            { title: "5.안전보호구 보관상태", field: "a_5", width: 280,
+              formatter: v => v === "X" ? "<span style='color:red;font-weight:bold;'>X</span>" : "O"}
+        ],
+
+        rowFormatter: function (row) {
+            row.getElement().style.fontWeight = "700";
+            row.getElement().style.backgroundColor = "#FFFFFF";
+        },
+
+        /* ✅ 수정용 더블클릭 */
+        rowDblClick: function (e, row) {
+            const data = row.getData();
+            $('input[name="ck_date"]').val(data.ck_date);
+            $('input[name="idx"]').val(data.idx);
+            $('select[name="a_1"]').val(data.a_1);
+            $('select[name="a_2"]').val(data.a_2);
+            $('select[name="a_3"]').val(data.a_3);
+            $('select[name="a_4"]').val(data.a_4);
+            $('select[name="a_5"]').val(data.a_5);
+            openModal("#modalContainer");
         }
-    }
+    });
+}
+
+/* ✅ 모달 제어 */
+function openModal(selector) {
+    $(selector).css("z-index", 9999).addClass("show");
+}
+
+function closeModal(selector) {
+    $(selector).removeClass("show");
+}
+
+$("#modalContainer .close").on("click", function() {
+    closeModal("#modalContainer");
+});
+
+$("#closeCleanModal").on("click", function() {
+    closeModal("#modalContainer");
+});
 </script>
+
 
 </body>
 </html>
