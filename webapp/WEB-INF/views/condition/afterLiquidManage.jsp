@@ -509,8 +509,7 @@
       <label>신액 투입량</label>
       <input type="text" name="liquid_in">
 
-      <label>증류수 투입량</label>
-      <input type="text" name="distilles_in">
+
 <label id="distillesLabel">증류수 투입량</label>
 <input type="text" name="distilles_in">
 

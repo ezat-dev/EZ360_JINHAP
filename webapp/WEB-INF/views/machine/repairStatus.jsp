@@ -253,7 +253,7 @@ ease-in-out;
 
 	
 
-	            <label class="daylabel">설비명 :</label>
+	          <!--   <label class="daylabel">설비명 :</label>
 	            <select class="dayselect mch_name">
 	            <option value="">전체</option>
            
@@ -274,7 +274,7 @@ ease-in-out;
 					    <option value="쇼트 자동화 레일">쇼트 자동화 레일</option>
 					    <option value="지오메트 자동화 레일">지오메트 자동화 레일</option>
 
-            </select>
+            </select> -->
 			</div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
@@ -609,7 +609,20 @@ $(document).ready(function() {
                 }
             },
             { title: "조치자", field: "operator", hozAlign: "center", width: 130 },
-            { title: "설비명", field: "equipment_name", hozAlign: "center", width: 180 },
+            { 
+                title: "설비명", 
+                field: "equipment_name", 
+                hozAlign: "center", 
+                width: 180,
+
+                headerFilter: "select",         // ✅ 셀렉트 필터
+                headerFilterPlaceholder: "전체",
+
+                headerFilterParams: {
+                    values: true               // ✅ 자동으로 데이터에서 중복 없이 추출
+                }
+            },
+
             { title: "점검</br>일상/돌발/예방", field: "inspection_type", hozAlign: "center" , width: 180},
             {
                 title: "설비 비가동 유무",

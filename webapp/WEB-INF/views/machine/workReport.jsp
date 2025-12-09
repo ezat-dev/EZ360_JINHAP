@@ -461,6 +461,8 @@ function getDataList4() {
             return response.data4.filter(item => item !== null);
         },
         columns: [
+
+            { title: "일자", field: "work_date", hozAlign: "center" },   
             { title: "설비명", field: "equipment_name", hozAlign: "center" },
             { title: "부품명", field: "category_mid", hozAlign: "center" },
             { title: "사용처", field: "category_sub", hozAlign: "center" },
