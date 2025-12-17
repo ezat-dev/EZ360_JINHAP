@@ -983,7 +983,7 @@
             { title: "확인자<br>최소 24시간", field: "m68_checker", headerSort: false, width: 110  },
             { title: "증점제<br>투입 후 rpm<br>50Hz", field: "m68_post_rpm", width: 110, headerSort: false  },
             { title: "증점제<br>LOTNO.", field: "m68_thickener_lot", headerSort: false},
-            { title: "온도<br>25℃이하", field: "m68_mch_temp", headerSort: false, width: 80,
+            { title: "온도<br>(20±5℃)", field: "m68_mch_temp", headerSort: false, width: 80,
                 formatter: function(cell){
                     const value = cell.getValue();
 					if(25 < value){
@@ -993,7 +993,7 @@
 						}
                     }
               },
-            { title: "습도<br>20%이상", field: "m68_humidity", headerSort: false, width: 80,
+            { title: "습도<br>(50±30%)", field: "m68_humidity", headerSort: false, width: 80,
                   formatter: function(cell){
                       const value = cell.getValue();
   					if(value < 20){

@@ -446,6 +446,7 @@ SELECT * FROM v_moniteolingling
 
 <select id="workReport4" resultType="Machine">
     SELECT 
+        work_date,
         equipment_name,
         category_mid,
         category_sub,

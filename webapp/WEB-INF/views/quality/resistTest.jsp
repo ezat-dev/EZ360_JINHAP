@@ -132,15 +132,13 @@
 		    font-size: 18px;
 		    margin-left: 20px;
 		}
-		.box1 {
-		    display: flex;
-		    justify-content: right;
-		    align-items: center;
-		    width: 800px;
-		    margin-right: 20px;
-		    margin-top:4px;
-		    gap: 14px;
-		}
+.box1 {
+    display: flex;
+    align-items: center;
+    width: 906px;
+    margin-top: 4px;
+    gap: 15px;
+}
 		.bt_box {
     display: grid;
     grid-template-columns: repeat(3, auto);
@@ -166,7 +164,7 @@
         }
 
                 .daySet {
-        	width: 20%;
+        	width: 10%;
       		text-align: center;
             height: 16px;
             padding: 8px;
@@ -278,6 +276,13 @@ transform: translate(59px, 0px);
 .attachmentTableClass, .turbidityTableClass{
 margin-left: 2%;
 }
+.graphButton {
+    margin-left: 1400px;
+    width: 200px;
+    font-size: 18px;
+    margin-top: -5px;
+    height: 40px;
+}
 </style>
 <body>
 
@@ -322,6 +327,11 @@ margin-left: 2%;
                            id="startDate" 
                            style="font-size: 16px; margin-bottom:10px;" 
                            placeholder="날짜 선택">
+                           
+               <span class="mid" style="font-size: 20px; font-weight: bold; margin-bottom:10px;"> ~ </span>
+				
+			   <input type="text" autocomplete="off" class="daySet" id="endDate"
+			        style="font-size: 16px; margin: 5px; border-radius: 4px; border: 1px solid #ccc; text-align: center; height: 16px; width:10%;">
      
 
                 <button class="select-button">
@@ -338,7 +348,9 @@ margin-left: 2%;
                 		<!-- 조회조건 표시 -->
 	
             </div>
+            
         </div>
+			<button class="graphButton">차트</button>
 <!-- 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
 	        <button class="select-button" onclick="loadWorkDailyData()">
@@ -1001,17 +1013,20 @@ const cctStartDateInput = document.getElementById('cctStartDate');
 
 	    // input에 오늘 날짜 기본 세팅
 	    $('#startDate').val(today);
+	    $('#endDate').val(today);
+	    const endDate = $('#startDate').val();
 
 	    // Tabulator 테이블 초기 생성
 	    //initDataTable();
 
 	    // 페이지 로드 시 데이터 조회
-	    getDataList(today);
+	    getDataList(today, endDate);
 
 	    // 조회 버튼 클릭 시
 	    $('.select-button').click(function() {
 	        const selectedDate = $('#startDate').val();
-	        getDataList(selectedDate);
+	        const endDate = $('#endDate').val();
+	        getDataList(selectedDate, endDate);
 	    });
 
 	    //후처리 부착량 설비명 선택시
@@ -1314,12 +1329,12 @@ if (cctStartDateInput) {
 		        dataTable1.setData("/geomet/quality/testTank/list", {
 		           // equipment_name: equipmentName,
 		            date: startDate,
-		            //endDate: endDate,
+		            endDate: endDate,
 		        });
 		        dataTable3.setData("/geomet/quality/testTank/list", {
 			           // equipment_name: equipmentName,
 			            date: startDate,
-			            //endDate: endDate,
+			            endDate: endDate,
 			        });
 		    });
 
@@ -1618,6 +1633,7 @@ if (cctStartDateInput) {
 		                        if (response === true) {
 		                            successfulRequests++;
 		                            console.log("데이터 저장 성공");
+		                            alert("저장 완료되었습니다.");
 		                            getDataList();
 		                            $("#modalContainer2").removeClass("show").hide();
 		                        } else {
@@ -1685,6 +1701,7 @@ if (cctStartDateInput) {
 		                        if (response === true) {
 		                            successfulRequests++;
 		                            console.log("데이터 저장 성공");
+		                            alert("저장 완료되었습니다.");
 		                            getDataList();
 		                            $("#modalContainer7").removeClass("show").hide();
 		                        } else {
@@ -1923,6 +1940,10 @@ if (cctStartDateInput) {
 		});
 	// 데이터 목록 로딩 함수 정의
 	  function getDataList() {
+		  const dd = $("#startDate").val();
+		  const ee = $("#endDate").val();
+		  console.log("조회 요청 시작날짜: ", dd);
+		  console.log("조회 요청 끝날짜: ", ee);
 		  //세척 1,2호기 가성소다용액 농도
 	      dataTable1 = new Tabulator("#dataList1", {
 	          height: "180px",
@@ -1943,7 +1964,7 @@ if (cctStartDateInput) {
 	          ajaxParams: {
 	              //equipment_name: $("#equipment_name").val() || "",
 	              date: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
+	              endDate: $("#endDate").val() || "",
 	          },
 	          placeholder: "조회된 데이터가 없습니다.",
 	     
@@ -2097,7 +2118,7 @@ if (cctStartDateInput) {
 	          ajaxParams: {
 	              //equipment_name: $("#equipment_name").val() || "",
 	              date: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
+	              endDate: $("#endDate").val() || "",
 	          },
 	          placeholder: "조회된 데이터가 없습니다.",
 	     
@@ -2249,7 +2270,7 @@ if (cctStartDateInput) {
 	          ajaxParams: {
 	              //equipment_name: $("#equipment_name").val() || "",
 	              date: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
+	              endDate: $("#endDate").val() || "",
 	          },
 	          placeholder: "조회된 데이터가 없습니다.",
 	     
@@ -2378,7 +2399,7 @@ if (cctStartDateInput) {
 	          ajaxParams: {
 	              //equipment_name: $("#equipment_name").val() || "",
 	              date: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
+	              endDate: $("#endDate").val() || "",
 	          },
 	          placeholder: "조회된 데이터가 없습니다.",
 	     
@@ -2506,7 +2527,7 @@ if (cctStartDateInput) {
 	          ajaxParams: {
 	              //equipment_name: $("#equipment_name").val() || "",
 	              date: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
+	              endDate: $("#endDate").val() || "",
 	          },
 	          placeholder: "조회된 데이터가 없습니다.",
 	     
@@ -2593,7 +2614,7 @@ if (cctStartDateInput) {
 	          ajaxParams: {
 	              //equipment_name: $("#equipment_name").val() || "",
 	              date: $("#startDate").val() || "",
-	              //endDate: $("#endDate").val() || "",
+	              endDate: $("#endDate").val() || "",
 	          },
 	          placeholder: "조회된 데이터가 없습니다.",
 	     
@@ -3088,6 +3109,10 @@ function openViewerModal(url, title, fileType) { // fileType 매개변수 추가
     }
 }
 
+//그래프 버튼 클릭시 페이지 이동
+$('.graphButton').click(function() {
+	window.location.href = "/geomet/quality/graphPage";
+});
 </script>
 
 </body>

@@ -3,12 +3,12 @@ import java.util.List;
 
 public class Work {
 	
-		private Integer in_1;
-		private Integer in_2;
-		private Integer in_3;
-		private Integer in_4;
-		private Integer in_5;
-		private Integer in_6;
+		private String in_1;
+		private String in_2;
+		private String in_3;
+		private String in_4;
+		private String in_5;
+		private String in_6;
 		
 	    private Integer month_kg_1;        // 월간 생산량
 	    private Integer opening_balance_2; // 월초 재고
@@ -607,42 +607,45 @@ public class Work {
 	public String getLine_cd() {
 		return line_cd;
 	}
-	public Integer getIn_1() {
+
+
+	public String getIn_1() {
 		return in_1;
 	}
-	public void setIn_1(Integer in_1) {
+	public void setIn_1(String in_1) {
 		this.in_1 = in_1;
 	}
-	public Integer getIn_2() {
+	public String getIn_2() {
 		return in_2;
 	}
-	public void setIn_2(Integer in_2) {
+	public void setIn_2(String in_2) {
 		this.in_2 = in_2;
 	}
-	public Integer getIn_3() {
+	public String getIn_3() {
 		return in_3;
 	}
-	public void setIn_3(Integer in_3) {
+	public void setIn_3(String in_3) {
 		this.in_3 = in_3;
 	}
-	public Integer getIn_4() {
-		return in_4;
-	}
-	public void setIn_4(Integer in_4) {
-		this.in_4 = in_4;
-	}
-	public Integer getIn_5() {
+	public String getIn_5() {
 		return in_5;
 	}
-	public void setIn_5(Integer in_5) {
+	public void setIn_5(String in_5) {
 		this.in_5 = in_5;
 	}
-	public Integer getIn_6() {
+	public String getIn_6() {
 		return in_6;
 	}
-	public void setIn_6(Integer in_6) {
+	public void setIn_6(String in_6) {
 		this.in_6 = in_6;
 	}
+	public String getIn_4() {
+		return in_4;
+	}
+	public void setIn_4(String in_4) {
+		this.in_4 = in_4;
+	}
+
 	public String getG_s() {
 		return g_s;
 	}

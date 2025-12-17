@@ -6,7 +6,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TC교체이력</title>
-<%@include file="../include/pluginpage.jsp" %>    
+<%@include file="../include/pluginpage.jsp" %>  
+<script src="https://unpkg.com/xlsx/dist/xlsx.full.min.js"></script>
+  
     <jsp:include page="../include/tabBar.jsp"/>
  <style>
         .container {
@@ -265,9 +267,23 @@ function getDataList2() {
         headerHozAlign: "center",
         columns: [
         	  { title: "N", formatter: "rownum", hozAlign: "center", width: 50 },
-        	  { title: "barcode_no",  field: "barcode_no", hozAlign: "left", width: 120 },
-        	  { title: "제품CODE", field: "item_cd", hozAlign: "left", width: 140 },
-        	  { title: "제품명", field: "item_nm", hozAlign: "left", width: 230 },
+        	  {
+                  title: "barcode_no",
+                  field: "barcode_no",
+                  hozAlign: "left",
+                  width: 120,
+                  headerFilter: "input",
+                  headerFilterPlaceholder: "바코드 검색"
+              },
+              {
+                  title: "제품CODE",
+                  field: "item_cd",
+                  hozAlign: "left",
+                  width: 140,
+                  headerFilter: "input",
+                  headerFilterPlaceholder: "제품코드 검색"
+              },
+        	  { title: "제품명", field: "item_nm", hozAlign: "left", width: 250 },
         	  { title: "세척 시작", field: "w_s", hozAlign: "left", width: 230 },
         	  { title: "세척 종료", field: "w_e", hozAlign: "left", width: 230 },
         	  { title: "쇼트 시작", field: "s_s", hozAlign: "left", width: 230 },
@@ -285,6 +301,22 @@ function getDataList2() {
     });
 }
 
+$(document).on("click", ".excel-button", function () {
+
+    if (!window.dataTable2) {
+        alert("엑셀로 다운로드할 데이터가 없습니다.");
+        return;
+    }
+
+    const startDate = $('#startDate').val();
+    const endDate   = $('#endDate').val();
+
+    const fileName = `LOT_리포트_${startDate}_${endDate}.xlsx`;
+
+    dataTable2.download("xlsx", fileName, {
+        sheetName: "LOT_REPORT",
+    });
+});
 
 
 

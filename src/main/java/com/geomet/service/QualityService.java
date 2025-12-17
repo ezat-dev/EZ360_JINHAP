@@ -80,4 +80,9 @@ public interface QualityService {
     List<Quality> attachmentList(Quality quality);
     List<Quality> turbidityList(Quality quality);
     boolean deleteAttachment(Quality quality);
+    List<Quality> getTestTankListGraph(Quality quality);
+    List<Quality> attachmentListGraph(Quality quality);
+    List<Quality> turbidityListGraph(Quality quality);
+    List<Quality> getKccChart(Quality quality);
+    List<Quality> liquidKccChart(Quality quality);
 }

@@ -200,4 +200,24 @@ public class QualityServiceImpl implements QualityService {
 	public boolean deleteAttachment(Quality quality) {
 		return qualityDao.deleteAttachment(quality);
 	}
+	@Override
+	public List<Quality> getTestTankListGraph(Quality quality) {
+		return qualityDao.getTestTankListGraph(quality);
+	}
+	@Override
+	public List<Quality> attachmentListGraph(Quality quality) {
+		return qualityDao.attachmentListGraph(quality);
+	}
+	@Override
+	public List<Quality> turbidityListGraph(Quality quality) {
+		return qualityDao.turbidityListGraph(quality);
+	}
+	@Override
+	public List<Quality> getKccChart(Quality quality) {
+		return qualityDao.getKccChart(quality);
+	}
+	@Override
+	public List<Quality> liquidKccChart(Quality quality) {
+		return qualityDao.liquidKccChart(quality);
+	}
 }

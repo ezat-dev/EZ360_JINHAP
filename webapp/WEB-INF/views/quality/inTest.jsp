@@ -260,13 +260,13 @@
           <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
         </button>
 
-        <button class="delete-button">
+ <!--        <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 		</button>
         <button class="excel-button">
           <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
         </button>
-
+ -->
 
       </div>
     </div>
@@ -283,10 +283,10 @@
     <form id="corrForm" enctype="multipart/form-data" autocomplete="off">
       <h2 class="hName">수입검사 입력</h2>
 
-
+  <input type="text" name="id" id="id">
       <!-- 날짜 -->
 	<label for="reg_date">날짜</label>
-	<input type="date" name="reg_date" id="reg_date" required autocomplete="off" class="daySet">
+	<input type="text" name="reg_date" id="reg_date" required autocomplete="off" class="daySet">
 
       <!-- 업체 -->
       <label for="company_name">업체</label>
@@ -294,7 +294,7 @@
 	
 	<!-- 약품명 -->
 	<label for="medicine_name_select">약품명</label>
-	<input type="text" id="medicine_name" name="medicine_name" placeholder="약품명을 입력하세요" style="display:none; margin-top:5px;">
+	<input type="text" id="medicine_name" name="medicine_name" placeholder="약품명을 입력하세요" style=" margin-top:5px;">
 
       <!-- LOT번호 -->
       <label for="lot_no">LOT번호</label>
@@ -309,7 +309,7 @@
     <label>최대값</label>
     <input type="number" id="in_1_max" placeholder="최대값" style="width: 80px;">
     <label>값</label>
-    <input type="number" id="in_1" placeholder="값 입력" style="width: 100px;">
+    <input type="number"name="in_1" id="in_1" placeholder="값 입력" style="width: 100px;">
   </div>
 
   <div class="item-box">
@@ -319,7 +319,7 @@
     <label>최대값</label>
     <input type="number" id="in_2_max" placeholder="최대값" style="width: 80px;">
     <label>값</label>
-    <input type="number" id="in_2" placeholder="값 입력" style="width: 100px;">
+    <input type="number" name="in_2"id="in_2" placeholder="값 입력" style="width: 100px;">
   </div>
 
   <div class="item-box">
@@ -329,17 +329,18 @@
     <label>최대값</label>
     <input type="number" id="in_3_max" placeholder="최대값" style="width: 80px;">
     <label>값</label>
-    <input type="number" id="in_3" placeholder="값 입력" style="width: 100px;">
+    <input type="number" name="in_3"id="in_3" placeholder="값 입력" style="width: 100px;">
   </div>
 
   <div class="item-box">
-    <h4>색상</h4>
-    <label>최소값</label>
-    <input type="number" id="in_4_min" placeholder="최소값" style="width: 80px;">
-    <label>최대값</label>
-    <input type="number" id="in_4_max" placeholder="최대값" style="width: 80px;">
-    <label>값</label>
-    <input type="number" id="in_4" placeholder="값 입력" style="width: 100px;">
+     <label>색상</label>
+  <select id="in_4" name="in_4" style="width: 120px;">
+    <option value="">선택</option>
+    <option value="오렌지">오렌지</option>
+    <option value="검정">검정</option>
+    <option value="연한녹색">연한녹색</option>
+    <option value="은색">은색</option>
+  </select>
   </div>
 
   <div class="item-box">
@@ -349,11 +350,11 @@
     <label>최대값</label>
     <input type="number" id="in_5_max" placeholder="최대값" style="width: 80px;">
     <label>값</label>
-    <input type="number" id="in_5" placeholder="값 입력" style="width: 100px;">
+    <input type="number"name="in_5"  id="in_5" placeholder="값 입력" style="width: 100px;">
   </div>
 
 </div>
-      <label>파일</label>
+      <label>비고</label>
       <input type="text" name="in_6" id="in_6">
 
       <div style="margin-top: 10px;">
@@ -459,11 +460,6 @@ function getDataList() {
 	    placeholder: "조회된 데이터가 없습니다.",
 	    paginationSize: false,
 
-	    groupBy: "date",
-	    groupStartOpen: true,
-	    groupHeader: function (value, count) {
-	        return `<strong>${value}</strong>`;
-	    },
 
 	    ajaxResponse: function (url, params, response) {
 	        return response;
@@ -475,11 +471,11 @@ function getDataList() {
 
 	    columns: [
 	     
-	        { title: "No", formatter: "rownum", hozAlign: "center", width: 70 },
-	        { title: "ID", field: "id", visible: false },
-	        { title: "날짜", field: "reg_date",  hozAlign: "center", width: 130 },
-	        { title: "업체", field: "company_name",  width: 140 },
-	        { title: "약품명", field: "medicine_name",  width: 140 },
+	        { title: "No", formatter: "rownum", hozAlign: "center", width: 70, headerSort: false },
+	        { title: "ID", field: "id", visible: false, headerSort: false },
+	        { title: "날짜", field: "reg_date",  hozAlign: "center", width: 130, headerSort: false },
+	        { title: "업체", field: "company_name",  width: 140, headerSort: false },
+	        { title: "약품명", field: "medicine_name",  width: 140, headerSort: false },
 	        { title: "LOT번호", field: "lot_no",  width: 140 , headerSort: false },
 	        { title: "입고수량", field: "stock_in", hozAlign: "center",  width: 140 , headerSort: false },
 	        { title: "PH", field: "in_1",  width: 120 , headerSort: false },
@@ -487,7 +483,7 @@ function getDataList() {
 	        { title: "점도", field: "in_3",  width: 120 , headerSort: false },
 	        { title: "색상", field: "in_4",  width: 120 , headerSort: false },
 	        { title: "가열잔분<br>(불휘발분)", field: "in_5",  width: 120 , headerSort: false },
-	        { title: "파일", field: "in_5",  width: 140 , headerSort: false }
+	        { title: "비고", field: "in_6",  width: 140 , headerSort: false }
 	    ],
 	    rowDblClick: function (e, row) {
 	        const rowData = row.getData();
@@ -498,6 +494,7 @@ function getDataList() {
 	        modal.addClass("show");
 
 	        // 값 세팅
+	         $("#modalContainer input[name='id']").val(rowData.id);
 	        $("#modalContainer input[name='reg_date']").val(rowData.reg_date);
 	        $("#modalContainer input[name='company_name']").val(rowData.company_name);
 	        $("#modalContainer input[name='medicine_name']").val(rowData.medicine_name);
@@ -506,6 +503,8 @@ function getDataList() {
 	        $("#modalContainer input[name='in_2']").val(rowData.in_2);
 	        $("#modalContainer input[name='in_3']").val(rowData.in_3);
 	        $("#modalContainer input[name='in_4']").val(rowData.in_4);
+	        $("#modalContainer input[name='in_5']").val(rowData.in_5);
+	        $("#modalContainer input[name='in_6']").val(rowData.in_6);
 	    }
 
 	});
@@ -524,16 +523,10 @@ $('#saveCorrStatus').click(function(event){
         }
     });
 
-    var selectedMedicine = $("#medicine_name_select").val();
-    if(selectedMedicine === "기타") {
-        selectedMedicine = $("#medicine_name_input").val();
-    }
-    data.medicine_name = selectedMedicine;
-
     console.log("전송 데이터:", data);
 
     $.ajax({
-        url: "/geomet/work/inTest/insert",
+        url: "/geomet/work/inTest/update",
         type: "POST",
         contentType: "application/json",
         data: JSON.stringify(data),

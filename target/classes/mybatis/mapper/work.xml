@@ -64,13 +64,13 @@
 
 
    <!-- 수입검사  -->
-   <select id="getInTestList" parameterType="Work" resultType="Work">
-		    SELECT * 
+<select id="getInTestList" parameterType="Work" resultType="Work">
+    SELECT *
     FROM tb_new_inventorystatus_test
-    WHERE `reg_date` LIKE CONCAT(#{startDate}, '%')
-      AND `lot_no` IS NOT NULL
-
-   </select>
+    WHERE reg_date LIKE CONCAT(#{startDate}, '%')
+      AND lot_no IS NOT NULL
+      AND TRIM(lot_no) &lt;&gt; ''
+</select>
 
 
 
@@ -88,7 +88,7 @@
 
 
 
-<insert id="insertinTest" parameterType="Work" useGeneratedKeys="true" keyProperty="id">
+<insert id="insertInTest" parameterType="Work" useGeneratedKeys="true" keyProperty="id">
     INSERT INTO tb_new_inventorystatus_test
     (company_name, reg_date, medicine_name, lot_no, stock_in, daily_usage)
     VALUES

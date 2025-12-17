@@ -436,9 +436,9 @@
         END AS etc2
     FROM tb_test_tank
     WHERE 1=1
-    <if test="date != null and date != ''">
-         AND `date` = #{date}
-    </if>
+  <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND date BETWEEN #{date} AND #{endDate}
+  </if>
 	</select>
 	<!-- 테스트/시험정보 탱크액 삭제 -->
 		<delete id="testTankDelete" parameterType="Quality">
@@ -462,7 +462,7 @@
 	
 	<!-- 테스트/시험정보 첫 번째 테이블 조회 -->
 <select id="getDataList1" parameterType="Quality" resultType="Quality">
-  SELECT
+ SELECT
       c.id,
       c.test_num,
       c.date,
@@ -485,17 +485,65 @@
         ELSE '불합격'
       END AS result,
 
-      /* m 테이블 값은 조인 실패 시 0으로 대체 */
-      IFNULL(m.num, 0)         AS standard_num,
-      IFNULL(m.naoh_result, 0) AS naoh_result,
-      IFNULL(m.hcl, 0)         AS hcl,
-      IFNULL(m.liter, 0)       AS liter,
-      IFNULL(m.naoh, 0)        AS naoh,
-      IFNULL(m.sc300a, 0)      AS sc300a,
-      IFNULL(m.sc300b, 0)      AS sc300b,
-      IFNULL(m.condense, 0)    AS condense,
-      IFNULL(m.after_naoh, 0)  AS after_naoh,
-      IFNULL(m.table_code, 0)  AS table_code
+CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.num, 0)
+    END AS standard_num,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.naoh_result, 0)
+    END AS naoh_result,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.hcl, 0)
+    END AS hcl,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.liter, 0)
+    END AS liter,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.naoh, 0)
+    END AS naoh,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.sc300a, 0)
+    END AS sc300a,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.sc300b, 0)
+    END AS sc300b,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.condense, 0)
+    END AS condense,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.after_naoh, 0)
+    END AS after_naoh,
+    
+    CASE
+        WHEN CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) >= 35
+        THEN 0
+        ELSE IFNULL(m.table_code, 0)
+    END AS table_code
 
   FROM tb_clean12 c
   LEFT JOIN tb_medicine_standard m
@@ -504,14 +552,16 @@
            CAST(NULLIF(TRIM(REPLACE(REPLACE(c.naoh_density, ',', ''), '%','')), '') AS DECIMAL(10,2)) / 2
          ) * 2
        )
+       
    AND (
         (c.mch_name = '1호기' AND m.table_code = 1)
      OR (c.mch_name = '2호기' AND m.table_code = 2)
        )
 
+
   WHERE 1 = 1
-  <if test="date != null and date != ''">
-    AND c.date = #{date}
+  <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND c.date BETWEEN #{date} AND #{endDate}
   </if>
 </select>
 
@@ -530,7 +580,14 @@
 		SELECT *
 		FROM tb_liquid_analyze
 		WHERE mch_name = #{mch_name} AND table_code = #{table_code}
-		AND date = #{date}
+		<choose>
+  <when test="date != null and date != '' and endDate != null and endDate != ''">
+    AND date BETWEEN #{date} AND #{endDate}
+  </when>
+    <when test="date != null and date != ''">
+    AND date = #{date}
+  </when>
+  </choose>
 	</select>
 
 <insert id="liquidAnalyzeInsert" parameterType="Quality">
@@ -732,8 +789,8 @@
 	<select id="getCctList" parameterType="Quality" resultType="Quality">
 SELECT * from tb_cct
   WHERE 1 = 1
-  <if test="date != null and date != ''">
-    AND DATE(regdate) = #{date}
+    <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND DATE(regdate) BETWEEN #{date} AND #{endDate}
   </if>
 </select>
 <!-- cct 삭제 -->
@@ -746,8 +803,8 @@ SELECT * from tb_cct
 	<select id="getSstList" parameterType="Quality" resultType="Quality">
 SELECT * from tb_sst
   WHERE 1 = 1
-  <if test="date != null and date != ''">
-    AND DATE(regdate) = #{date}
+    <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND DATE(regdate) BETWEEN #{date} AND #{endDate}
   </if>
 </select>
 	<!-- sst 추가 -->
@@ -811,29 +868,29 @@ SELECT * from tb_sst
         <if test="part_name != null and part_name != ''">#{part_name},</if>
         <if test="spec != null and spec != ''">#{spec},</if>
         <if test="count != null and count != '' and surface != null and surface != '' and before_weight != null and before_weight != '' and after_weight != null and after_weight != ''">
-            (#{count} * #{surface}),
-            (#{before_weight} - #{after_weight}),
+            ROUND((#{count} * #{surface}),2),
+            ROUND((#{before_weight} - #{after_weight}),2),
             
             (ROUND(
-                (CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000)
+                (CAST((#{before_weight} - #{after_weight}) AS DECIMAL(15,4)) / (CAST(#{count} AS DECIMAL(15,4)) * CAST(#{surface} AS DECIMAL(15,4))) * 1000)
             , 2)),
             
             (CASE 
                 WHEN #{mch_name} LIKE 'G600%' OR #{mch_name} LIKE 'G800%'
                     THEN (CASE WHEN 
-                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000), 2)) >= 200 
+                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL(15,4)) / (CAST(#{count} AS DECIMAL(15,4)) * CAST(#{surface} AS DECIMAL(15,4))) * 1000), 2)) >= 200 
                         THEN '합격' 
                         ELSE '불합격' 
                     END)
                 WHEN #{mch_name} LIKE '%PLUS%' OR #{mch_name} LIKE '%ML%'
                     THEN (CASE WHEN 
-                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000), 2)) >= 20 
+                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL(15,4)) / (CAST(#{count} AS DECIMAL(15,4)) * CAST(#{surface} AS DECIMAL(15,4))) * 1000), 2)) >= 20 
                         THEN '합격' 
                         ELSE '불합격' 
                     END)
                 WHEN #{mch_name} LIKE '%K-BLACK%'
                     THEN (CASE WHEN 
-                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL) / (CAST(#{count} AS DECIMAL) * CAST(#{surface} AS DECIMAL)) * 1000), 2)) >= 80
+                        (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL(15,4)) / (CAST(#{count} AS DECIMAL(15,4)) * CAST(#{surface} AS DECIMAL(15,4))) * 1000), 2)) >= 80
                         THEN '합격' 
                         ELSE '불합격' 
                     END)
@@ -848,8 +905,8 @@ SELECT * from tb_sst
 SELECT * from tb_attachment
   WHERE 1 = 1
   AND (mch_name LIKE 'G600%' OR mch_name LIKE 'G800%')
-  <if test="date != null and date != ''">
-    AND DATE(date) = #{date}
+    <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND DATE(date) BETWEEN #{date} AND #{endDate}
   </if>
   order by mch_name asc
 </select>
@@ -858,8 +915,8 @@ SELECT * from tb_attachment
 SELECT * from tb_attachment
   WHERE 1 = 1
   AND (mch_name LIKE 'PLUS%' OR mch_name LIKE 'ML%' OR mch_name LIKE 'K/B%')
-  <if test="date != null and date != ''">
-    AND DATE(date) = #{date}
+    <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND DATE(date) BETWEEN #{date} AND #{endDate}
   </if>
   order by mch_name asc
 </select>
@@ -878,4 +935,161 @@ SELECT * from tb_attachment
             </otherwise>
         </choose>
 	</delete>
+	<!-- 테스트/시험정보 가열잔분 그래프 -->
+	<select id="getTestTankListGraph" parameterType="Quality"
+		resultType="Quality">
+    SELECT 
+        *,
+    MAX(CASE WHEN t.mch_name = 'G600_1' THEN t.hafter_1 END) AS TANK_A_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'G600_1' THEN t.empty_2 END) AS TANK_A_empty_2,
+    MAX(CASE WHEN t.mch_name = 'G600_1' THEN t.hbefore_3 END) AS TANK_A_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'G600_2' THEN t.hafter_1 END) AS TANK_B_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'G600_2' THEN t.empty_2 END) AS TANK_B_empty_2,
+    MAX(CASE WHEN t.mch_name = 'G600_2' THEN t.hbefore_3 END) AS TANK_B_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'G600_3' THEN t.hafter_1 END) AS TANK_C_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'G600_3' THEN t.empty_2 END) AS TANK_C_empty_2,
+    MAX(CASE WHEN t.mch_name = 'G600_3' THEN t.hbefore_3 END) AS TANK_C_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'G800_1' THEN t.hafter_1 END) AS TANK_D_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'G800_1' THEN t.empty_2 END) AS TANK_D_empty_2,
+    MAX(CASE WHEN t.mch_name = 'G800_1' THEN t.hbefore_3 END) AS TANK_D_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'G800_2' THEN t.hafter_1 END) AS TANK_E_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'G800_2' THEN t.empty_2 END) AS TANK_E_empty_2,
+    MAX(CASE WHEN t.mch_name = 'G800_2' THEN t.hbefore_3 END) AS TANK_E_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'G800_3' THEN t.hafter_1 END) AS TANK_F_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'G800_3' THEN t.empty_2 END) AS TANK_F_empty_2,
+    MAX(CASE WHEN t.mch_name = 'G800_3' THEN t.hbefore_3 END) AS TANK_F_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'G800_4' THEN t.hafter_1 END) AS TANK_G_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'G800_4' THEN t.empty_2 END) AS TANK_G_empty_2,
+    MAX(CASE WHEN t.mch_name = 'G800_4' THEN t.hbefore_3 END) AS TANK_G_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'PLUS_1' THEN t.hafter_1 END) AS TANK_H_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'PLUS_1' THEN t.empty_2 END) AS TANK_H_empty_2,
+    MAX(CASE WHEN t.mch_name = 'PLUS_1' THEN t.hbefore_3 END) AS TANK_H_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'PLUS_2' THEN t.hafter_1 END) AS TANK_I_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'PLUS_2' THEN t.empty_2 END) AS TANK_I_empty_2,
+    MAX(CASE WHEN t.mch_name = 'PLUS_2' THEN t.hbefore_3 END) AS TANK_I_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'ML_1' THEN t.hafter_1 END) AS TANK_J_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'ML_1' THEN t.empty_2 END) AS TANK_J_empty_2,
+    MAX(CASE WHEN t.mch_name = 'ML_1' THEN t.hbefore_3 END) AS TANK_J_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'ML_2' THEN t.hafter_1 END) AS TANK_K_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'ML_2' THEN t.empty_2 END) AS TANK_K_empty_2,
+    MAX(CASE WHEN t.mch_name = 'ML_2' THEN t.hbefore_3 END) AS TANK_K_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'KB_1' THEN t.hafter_1 END) AS TANK_L_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'KB_1' THEN t.empty_2 END) AS TANK_L_empty_2,
+    MAX(CASE WHEN t.mch_name = 'KB_1' THEN t.hbefore_3 END) AS TANK_L_hbefore_3,
+    
+    MAX(CASE WHEN t.mch_name = 'KB_2' THEN t.hafter_1 END) AS TANK_M_hafter_1,
+    MAX(CASE WHEN t.mch_name = 'KB_2' THEN t.empty_2 END) AS TANK_M_empty_2,
+    MAX(CASE WHEN t.mch_name = 'KB_2' THEN t.hbefore_3 END) AS TANK_M_hbefore_3,
+
+	 MAX(CASE WHEN t.mch_name = 'G600_1' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t1,
+    MAX(CASE WHEN t.mch_name = 'G600_2' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t2,
+    MAX(CASE WHEN t.mch_name = 'G600_3' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t3,
+    MAX(CASE WHEN t.mch_name = 'G800_1' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t4,
+    MAX(CASE WHEN t.mch_name = 'G800_2' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t5,
+    MAX(CASE WHEN t.mch_name = 'G800_3' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t6,
+    MAX(CASE WHEN t.mch_name = 'G800_4' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t7,
+    MAX(CASE WHEN t.mch_name = 'PLUS_1' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t8,
+    MAX(CASE WHEN t.mch_name = 'PLUS_2' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t9,
+    MAX(CASE WHEN t.mch_name = 'ML_1' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t10,
+    MAX(CASE WHEN t.mch_name = 'ML_2' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t11,
+    MAX(CASE WHEN t.mch_name = 'KB_1' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t12,
+    MAX(CASE WHEN t.mch_name = 'KB_2' THEN ((t.hafter_1 - t.empty_2) / t.hbefore_3) * 100 END) AS t13
+    
+    FROM tb_test_tank as t
+    WHERE 1=1
+  <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND t.date BETWEEN #{date} AND #{endDate}
+  </if>
+  GROUP BY t.date
+	</select>
+	<!-- 부착량 그래프 -->
+	<select id="attachmentListGraph" parameterType="Quality" resultType="Quality">
+	SELECT 
+		 date,
+  	  MIN(CASE WHEN mch_name LIKE 'G600%' THEN calc3 END) AS min_calc3_G600,
+  	  MIN(CASE WHEN mch_name LIKE 'G800%' THEN calc3 END) AS min_calc3_G800
+	FROM tb_attachment
+	  WHERE 1 = 1
+ 	 AND (mch_name LIKE 'G600%' OR mch_name LIKE 'G800%')
+ 	   <if test="date != null and date != '' and endDate != null and endDate != ''">
+ 	   AND DATE(date) BETWEEN #{date} AND #{endDate}
+ 	 </if>
+ 	 GROUP BY date
+</select>
+<!-- 지오메트 후처리 부착량 조회 -->
+		<select id="turbidityListGraph" parameterType="Quality" resultType="Quality">
+	SELECT 
+		 date,
+  	  MIN(CASE WHEN mch_name LIKE 'PLUS%' THEN calc3 END) AS min_calc3_PLUS,
+  	  MIN(CASE WHEN mch_name LIKE 'ML%' THEN calc3 END) AS min_calc3_ML,
+  	  MIN(CASE WHEN mch_name LIKE 'K/B%' THEN calc3 END) AS min_calc3_KB
+	FROM tb_attachment
+  WHERE 1 = 1
+  AND (mch_name LIKE 'PLUS%' OR mch_name LIKE 'ML%' OR mch_name LIKE 'K/B%')
+    <if test="date != null and date != '' and endDate != null and endDate != ''">
+    AND DATE(date) BETWEEN #{date} AND #{endDate}
+  </if>
+  GROUP BY date
+</select>
+<!-- kcc 분석비교 차트 데이터 조회 -->
+		<select id="getKccChart" parameterType="Quality" resultType="Quality">
+		SELECT
+		    T.date,
+		    T.table_code,
+		    T.mch_name,
+			 T.id,
+		    MIN(CASE WHEN T.mch_name = 'meq' THEN CAST(T.auto_track AS DECIMAL(10,2)) END) AS meq_result,
+		    MIN(CASE WHEN T.mch_name = 'ash' THEN CAST(T.result AS DECIMAL(10,2)) END) AS ash_result,
+		    MIN(CASE WHEN T.mch_name = 'nv' THEN CAST(T.result AS DECIMAL(10,2)) END) AS nv_result,
+		    MIN(CASE WHEN T.mch_name = 'ph' THEN CAST(T.ph_input AS DECIMAL(10,2)) END) AS ph_result,
+		    MIN(CASE WHEN T.mch_name = 'conductivity' THEN CAST(T.conductivity_input AS DECIMAL(10,2)) END) AS conductivity_result,
+			 
+			MIN(CASE WHEN T.mch_name = 'meq' THEN CAST(T.meq_kcc AS DECIMAL(10,2)) END) AS meq_kcc,   
+		    MIN(CASE WHEN T.mch_name = 'ash' THEN CAST(T.ash_kcc AS DECIMAL(10,2)) END) AS ash_kcc,
+		    MIN(CASE WHEN T.mch_name = 'nv' THEN CAST(T.nv_kcc AS DECIMAL(10,2)) END) AS nv_kcc,
+		    MIN(CASE WHEN T.mch_name = 'ph' THEN CAST(T.ph_kcc AS DECIMAL(10,2)) END) AS ph_kcc,
+		    MIN(CASE WHEN T.mch_name = 'conductivity' THEN CAST(T.conductivity_kcc AS DECIMAL(10,2)) END) AS conductivity_kcc
+		FROM
+		    tb_liquid_analyze T
+		      WHERE 1 = 1
+  		<if test="date != null and date != '' and endDate != null and endDate != ''">
+  			AND DATE(date) BETWEEN #{date} AND #{endDate}
+ 		</if>
+		GROUP BY
+		    T.date
+		ORDER BY T.date asc
+</select>
+<!-- 이코팅분석 차트 데이터 조회 -->
+		<select id="liquidKccChart" parameterType="Quality" resultType="Quality">
+SELECT 
+	T.date,
+		    MAX(CASE WHEN T.mch_name = 'ash' AND T.table_code = '1' THEN CAST(T.result AS DECIMAL(10,2)) END) AS ash_result,
+		    MAX(CASE WHEN T.mch_name = 'ash' AND T.table_code = '2' THEN CAST(T.result AS DECIMAL(10,2)) END) AS ash_result2,
+		    MAX(CASE WHEN T.mch_name = 'nv' AND T.table_code = '1' THEN CAST(T.result AS DECIMAL(10,2)) END) AS nv_result,
+		    MAX(CASE WHEN T.mch_name = 'nv' AND T.table_code = '2' THEN CAST(T.result AS DECIMAL(10,2)) END) AS nv_result2,
+		    MAX(CASE WHEN T.mch_name = 'meq' AND T.table_code = '1' THEN CAST(T.auto_track AS DECIMAL(10,2)) END) AS meq_result,
+		    MAX(CASE WHEN T.mch_name = 'meq' AND T.table_code = '2' THEN CAST(T.auto_track AS DECIMAL(10,2)) END) AS meq_result2,
+		    MAX(CASE WHEN T.mch_name = 'ph' AND T.table_code = '1' THEN CAST(T.ph_input AS DECIMAL(10,2)) END) AS ph_result,
+		    MAX(CASE WHEN T.mch_name = 'ph' AND T.table_code = '2' THEN CAST(T.ph_input AS DECIMAL(10,2)) END) AS ph_result2,
+		    MAX(CASE WHEN T.mch_name = 'conductivity' AND T.table_code = '1' THEN CAST(T.conductivity_input AS DECIMAL(10,2)) END) AS conductivity_result,
+		    MAX(CASE WHEN T.mch_name = 'conductivity' AND T.table_code = '2' THEN CAST(T.conductivity_input AS DECIMAL(10,2)) END) AS conductivity_result2
+			FROM tb_liquid_analyze T
+		      WHERE 1 = 1
+  		<if test="date != null and date != '' and endDate != null and endDate != ''">
+  			AND DATE(date) BETWEEN #{date} AND #{endDate}
+ 		</if>
+			GROUP BY T.date
+		ORDER BY T.date asc
+</select>
 </mapper>

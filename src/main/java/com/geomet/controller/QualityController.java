@@ -13,6 +13,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
@@ -2181,11 +2182,17 @@ public class QualityController {
 
 				Map<String, Object> rtnMap = new HashMap<String, Object>();
 
+				//세척1,2
 				    List<Quality> data1 = qualityService.getDataList1(quality);
+				    //가열잔분
 					List<Quality> data3 = qualityService.getTestTankList(quality);
+					//cct
 					List<Quality> cctList = qualityService.getCctList(quality);
+					//sst
 					List<Quality> sstList = qualityService.getSstList(quality);
+					//부착량
 					List<Quality> attachmentList = qualityService.attachmentList(quality);
+					//후처리
 					List<Quality> turbidityList = qualityService.turbidityList(quality);
 					System.out.println("getNonProductManageList.size()" + data3.size());
 					for(Quality v: data3) {
@@ -2351,13 +2358,20 @@ public class QualityController {
 					//액분석관리 N.V 추가
 					@RequestMapping(value = "/quality/liquidAnalyze/insertNv", method = RequestMethod.POST)
 					@ResponseBody
-					public boolean insertNv(@ModelAttribute Quality quality) {
-						System.out.println("quality.getMch_name(): "+quality.getMch_name());
+					public Map<String, Object> insertNv(Quality quality) {
+						System.out.println("NV 추가, quality.getMch_name(): "+quality.getMch_name());
+						Map<String, Object> result = new HashMap<>();
 						List<Quality> data = qualityService.getLiquidAnalyze(quality);
+						System.out.println("NV 데이터 있는지 조회함");
 						if(data != null && data.size() > 0) {
-							return false;
+							System.out.println("NV 데이터 이미 있음");
+							result.put("success", false);
+							return result;
 						}
-						return qualityService.liquidAnalyzeInsertNv(quality);
+						boolean flag = qualityService.liquidAnalyzeInsertNv(quality);
+						System.out.println("NV 추가 성공/실패 여부: " + flag);
+						result.put("success", flag);
+						return result;
 					}
 					//액분석관리 Ash 추가
 					@RequestMapping(value = "/quality/liquidAnalyze/insertAsh", method = RequestMethod.POST)
@@ -2393,6 +2407,7 @@ public class QualityController {
 					@RequestMapping(value = "/quality/liquidAnalyze/updateKcc", method = RequestMethod.POST)
 					@ResponseBody
 					public boolean updateKcc(@RequestBody Quality quality) {
+						System.out.println("MEQ: " + quality.getMeq_kcc());
 						return qualityService.updateKcc(quality);
 					}
 					//kcc 엑셀
@@ -2875,4 +2890,101 @@ public class QualityController {
 				            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
 				        }
 				    }
+					
+					//테스트/시험정보 그래프 페이지 이동
+					@RequestMapping(value = "/quality/graphPage", method = RequestMethod.GET)
+					public String graphPage(Model model) {
+						return "/quality/testGraphPage.jsp"; 
+					}
+					//테스트/시험정보 그래프
+					@RequestMapping(value = "/quality/testGraph", method = RequestMethod.POST)
+					@ResponseBody
+					public Map<String, Object> testGraph(Quality quality) {
+						Map<String, Object> rtnMap = new HashMap<String, Object>();
+						
+						LocalDate today = LocalDate.now();
+					    LocalDate oneMonthAgo = today.minusMonths(3); // 현재 날짜에서 1개월 전
+					    
+					    // SQL 쿼리 조건에 맞추기 위해 'yyyy-MM-dd' 형식으로 포맷합니다.
+					    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+					    
+					    // 2. Quality 객체에 날짜 설정
+					    // 시작 날짜: 한 달 전 날짜
+					    quality.setDate(oneMonthAgo.format(formatter)); 
+					    // 끝 날짜: 오늘 날짜
+					    quality.setEndDate(today.format(formatter));
+						
+						//가열잔분
+						List<Quality> data1 = qualityService.getTestTankListGraph(quality);
+						
+						//지오메트 부착량
+						List<Quality> data2 = qualityService.attachmentListGraph(quality);
+						
+						//지오메트 후처리 부착량
+						List<Quality> data3 = qualityService.turbidityListGraph(quality);
+						
+						rtnMap.put("graph1", data1);
+						rtnMap.put("graph2", data2);
+						rtnMap.put("graph3", data3);
+
+						return rtnMap;
+					}
+					//액분석관리 KCC 차트 페이지 이동
+					@RequestMapping(value = "/quality/kccChartPage", method = RequestMethod.GET)
+					public String kccChartPage(Model model) {
+						return "/quality/liquidKccChartPage.jsp"; 
+					}
+					//액분석관리 kcc 차트 조회
+					@RequestMapping(value = "/quality/getKccChart", method = RequestMethod.POST)
+					@ResponseBody
+					public Map<String, Object> getKccChart(Quality quality) {
+						Map<String, Object> rtnMap = new HashMap<String, Object>();
+						
+						LocalDate today = LocalDate.now();
+					    LocalDate oneMonthAgo = today.minusMonths(3); // 현재 날짜에서 3개월 전
+					    
+					    // SQL 쿼리 조건에 맞추기 위해 'yyyy-MM-dd' 형식으로 포맷합니다.
+					    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+					    // 시작 날짜: 한 달 전 날짜
+					    quality.setDate(oneMonthAgo.format(formatter)); 
+					    // 끝 날짜: 오늘 날짜
+					    quality.setEndDate(today.format(formatter));
+						
+						//가열잔분
+						List<Quality> data1 = qualityService.getKccChart(quality);
+						
+						rtnMap.put("graph1", data1);
+
+						return rtnMap;
+					}
+					//이코팅 분석 차트 페이지 이동
+					@RequestMapping(value = "/quality/liquidChartPage", method = RequestMethod.GET)
+					public String liquidChartPage(Model model) {
+						return "/quality/liquidChartPage.jsp"; 
+					}
+					//이코팅분석 차트 조회
+					@RequestMapping(value = "/quality/getLiquidChart", method = RequestMethod.POST)
+					@ResponseBody
+					public Map<String, Object> liquidKccChart(Quality quality) {
+						Map<String, Object> rtnMap = new HashMap<String, Object>();
+						
+						LocalDate today = LocalDate.now();
+					    LocalDate oneMonthAgo = today.minusMonths(3); // 현재 날짜에서 3개월 전
+					    
+					    // SQL 쿼리 조건에 맞추기 위해 'yyyy-MM-dd' 형식으로 포맷합니다.
+					    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+					    // 시작 날짜: 한 달 전 날짜
+					    quality.setDate(oneMonthAgo.format(formatter)); 
+					    // 끝 날짜: 오늘 날짜
+					    quality.setEndDate(today.format(formatter));
+						
+						//가열잔분
+						List<Quality> data1 = qualityService.liquidKccChart(quality);
+						
+						rtnMap.put("graph1", data1);
+
+						return rtnMap;
+					}
 }

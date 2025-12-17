@@ -168,6 +168,11 @@ public class Quality {
 	    private String nv_result;
 	    private String ph_result;
 	    private String conductivity_result;
+	    private String meq_result2;
+	    private String ash_result2;
+	    private String nv_result2;
+	    private String ph_result2;
+	    private String conductivity_result2;
 	    
 	    private String regdate;
 	    private String sample;
@@ -188,7 +193,166 @@ public class Quality {
 	    private String calc3;
 	    private String attachment_id;
 	    
+	    //테스트/시험정보 그래프
+	    private String t1;
+	    private String t2;
+	    private String t3;
+	    private String t4;
+	    private String t5;
+	    private String t6;
+	    private String t7;
+	    private String t8;
+	    private String t9;
+	    private String t10;
+	    private String t11;
+	    private String t12;
+	    private String t13;
+	    private String min_calc3_G600;
+	    private String min_calc3_G800;
+	    private String min_calc3_PLUS;
+	    private String min_calc3_ML;
+	    private String min_calc3_KB;
+
 	    
+	    
+		public String getMeq_result2() {
+			return meq_result2;
+		}
+		public void setMeq_result2(String meq_result2) {
+			this.meq_result2 = meq_result2;
+		}
+		public String getAsh_result2() {
+			return ash_result2;
+		}
+		public void setAsh_result2(String ash_result2) {
+			this.ash_result2 = ash_result2;
+		}
+		public String getNv_result2() {
+			return nv_result2;
+		}
+		public void setNv_result2(String nv_result2) {
+			this.nv_result2 = nv_result2;
+		}
+		public String getPh_result2() {
+			return ph_result2;
+		}
+		public void setPh_result2(String ph_result2) {
+			this.ph_result2 = ph_result2;
+		}
+		public String getConductivity_result2() {
+			return conductivity_result2;
+		}
+		public void setConductivity_result2(String conductivity_result2) {
+			this.conductivity_result2 = conductivity_result2;
+		}
+		public String getMin_calc3_PLUS() {
+			return min_calc3_PLUS;
+		}
+		public void setMin_calc3_PLUS(String min_calc3_PLUS) {
+			this.min_calc3_PLUS = min_calc3_PLUS;
+		}
+		public String getMin_calc3_ML() {
+			return min_calc3_ML;
+		}
+		public void setMin_calc3_ML(String min_calc3_ML) {
+			this.min_calc3_ML = min_calc3_ML;
+		}
+		public String getMin_calc3_KB() {
+			return min_calc3_KB;
+		}
+		public void setMin_calc3_KB(String min_calc3_KB) {
+			this.min_calc3_KB = min_calc3_KB;
+		}
+		public String getMin_calc3_G600() {
+			return min_calc3_G600;
+		}
+		public void setMin_calc3_G600(String min_calc3_G600) {
+			this.min_calc3_G600 = min_calc3_G600;
+		}
+		public String getMin_calc3_G800() {
+			return min_calc3_G800;
+		}
+		public void setMin_calc3_G800(String min_calc3_G800) {
+			this.min_calc3_G800 = min_calc3_G800;
+		}
+		public String getT1() {
+			return t1;
+		}
+		public void setT1(String t1) {
+			this.t1 = t1;
+		}
+		public String getT2() {
+			return t2;
+		}
+		public void setT2(String t2) {
+			this.t2 = t2;
+		}
+		public String getT3() {
+			return t3;
+		}
+		public void setT3(String t3) {
+			this.t3 = t3;
+		}
+		public String getT4() {
+			return t4;
+		}
+		public void setT4(String t4) {
+			this.t4 = t4;
+		}
+		public String getT5() {
+			return t5;
+		}
+		public void setT5(String t5) {
+			this.t5 = t5;
+		}
+		public String getT6() {
+			return t6;
+		}
+		public void setT6(String t6) {
+			this.t6 = t6;
+		}
+		public String getT7() {
+			return t7;
+		}
+		public void setT7(String t7) {
+			this.t7 = t7;
+		}
+		public String getT8() {
+			return t8;
+		}
+		public void setT8(String t8) {
+			this.t8 = t8;
+		}
+		public String getT9() {
+			return t9;
+		}
+		public void setT9(String t9) {
+			this.t9 = t9;
+		}
+		public String getT10() {
+			return t10;
+		}
+		public void setT10(String t10) {
+			this.t10 = t10;
+		}
+		public String getT11() {
+			return t11;
+		}
+		public void setT11(String t11) {
+			this.t11 = t11;
+		}
+		public String getT12() {
+			return t12;
+		}
+		public void setT12(String t12) {
+			this.t12 = t12;
+		}
+		public String getT13() {
+			return t13;
+		}
+		public void setT13(String t13) {
+			this.t13 = t13;
+		}
 		public String getRegdate() {
 			return regdate;
 		}

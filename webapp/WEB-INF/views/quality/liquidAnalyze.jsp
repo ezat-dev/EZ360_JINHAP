@@ -7,7 +7,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>욕액분석</title>
+    <title>액분석관리</title>
 <style>
     .tab {
         width: 99%;
@@ -30,16 +30,15 @@
 	.tab-controls {
 	    display: flex;
 	    align-items: center;
-	    gap: 10px;
+	    gap: 2px;
 	    font-size: 16px;
 	    margin-left: auto;
 	    width: 1615px;
 	}
 
 	.tab-controls label {
-	    margin-right: 5px;
 	    font-weight: 500;
-	   	font-size: 19px;
+	   	font-size: 16px;
 	}
 	
 .tab-controls input.daySet {
@@ -48,7 +47,7 @@
     font-size: 19px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    width: 150px;
+    width: 100px;
     text-align: center;
     height: 25px;
 }
@@ -167,7 +166,7 @@
         }
                 .firstDayselect {
         margin-top: 12px;
-            width: 10%;
+            width: 5%;
             text-align: center;
             font-size: 15px;
         }
@@ -570,6 +569,18 @@
     align-items: center;
     margin-bottom: -7px;
 }
+select-button {
+    height: 35px;
+    width: 90px;
+    padding: 0 11px;
+    border: 1px solid rgb(53, 53, 53);
+    border-radius: 4px;
+    background-color: #ffffff;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin-bottom: -7px;
+}
 </style>
 
 
@@ -604,7 +615,8 @@
                 </button>
 	        <label for="s_time">검색일자 :</label>
 	        <input type="text" autocomplete="off" class="daySet" id="s_time" placeholder="시작 날짜 선택">
-	        
+	                   
+			   <input type="text" autocomplete="off" class="daySet" id="endDate">
 	        			<label class="daylabel">이코팅 :</label>
 			<select name="mch_name"id="table_code" class="firstDayselect">
 			    <option value="1">1호기</option>
@@ -620,8 +632,11 @@
                       <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
-				 <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
+				 <button class="select-button" id="kccChartPage">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">KCC 차트
+                </button>
+                <button class="select-button" id="liquidChartPage">
+                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">이코팅 분석 차트
                 </button>
                 
 	    </div>
@@ -1046,13 +1061,14 @@
   function loadWorkDailyData() {
       let table_code = $("#table_code").val();
       let date = $("#s_time").val();
-      console.log("보내는 값:", {table_code, date});
+      const endDate = $("#endDate").val();
+      console.log("보내는 값:", {table_code, date, endDate});
 
       $.ajax({
         type: "POST",
         url: "/geomet/quality/liquidAnalyze/list",
         contentType: "application/json",
-        data: JSON.stringify({ table_code, date }),
+        data: JSON.stringify({ table_code, date, endDate }),
         success: function(response) {
 //        	console.log(response);
         	console.log(response.table1);
@@ -1073,7 +1089,7 @@
   function loadKccData() {
       let date = $("#kcc_s_time").val();
       let endDate = $("#kcc_e_time").val();
-      console.log("보내는 값:", {table_code, date});
+      console.log("보내는 값:", {table_code, date, endDate});
 
       $.ajax({
         type: "POST",
@@ -1089,15 +1105,6 @@
         }
       });
     }
-
-    $(function() {
-        today = new Date().toISOString().split('T')[0];
-        $('#s_time').val(today);
-        initTables();
-        loadWorkDailyData();
-    });
-
-
 
     function initTables() {
     	 
@@ -1749,7 +1756,9 @@
     });
 }
   $(function() {
+    today = new Date().toISOString().split('T')[0];
     $('#s_time').val(new Date().toISOString().split('T')[0]);
+    $('#endDate').val(new Date().toISOString().split('T')[0]);
     initTables();
     loadWorkDailyData();
   });
@@ -1846,7 +1855,7 @@
                     success: function(response) {
                     	console.log("▶ 서버가 돌려준 result:", response);
                         if (response === true) {
-                            successfulRequests++;
+                            alert("저장 완료되었습니다.")
                             console.log("데이터 저장 성공");
                         } else {
                             console.error(`${mch_name} 데이터 저장 실패: ${response.message || '알 수 없는 오류'}`);
@@ -1854,15 +1863,7 @@
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error(`${mch_name} 서버 오류 발생!`, textStatus, errorThrown);
-                    },
-                    complete: function() {
-                        // 모든 요청이 완료된 후 최종 알림
-                        if (index === totalRequests - 1) {
-                            alert("저장 완료되었습니다.");
-                            $("#modalContainer1").hide();
-                            getDataList();
-                        }
-                    } 
+                    }
                 });
     });
 
@@ -1896,23 +1897,16 @@
                     success: function(response) {
                     	console.log("▶ 서버가 돌려준 result:", response);
                         if (response === true) {
-                            successfulRequests++;
+                            alert("저장 완료되었습니다.")
                             console.log("데이터 저장 성공");
                         } else {
+                            console.log("ph 저장 실패");
                             console.error(`${mch_name} 데이터 저장 실패: ${response.message || '알 수 없는 오류'}`);
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error(`${mch_name} 서버 오류 발생!`, textStatus, errorThrown);
-                    },
-                    complete: function() {
-                        // 모든 요청이 완료된 후 최종 알림
-                        if (index === totalRequests - 1) {
-                            alert("저장 완료되었습니다.");
-                            $("#modalContainer1").hide();
-                            getDataList();
-                        }
-                    } 
+                    }
                 });
     });
 
@@ -1946,7 +1940,7 @@
                     success: function(response) {
                     	console.log("▶ 서버가 돌려준 result:", response);
                         if (response === true) {
-                            successfulRequests++;
+                            alert("저장 완료되었습니다.")
                             console.log("데이터 저장 성공");
                         } else {
                             console.error(`${mch_name} 데이터 저장 실패: ${response.message || '알 수 없는 오류'}`);
@@ -1954,15 +1948,7 @@
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
                         console.error(`${mch_name} 서버 오류 발생!`, textStatus, errorThrown);
-                    },
-                    complete: function() {
-                        // 모든 요청이 완료된 후 최종 알림
-                        if (index === totalRequests - 1) {
-                            alert("저장 완료되었습니다.");
-                            $("#modalContainer1").hide();
-                            getDataList();
-                        }
-                    } 
+                    }
                 });
     });
 
@@ -1995,25 +1981,24 @@
                     contentType: false,
                     success: function(response) {
                     	console.log("▶ 서버가 돌려준 result:", response);
-                        if (response === true) {
-                            successfulRequests++;
+                    	
+                        if (response && response.success === true) {
+                            try{
                             console.log("데이터 저장 성공");
+                            alert("저장 완료되었습니다.");
+                            $("#modalContainer1").hide();
+                            loadWorkDailyData();
+                            }catch(e){
+								console.log("저장 후 에러 발생: ", e);
+                                }
                         } else {
                             alert("오류 발생: 해당 날짜에 데이터가 있습니다. 삭제 후 다시 실행해주세요.")
-                            console.error(`${mch_name} 데이터 저장 실패: ${response.message || '알 수 없는 오류'}`);
                         }
                     },
                     error: function(jqXHR, textStatus, errorThrown) {
-                        console.error(`${mch_name} 서버 오류 발생!`, textStatus, errorThrown);
-                    },
-                    complete: function() {
-                        // 모든 요청이 완료된 후 최종 알림
-                        if (index === totalRequests - 1) {
-                            alert("저장 완료되었습니다.");
-                            $("#modalContainer1").hide();
-                            getDataList();
-                        }
-                    } 
+                        console.log("저장 중 에러 발생");
+                        alert("저장 중 에러 발생")
+                    }
                 });
     });
     // 4번 모달창 저장 버튼 클릭 시
@@ -2098,8 +2083,14 @@
                     } 
         });
     });
-
-  
+  //kcc 차트 버튼 클릭시 페이지 이동
+    $('#kccChartPage').click(function() {
+    	window.location.href = "/geomet/quality/kccChartPage";
+    });
+  //이코팅 분석 차트 클릭시
+      $('#liquidChartPage').click(function() {
+    	window.location.href = "/geomet/quality/liquidChartPage";
+    });
  
 </script>
 

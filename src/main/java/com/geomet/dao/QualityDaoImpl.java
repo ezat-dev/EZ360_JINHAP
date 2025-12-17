@@ -293,5 +293,25 @@ public class QualityDaoImpl implements QualityDao {
 		}
 		return true;
 	}
+	@Override
+	public List<Quality> getTestTankListGraph(Quality quality) {
+		return sqlSession.selectList("quality.getTestTankListGraph", quality);
+	}
+	@Override
+	public List<Quality> attachmentListGraph(Quality quality) {
+		return sqlSession.selectList("quality.attachmentListGraph", quality);
+	}
+	@Override
+	public List<Quality> turbidityListGraph(Quality quality) {
+		return sqlSession.selectList("quality.turbidityListGraph", quality);
+	}
+	@Override
+	public List<Quality> getKccChart(Quality quality) {
+		return sqlSession.selectList("quality.getKccChart", quality);
+	}
+	@Override
+	public List<Quality> liquidKccChart(Quality quality) {
+		return sqlSession.selectList("quality.liquidKccChart", quality);
+	}
 }
 
