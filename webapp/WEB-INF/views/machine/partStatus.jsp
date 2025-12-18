@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>부품교체 이력관리</title>
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
     <style>
@@ -231,6 +232,10 @@
                 <button class="where_bt ">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">소모품 관리
                 </button>
+                    
+                    <button class="excel-button" id="excelDownloadBtn">
+					    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+					</button>
                              
   
             </div>
@@ -247,6 +252,13 @@
 let now_page_code = "h04";
 var dataTable; // 전역 변수
 var selectedRowData = null;
+
+
+$("#excelDownloadBtn").on("click", function () {
+    dataTable.download("xlsx", "부품교체 이력관리.xlsx", {
+        sheetName: "부품교체 이력관리"
+    });
+});
 
 $(function() {
 
@@ -280,9 +292,9 @@ $(function() {
         },
         placeholder: "조회된 데이터가 없습니다.",
         columns: [
-            { title: "NO", field: "id", hozAlign: "center", width: 70 },
-            { title: "대상 설비(3)", field: "equipment_name", hozAlign: "center", width: 180 },
-            { title: "부품명(8)", field: "category_sub", hozAlign: "center", width: 180 },
+            { title: "NO", field: "id", hozAlign: "center", width: 70,visible: false  },
+            { title: "대상 설비(3)", field: "equipment_name", hozAlign: "left", width: 180 },
+            { title: "부품명(8)", field: "category_sub", hozAlign: "left", width: 180 },
             { title: "사용처(7)", field: "category_mid", hozAlign: "left", width: 200 },
             { title: "규격(15)", field: "part_name", hozAlign: "left", width: 200 },
             { title: "제작 업체(22)", field: "manufacturer", hozAlign: "right", width: 130 },

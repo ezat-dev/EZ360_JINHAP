@@ -125,7 +125,7 @@
 	</update>
 	
    <!--조건관리  -->
-   <select id="getconditionList" parameterType="Condition" resultType="Condition">
+<select id="getconditionList" parameterType="Condition" resultType="Condition">
     SELECT *
     FROM tb_part_temp
     WHERE 1 = 1
@@ -135,11 +135,12 @@
     <if test="mch_code != null and mch_code != ''">
         AND mch_code = #{mch_code}
     </if>
-        <if test="p_code != null and p_code != ''">
+    <if test="p_code != null and p_code != ''">
         AND p_code = #{p_code}
     </if>
-   </select>
-   
+    ORDER BY `date` DESC
+</select>
+
 	
 	
 <update id="machinePartTempUpdate" parameterType="Condition">

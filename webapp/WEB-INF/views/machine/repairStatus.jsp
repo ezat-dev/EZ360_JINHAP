@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>설비이력카드</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
     <style>
@@ -287,9 +288,10 @@ ease-in-out;
 				</button>
                 
                 
-              <!--   <button class="excel-button">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
-	                </button> -->
+					<button class="excel-button" id="excelDownloadBtn">
+					    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+					</button>
+
 				<button class="move-button" onclick="location.href='/geomet/machine/repairStatus_info'">
 				    <img src="/geomet/css/tabBar/move.png" alt="move" class="button-image"> 설비 이력관리 기준정보
 				</button>
@@ -580,6 +582,13 @@ $(document).ready(function() {
         $('#modalContainer').removeClass('show').hide();
     });
 
+    $("#excelDownloadBtn").on("click", function () {
+        dataTable.download("xlsx", "설비이력관리.xlsx", {
+            sheetName: "설비이력관리"
+        });
+    });
+        
+
     // -------------------------------
     // Tabulator 초기화
     // -------------------------------
@@ -597,7 +606,7 @@ $(document).ready(function() {
         ajaxContentType: "json", 
         placeholder: "조회된 데이터가 없습니다.",
         columns: [
-            { title: "NO", field: "id", hozAlign: "center", width: 70 },
+            { title: "NO", field: "id", hozAlign: "center", width: 70,visible: false   },
             { 
                 title: "일자", 
                 field: "work_date", 
@@ -608,11 +617,18 @@ $(document).ready(function() {
                     return value || todayStr;
                 }
             },
-            { title: "조치자", field: "operator", hozAlign: "center", width: 130 },
+            {
+                title: "조치자",
+                field: "operator",
+                hozAlign: "center",
+                width: 130,
+                headerFilter: "input",
+                headerFilterPlaceholder: "검색"
+            },
             { 
                 title: "설비명", 
                 field: "equipment_name", 
-                hozAlign: "center", 
+                hozAlign: "left", 
                 width: 180,
 
                 headerFilter: "select",         // ✅ 셀렉트 필터
@@ -634,28 +650,80 @@ $(document).ready(function() {
             {
                 title: "구분",
                 columns: [
-                    { title: "중분류", field: "category_mid", hozAlign: "center", width: 180 },
-                    { title: "소분류", field: "category_sub", hozAlign: "center", width: 180 }
+                    {
+                        title: "중분류",
+                        field: "category_mid",
+                        hozAlign: "left",
+                        width: 180,
+                        headerFilter: "input",
+                        headerFilterPlaceholder: "검색"
+                    },
+                    {
+                        title: "소분류",
+                        field: "category_sub",
+                        hozAlign: "left",
+                        width: 180,
+                        headerFilter: "input",
+                        headerFilterPlaceholder: "검색"
+                    }
                 ]
+
             },
             {
                 title: "개선 필요",
                 columns: [
                     { title: "유 / 무", field: "part_flag", hozAlign: "center", width: 130 },
                     { title: "조치</br>교체/수리/교정", field: "action", hozAlign: "center", width: 180 },
-                    { title: "교체 사유", field: "action_detail", hozAlign: "left", width: 200 },
+                    {
+                        title: "교체 사유",
+                        field: "action_detail",
+                        hozAlign: "left",
+                        width: 250,
+                        headerFilter: "input",
+                        headerFilterPlaceholder: "검색"
+                    },
+
                     { title: "개선 필요사항", field: "action_detail_2", hozAlign: "left", width: 200 }
                 ]
             },
             {
                 title: "교체 주관",
                 columns: [
-                    { title: "외주 / 자체", field: "replacement_type", hozAlign: "center", width: 130 },
+                	{
+                	    title: "외주 / 자체",
+                	    field: "replacement_type",
+                	    hozAlign: "center",
+                	    width: 130,
+                	    headerFilter: "select",
+                	    headerFilterPlaceholder: "전체",
+                	    headerFilterParams: {
+                	        values: true
+                	    }
+                	},
                     { title: "업체명", field: "replacement_name", hozAlign: "center", width: 130 }
                 ]
             },
-            { title: "부품명", field: "part_name", hozAlign: "center", width: 130 },
-            { title: "교체 유무", field: "part_replacement_flag", hozAlign: "center", width: 130 },
+            {
+                title: "부품명",
+                field: "part_name",
+                hozAlign: "left",
+                width: 230,
+                headerFilter: "input",
+                headerFilterPlaceholder: "검색"
+            },
+
+            {
+                title: "교체 유무",
+                field: "part_replacement_flag",
+                hozAlign: "center",
+                width: 130,
+                headerFilter: "select",
+                headerFilterPlaceholder: "전체",
+                headerFilterParams: {
+                    values: true
+                }
+            },
+
             { title: "수량", field: "quantity", hozAlign: "right", width: 130 },
             { title: "납기", field: "due_date", hozAlign: "center", width: 130 },
             { title: "기존 교체 일자", field: "replacement_date", hozAlign: "center" , width: 130},
@@ -663,8 +731,19 @@ $(document).ready(function() {
             { title: "사용일", field: "usage_days", hozAlign: "right" , width: 130},
             { title: "제작업체", field: "manufacturer", hozAlign: "center", width: 130 },
             { title: "담당자", field: "manager_name", hozAlign: "center", width: 130 },
-            { title: "연락처", field: "contact", hozAlign: "center", width: 130 },
-            { title: "부품 유무", field: "part_status", hozAlign: "center" , width: 130},
+            {
+                title: "부품 유무",
+                field: "part_status",
+                hozAlign: "center",
+                width: 130,
+                headerFilter: "select",
+                headerFilterPlaceholder: "전체",
+                headerFilterParams: {
+                    values: true   // 데이터에서 자동 추출
+                }
+            },
+
+          
             { title: "안전재고", field: "safety_stock", hozAlign: "right", width: 130 },
             { title: "현재고", field: "current_stock", hozAlign: "right" , width: 130},
             { title: "구매 필요 수량",   field: "purchase_qty", 

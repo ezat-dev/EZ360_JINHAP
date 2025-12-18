@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>공무일지 관리</title>
+        <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
     <style>
@@ -232,6 +233,9 @@
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">소모품 관리
                 </button>
                               -->
+                      <button class="excel-button" id="excelDownloadBtn">
+					    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+					</button>
   
             </div>
         </div>
@@ -247,6 +251,13 @@
 let now_page_code = "h06";
 var dataTable; // 전역 변수
 var selectedRowData = null;
+
+
+$("#excelDownloadBtn").on("click", function () {
+    dataTable.download("xlsx", "공무일지.xlsx", {
+        sheetName: "공무일지"
+    });
+});
 
 $(function() {
 
@@ -280,14 +291,16 @@ $(function() {
         },
         placeholder: "조회된 데이터가 없습니다.",
         columns: [
-            { title: "NO", field: "id", hozAlign: "center", width: 70 },
-            { title: "일자(1)", field: "work_date", hozAlign: "center", width: 180 },
-            { title: "설비명(3)", field: "equipment_name", hozAlign: "center", width: 180 },
+            { title: "NO", field: "id", hozAlign: "center", width: 70,visible: false  },
+            { title: "일자(1)", field: "work_date", hozAlign: "center", width: 120 },
+            { title: "설비명(3)", field: "equipment_name", hozAlign: "left", width: 180 },
             { title: "중분류(7)", field: "category_mid", hozAlign: "left", width: 200 },
             { title: "소분류(8)", field: "category_sub", hozAlign: "left", width: 200 },
-            { title: "점검(4)", field: "inspection_type", hozAlign: "right", width: 130 },
-            { title: "진행 업체(14)", field: "replacement_name", hozAlign: "right", width: 130 },
-            { title: "정비시간(6)", field: "downtime_minutes", hozAlign: "right", width: 130 },
+            { title: "교체사유", field: "action_detail", hozAlign: "left", width: 400 },
+            
+            { title: "점검(4)", field: "inspection_type", hozAlign: "center", width: 130 },
+            { title: "진행 업체(14)", field: "replacement_name", hozAlign: "center", width: 130 },
+            { title: "정비시간(6)", field: "downtime_minutes", hozAlign: "center", width: 130 },
             { title: "비고(입력)", field: "", hozAlign: "right", width: 130 }
         ],
 

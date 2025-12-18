@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>스페어 이력관리</title>
+<script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
 <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/>
     <style>
@@ -180,21 +181,12 @@
 <body>
 
     <main class="main">
-        <div class="tab">
+      <div class="tab">
         
+   <div class="button-container">           
+     <div class="box1">
 
-            <div class="button-container">
-            
-               <div class="box1">
-	          <!--  <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-	           <label class="daylabel">검색일자 :</label>
-				<input type="text" autocomplete="off" class="daySet" id="startDate" style="font-size: 16px; margin-bottom:10px;" placeholder="시작 날짜 선택">
-				
-				<span class="mid"  style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
-	
-				<input type="text"autocomplete="off" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택"> -->
-	
-	            <label class="daylabel">설비명 :</label>
+	<label class="daylabel">설비명 :</label>
 	<select class="dayselect">
 	    <option value="ALL">전체</option>
 	    <option value="600톤">600톤</option>
@@ -215,20 +207,21 @@
 	</select>
 
 
-		         <label class="daylabel">검색 :</label>
+		<label class="daylabel">검색 :</label>
 		<input type="text" autocomplete="off" class="monthSet" id="startDate"
 		       style="font-size: 16px; height: 28px; width: 150px; 
 				margin-bottom: 10px;
 		              border: 1px solid #ccc; border-radius: 4px; "
-		       placeholder="시작 날짜 선택">
-
-			</div>
+		       placeholder="시작 날짜 선택"></div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
             	<button class="where_bt ">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">스페어 부품 관리
                 </button>
+                	<button class="excel-button" id="excelDownloadBtn">
+					    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image">엑셀
+					</button>
                            
                            
   
@@ -251,7 +244,11 @@ let now_page_code = "h05";
   var selectedRowData = null;
 
 
-
+  $("#excelDownloadBtn").on("click", function () {
+      dataTable.download("xlsx", "스페어부품 관리.xlsx", {
+          sheetName: "스페어부품 관리"
+      });
+  });
   
   $(function() {
 
@@ -284,9 +281,9 @@ let now_page_code = "h05";
 	        },
 	        placeholder: "조회된 데이터가 없습니다.",
 	        columns: [
-	            { title: "NO", field: "id", hozAlign: "center", width: 70 },
-	            { title: "대상 설비(3)", field: "equipment_name", hozAlign: "center", width: 180 },
-	            { title: "부품명(8)", field: "category_sub", hozAlign: "center", width: 180 },
+	            { title: "NO", field: "id", hozAlign: "center", width: 70,visible: false  },
+	            { title: "대상 설비(3)", field: "equipment_name", hozAlign: "left", width: 180 },
+	            { title: "부품명(8)", field: "category_sub", hozAlign: "left", width: 180 },
 	            { title: "사용처(7)", field: "category_mid", hozAlign: "left", width: 200 },
 	            { title: "규격(15)", field: "part_name", hozAlign: "left", width: 200 },
 	            { title: "제작 업체(22)", field: "manufacturer", hozAlign: "right", width: 130 },
