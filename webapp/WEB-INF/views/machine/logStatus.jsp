@@ -292,15 +292,15 @@ $(function() {
         placeholder: "조회된 데이터가 없습니다.",
         columns: [
             { title: "NO", field: "id", hozAlign: "center", width: 70,visible: false  },
-            { title: "일자(1)", field: "work_date", hozAlign: "center", width: 120 },
-            { title: "설비명(3)", field: "equipment_name", hozAlign: "left", width: 180 },
-            { title: "중분류(7)", field: "category_mid", hozAlign: "left", width: 200 },
-            { title: "소분류(8)", field: "category_sub", hozAlign: "left", width: 200 },
+            { title: "일자", field: "work_date", hozAlign: "center", width: 120 },
+            { title: "설비명", field: "equipment_name", hozAlign: "left", width: 180 },
+            { title: "중분류", field: "category_mid", hozAlign: "left", width: 200 },
+            { title: "소분류", field: "category_sub", hozAlign: "left", width: 200 },
             { title: "교체사유", field: "action_detail", hozAlign: "left", width: 400 },
             
-            { title: "점검(4)", field: "inspection_type", hozAlign: "center", width: 130 },
-            { title: "진행 업체(14)", field: "replacement_name", hozAlign: "center", width: 130 },
-            { title: "정비시간(6)", field: "downtime_minutes", hozAlign: "center", width: 130 },
+            { title: "점검", field: "inspection_type", hozAlign: "center", width: 130 },
+            { title: "진행 업체)", field: "replacement_name", hozAlign: "center", width: 130 },
+            { title: "정비시간", field: "downtime_minutes", hozAlign: "center", width: 130 },
             { title: "비고(입력)", field: "", hozAlign: "right", width: 130 }
         ],
 

@@ -1,6 +1,7 @@
 package com.geomet.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -199,4 +200,29 @@ public class UserServiceImpl implements UserService {
 	public boolean allR(Users users) {
 		return userDao.allR(users);
 	}
+	
+	 @Override
+	    public List<Users> getDay(Users users) {
+	        return userDao.getDay(users);
+	    }
+
+	    @Override
+	    public void saveDay(Map<String, Object> param) {
+	        userDao.saveDay(param);
+	    }
+
+	    @Override
+	    public void insertDay(Users users) {
+	        userDao.insertDay(users);
+	    }
+
+	    @Override
+	    public void delDay(Users users) {
+	        userDao.delDay(users);
+	    }
+	    
+	    @Override
+	    public void updateImage(Users users) {
+	    	userDao.updateImage(users);
+	    }
 }

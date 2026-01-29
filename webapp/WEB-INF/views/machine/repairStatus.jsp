@@ -678,7 +678,7 @@ $(document).ready(function() {
                         title: "교체 사유",
                         field: "action_detail",
                         hozAlign: "left",
-                        width: 250,
+                        width: 650,
                         headerFilter: "input",
                         headerFilterPlaceholder: "검색"
                     },

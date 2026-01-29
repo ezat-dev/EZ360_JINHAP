@@ -54,6 +54,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.geomet.domain.Condition;
 import com.geomet.domain.Quality;
 import com.geomet.domain.UserLog;
 import com.geomet.domain.Users;
@@ -175,6 +176,24 @@ public class QualityController {
 		rtnMap.put("result", "success");
 		return rtnMap;
 	}
+	// 부적합품 관리 수정
+	@RequestMapping(value = "/quality/nonProductManage/update", method = RequestMethod.POST)
+	@ResponseBody
+	public Map<String, Object> updateNonProductManage(@ModelAttribute Quality quality) {
+	    Map<String, Object> rtnMap = new HashMap<>();
+	    try {
+	        qualityService.updateNonProductManage(quality);
+	        rtnMap.put("result", "success");
+	        rtnMap.put("message", "수정이 완료되었습니다.");
+	    } catch (Exception e) {
+	        rtnMap.put("result", "fail");
+	        rtnMap.put("message", "수정 중 오류가 발생했습니다: " + e.getMessage());
+	    }
+	    return rtnMap;
+	}
+	
+	
+	
 
 	// 부적합품 관리
 	@RequestMapping(value = "/quality/nonProductManage/del", method = RequestMethod.POST)
@@ -2987,4 +3006,27 @@ public class QualityController {
 
 						return rtnMap;
 					}
+					
+					//부착량, 후처리 부착량 모달 tabulator 기준정보
+				    @RequestMapping(value = "/quality/getStandardList", method = RequestMethod.POST)
+				    @ResponseBody
+				    public Map<String, Object> workDetailList(Quality quality) {
+				    	System.out.println("quality.getGroup_id()" + quality.getGroup_id());
+				        Map<String, Object> rtnMap = new HashMap<>();
+
+				        try {
+
+				            List<Quality> datas = qualityService.getStandardList(quality);
+
+				            rtnMap.put("status", "success");
+				            rtnMap.put("last_page", 1);
+				            rtnMap.put("data", datas);
+				        } catch (Exception e) {
+				            System.out.println("Error occurred: " + e.getMessage());
+				            rtnMap.put("status", "error");
+				            rtnMap.put("message", e.getMessage());
+				        }
+
+				        return rtnMap;
+				    }
 }

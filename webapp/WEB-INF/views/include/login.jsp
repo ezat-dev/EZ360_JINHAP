@@ -54,7 +54,7 @@
 			<div class="login_box">
 				<div class="notice">
 					<div class="tit_bar">
-	<!-- 			 	 <h2 class="tit">13:30시  ~  17:00까지 수정 예정입니다</h2>  -->
+ 			 	<!--  <h2 class="tit">13:30시  ~  17:00까지 수정 예정입니다</h2>   -->
 				 		<!--<h3 class="tit">페이지 소제목 변경</h3> -->
 					</div>
 					<ul id="login_noticeCont_ul" class="bu_lst">

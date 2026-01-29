@@ -8,6 +8,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>테스트/시험정보</title>
 <%@include file="../include/pluginpage.jsp"%>
+    <script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
 <style>
 .search {
 	height: 40px;
@@ -137,7 +138,7 @@
     align-items: center;
     width: 906px;
     margin-top: 4px;
-    gap: 15px;
+    gap: 10px;
 }
 		.bt_box {
     display: grid;
@@ -318,7 +319,6 @@ margin-left: 2%;
                 
             <div class="button-container">
                 <div class="box1">
-                    <p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
                     
                     <label class="daylabel">검색일자 :</label>
                     <input type="text" 
@@ -340,6 +340,10 @@ margin-left: 2%;
 
                 <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
+				</button>
+				
+				<button class="excel-button">
+    				<img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >엑셀
 				</button>
 				
 			<button class="btn">세척액 약품투입기준자료</button>
@@ -604,10 +608,10 @@ margin-left: 2%;
       <th>GROUP_ID</th>
       <th>품명</th>
       <th>표면처리사양</th>
-      <th>① 가열 전 시료무게</th>
-      <th>② 가열 후 시료무게</th>
-      <th>③ 시료수</th>
-      <th>④ 시료당 표면적</th>
+      <th>① 시료수</th>
+      <th>② 시료당 표면적</th>
+      <th>③ 가열 전 시료무게</th>
+      <th>④ 가열 후 시료무게</th>
       <th>점도</th>
       <th>조치사항</th>
     </tr>
@@ -618,22 +622,22 @@ margin-left: 2%;
             <td><input type="text" name="part_no" id="part_no_5_1"></td>
             <td><input type="text" name="part_name" id="part_name_5_1"></td>
             <td><input type="text" name="spec" id="spec_5_1"></td>
+            <td><input type="number" name="count" id="count_5_1"></td>
+            <td><input type="number" name="surface" id="surface_5_1"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
-                    <tr data-row-id="2">
+          <tr data-row-id="2">
             <td>PLUS_2 <input class="mch_name_cell" type="hidden" name="mch_name" value="PLUS_2"></td>
             <td><input type="text" name="part_no" id="part_no_5_2"></td>
             <td><input type="text" name="part_name" id="part_name_5_2"></td>
             <td><input type="text" name="spec" id="spec_5_2"></td>
+            <td><input type="number" name="count" id="count_5_2"></td>
+            <td><input type="number" name="surface" id="surface_5_2"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
@@ -676,10 +680,10 @@ margin-left: 2%;
       <th>GROUP_ID</th>
       <th>품명</th>
       <th>표면처리사양</th>
-      <th>① 가열 전 시료무게</th>
-      <th>② 가열 후 시료무게</th>
-      <th>③ 시료수</th>
-      <th>④ 시료당 표면적</th>
+      <th>① 시료수</th>
+      <th>② 시료당 표면적</th>
+      <th>③ 가열 전 시료무게</th>
+      <th>④ 가열 후 시료무게</th>
       <th>점도</th>
       <th>조치사항</th>
 <!--       <th>⑤ 총표면적 (③*④)</th>
@@ -694,10 +698,10 @@ margin-left: 2%;
             <td><input type="text" name="part_no" id="group_id_1"></td>
             <td><input type="text" name="part_name" id="part_name_1"></td>
             <td><input type="text" name="spec" id="spec_1"></td>
+            <td><input type="number" name="count" id="count_1"></td>
+            <td><input type="number" name="surface" id="surface_1"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
@@ -706,10 +710,10 @@ margin-left: 2%;
             <td><input type="text" name="part_no" id="group_id_2"></td>
             <td><input type="text" name="part_name" id="part_name_2"></td>
             <td><input type="text" name="spec" id="spec_2"></td>
+            <td><input type="number" name="count" id="count_2"></td>
+            <td><input type="number" name="surface" id="surface_2"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
@@ -718,10 +722,10 @@ margin-left: 2%;
             <td><input type="text" name="part_no" id="group_id_3"></td>
             <td><input type="text" name="part_name" id="part_name_3"></td>
             <td><input type="text" name="spec" id="spec_3"></td>
+            <td><input type="number" name="count" id="count_3"></td>
+            <td><input type="number" name="surface" id="surface_3"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
@@ -730,10 +734,10 @@ margin-left: 2%;
             <td><input type="text" name="part_no" id="group_id_4"></td>
             <td><input type="text" name="part_name" id="part_name_4"></td>
             <td><input type="text" name="spec" id="spec_4"></td>
+            <td><input type="number" name="count" id="count_4"></td>
+            <td><input type="number" name="surface" id="surface_4"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
@@ -742,10 +746,10 @@ margin-left: 2%;
             <td><input type="text" name="part_no" id="group_id_5"></td>
             <td><input type="text" name="part_name" id="part_name_5"></td>
             <td><input type="text" name="spec" id="spec_5"></td>
+            <td><input type="number" name="count" id="count_5"></td>
+            <td><input type="number" name="surface" id="surface_5"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
@@ -754,10 +758,10 @@ margin-left: 2%;
             <td><input type="text" name="part_no" id="group_id_6"></td>
             <td><input type="text" name="part_name" id="part_name_6"></td>
             <td><input type="text" name="spec" id="spec_6"></td>
+            <td><input type="number" name="count" id="count_6"></td>
+            <td><input type="number" name="surface" id="surface_6"></td>
             <td><input type="number" name="before_weight"></td>
             <td><input type="number" name="after_weight"></td>
-            <td><input type="number" name="count"></td>
-            <td><input type="number" name="surface"></td>
             <td><input type="number" name="viscosity"></td>
             <td><input type="text" name="action"></td>
           </tr>
@@ -1090,17 +1094,21 @@ const cctStartDateInput = document.getElementById('cctStartDate');
 
 	        const partNameSelector = "#part_name_" + index;
 	        const specSelector = "#spec_" + index;
+	        const countSelector = "#count_" + index;
+	        const surfaceSelector = "#surface_" + index;
 
 	        var partNo = $currentInput.val();
-	        
+	        console.log("선택한 group_id: ", partNo);
 	        // 값이 비어있으면 조회를 하지 않고 리셋합니다.
 			if (!partNo || partNo.trim() === "") {
 			        $(partNameSelector).val("");
 			        $(specSelector).val("");
+			        $(countSelector).val("");
+			        $(surfaceSelector).val("");
 			        return;
 			    }
 	        $.ajax({
-	            url: "/geomet/condition/divisionWeight/list", 
+	            url: "/geomet/quality/getStandardList", 
 	            type: "POST",
 	            dataType: "json",
 	            data: {
@@ -1117,17 +1125,23 @@ const cctStartDateInput = document.getElementById('cctStartDate');
 	                    
 	                    $(partNameSelector).val(standardInfo.item_nm || "");
 	                    $(specSelector).val(standardInfo.coating_nm || "");
+	                    $(countSelector).val(standardInfo.sample_f || "");
+	                    $(surfaceSelector).val(standardInfo.area_g || "");
 	                    
 	                } else {
 	                    // 데이터가 없거나 조회 실패 시 필드를 비웁니다.
 						$(partNameSelector).val("");
 		                $(specSelector).val("");
+						$(countSelector).val("");
+		                $(surfaceSelector).val("");
 	                    alert("일치하는 기준 정보를 찾을 수 없습니다.");
 	                }
 	            },
 	            error: function (xhr, status, error) {
 	            	$(partNameSelector).val("");
 	                $(specSelector).val("");
+					$(countSelector).val("");
+	                $(surfaceSelector).val("");
 	                console.error("데이터 조회 중 오류 발생:", status, error);
 	                alert("기준 정보 조회 중 오류가 발생했습니다.");
 	            }
@@ -1144,9 +1158,11 @@ const cctStartDateInput = document.getElementById('cctStartDate');
 
 	        const partNameSelector = "#part_name_5_" + index;
 	        const specSelector = "#spec_5_" + index;
+	        const countSelector = "#count_5_" + index;
+	        const surfaceSelector = "#surface_5_" + index;
 
 	        var partNo = $currentInput.val();
-	        
+	        console.log("선택한 group_id: ", partNo);
 	        // 값이 비어있으면 조회를 하지 않고 리셋합니다.
 			if (!partNo || partNo.trim() === "") {
 			        $(partNameSelector).val("");
@@ -1154,7 +1170,7 @@ const cctStartDateInput = document.getElementById('cctStartDate');
 			        return;
 			    }
 	        $.ajax({
-	            url: "/geomet/condition/divisionWeight/list", 
+	            url: "/geomet/quality/getStandardList", 
 	            type: "POST",
 	            dataType: "json",
 	            data: {
@@ -1171,17 +1187,23 @@ const cctStartDateInput = document.getElementById('cctStartDate');
 	                    
 	                    $(partNameSelector).val(standardInfo.item_nm || "");
 	                    $(specSelector).val(standardInfo.coating_nm || "");
+	                    $(countSelector).val(standardInfo.sample_f || "");
+	                    $(surfaceSelector).val(standardInfo.area_g || "");
 	                    
 	                } else {
 	                    // 데이터가 없거나 조회 실패 시 필드를 비웁니다.
 						$(partNameSelector).val("");
 		                $(specSelector).val("");
+						$(countSelector).val("");
+		                $(surfaceSelector).val("");
 	                    alert("일치하는 기준 정보를 찾을 수 없습니다.");
 	                }
 	            },
 	            error: function (xhr, status, error) {
 	            	$(partNameSelector).val("");
 	                $(specSelector).val("");
+					$(countSelector).val("");
+	                $(surfaceSelector).val("");
 	                console.error("데이터 조회 중 오류 발생:", status, error);
 	                alert("기준 정보 조회 중 오류가 발생했습니다.");
 	            }
@@ -1903,7 +1925,7 @@ if (cctStartDateInput) {
 		    });
 
 
-		    $(".excel-button").on("click", function () {
+/* 		    $(".excel-button").on("click", function () {
 		  	  console.log("엑셀 다운로드 버튼 클릭됨"); 
 
 		  	  const equipmentName = $("#equipment_name").val() || "";
@@ -1935,7 +1957,7 @@ if (cctStartDateInput) {
 		              console.error("Error:", error);
 		          }
 		      });
-		  });
+		  }); */
 		    
 		});
 	// 데이터 목록 로딩 함수 정의
@@ -1973,10 +1995,10 @@ if (cctStartDateInput) {
 	              return response.data1;
 	          },
 	          columns: [
-	              { title: "id", field: "id", visible: false },
-	              { title: "test_num", field: "test_num", visible: false },
+	              { title: "id", field: "id", visible: false, download: false },
+	              { title: "test_num", field: "test_num", visible: false, download: false },
 	             
-	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false },
+	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false, download: false },
 
 	              { title: "날짜", field: "date", width: 100, hozAlign: "center" },
 	              { title: "설비", field: "mch_name", width: 70, hozAlign: "center" },
@@ -1993,7 +2015,7 @@ if (cctStartDateInput) {
 	            	        }
 	            	    }
 		               },
-	              { title: "② NaOH농도값<br>(① * 0.8)", field: "naoh_density", width: 130, hozAlign: "center",
+	              { title: "② Na-OH농도값<br>(① * 0.8)<br>Spec.30~40g/L)", field: "naoh_density", width: 130, hozAlign: "center",
 		            	    formatter: function(cell, formatterParams, onRendered){
 		            	        const value = cell.getValue();
 		            	        // 값이 유효한 숫자인지 확인
@@ -2018,7 +2040,7 @@ if (cctStartDateInput) {
 				 		               },
 	              { title: "조치사항", 
 	                  columns: [
-	                      { title: "(Spec.30~40g/L)<br>NaOH<br>분석결과(g/L)", field: "naoh_result", hozAlign: "center", headerSort: false, width: 120 },
+	                      { title: "(Spec.30~40g/L)<br>Na-OH<br>분석결과(g/L)", field: "naoh_result", hozAlign: "center", headerSort: false, width: 120, visible: false },
 	                      { title: "1.0N-HCL<br>소모량(mL)", field: "hcl", hozAlign: "center", headerSort: false, width: 120 },
 	                      { 
 	                          title: "조 용량<br>(liter)", 
@@ -2036,14 +2058,14 @@ if (cctStartDateInput) {
 
 	                      { title: "NaOH 0.5포 단위 투입량",
 	          				columns: [
-	          		            { title: "NaOH<br>(포)", field: "naoh", width: 80, hozAlign: "center", headerSort: false },
-	          		            { title: "SC300A<br>(liter)", field: "sc300a", width: 90, hozAlign: "center", headerSort: false },
-	          		            { title: "SC300B<br>(liter)", field: "sc300b", width: 90, hozAlign: "center", headerSort: false },
-	          		            { title: "농축액<br>(liter)", field: "condense", width: 80, hozAlign: "center", headerSort: false }
+	          		            { title: "NaOH<br>(포)", field: "naoh", width: 110, hozAlign: "center", headerSort: false },
+	          		            { title: "SC300A<br>(liter)", field: "sc300a", width: 120, hozAlign: "center", headerSort: false },
+	          		            { title: "SC300B<br>(liter)", field: "sc300b", width: 120, hozAlign: "center", headerSort: false },
+	          		            { title: "농축액<br>(liter)", field: "condense", width: 110, hozAlign: "center", headerSort: false }
 	          					]
 	                           },
 	                           { title: "투입 후<br>NaOH 농도", field: "after_naoh", width: 100, hozAlign: "center", headerSort: false},
-	                           { title: "파일", field: "file_name", width: 130, hozAlign: "center",formatter: "link",
+	                           { title: "파일", field: "file_name", width: 160, hozAlign: "center",formatter: "link",
 	       	         	        cellClick: function(e, cell){
 	    	         	            const rowData = cell.getData();
 	    	         	            const fileName = rowData.file_name;
@@ -2127,10 +2149,10 @@ if (cctStartDateInput) {
 	              return response.data3;
 	          },
 	          columns: [
-	              { title: "id", field: "id", visible: false },
-	              { title: "test_num", field: "test_num", visible: false },
+	              { title: "id", field: "id", visible: false, download: false },
+	              { title: "test_num", field: "test_num", visible: false, download: false },
 	             
-	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false },
+	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false, download: false },
 
 	              { title: "날짜", field: "date", width: 100, hozAlign: "center" },
 	              { title: "설비", field: "mch_name", width: 70, hozAlign: "center" },
@@ -2279,8 +2301,8 @@ if (cctStartDateInput) {
 	              return response.cctList;
 	          },
 	          columns: [
-	              { title: "cct_id", field: "cct_id", visible: false },
-	              { title: "regdate", field: "regdate", visible: false },
+	              { title: "cct_id", field: "cct_id", visible: false, download: false },
+	              { title: "날짜", field: "regdate", visible: false },
 	             
 	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false },
 
@@ -2408,8 +2430,8 @@ if (cctStartDateInput) {
 	              return response.sstList;
 	          },
 	          columns: [
-	              { title: "sst_id", field: "sst_id", visible: false },
-	              { title: "regdate", field: "regdate", visible: false },
+	              { title: "sst_id", field: "sst_id", visible: false, download: false },
+	              { title: "날짜", field: "regdate", visible: false },
 	             
 	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false },
 
@@ -2536,8 +2558,8 @@ if (cctStartDateInput) {
 	              return response.attachmentList;
 	          },
 	          columns: [
-	              { title: "attachment_id", field: "attachment_id", visible:false},
-	              { title: "date", field: "date", visible: false },
+	              { title: "attachment_id", field: "attachment_id", visible:false, download: false},
+	              { title: "date", field: "date", visible: false, download: false },
 	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false },
 	              { title: "날짜", field: "date", width: 150, hozAlign: "center",
 	            	  formatter: function(cell, formatterParams, onRender){
@@ -2552,10 +2574,10 @@ if (cctStartDateInput) {
 	              { title: "GROUP_ID", field: "group_id", width: 240, hozAlign: "center" },
 	              { title: "품명", field: "part_name", width: 320, hozAlign: "center"},
 	              { title: "표면처리사양", field: "spec", width: 250, hozAlign: "center"},
-	              { title: "① 가열 전의 시료무게", field: "before_weight", width: 180, hozAlign: "center" },
-	              { title: "② 가열 후의 시료무게", field: "after_weight", width: 180, hozAlign: "center" },
-	              { title: "③ 시료수", field: "count", width: 140, hozAlign: "center"},
-	              { title: "④ 시료당 표면적", field: "surface", width: 140, hozAlign: "center"},
+	              { title: "① 시료수", field: "count", width: 140, hozAlign: "center"},
+	              { title: "② 시료당 표면적", field: "surface", width: 140, hozAlign: "center"},
+	              { title: "③ 가열 전의 시료무게", field: "before_weight", width: 180, hozAlign: "center" },
+	              { title: "④ 가열 후의 시료무게", field: "after_weight", width: 180, hozAlign: "center" },
 	              { title: "⑤ 총표면적 (③*④)", field: "calc1", width: 150, hozAlign: "center"},
 	              { title: "⑥ (① - ②)", field: "calc2", width: 150, hozAlign: "center"},
 	              { title: "⑦ (⑥ / ⑤) * 1000", field: "calc3", width: 150, hozAlign: "center"},
@@ -2623,8 +2645,8 @@ if (cctStartDateInput) {
 	              return response.turbidityList;
 	          },
 	          columns: [
-	              { title: "attachment_id", field: "attachment_id", visible: false },
-	              { title: "date", field: "date", visible: false },
+	              { title: "attachment_id", field: "attachment_id", visible: false, download: false },
+	              { title: "date", field: "date", visible: false, download: false },
 	              { title: "No", formatter: "rownum", hozAlign: "center", width: 30, headerSort: false },
 	              { title: "날짜", field: "date", width: 150, hozAlign: "center",
 	            	  formatter: function(cell, formatterParams, onRender){
@@ -2639,10 +2661,10 @@ if (cctStartDateInput) {
 	              { title: "GROUP_ID", field: "group_id", width: 240, hozAlign: "center" },
 	              { title: "품명", field: "part_name", width: 320, hozAlign: "center"},
 	              { title: "표면처리사양", field: "spec", width: 250, hozAlign: "center"},
-	              { title: "① 가열 전의 시료무게", field: "before_weight", width: 180, hozAlign: "center" },
-	              { title: "② 가열 후의 시료무게", field: "after_weight", width: 180, hozAlign: "center" },
-	              { title: "③ 시료수", field: "count", width: 140, hozAlign: "center"},
-	              { title: "④ 시료당 표면적", field: "surface", width: 140, hozAlign: "center"},
+	              { title: "① 시료수", field: "count", width: 140, hozAlign: "center"},
+	              { title: "② 시료당 표면적", field: "surface", width: 140, hozAlign: "center"},
+	              { title: "③ 가열 전의 시료무게", field: "before_weight", width: 180, hozAlign: "center" },
+	              { title: "④ 가열 후의 시료무게", field: "after_weight", width: 180, hozAlign: "center" },
 	              { title: "⑤ 총표면적 (③*④)", field: "calc1", width: 150, hozAlign: "center"},
 	              { title: "⑥ (① - ②)", field: "calc2", width: 150, hozAlign: "center"},
 	              { title: "⑦ (⑥ / ⑤) * 1000", field: "calc3", width: 150, hozAlign: "center"},
@@ -2846,13 +2868,15 @@ if (cctStartDateInput) {
 		                title: "품명",
 		                field: "item_nm",
 		                sorter: "string",
-		                width: 600,
+		                width: 400,
 		                headerSort: false,
 		                headerFilter: "input",           // 검색 상자 추가
 		                headerFilterPlaceholder: "검색",
 		                headerFilterFunc: "like"
 		            },
 		            { title: "표면처리 사양", field: "coating_nm", sorter: "string", width: 300,  headerSort: false },
+		            { title: "시료수", field: "sample_f", sorter: "string", width: 100,  headerSort: false },
+		            { title: "시료당 표면적", field: "area_g", sorter: "string", width: 100,  headerSort: false }
 		        ],
 		        rowClick: function (e, row) {
 /* 		        	// 1. 선택된 행의 데이터 가져오기
@@ -2914,13 +2938,15 @@ if (cctStartDateInput) {
 		                title: "품명",
 		                field: "item_nm",
 		                sorter: "string",
-		                width: 600,
+		                width: 400,
 		                headerSort: false,
 		                headerFilter: "input",           // 검색 상자 추가
 		                headerFilterPlaceholder: "검색",
 		                headerFilterFunc: "like"
 		            },
 		            { title: "표면처리 사양", field: "coating_nm", sorter: "string", width: 300,  headerSort: false },
+		            { title: "시료수", field: "sample_f", sorter: "string", width: 100,  headerSort: false },
+		            { title: "시료당 표면적", field: "area_g", sorter: "string", width: 100,  headerSort: false }
 		        ],
 		        rowClick: function (e, row) {
 /* 		        	// 1. 선택된 행의 데이터 가져오기
@@ -3008,7 +3034,7 @@ if (cctStartDateInput) {
 		}
 		function loadStandardDataAttachment() {
 		    $.ajax({
-		        url: "/geomet/condition/divisionWeight/list",
+		        url: "/geomet/quality/getStandardList",
 		        type: "POST",
 		        dataType: "json",
 		        data: {
@@ -3032,7 +3058,7 @@ if (cctStartDateInput) {
 		}
 		function loadStandardDataTurbidity() {
 		    $.ajax({
-		        url: "/geomet/condition/divisionWeight/list",
+		        url: "/geomet/quality/getStandardList",
 		        type: "POST",
 		        dataType: "json",
 		        data: {
@@ -3112,6 +3138,73 @@ function openViewerModal(url, title, fileType) { // fileType 매개변수 추가
 //그래프 버튼 클릭시 페이지 이동
 $('.graphButton').click(function() {
 	window.location.href = "/geomet/quality/graphPage";
+});
+
+//한 파일에 시트로 나누어 엑셀 생성
+$('.excel-button').click(function() {
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+    const fileName = "테스트/시험정보_" + today + ".xlsx";
+    
+    // 1. 새 워크북 생성
+    const workbook = XLSX.utils.book_new();
+
+    // 2. 테이블을 시트로 변환하고 너비를 조절하는 통합 함수
+    function addTableToSheet(tableInstance, sheetName) {
+        if (!tableInstance) return; // 테이블이 없으면 스킵
+
+        // (A) 테이블의 현재 데이터와 컬럼 정의 가져오기
+        const data = tableInstance.getData("active"); 
+        const columns = tableInstance.getColumnDefinitions();
+        
+        // (B) 다운로드 제외 설정(download: false)을 반영하여 데이터 매핑
+        const sheetData = data.map(row => {
+            let obj = {};
+            columns.forEach(col => {
+                // 필드가 있고, download 설정이 false가 아닌 경우만 포함
+                if(col.field && col.download !== false) {
+                    obj[col.title] = row[col.field];
+                }
+            });
+            return obj;
+        });
+
+        // (C) 데이터를 시트로 변환
+        const sheet = XLSX.utils.json_to_sheet(sheetData);
+        
+        // (D) [중요] 각 열마다 데이터 길이를 측정하여 너비(wch) 계산 (두 번째 코드 로직)
+        if (sheet['!ref']) {
+            const range = XLSX.utils.decode_range(sheet['!ref']);
+            const colWidths = [];
+
+            for (let C = range.s.c; C <= range.e.c; ++C) {
+                let maxWidth = 12; // 헤더 길이를 고려한 기본 최소 너비
+                for (let R = range.s.r; R <= range.e.r; ++R) {
+                    const cell = sheet[XLSX.utils.encode_cell({r: R, c: C})];
+                    if (cell && cell.v) {
+                        const len = cell.v.toString().length;
+                        if (len > maxWidth) maxWidth = len;
+                    }
+                }
+                // 한글 깨짐 방지를 위해 1.5배 가중치 적용
+                colWidths.push({ wch: maxWidth * 1.5 });
+            }
+            sheet['!cols'] = colWidths;
+        }
+
+        // (E) 워크북에 시트 추가
+        XLSX.utils.book_append_sheet(workbook, sheet, sheetName);
+    }
+
+    // 3. 실제 테이블 인스턴스와 시트 이름 매칭하여 추가
+    addTableToSheet(dataTable1, "세척 1,2호기 가성소다용액 농도");
+    addTableToSheet(dataTable3, "지오메트 가열잔분 탱크액");
+    addTableToSheet(attachmentTable, "지오메트 부착량");
+    addTableToSheet(turbidityTable, "지오메트 후처리 부착량");
+    addTableToSheet(sstTable, "SST 시험성적서");
+    addTableToSheet(cctTable, "CCT 시험성적서");
+
+    // 4. 최종 파일 내보내기
+    XLSX.writeFile(workbook, fileName);
 });
 </script>
 

@@ -704,7 +704,9 @@ SELECT * FROM v_moniteolingling
         non_time,
         work_time2,
         facility_yn,
-        ch_idx
+        ch_idx,
+        std_jumdo,
+        std_bijung
     FROM tb_facility
     ORDER BY ch_idx ASC
 </select>
@@ -729,6 +731,8 @@ SELECT * FROM v_moniteolingling
         non_time,
         work_time2,
         facility_yn,
+        std_jumdo,
+        std_bijung,
         ch_idx
     )
     VALUES (
@@ -742,6 +746,8 @@ SELECT * FROM v_moniteolingling
         #{non_time},
         #{work_time2},
         #{facility_yn},
+        #{std_jumdo},
+        #{std_bijung},
         #{ch_idx}
     )
     ON DUPLICATE KEY UPDATE

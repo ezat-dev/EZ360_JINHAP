@@ -2,6 +2,52 @@ package com.geomet.domain;
 
 public class Users {
 	
+	
+	private int cnt;
+    private String y_m;
+
+    private String page_code;
+
+
+    private String box5;
+    private String box6;
+
+    private String img_url;
+
+    private String m_1;
+    private String m_2;
+    private String m_3;
+    private String m_4;
+    private String m_5;
+    private String m_6;
+    private String m_7;
+    private String m_8;
+    private String m_9;
+    private String m_10;
+    private String m_11;
+    private String m_12;
+    private String m_13;
+    private String m_14;
+    private String m_15;
+    private String m_16;
+    private String m_17;
+    private String m_18;
+    private String m_19;
+    private String m_20;
+    private String m_21;
+    private String m_22;
+    private String m_23;
+    private String m_24;
+    private String m_25;
+    private String m_26;
+    private String m_27;
+    private String m_28;
+    private String m_29;
+    private String m_30;
+    private String m_31;
+
+
+	
 	public String ck_date;
 	public String a_3;
 	public String a_4;
@@ -161,8 +207,13 @@ public class Users {
     
     
     
-    
-    
+
+	public int getCnt() {
+		return cnt;
+	}
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
 	public String getCk_date() {
 		return ck_date;
 	}
@@ -817,6 +868,222 @@ public class Users {
 	}
 	public void setMemo(String memo) {
 		this.memo = memo;
+	}
+	public String getY_m() {
+		return y_m;
+	}
+	public void setY_m(String y_m) {
+		this.y_m = y_m;
+	}
+	public String getPage_code() {
+		return page_code;
+	}
+	public void setPage_code(String page_code) {
+		this.page_code = page_code;
+	}
+	public String getBox5() {
+		return box5;
+	}
+	public void setBox5(String box5) {
+		this.box5 = box5;
+	}
+	public String getBox6() {
+		return box6;
+	}
+	public void setBox6(String box6) {
+		this.box6 = box6;
+	}
+	public String getImg_url() {
+		return img_url;
+	}
+	public void setImg_url(String img_url) {
+		this.img_url = img_url;
+	}
+	public String getM_1() {
+		return m_1;
+	}
+	public void setM_1(String m_1) {
+		this.m_1 = m_1;
+	}
+	public String getM_2() {
+		return m_2;
+	}
+	public void setM_2(String m_2) {
+		this.m_2 = m_2;
+	}
+	public String getM_3() {
+		return m_3;
+	}
+	public void setM_3(String m_3) {
+		this.m_3 = m_3;
+	}
+	public String getM_4() {
+		return m_4;
+	}
+	public void setM_4(String m_4) {
+		this.m_4 = m_4;
+	}
+	public String getM_5() {
+		return m_5;
+	}
+	public void setM_5(String m_5) {
+		this.m_5 = m_5;
+	}
+	public String getM_6() {
+		return m_6;
+	}
+	public void setM_6(String m_6) {
+		this.m_6 = m_6;
+	}
+	public String getM_7() {
+		return m_7;
+	}
+	public void setM_7(String m_7) {
+		this.m_7 = m_7;
+	}
+	public String getM_8() {
+		return m_8;
+	}
+	public void setM_8(String m_8) {
+		this.m_8 = m_8;
+	}
+	public String getM_9() {
+		return m_9;
+	}
+	public void setM_9(String m_9) {
+		this.m_9 = m_9;
+	}
+	public String getM_10() {
+		return m_10;
+	}
+	public void setM_10(String m_10) {
+		this.m_10 = m_10;
+	}
+	public String getM_11() {
+		return m_11;
+	}
+	public void setM_11(String m_11) {
+		this.m_11 = m_11;
+	}
+	public String getM_12() {
+		return m_12;
+	}
+	public void setM_12(String m_12) {
+		this.m_12 = m_12;
+	}
+	public String getM_13() {
+		return m_13;
+	}
+	public void setM_13(String m_13) {
+		this.m_13 = m_13;
+	}
+	public String getM_14() {
+		return m_14;
+	}
+	public void setM_14(String m_14) {
+		this.m_14 = m_14;
+	}
+	public String getM_15() {
+		return m_15;
+	}
+	public void setM_15(String m_15) {
+		this.m_15 = m_15;
+	}
+	public String getM_16() {
+		return m_16;
+	}
+	public void setM_16(String m_16) {
+		this.m_16 = m_16;
+	}
+	public String getM_17() {
+		return m_17;
+	}
+	public void setM_17(String m_17) {
+		this.m_17 = m_17;
+	}
+	public String getM_18() {
+		return m_18;
+	}
+	public void setM_18(String m_18) {
+		this.m_18 = m_18;
+	}
+	public String getM_19() {
+		return m_19;
+	}
+	public void setM_19(String m_19) {
+		this.m_19 = m_19;
+	}
+	public String getM_20() {
+		return m_20;
+	}
+	public void setM_20(String m_20) {
+		this.m_20 = m_20;
+	}
+	public String getM_21() {
+		return m_21;
+	}
+	public void setM_21(String m_21) {
+		this.m_21 = m_21;
+	}
+	public String getM_22() {
+		return m_22;
+	}
+	public void setM_22(String m_22) {
+		this.m_22 = m_22;
+	}
+	public String getM_23() {
+		return m_23;
+	}
+	public void setM_23(String m_23) {
+		this.m_23 = m_23;
+	}
+	public String getM_24() {
+		return m_24;
+	}
+	public void setM_24(String m_24) {
+		this.m_24 = m_24;
+	}
+	public String getM_25() {
+		return m_25;
+	}
+	public void setM_25(String m_25) {
+		this.m_25 = m_25;
+	}
+	public String getM_26() {
+		return m_26;
+	}
+	public void setM_26(String m_26) {
+		this.m_26 = m_26;
+	}
+	public String getM_27() {
+		return m_27;
+	}
+	public void setM_27(String m_27) {
+		this.m_27 = m_27;
+	}
+	public String getM_28() {
+		return m_28;
+	}
+	public void setM_28(String m_28) {
+		this.m_28 = m_28;
+	}
+	public String getM_29() {
+		return m_29;
+	}
+	public void setM_29(String m_29) {
+		this.m_29 = m_29;
+	}
+	public String getM_30() {
+		return m_30;
+	}
+	public void setM_30(String m_30) {
+		this.m_30 = m_30;
+	}
+	public String getM_31() {
+		return m_31;
+	}
+	public void setM_31(String m_31) {
+		this.m_31 = m_31;
 	}
     
 

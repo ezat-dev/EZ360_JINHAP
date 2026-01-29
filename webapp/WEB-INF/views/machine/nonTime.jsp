@@ -142,7 +142,7 @@
         .daylabel {
             margin-right: 10px;
             margin-bottom: 13px;
-            font-size: 18px;
+            font-size: 22px;
             margin-left: 20px;
         }
         button-container.button{
@@ -190,6 +190,9 @@
       <button class="select-button">
         <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
       </button>
+      <button class="excel-button">
+                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
+        </button>
     </div>
   </div>
 
@@ -223,23 +226,67 @@ $(document).ready(function() {
     $(".select-button").click(function() {
         getDataList3();
     });
+
+    // 엑셀 다운로드 버튼 클릭 시
+    $(".excel-button").on("click", function () {
+        console.log("엑셀 다운로드 버튼 클릭됨");
+        
+        if (!dataTable3) {
+            alert("다운로드할 데이터가 없습니다. 먼저 조회를 실행해주세요.");
+            return;
+        }
+        
+        // Tabulator 내장 엑셀 다운로드 기능 사용
+        dataTable3.download("xlsx", "비가동현황.xlsx", {
+            sheetName: "비가동현황",
+            columnCalcs: false,
+            columnGroups: false,
+            rowGroups: false,
+            columnHeaders: true,
+            // 열 너비 설정
+            documentProcessing: function(workbook) {
+                // 첫 번째 워크시트 가져오기
+                var sheet = workbook.Sheets[workbook.SheetNames[0]];
+                
+                // 열 너비 설정 (포인트 단위)
+                var wscols = [
+                    {wch: 18},  // 설비
+                    {wch: 21},  // 시작시간
+                    {wch: 21},  // 종료시간
+                    {wch: 17},  // 발생시간(분)
+                    {wch: 50}   // 내용
+                ];
+                
+                sheet['!cols'] = wscols;
+                
+                return workbook;
+            }
+        });
+        
+        console.log("엑셀 다운로드 완료");
+    });
 });
 
 // ======== dataTable3 ========
 function getDataList3() {
     const RESOURCE_ID_MAP = {
-        "W0100": "세척 1호기",
-        "G01-GW21": "세척 2호기",
-        "S0100": "쇼트 1호기",
-        "S0200": "쇼트 2호기",
-        "S0300": "쇼트 3호기",
-        "S0400": "쇼트 4호기",
-        "50500": "쇼트 5호기",
-        "S0600": "쇼트 6호기",
+        "G01-GW21": "세척 1호기",
+        "G01-GW22": "세척 2호기",
+        "G02-GC01": "쇼트 1호기",
+        "G02-GC02": "쇼트 2호기",
+        "G02-GC03": "쇼트 3호기",
+        "G02-GC04": "쇼트 4호기",
+        "G02-GC05": "쇼트 5호기",
+        "G02-GC06": "쇼트 6호기",
         "G03-GG03": "G600",
         "G03-GG01": "G800",
         "G04-GG05": "K-BLACK",
         "G04-GG07": "공용설비",
+
+        "G05-GU01": "방청",
+        "G06-GE01": "E-Coating 1호기",
+        "G06-GE02": "E-Coating 2호기",
+        
         "G04-GG04": "공용설비"
     };
 
@@ -282,31 +329,31 @@ function getDataList3() {
             console.log("dataTable3 URL:", url);
             console.log("보내는 Params:", params);
         },
-        columns: [
-        	{
-        	    title: "설비",
-        	    field: "resourceID",
-        	    hozAlign: "center",
-        	    width: 200,
-        	    formatter: function(cell){
-        	        return RESOURCE_ID_MAP[cell.getValue()] || cell.getValue();
+
+        	columns: [
+        	    {
+        	        title: "설비",
+        	        field: "resourceID",
+        	        hozAlign: "center",
+        	        width: 200,
+        	        formatter: function(cell){
+        	            return RESOURCE_ID_MAP[cell.getValue()] || cell.getValue();
+        	        },
+        	        // 엑셀 다운로드 시 치환된 값 사용
+        	        accessorDownload: function(value, data, type, params, column){
+        	            return RESOURCE_ID_MAP[value] || value;
+        	        },
+        	        headerFilter: "select",
+        	        headerFilterParams: {
+        	            values: Object.values(RESOURCE_ID_MAP)
+        	        },
+        	        headerFilterFunc: function(headerValue, rowValue, rowData){
+        	            const mappedValue = RESOURCE_ID_MAP[rowValue] || rowValue;
+        	            if (!headerValue) return true;
+        	            return mappedValue === headerValue;
+        	        },
+        	        headerSort: true
         	    },
-
-        	    headerFilter: "select",
-        	    headerFilterParams: {
-        	        values: Object.values(RESOURCE_ID_MAP) // 사용자에게 보이는 이름으로 select 구성
-        	    },
-
-        	    headerFilterFunc: function(headerValue, rowValue, rowData){
-        	        // rowValue는 원래 resourceID("W0100" 등)
-        	        const mappedValue = RESOURCE_ID_MAP[rowValue] || rowValue;
-
-        	        if (!headerValue) return true;            // 필터 선택 안함 → 전체 표시
-        	        return mappedValue === headerValue;       // "세척 1호기" 등 비교
-        	    },
-
-        	    headerSort: true
-        	},
 
             { 
                 title: "시작시간", 
@@ -340,7 +387,7 @@ function getDataList3() {
             { 
                 title: "내용", 
                 field: "downtime_name", 
-                hozAlign: "center", 
+                hozAlign: "left", 
                 width: 400,
                 headerFilter: "input",
                 headerSort: true

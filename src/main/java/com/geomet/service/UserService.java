@@ -1,6 +1,7 @@
 package com.geomet.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
@@ -83,4 +84,15 @@ public interface UserService {
     boolean deleteUser(Users users);
     
     boolean allR(Users users);
+    
+    
+    List<Users> getDay(Users users);
+
+    void saveDay(Map<String, Object> param);
+
+    void insertDay(Users users);
+
+    void delDay(Users users);
+    
+    void updateImage(Users users);
 }

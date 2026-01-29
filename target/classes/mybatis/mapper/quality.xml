@@ -28,28 +28,74 @@
 		ORDER BY action_date DESC
 	</select>
 
+<!-- 부적합품 관리 수정 -->
+<update id="updateNonProductManage" parameterType="quality">
+    UPDATE tb_non_product_manage
+    SET 
+        defect_date = #{defect_date},
+        defect_place = #{defect_place},
+        defect_type = #{defect_type},
+        equipment = #{equipment},
+        product_no = #{product_no},
+        product_name = #{product_name},
+        defect_lot = #{defect_lot},
+        worker = #{worker},
+        action = #{action},
+        selection_method = #{selection_method},
+        action_date = #{action_date},
+        defect_quantity = #{defect_quantity},
+        cause = #{cause},
+        improvement = #{improvement},
+        yn_a = #{yn_a},
+        yn_b = #{yn_b},
+        start_date = #{start_date}
+    WHERE no = #{no}
+</update>
 
-	<insert id="saveNonProductManage" parameterType="Quality">
-		INSERT INTO
-		tb_non_product_manage (
-		no, defect_date, defect_type, equipment,
-		product_no, product_name,
-		defect_lot, worker, action, selection_method,
-		action_date,
-		defect_quantity, cause, improvement, yn_a, yn_b,
-		start_date
-		)
-		VALUES (
-		#{no}, #{defect_date}, #{defect_type},
-		#{equipment}, #{product_no},
-		#{product_name},
-		#{defect_lot}, #{worker},
-		#{action}, #{selection_method}, #{action_date},
-		#{defect_quantity},
-		#{cause}, #{improvement}, #{yn_a}, #{yn_b},
-		#{start_date}
-		)
-	</insert>
+<insert id="saveNonProductManage" parameterType="Quality">
+    INSERT INTO
+    tb_non_product_manage (
+        no,
+        defect_date,
+        defect_place,
+        defect_type,
+        equipment,
+        product_no,
+        product_name,
+        defect_lot,
+        worker,
+        action,
+        selection_method,
+        action_date,
+        defect_quantity,
+        cause,
+        improvement,
+        yn_a,
+        yn_b,
+        start_date
+    )
+    VALUES (
+        #{no},
+        #{defect_date},
+        #{defect_place},
+        #{defect_type},
+        #{equipment},
+        #{product_no},
+        #{product_name},
+        #{defect_lot},
+        #{worker},
+        #{action},
+        #{selection_method},
+        #{action_date},
+        #{defect_quantity},
+        #{cause},
+        #{improvement},
+        #{yn_a},
+        #{yn_b},
+        #{start_date}
+    )
+</insert>
+
 
 
 	<delete id="delNonProductManage" parameterType="string">
@@ -439,6 +485,7 @@
   <if test="date != null and date != '' and endDate != null and endDate != ''">
     AND date BETWEEN #{date} AND #{endDate}
   </if>
+  	ORDER BY id
 	</select>
 	<!-- 테스트/시험정보 탱크액 삭제 -->
 		<delete id="testTankDelete" parameterType="Quality">
@@ -557,12 +604,11 @@ CASE
         (c.mch_name = '1호기' AND m.table_code = 1)
      OR (c.mch_name = '2호기' AND m.table_code = 2)
        )
-
-
   WHERE 1 = 1
   <if test="date != null and date != '' and endDate != null and endDate != ''">
     AND c.date BETWEEN #{date} AND #{endDate}
   </if>
+  ORDER BY c.date, c.mch_name
 </select>
 
 	
@@ -888,7 +934,7 @@ SELECT * from tb_sst
                         THEN '합격' 
                         ELSE '불합격' 
                     END)
-                WHEN #{mch_name} LIKE '%K-BLACK%'
+                WHEN #{mch_name} LIKE '%K/B%'
                     THEN (CASE WHEN 
                         (ROUND((CAST((#{before_weight} - #{after_weight}) AS DECIMAL(15,4)) / (CAST(#{count} AS DECIMAL(15,4)) * CAST(#{surface} AS DECIMAL(15,4))) * 1000), 2)) >= 80
                         THEN '합격' 
@@ -908,7 +954,7 @@ SELECT * from tb_attachment
     <if test="date != null and date != '' and endDate != null and endDate != ''">
     AND DATE(date) BETWEEN #{date} AND #{endDate}
   </if>
-  order by mch_name asc
+  order by date, mch_name asc
 </select>
 <!-- 지오메트 후처리 부착량 조회 -->
 		<select id="turbidityList" parameterType="Quality" resultType="Quality">
@@ -918,7 +964,7 @@ SELECT * from tb_attachment
     <if test="date != null and date != '' and endDate != null and endDate != ''">
     AND DATE(date) BETWEEN #{date} AND #{endDate}
   </if>
-  order by mch_name asc
+  order by date, mch_name asc
 </select>
 <!-- 지오메트 부착량, 후처리 부착량 삭제 -->
 		<delete id="deleteAttachment" parameterType="Quality">
@@ -1092,4 +1138,16 @@ SELECT
 			GROUP BY T.date
 		ORDER BY T.date asc
 </select>
+<!-- 부착량, 후처리 부착량 모달 tabulator 기준정보 -->
+	<select id="getStandardList" parameterType="Quality"
+		resultType="Quality">
+		 SELECT *
+		 FROM tb_test_info
+		 <where>
+		 <if test="group_id != null and group_id != ''">
+	        AND GROUP_ID LIKE CONCAT('%', #{group_id}, '%')
+		 </if>
+		 </where>
+	     ORDER BY UPD_DT DESC
+	</select>
 </mapper>

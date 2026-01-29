@@ -2,7 +2,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html lang="ko">
-
+<!-- SheetJS 라이브러리 추가 (Tabulator보다 먼저 로드) -->
+<script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
 <!-- 제이쿼리홈페이지 js -->
 <script type="text/javascript" src="/geomet/js/jquery-3.7.1.min.js"></script>
 
@@ -237,7 +238,9 @@ function pageObject(paramKey){
 	         "e04":["/geomet/user/checkManage","유해물 취급시설 점검일지"],
 	         "e05":["/geomet/user/userPermission","사용자 권한부여"],
 	         "e06":["/geomet/user/userInsert","사용자 등록"],
-	         "e07":"",
+	         "e07":["/geomet/user/chemistryDay","유해화학물질"],
+	         "e08":["/geomet/user/directorDay","관리 감독자 "],
+	         "e09":["/geomet/user/steamDay","스팀 이송용배관"],
 	         "f01":["/geomet/work/inputControlStatus","생산설비 실시간 정보"],
 	         "f02":["/geomet/work/machineRealStatus","투입제어 및 모니터링"],
 	         "f03":"",

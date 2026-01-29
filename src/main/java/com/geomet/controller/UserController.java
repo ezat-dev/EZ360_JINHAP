@@ -3,9 +3,12 @@ package com.geomet.controller;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -22,6 +25,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -116,7 +120,6 @@ public class UserController {
 		 return rtnMap;
 	 }
 	 
-	 
 
 
 	 
@@ -189,12 +192,9 @@ public class UserController {
 	 }
 	 
 	 
+
 	 
-	 
-	 
-	 
-	 
-	 
+
 	 
 	 //사용자 등록 조회 
 	 @RequestMapping(value = "/user/userInsert", method = RequestMethod.GET)
@@ -942,5 +942,209 @@ public class UserController {
 				os.flush();
 			}
 		}
+		
+		
+		
+		 
+		 @RequestMapping(value = "/user/chemistryDay", method = RequestMethod.GET)
+		 public String chemistryDay(Users users) {
+			 return "/user/chemistryDay.jsp";	       
+		 }
+		 @RequestMapping(value = "/user/directorDay", method = RequestMethod.GET)
+		 public String directorDay(Users users) {
+			 return "/user/directorDay.jsp";	       
+		 }
+		 @RequestMapping(value = "/user/steamDay", method = RequestMethod.GET)
+		 public String steamDay(Users users) {
+			 return "/user/steamDay.jsp";	       
+		 }
+		 
+		
+		
+		   @RequestMapping(value = "/user/day/list", method = RequestMethod.POST)
+		    @ResponseBody
+		    public List<Users> getDay(Users users) {
+
+		  
+		        return userService.getDay(users);
+		    }
+
+		    
+		    @RequestMapping(value = "/user/day/save", method = RequestMethod.POST)
+		    @ResponseBody
+		    public Map<String, Object> saveFproof(@RequestBody Map<String, Object> param) {       
+		        Map<String, Object> rtnMap = new HashMap<>();
+		        try {
+		            userService.saveDay(param);
+		            rtnMap.put("result", "success");
+		        } catch (Exception e) {
+		            rtnMap.put("result", "fail");
+		            rtnMap.put("message", e.getMessage());
+		        }
+		        return rtnMap;
+		    }
+		    
+		    
+		    @RequestMapping(value = "/user/day/insert", method = RequestMethod.POST)
+		    @ResponseBody
+		    public Map<String, Object> insertFproof(
+		            @RequestParam("y_m") String y_m,
+		            @RequestParam("page_code") String page_code
+		    ) {
+		        Map<String, Object> rtnMap = new HashMap<>();
+
+		        try {
+		            if (y_m == null || y_m.isEmpty()) {
+		                rtnMap.put("result", "fail");
+		                rtnMap.put("message", "y_m 값이 없습니다.");
+		                return rtnMap;
+		            }
+
+		            if (page_code == null || page_code.isEmpty()) {
+		                rtnMap.put("result", "fail");
+		                rtnMap.put("message", "page_code 값이 없습니다.");
+		                return rtnMap;
+		            }
+
+		            Users users = new Users();
+		            users.setY_m(y_m);
+		            users.setPage_code(page_code);   // ✅ 프론트에서 받은 값
+
+		            userService.insertDay(users);
+
+		            rtnMap.put("result", "success");
+
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            rtnMap.put("result", "fail");
+		            rtnMap.put("message", e.getMessage());
+		        }
+
+		        return rtnMap;
+		    }
+
+
+
+		    @RequestMapping(value = "/user/day/del", method = RequestMethod.POST)
+		    @ResponseBody
+		    public Map<String, Object> delfProof(@RequestBody Users users) {
+		        Map<String, Object> rtnMap = new HashMap<>();
+
+		        if (users.getId() == null) {
+		            rtnMap.put("data", "행 선택하세요");
+		            return rtnMap;
+		        }
+
+		        userService.delDay(users);
+
+		        rtnMap.put("data", "success"); 
+		        return rtnMap;
+		    }
+		    
+		     // 이미지 뷰
+		    @RequestMapping(value = "/user/day/viewImage", method = RequestMethod.GET)
+		    public void viewImage(@RequestParam("fileName") String fileName, HttpServletResponse response) throws IOException {
+		        String uploadDir = "D:/GEOMET양식/day_3/";
+
+		        if(fileName == null || fileName.trim().isEmpty()) {
+		            System.out.println("viewImage 호출 - 파일명이 없습니다!");
+		            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+		            return;
+		        }
+
+		        fileName = URLDecoder.decode(fileName, "UTF-8");
+		        fileName = Paths.get(fileName).getFileName().toString();
+
+		        System.out.println("viewImage 호출 - fileName: " + fileName);
+		        System.out.println("viewImage 호출 - fullPath: " + uploadDir + fileName);
+
+		        File file = new File(uploadDir, fileName);
+
+		        if(file.exists() && file.isFile()){
+		            String contentType = Files.probeContentType(file.toPath());
+		            if(contentType == null){
+		                contentType = "application/octet-stream";
+		            }
+		            response.setContentType(contentType);
+		            response.setContentLengthLong(file.length());
+
+		            try (OutputStream os = response.getOutputStream(); InputStream is = new FileInputStream(file)) {
+		                byte[] buffer = new byte[4096];
+		                int bytesRead;
+		                while((bytesRead = is.read(buffer)) != -1){
+		                    os.write(buffer, 0, bytesRead);
+		                }
+		                os.flush();
+		            } catch(IOException e){
+		                e.printStackTrace();
+		                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+		            }
+		        } else {
+		            System.out.println("viewImage - 파일 없음: " + uploadDir + fileName);
+		            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+		        }
+		    }
+
+		    
+		    @RequestMapping(value = "/user/day/uploadImage", method = RequestMethod.POST)
+		    @ResponseBody
+		    public Map<String, Object> uploadImage(
+		            @RequestParam("cnt") int cnt,
+		            @RequestParam("file") MultipartFile file) {
+
+		        Map<String, Object> rtnMap = new HashMap<>();
+		        System.out.println("uploadImage 호출 - cnt: " + cnt); // 호출 확인
+
+		        try {
+		            if(file == null || file.isEmpty()){
+		                System.out.println("uploadImage - 파일이 비어 있음");
+		                rtnMap.put("result", "fail");
+		                rtnMap.put("message", "파일이 비어 있습니다.");
+		                return rtnMap;
+		            }
+
+		            String uploadDir = "D:/GEOMET양식/day_3/";
+		            File dir = new File(uploadDir);
+		            if(!dir.exists()) {
+		                dir.mkdirs();
+		                System.out.println("uploadImage - 폴더 생성: " + uploadDir);
+		            }
+
+		            // 원래 파일명에서 경로문자 제거 및 정리
+		            String originalFilename = StringUtils.cleanPath(file.getOriginalFilename());
+		            originalFilename = Paths.get(originalFilename).getFileName().toString();
+		            String sanitized = originalFilename.replaceAll("[\\\\/:*?\"<>|]", "_");
+
+		            String fileName = sanitized; // 타임스탬프 제거
+		            File dest = new File(uploadDir, fileName);
+
+		            // 파일 저장
+		            file.transferTo(dest);
+		            System.out.println("uploadImage - 파일 저장 완료: " + dest.getAbsolutePath());
+
+		            // DB에 저장
+		            Users users = new Users();
+		            users.setCnt(cnt);
+		            users.setImg_url(fileName);
+		            userService.updateImage(users);
+		            System.out.println("uploadImage - DB 업데이트 완료: cnt=" + cnt + ", fileName=" + fileName);
+
+		            rtnMap.put("result", "success");
+		            rtnMap.put("fileName", fileName);
+
+		        } catch (IOException e){
+		            e.printStackTrace();
+		            rtnMap.put("result", "fail");
+		            rtnMap.put("message", e.getMessage());
+		        } catch (Exception e) {
+		            e.printStackTrace();
+		            rtnMap.put("result", "fail");
+		            rtnMap.put("message", e.getMessage());
+		        }
+
+		        System.out.println("uploadImage 종료 - 결과: " + rtnMap.get("result"));
+		        return rtnMap;
+		    }
+		
 }
 

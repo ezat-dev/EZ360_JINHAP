@@ -629,613 +629,725 @@
 
 
 <script>
-  let table1, table2, table3, selectedRowData;
-  let now_page_code = "c06";
+let table1, table2, table3, table4, selectedRowData;
+let now_page_code = "c06";
 
-  $(".bt1").show();
-  $(".bt3").hide();
-  $(".bt4").hide();
+$(".bt1").show();
+$(".bt3").hide();
+$(".bt4").hide();
 
-  $(".bt1_1").show();
-  $(".bt3_3").hide();
-  $(".bt4_4").hide();
+$(".bt1_1").show();
+$(".bt3_3").hide();
+$(".bt4_4").hide();
 
+document.addEventListener('DOMContentLoaded', () => {
+  const map = {
+    K_BLACK: ' 점도 (35~55초)',
+    ML:      ' 점도 (25~45초)',
+    PL:      ' 점도 (15~35초)'
+  };
 
-  document.addEventListener('DOMContentLoaded', () => {
-	  const map = {
-	    K_BLACK: ' 점도 (35~55초)',
-	    ML:      ' 점도 (25~45초)',
-	    PL:      ' 점도 (15~35초)'
-	  };
+  document.querySelectorAll("select[name='mch_name']").forEach(selectEl => {
+    const initial = selectEl.value;
+    const label = document.getElementById('viscLabel');
+    if (label) label.textContent = map[initial] || '점도';
 
-	  document.querySelectorAll("select[name='mch_name']").forEach(selectEl => {
-	    // 초기 라벨 동기화 (필요하면)
-	    const initial = selectEl.value;
-	    const label = document.getElementById('viscLabel');
-	    if (label) label.textContent = map[initial] || '점도';
-
-	    // 변경 이벤트 연결
-	    selectEl.addEventListener('change', function () {
-	      const label = document.getElementById('viscLabel');
-	      if (!label) return;
-	      label.textContent = map[this.value] || '점도';
-	    });
-	  });
-	});
-
-
-  
+    selectEl.addEventListener('change', function () {
+      const label = document.getElementById('viscLabel');
+      if (!label) return;
+      label.textContent = map[this.value] || '점도';
+    });
+  });
+});
 
 //yyyy-MM-dd 포맷 함수
-  function fmtDate(d) {
-    const y = d.getFullYear();
-    const m = String(d.getMonth() + 1).padStart(2, '0');
-    const day = String(d.getDate()).padStart(2, '0');
-    return y + '-' + m + '-' + day;
-  }
+function fmtDate(d) {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + day;
+}
 
-  $(function() {
-	  const now = new Date();
-	  console.log("now: ", now);
-	  console.log("now 변환: ", fmtDate(now));
-	  const first = new Date(now.getFullYear(), now.getMonth(), 1);
-	  console.log("first: ", first);
-	  console.log("first 변환: ", fmtDate(first));
+$(function() {
+  const now = new Date();
+  console.log("now: ", now);
+  console.log("now 변환: ", fmtDate(now));
+  const first = new Date(now.getFullYear(), now.getMonth(), 1);
+  console.log("first: ", first);
+  console.log("first 변환: ", fmtDate(first));
 
-	  // 페이지 진입 시 기본값 세팅
-	  $('#in_date').val(fmtDate(first));
-	  $('#endDate').val(fmtDate(now));
-    initTables();
-    loadWorkDailyData();
+  $('#in_date').val(fmtDate(first));
+  $('#endDate').val(fmtDate(now));
+  initTables();
+  loadWorkDailyData();
 
+  const today = new Date().toISOString().split('T')[0];
 
-    const today = new Date().toISOString().split('T')[0];
-
-    $('.bt1').on('click', function(){
-    	 $('#corrForm1').find('input[type="hidden"], input[type="text"]').val('');
-      $('#corrForm1').find('input[name="in_date"]').val(today);
-	  const mch_name = $("#mch_name").val();
-	  $('#corrForm1').find('select[name="mch_name"]').val(mch_name);
-      $('#modalContainer1').addClass('show').show();
-    });
-
-    $('.bt2').on('click', function() {
-    	
-    	  $('#corrForm2')[0].reset();
-	  	  $('#corrForm2').find('input[type="hidden"], input[type="text"]').val('');
-    	  $('#corrForm2').find('input[name="in_date"]').val(today);
-
-    	  $('#modalContainer2').addClass('show').show();
-    	});
-
-
-    $('.bt3').on('click', function(){
-      if ($('#corrForm3')[0].reset) $('#corrForm3')[0].reset();
-      $('#corrForm3').find('input[name="in_date"]').val(today);
-	  const mch_name = $("#mch_name").val();
-	  $('#corrForm3').find('select[name="mch_name"]').val(mch_name);
-      $('#modalContainer3').addClass('show').show();
-    });
-
-    $('.bt4').on('click', function(){
-        if ($('#corrForm4')[0].reset) $('#corrForm4')[0].reset();
-        $('#corrForm4').find('input[name="in_date"]').val(today);
-  	  const mch_name = $("#mch_name").val();
-  	  $('#corrForm4').find('select[name="mch_name"]').val(mch_name);
-        $('#modalContainer4').addClass('show').show();
-      });
+  $('.bt1').on('click', function(){
+    $('#corrForm1').find('input[type="hidden"], input[type="text"]').val('');
+    $('#corrForm1').find('input[name="in_date"]').val(today);
+    const mch_name = $("#mch_name").val();
+    $('#corrForm1').find('select[name="mch_name"]').val(mch_name);
+    $('#modalContainer1').addClass('show').show();
   });
 
-  $('.close1, #closeModal1').click(function() {
+  $('.bt2').on('click', function() {
+    $('#corrForm2')[0].reset();
+    $('#corrForm2').find('input[type="hidden"], input[type="text"]').val('');
+    $('#corrForm2').find('input[name="in_date"]').val(today);
+    $('#modalContainer2').addClass('show').show();
+  });
+
+  $('.bt3').on('click', function(){
+    if ($('#corrForm3')[0].reset) $('#corrForm3')[0].reset();
+    $('#corrForm3').find('input[name="in_date"]').val(today);
+    const mch_name = $("#mch_name").val();
+    $('#corrForm3').find('select[name="mch_name"]').val(mch_name);
+    $('#modalContainer3').addClass('show').show();
+  });
+
+  $('.bt4').on('click', function(){
+    if ($('#corrForm4')[0].reset) $('#corrForm4')[0].reset();
+    $('#corrForm4').find('input[name="in_date"]').val(today);
+    const mch_name = $("#mch_name").val();
+    $('#corrForm4').find('select[name="mch_name"]').val(mch_name);
+    $('#modalContainer4').addClass('show').show();
+  });
+
+  // 엑셀 다운로드 버튼 클릭 이벤트
+  $(".excel-button").on("click", function () {
+    console.log("엑셀 다운로드 버튼 클릭됨");
+    
+    const mch_name = $("#mch_name").val();
+    const group1 = ["G800", "G600", "지오메트"];
+    const group2 = ["ML", "PL"];
+    const group4 = ["K_BLACK"];
+    
+    let activeTable = null;
+    let fileName = "액교반관리_";
+    
+    // 현재 활성화된 테이블 확인 및 파일명 설정
+    if (group1.includes(mch_name)) {
+      activeTable = table1;
+      fileName += "지오메트.xlsx";
+    } else if (group2.includes(mch_name)) {
+      activeTable = table3;
+      fileName += mch_name + ".xlsx";
+    } else if (group4.includes(mch_name)) {
+      activeTable = table4;
+      fileName += "K_BLACK.xlsx";
+    }
+    
+    if (!activeTable) {
+      alert("다운로드할 데이터가 없습니다.");
+      return;
+    }
+    
+    // Tabulator 내장 엑셀 다운로드 기능 사용
+    activeTable.download("xlsx", fileName, {
+      sheetName: "액교반관리",
+      columnCalcs: false,
+      columnGroups: false,
+      rowGroups: false,
+      columnHeaders: true,
+      // 열 너비 설정
+      documentProcessing: function(workbook) {
+        var sheet = workbook.Sheets[workbook.SheetNames[0]];
+        
+        var wscols;
+        
+        // 테이블별 열 너비 설정
+        if (group1.includes(mch_name)) {
+          // table1 (지오메트) 열 너비
+          wscols = [
+            {wch: 12},  // 날짜
+            {wch: 10},  // 설비
+            {wch: 10},  // 교반기
+            {wch: 12},  // G1 온도
+            {wch: 12},  // G2 온도
+            {wch: 15},  // G1 LOTNO
+            {wch: 15},  // G2 LOTNO
+            {wch: 15},  // 증점제
+            {wch: 12},  // 교반 시작시간
+            {wch: 12},  // 증점제 투입시간
+            {wch: 12},  // 점도
+            {wch: 12},  // 약품 출고시간
+            {wch: 12},  // 교반 시간
+            {wch: 15},  // 확인자
+            {wch: 15},  // 증점제 투입 후 rpm
+            {wch: 15},  // 증점제 LOTNO
+            {wch: 12},  // 온도
+            {wch: 12}   // 습도
+          ];
+        } else if (group2.includes(mch_name) || group4.includes(mch_name)) {
+          // table3, table4 (ML, PL, K_BLACK) 열 너비
+          wscols = group4.includes(mch_name) ? [
+            {wch: 12},  // 날짜
+            {wch: 10},  // 설비
+            {wch: 10},  // 교반기
+            {wch: 15},  // 교반룸 습도
+            {wch: 15},  // 교반룸 온도
+            {wch: 15},  // 온도
+            {wch: 15},  // 신액 Lot No.
+            {wch: 15},  // 교반 시작 시간
+            {wch: 18},  // 교반 시간
+            {wch: 20},  // 설비별 점도
+            {wch: 15},  // 약품 출고 시간
+            {wch: 15},  // 교반 rpm
+            {wch: 15}   // 확인자
+          ] : [
+            {wch: 12},  // 날짜
+            {wch: 10},  // 설비
+            {wch: 15},  // 교반룸 습도
+            {wch: 15},  // 교반룸 온도
+            {wch: 15},  // 온도
+            {wch: 15},  // 신액 Lot No.
+            {wch: 15},  // 교반 시작 시간
+            {wch: 18},  // 교반 시간
+            {wch: 20},  // 설비별 점도
+            {wch: 15},  // 약품 출고 시간
+            {wch: 15},  // 교반 rpm
+            {wch: 15}   // 확인자
+          ];
+        }
+        
+        sheet['!cols'] = wscols;
+        
+        return workbook;
+      }
+    });
+    
+    console.log("엑셀 다운로드 완료");
+  });
+});
+
+$('.close1, #closeModal1').click(function() {
+  $('#modalContainer1').removeClass('show').hide();
+});
+$('.close3, #closeModal3').click(function() {
+  $('#modalContainer3').removeClass('show').hide();
+});
+$('.close4, #closeModal4').click(function() {
+  $('#modalContainer4').removeClass('show').hide();
+});
+
+$('#saveCorrStatus1').click(function(event) {
+  event.preventDefault();
+  const formData = {};
+  $('#corrForm1').find('input[name], select[name]').each(function() {
+    formData[this.name] = $(this).val();
+  });
+  if (formData.id === "") {
+    formData.id = null;
+  }
+
+  console.log("테이블 1전송 데이터:", formData);
+  $.ajax({
+    url: "/geomet/condition/machineliquidmanage/insert",
+    method: "POST",
+    data: formData,
+    success: function() {
+      alert('저장되었습니다.');
+      $('#modalContainer1').removeClass('show').hide();
+      loadWorkDailyData();
+    },
+    error: function() {
+      alert('저장 중 오류가 발생했습니다.');
+    }
+  });
+});
+
+$('#saveCorrStatus2').click(function(e) {
+  e.preventDefault();
+  const formData = {};
+  $('#corrForm2').find('input[name], select[name]').each(function() {
+    formData[this.name] = $(this).val();
+  });
+  if (formData.id === "") {
+    formData.id = null;
+  }
+
+  console.log("테이블 2전송 데이터:", formData);
+  $.ajax({
+    url: '/geomet/condition/machineliquidmanage2/insert',
+    method: "POST",
+    data: formData,
+    success: function() {
+      alert('저장되었습니다.');
+      $('#modalContainer2').removeClass('show').hide();
+      loadWorkDailyData();
+    },
+    error: function() {
+      alert('저장 중 오류가 발생했습니다.');
+    }
+  });
+});
+
+$('#saveCorrStatus3').click(function(e) {
+  e.preventDefault();
+  const formData = {};
+  $('#corrForm3').find('input[name], select[name]').each(function() {
+    formData[this.name] = $(this).val();
+  });
+  $.ajax({
+    url: '/geomet/condition/machineliquidmanage/insert',
+    method: "POST",
+    data: formData,
+    success: function() {
+      alert('저장되었습니다.');
+      $('#modalContainer3').removeClass('show').hide();
+      table3.updateRow(formData.id, formData);
+      loadWorkDailyData();
+    },
+    error: function() {
+      alert('저장 중 오류가 발생했습니다.');
+    }
+  });
+});
+
+$('#saveCorrStatus4').click(function(e) {
+  e.preventDefault();
+  const formData = {};
+  $('#corrForm4').find('input[name], select[name]').each(function() {
+    formData[this.name] = $(this).val();
+  });
+  $.ajax({
+    url: '/geomet/condition/machineliquidmanage/insert',
+    method: "POST",
+    data: formData,
+    success: function() {
+      alert('저장되었습니다.');
+      $('#modalContainer4').removeClass('show').hide();
+      table4.updateRow(formData.id, formData);
+      loadWorkDailyData();
+    },
+    error: function() {
+      alert('저장 중 오류가 발생했습니다.');
+    }
+  });
+});
+
+function loadWorkDailyData() {
+  const in_date = $("#in_date").val();
+  const mch_name = $("#mch_name").val();
+  const endDate = $('#endDate').val();
+  console.log("in_date", in_date);
+  console.log("mch_name", mch_name);
+  console.log("endDate", endDate);
+  $.ajax({
+    type: "POST",
+    url: "/geomet/condition/machineliquidmanage/list",
+    contentType: "application/json",
+    data: JSON.stringify({ in_date, mch_name, endDate }),
+    success: function(response) {
+      table1.setData(response.table1);
+      table3.setData(response.table1);
+      table4.setData(response.table1);
+    },
+    error: function(xhr) {
+      alert("조회에 실패했습니다.");
+    }
+  });
+}
+
+function toggleTable() {
+  const value = $("#mch_name").val();
+  const group1 = ["G800", "G600", "지오메트"];
+  const group2 = ["ML", "PL"];
+  const group4 = ["K_BLACK"];
+
+  if (group1.includes(value)) {
+    $("#table1").show();
+    $("#table3").hide();
+    $("#table4").hide();
+    
+    $(".bt1").show();
+    $(".bt3").hide();
+    $(".bt4").hide();
+
+    $(".bt1_1").show();
+    $(".bt3_3").hide();
+    $(".bt4_4").hide();
+    
+  } else if (group2.includes(value)) {
+    $("#table1").hide();
+    $("#table3").show();
+    $("#table4").hide();
+    
+    $(".bt1").hide();
+    $(".bt3").show();
+    $(".bt4").hide();
+
+    $(".bt1_1").hide();
+    $(".bt3_3").show();
+    $(".bt4_4").hide();
+    
+  } else if (group4.includes(value)) {
+    $("#table1").hide();
+    $("#table3").hide();
+    $("#table4").show();
+    
+    $(".bt1").hide();
+    $(".bt3").hide();
+    $(".bt4").show();
+
+    $(".bt1_1").hide();
+    $(".bt3_3").hide();
+    $(".bt4_4").show();
+    
+  } else {
+    $("#table1, #table3, #table4").hide();
+    $(".bt1, .bt3, .bt4").hide();
+  }
+
+  loadWorkDailyData();
+}
+
+function initTables() {
+  table1 = new Tabulator("#table1", {
+    height: "655px",
+    layout: "fitColumns",
+    selectable: true,
+    headerHozAlign: "center",
+    headerVertAlign: "middle",
+    columnDefaults: {
+      hozAlign: "center",
+      vertAlign: "middle",
+      headerTooltip: false
+    },
+    columns: [
+      { title: "NO", field: "id", headerSort: false, hozAlign: "center", visible: false },
+      { title: "날짜", field: "in_date", hozAlign: "center", headerSort: false, width: 110 },
+      { title: "설비", field: "mch_name", hozAlign: "center", headerSort: false, width: 90 },  
+      { title: "교반기", width: 90, field: "m68_mixer_no", headerSort: false, width: 80 },
+      { title: "G1 온도<br>(20±5℃)", field: "m68_g1_temp", width: 80, headerSort: false,
+        formatter: function(cell){
+          const value = cell.getValue();
+          if(value < 15 || 25 < value){
+            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+          } else {
+            return value;
+          }
+        }
+      },
+      { title: "G2 온도<br>(20±5℃)", field: "m68_g2_temp", width: 80, headerSort: false,
+        formatter: function(cell){
+          const value = cell.getValue();
+          if(value < 15 || 25 < value){
+            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+          } else {
+            return value;
+          }
+        }
+      },
+      { title: "G1<br>LOTNO", field: "m68_g1_lot_no", headerSort: false },
+      { title: "G2<br>LOTNO", field: "m68_g2_lot_no", headerSort: false, width: 110 },
+      { title: "증점제<br>(220±40g)", field: "m68_thickener_g", headerSort: false, width: 90,
+        formatter: function(cell){
+          const value = cell.getValue();
+          if(value < 180 || 260 < value){
+            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+          } else {
+            return value;
+          }
+        }
+      },
+      { title: "교반<br>시작시간", field: "m68_mixing_start_time", headerSort: false, width: 80 },
+      { title: "증점제<br>투입시간", field: "m68_thickener_time", headerSort: false, width: 90 },
+      { title: "점도<br>48±7초", field: "m68_viscosity", headerSort: false, width: 80,
+        formatter: function(cell){
+          const value = cell.getValue();
+          if(value < 41 || 55 < value){
+            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+          } else {
+            return value;
+          }
+        }
+      },
+      { title: "약품<br>출고시간", field: "m68_out_time", headerSort: false, width: 90 },
+      { title: "교반 시간", field: "m68_mixing_time", headerSort: false, width: 90 },
+      { title: "확인자<br>최소 24시간", field: "m68_checker", headerSort: false, width: 110 },
+      { title: "증점제<br>투입 후 rpm<br>50Hz", field: "m68_post_rpm", width: 110, headerSort: false },
+      { title: "증점제<br>LOTNO.", field: "m68_thickener_lot", headerSort: false },
+      { title: "온도<br>(20±5℃)", field: "m68_mch_temp", headerSort: false, width: 80,
+        formatter: function(cell){
+          const value = cell.getValue();
+          if(25 < value){
+            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+          } else {
+            return value;
+          }
+        }
+      },
+      { title: "습도<br>(50±30%)", field: "m68_humidity", headerSort: false, width: 80,
+        formatter: function(cell){
+          const value = cell.getValue();
+          if(value < 20){
+            return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+          } else {
+            return value;
+          }
+        }
+      }
+    ],
+    rowDblClick: function(e, row) {
+      const data = row.getData();
+      const $form = $('#corrForm1');
+      if ($form[0].reset) $form[0].reset();
+      $form.find('input[name="id"]').val(data.id);
+      $('select[name="mch_name"]').val(data.mch_name);
+      $form.find('input[name="in_date"]').val(data.in_date);
+      $form.find('input[name="date"]').val(data.date);
+      $form.find('input[name="m68_mixer_no"]').val(data.m68_mixer_no);
+      $form.find('input[name="m68_g1_temp"]').val(data.m68_g1_temp);
+      $form.find('input[name="m68_g2_temp"]').val(data.m68_g2_temp);
+      $form.find('input[name="m68_g1_lot_no"]').val(data.m68_g1_lot_no);
+      $form.find('input[name="m68_g2_lot_no"]').val(data.m68_g2_lot_no);
+      $form.find('input[name="m68_thickener_time"]').val(data.m68_thickener_time);
+      $form.find('input[name="m68_thickener_g"]').val(data.m68_thickener_g);
+      $form.find('input[name="m68_thickener_lot"]').val(data.m68_thickener_lot);
+      $form.find('input[name="m68_post_rpm"]').val(data.m68_post_rpm);
+      $form.find('input[name="m68_mixing_start_time"]').val(data.m68_mixing_start_time);
+      $form.find('input[name="m68_mixing_time"]').val(data.m68_mixing_time);
+      $form.find('input[name="m68_checker"]').val(data.m68_checker);
+      $form.find('input[name="m68_mch_temp"]').val(data.m68_mch_temp);
+      $form.find('input[name="m68_humidity"]').val(data.m68_humidity);
+      $form.find('input[name="m68_viscosity"]').val(data.m68_viscosity);
+      $form.find('input[name="m68_out_time"]').val(data.m68_out_time);
+      $('#modalContainer1').addClass('show').show();
+    }
+  });
+  $('#modalContainer1').on('click', '#closeModal1, #closeModal1Button', function() {
     $('#modalContainer1').removeClass('show').hide();
   });
-  $('.close3, #closeModal3').click(function() {
-    $('#modalContainer3').removeClass('show').hide();
-  });
-  $('.close4, #closeModal4').click(function() {
-	    $('#modalContainer4').removeClass('show').hide();
-	  });
-
-  $('#saveCorrStatus1').click(function(event) {
-    event.preventDefault();
-    const formData = {};
-    $('#corrForm1').find('input[name], select[name]').each(function() {
-      formData[this.name] = $(this).val();
-    });
-    if (formData.id === "") {
-        formData.id = null;
-      }
-
-    console.log("테이블 1전송 데이터:", formData);
-    $.ajax({
-      url: "/geomet/condition/machineliquidmanage/insert",
-      method: "POST",
-      data: formData,
-      success: function() {
-        alert('저장되었습니다.');
-        $('#modalContainer1').removeClass('show').hide();
-        loadWorkDailyData();
-      },
-      error: function() {
-        alert('저장 중 오류가 발생했습니다.');
-      }
-    });
-  });
-
-  $('#saveCorrStatus2').click(function(e) {
-    e.preventDefault();
-    const formData = {};
-    $('#corrForm2').find('input[name], select[name]').each(function() {
-        formData[this.name] = $(this).val();
-      });
-      if (formData.id === "") {
-          formData.id = null;
-        }
-
-    console.log("테이블 2전송 데이터:", formData);
-    $.ajax({
-      url: '/geomet/condition/machineliquidmanage2/insert',
-      method: "POST",
-      data: formData,
-      success: function() {
-    	    alert('저장되었습니다.');
-        $('#modalContainer2').removeClass('show').hide();
-        loadWorkDailyData();
-      },
-      error: function() {
-          alert('저장 중 오류가 발생했습니다.');
-      }
-    });
-  });
-
-  $('#saveCorrStatus3').click(function(e) {
-    e.preventDefault();
-    const formData = {};
-    $('#corrForm3').find('input[name], select[name]').each(function() {
-      formData[this.name] = $(this).val();
-    });
-    $.ajax({
-      url: '/geomet/condition/machineliquidmanage/insert',
-      method: "POST",
-      data: formData,
-      success: function() {
-        alert('저장되었습니다.');
-        $('#modalContainer3').removeClass('show').hide();
-        table3.updateRow(formData.id, formData);
-        loadWorkDailyData();
-      },
-      error: function() {
-        alert('저장 중 오류가 발생했습니다.');
-      }
-    });
-  });
-
-  $('#saveCorrStatus4').click(function(e) {
-	    e.preventDefault();
-	    const formData = {};
-	    $('#corrForm4').find('input[name], select[name]').each(function() {
-	      formData[this.name] = $(this).val();
-	    });
-	    $.ajax({
-	      url: '/geomet/condition/machineliquidmanage/insert',
-	      method: "POST",
-	      data: formData,
-	      success: function() {
-	        alert('저장되었습니다.');
-	        $('#modalContainer4').removeClass('show').hide();
-	        table4.updateRow(formData.id, formData);
-	        loadWorkDailyData();
-	      },
-	      error: function() {
-	        alert('저장 중 오류가 발생했습니다.');
-	      }
-	    });
-	  });
-
-  function loadWorkDailyData() {
-    const in_date = $("#in_date").val();
-    const mch_name = $("#mch_name").val();
-    const endDate = $('#endDate').val();
-    console.log("in_date", in_date);
-    console.log("mch_name", mch_name);
-    console.log("endDate", endDate);
-    $.ajax({
-      type: "POST",
-      url: "/geomet/condition/machineliquidmanage/list",
-      contentType: "application/json",
-      data: JSON.stringify({ in_date, mch_name, endDate }),
-      success: function(response) {
-        table1.setData(response.table1);
-        //table2.setData(response.table2);
-        table3.setData(response.table1);
-        table4.setData(response.table1);
-      },
-      error: function(xhr) {
-        alert("조회에 실패했습니다.");
-      }
-    });
-  }
-
-  function toggleTable() {
-	  const value = $("#mch_name").val();
-	  const group1 = ["G800", "G600", "지오메트"];
-	  const group2 = ["ML", "PL"];
-	  const group4 = ["K_BLACK"];
-
-	  if (group1.includes(value)) {
-	    $("#table1").show();
-	    $("#table3").hide();
-	    $("#table4").hide();
-	    
-	    $(".bt1").show();
-	    $(".bt3").hide();
-	    $(".bt4").hide();
-
-	    $(".bt1_1").show();
-	    $(".bt3_3").hide();
-	    $(".bt4_4").hide();
-	    
-	  } else if (group2.includes(value)) {
-	    $("#table1").hide();
-	    $("#table3").show();
-	    $("#table4").hide();
-	    
-	    $(".bt1").hide();
-	    $(".bt3").show();
-	    $(".bt4").hide();
-
-	    $(".bt1_1").hide();
-	    $(".bt3_3").show();
-	    $(".bt4_4").hide();
-	    
-	  }else if (group4.includes(value)) {
-		    $("#table1").hide();
-		    $("#table3").hide();
-		    $("#table4").show();
-		    
-		    $(".bt1").hide();
-		    $(".bt3").hide();
-		    $(".bt4").show();
-
-		    $(".bt1_1").hide();
-		    $(".bt3_3").hide();
-		    $(".bt4_4").show();
-		    
-		  } else {
-	    $("#table1, #table3", "#table4").hide();
-	    $(".bt1, .bt3").hide();
-	  }
-
-	  loadWorkDailyData();
-	}
-
-
-
-/*   window.addEventListener("DOMContentLoaded", () => {
-    $("#mch_name").val("G800");
-    toggleTable();
-  }); */
-
-  function initTables() {
-    table1 = new Tabulator("#table1", {
-      height: "655px",
-      layout: "fitColumns",
-      selectable: true,
-      headerHozAlign: "center",
-      headerVertAlign: "middle",
-      columnDefaults: {
-        hozAlign: "center",
-        vertAlign: "middle",
-        headerTooltip: false
-      },
-      columns: [
-    	    { title: "NO",            field: "id",              headerSort: false, hozAlign: "center", visible: false },
-
-    	    { title: "날짜",          field: "in_date",hozAlign: "center",         headerSort: false, width: 110 },
-    	    { title: "설비",          field: "mch_name",hozAlign: "center",        headerSort: false, width: 90},  
-            { title: "교반기", width: 90, field: "m68_mixer_no", headerSort: false, width: 80 },
-            { title: "G1 온도<br>(20±5℃)", field: "m68_g1_temp", width: 80, headerSort: false,
-                formatter: function(cell){
-                    const value = cell.getValue();
-					if(value < 15 || 25 < value){
-						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-						}else{
-							return value;
-							}
-                    }
-             },
-            { title: "G2 온도<br>(20±5℃)", field: "m68_g2_temp", width: 80, headerSort: false,
-                 formatter: function(cell){
-                     const value = cell.getValue();
- 					if(value < 15 || 25 < value){
- 						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
- 						}else{
-							return value;
-						}
-                     }
-               },
-            { title: "G1<br>LOTNO", field: "m68_g1_lot_no", headerSort: false},
-            { title: "G2<br>LOTNO", field: "m68_g2_lot_no", headerSort: false, width: 110  },
-            { title: "증점제<br>(220±40g)", field: "m68_thickener_g", headerSort: false, width: 90,
-                formatter: function(cell){
-                    const value = cell.getValue();
-					if(value < 180 || 260 < value){
-						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-						}else{
-							return value;
-						}
-                    }
-              },
-            { title: "교반<br>시작시간", field: "m68_mixing_start_time", headerSort: false, width: 80  },
-            { title: "증점제<br>투입시간", field: "m68_thickener_time", headerSort: false, width: 90  },
-            { title: "점도<br>48±7초", field: "m68_viscosity", headerSort: false, width: 80,
-                formatter: function(cell){
-                    const value = cell.getValue();
-					if(value < 41 || 55 < value){
-						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-						}else{
-							return value;
-						}
-                    }
-              },
-            { title: "약품<br>출고시간", field: "m68_out_time", headerSort: false, width: 90},
-            { title: "교반 시간", field: "m68_mixing_time", headerSort: false, width: 90  },
-            { title: "확인자<br>최소 24시간", field: "m68_checker", headerSort: false, width: 110  },
-            { title: "증점제<br>투입 후 rpm<br>50Hz", field: "m68_post_rpm", width: 110, headerSort: false  },
-            { title: "증점제<br>LOTNO.", field: "m68_thickener_lot", headerSort: false},
-            { title: "온도<br>(20±5℃)", field: "m68_mch_temp", headerSort: false, width: 80,
-                formatter: function(cell){
-                    const value = cell.getValue();
-					if(25 < value){
-						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-						}else{
-							return value;
-						}
-                    }
-              },
-            { title: "습도<br>(50±30%)", field: "m68_humidity", headerSort: false, width: 80,
-                  formatter: function(cell){
-                      const value = cell.getValue();
-  					if(value < 20){
-  						return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-  						}else{
-							return value;
-						}
-                      }
-                }
-      ],
-      rowDblClick: function(e, row) {
-        const data = row.getData();
-        const $form = $('#corrForm1');
-        if ($form[0].reset) $form[0].reset();
-        $form.find('input[name="id"]').val(data.id);
-        $('select[name="mch_name"]').val(data.mch_name);
-        $form.find('input[name="in_date"]').val(data.in_date);
-        $form.find('input[name="date"]').val(data.date);
-        $form.find('input[name="m68_mixer_no"]').val(data.m68_mixer_no);
-        $form.find('input[name="m68_g1_temp"]').val(data.m68_g1_temp);
-        $form.find('input[name="m68_g2_temp"]').val(data.m68_g2_temp);
-        $form.find('input[name="m68_g1_lot_no"]').val(data.m68_g1_lot_no);
-        $form.find('input[name="m68_g2_lot_no"]').val(data.m68_g2_lot_no);
-        $form.find('input[name="m68_thickener_time"]').val(data.m68_thickener_time);
-        $form.find('input[name="m68_thickener_g"]').val(data.m68_thickener_g);
-        $form.find('input[name="m68_thickener_lot"]').val(data.m68_thickener_lot);
-        $form.find('input[name="m68_post_rpm"]').val(data.m68_post_rpm);
-        $form.find('input[name="m68_mixing_start_time"]').val(data.m68_mixing_start_time);
-        $form.find('input[name="m68_mixing_time"]').val(data.m68_mixing_time);
-        $form.find('input[name="m68_checker"]').val(data.m68_checker);
-        $form.find('input[name="m68_mch_temp"]').val(data.m68_mch_temp);
-        $form.find('input[name="m68_humidity"]').val(data.m68_humidity);
-        $form.find('input[name="m68_viscosity"]').val(data.m68_viscosity);
-        $form.find('input[name="m68_out_time"]').val(data.m68_out_time);
-        $('#modalContainer1').addClass('show').show();
-      }
-    });
-    $('#modalContainer1').on('click', '#closeModal1, #closeModal1Button', function() {
-      $('#modalContainer1').removeClass('show').hide();
-    });
 
   //ml, plus
-    table3 = new Tabulator("#table3", {
-    	  height: "665px",
-    	  layout: "fitColumns",
-    	  selectable: true,
-    	  headerHozAlign: "center",
-    	  headerVertAlign: "middle",
-    	  columnDefaults: {
-    	    hozAlign: "center",
-    	    vertAlign: "middle",
-    	    headerTooltip: false
-    	  },
-    	  columns: [
-    	    { title: "NO", field: "id", visible: false, headerSort: false, width: 60 },
-    	    { title: "날짜", field: "in_date", headerSort: false, width: 120 ,hozAlign: "center"},
-    	    { title: "설비", field: "mch_name", headerSort: false, width: 100,hozAlign: "center" },
-    	    { title: "교반룸 습도<br>(15% 이상)", field: "kmp_humidity", width: 120,hozAlign: "center",
-    	      formatter: function(cell){
-    	        const value = cell.getValue();
-    	        return value < 15
-    	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
-    	          : value;
-    	      }, headerSort: false },
-    	    { title: "교반룸 온도<br>(25℃ 이하)", field: "kmp_mixing_temp", width: 120,
-    	      formatter: function(cell){
-    	        const value = cell.getValue();
-    	        return value > 25
-    	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
-    	          : value;
-    	      }, headerSort: false,hozAlign: "center" },
-    	    { title: " 온도(20±5℃)", field: "kmp_mch_temp",
-    	      formatter: function(cell){
-    	        const value = cell.getValue();
-    	        return (value < 15 || value > 25)
-    	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
-    	          : value;
-    	      }, headerSort: false,hozAlign: "center" },
-    	    { title: "신액 Lot No.", field: "kmp_liquid_lot_no", headerSort: false, width: 120,hozAlign: "center" },
-    	    { title: "교반 시작 시간", field: "kmp_mixing_start_time", headerSort: false, width: 130 ,hozAlign: "center"},
-    	    { title: "교반 시간<br>(최소 1시간 이상)", field: "kmp_mixing_time", headerSort: false, width: 130,hozAlign: "center" },
-    	    { title: "설비별 점도", field: "kmp_mch_visc", width: 160,
-    	      formatter: function(cell){
-    	        const data = cell.getData();
-    	        const value = cell.getValue();
+  table3 = new Tabulator("#table3", {
+    height: "665px",
+    layout: "fitColumns",
+    selectable: true,
+    headerHozAlign: "center",
+    headerVertAlign: "middle",
+    columnDefaults: {
+      hozAlign: "center",
+      vertAlign: "middle",
+      headerTooltip: false
+    },
+    columns: [
+      { title: "NO", field: "id", visible: false, headerSort: false, width: 60 },
+      { title: "날짜", field: "in_date", headerSort: false, width: 120, hozAlign: "center" },
+      { title: "설비", field: "mch_name", headerSort: false, width: 100, hozAlign: "center" },
+      { title: "교반룸 습도<br>(15% 이상)", field: "kmp_humidity", width: 120, hozAlign: "center",
+        formatter: function(cell){
+          const value = cell.getValue();
+          return value < 15
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }, headerSort: false 
+      },
+      { title: "교반룸 온도<br>(25℃ 이하)", field: "kmp_mixing_temp", width: 120,
+        formatter: function(cell){
+          const value = cell.getValue();
+          return value > 25
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }, headerSort: false, hozAlign: "center" 
+      },
+      { title: " 온도(20±5℃)", field: "kmp_mch_temp",
+        formatter: function(cell){
+          const value = cell.getValue();
+          return (value < 15 || value > 25)
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }, headerSort: false, hozAlign: "center" 
+      },
+      { title: "신액 Lot No.", field: "kmp_liquid_lot_no", headerSort: false, width: 120, hozAlign: "center" },
+      { title: "교반 시작 시간", field: "kmp_mixing_start_time", headerSort: false, width: 130, hozAlign: "center" },
+      { title: "교반 시간<br>(최소 1시간 이상)", field: "kmp_mixing_time", headerSort: false, width: 130, hozAlign: "center" },
+      { title: "설비별 점도", field: "kmp_mch_visc", width: 160,
+        formatter: function(cell){
+          const data = cell.getData();
+          const value = cell.getValue();
 
-    	        let min, max, displayText;
-    	        if(data.mch_name === "K_BLACK"){
-    	            min = 35; max = 55;
-    	            displayText = "K_B점도 (" + min + "~" + max + "): " + value;
-    	        } else if(data.mch_name === "ML"){
-    	            min = 25; max = 45;  // 변경
-    	            displayText = "ML점도 (" + min + "~" + max + "): " + value;
-    	        } else if(data.mch_name === "PL"){
-    	            min = 15; max = 35;  // 변경
-    	            displayText = "PL점도 (" + min + "~" + max + "): " + value;
-    	        } else {
-    	            min = 0; max = 100;
-    	            displayText = value;
-    	        }
+          let min, max, displayText;
+          if(data.mch_name === "K_BLACK"){
+            min = 35; max = 55;
+            displayText = "K_B점도 (" + min + "~" + max + "): " + value;
+          } else if(data.mch_name === "ML"){
+            min = 25; max = 45;
+            displayText = "ML점도 (" + min + "~" + max + "): " + value;
+          } else if(data.mch_name === "PL"){
+            min = 15; max = 35;
+            displayText = "PL점도 (" + min + "~" + max + "): " + value;
+          } else {
+            min = 0; max = 100;
+            displayText = value;
+          }
 
+          if (value !== "" && (value < min || value > max)) {
+            return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
+          } else {
+            return displayText;
+          }
+        },
+        accessorDownload: function(value, data){
+          let min, max, displayText;
+          if(data.mch_name === "K_BLACK"){
+            min = 35; max = 55;
+            displayText = "K_B점도 (" + min + "~" + max + "): " + value;
+          } else if(data.mch_name === "ML"){
+            min = 25; max = 45;
+            displayText = "ML점도 (" + min + "~" + max + "): " + value;
+          } else if(data.mch_name === "PL"){
+            min = 15; max = 35;
+            displayText = "PL점도 (" + min + "~" + max + "): " + value;
+          } else {
+            displayText = value;
+          }
+          return displayText;
+        },
+        headerSort: false
+      },
+      { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false, width: 110, hozAlign: "center" },
+      { title: "교반 rpm<br>(7±1Hz)", field: "rpm", headerSort: false, width: 90, hozAlign: "center",
+        formatter: function(cell){
+          const value = cell.getValue();
+          return value === null || typeof value === 'undefined'
+            ? "" 
+            : value < 6 || 8 < value
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }
+      },
+      { title: "확인자(작업자)", field: "kmp_checker", headerSort: false, width: 110, hozAlign: "center" }
+    ],
+    rowDblClick: function(e, row) {
+      const data = row.getData();
+      const $form = $('#corrForm3');
+      if ($form[0].reset) $form[0].reset();
+      $form.find('input[name="id"]').val(data.id);
+      $('select[name="mch_name"]').val(data.mch_name);
+      $form.find('input[name="in_date"]').val(data.in_date);
+      $form.find('input[name="kmp_humidity"]').val(data.kmp_humidity);
+      $form.find('input[name="kmp_mixing_temp"]').val(data.kmp_mixing_temp);
+      $form.find('input[name="kmp_mch_temp"]').val(data.kmp_mch_temp);
+      $form.find('input[name="kmp_liquid_lot_no"]').val(data.kmp_liquid_lot_no);
+      $form.find('input[name="kmp_mixing_start_time"]').val(data.kmp_mixing_start_time);
+      $form.find('input[name="kmp_mixing_time"]').val(data.kmp_mixing_time);
+      $form.find('input[name="kmp_mch_visc"]').val(data.kmp_mch_visc);
+      $form.find('input[name="kmp_out_time"]').val(data.kmp_out_time);
+      $form.find('input[name="kmp_checker"]').val(data.kmp_checker);
+      $form.find('input[name="rpm"]').val(data.rpm);
+      $('#modalContainer3').addClass('show').show();
+    }
+  });
 
-    	        if (value !== "" && (value < min || value > max)) {
-    	        	  return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
-    	        	} else {
-    	        	  return displayText;
-    	        	}
+  //k-black
+  table4 = new Tabulator("#table4", {
+    height: "665px",
+    layout: "fitColumns",
+    selectable: true,
+    headerHozAlign: "center",
+    headerVertAlign: "middle",
+    columnDefaults: {
+      hozAlign: "center",
+      vertAlign: "middle",
+      headerTooltip: false
+    },
+    columns: [
+      { title: "NO", field: "id", visible: false, headerSort: false, width: 60 },
+      { title: "날짜", field: "in_date", headerSort: false, width: 120, hozAlign: "center" },
+      { title: "설비", field: "mch_name", headerSort: false, width: 100, hozAlign: "center" },
+      { title: "교반기", width: 70, field: "m68_mixer_no", headerSort: false },
+      { title: "교반룸 습도<br>(15% 이상)", field: "kmp_humidity", width: 120, hozAlign: "center",
+        formatter: function(cell){
+          const value = cell.getValue();
+          return value < 15
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }, headerSort: false 
+      },
+      { title: "교반룸 온도<br>(25℃ 이하)", field: "kmp_mixing_temp", width: 120,
+        formatter: function(cell){
+          const value = cell.getValue();
+          return value > 25
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }, headerSort: false, hozAlign: "center" 
+      },
+      { title: " 온도(20±5℃)", field: "kmp_mch_temp",
+        formatter: function(cell){
+          const value = cell.getValue();
+          return (value < 15 || value > 25)
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }, headerSort: false, hozAlign: "center" 
+      },
+      { title: "신액 Lot No.", field: "kmp_liquid_lot_no", headerSort: false, width: 120, hozAlign: "center" },
+      { title: "교반 시작 시간", field: "kmp_mixing_start_time", headerSort: false, width: 130, hozAlign: "center" },
+      { title: "교반 시간<br>(최소 1시간 이상)", field: "kmp_mixing_time", headerSort: false, width: 130, hozAlign: "center" },
+      { title: "설비별 점도", field: "kmp_mch_visc", width: 160,
+        formatter: function(cell){
+          const data = cell.getData();
+          const value = cell.getValue();
 
-    	      },
-    	      headerSort: false
-    	    },
+          let min, max, displayText;
 
+          const mch = (data.mch_name || "").trim();
+          const numValue = Number(value);
 
-        { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false, width: 110 ,hozAlign: "center" },
-        { title: "교반 rpm<br>(7±1Hz)", field: "rpm", headerSort: false, width: 90 ,hozAlign: "center",
-      	  formatter: function(cell){
-  	        const value = cell.getValue();
-  	      return value === null || typeof value === 'undefined'
-  	        ? "" 
-  	        : value < 6 || 8 < value
-  	        ? "<span style='color:red; font-weight:bold;'>" + value + "</span>" // 기존 로직 (6 미만이거나 8 초과일 때)
-  	        : value;
-  	      }
-	       },
-        { title: "확인자(작업자)", field: "kmp_checker", headerSort: false , width: 110 ,hozAlign: "center" }
-      ],
-      rowDblClick: function(e, row) {
-        const data = row.getData();
-        const $form = $('#corrForm3');
-        if ($form[0].reset) $form[0].reset();
-        $form.find('input[name="id"]').val(data.id);
-        $('select[name="mch_name"]').val(data.mch_name);
-        $form.find('input[name="in_date"]').val(data.in_date);
-        $form.find('input[name="kmp_humidity"]').val(data.kmp_humidity);
-        $form.find('input[name="kmp_mixing_temp"]').val(data.kmp_mixing_temp);
-        $form.find('input[name="kmp_mch_temp"]').val(data.kmp_mch_temp);
-        $form.find('input[name="kmp_liquid_lot_no"]').val(data.kmp_liquid_lot_no);
-        $form.find('input[name="kmp_mixing_start_time"]').val(data.kmp_mixing_start_time);
-        $form.find('input[name="kmp_mixing_time"]').val(data.kmp_mixing_time);
-        $form.find('input[name="kmp_mch_visc"]').val(data.kmp_mch_visc);
-        $form.find('input[name="kmp_out_time"]').val(data.kmp_out_time);
-        $form.find('input[name="kmp_checker"]').val(data.kmp_checker);
-        $form.find('input[name="rpm"]').val(data.rpm);
-        $('#modalContainer3').addClass('show').show();
-      }
-    });
+          if (mch === "K_BLACK") {
+            min = 35; max = 55;
+            displayText = "K_B점도 (" + min + "~" + max + "): " + value;
+          } else if (mch === "ML") {
+            min = 25; max = 45;
+            displayText = "ML점도 (" + min + "~" + max + "): " + value;
+          } else if (mch === "PL") {
+            min = 15; max = 35;
+            displayText = "PL점도 (" + min + "~" + max + "): " + value;
+          } else {
+            min = 0; max = 100;
+            displayText = value;
+          }
 
-    //k-black
-    table4 = new Tabulator("#table4", {
-  	  height: "665px",
-  	  layout: "fitColumns",
-  	  selectable: true,
-  	  headerHozAlign: "center",
-  	  headerVertAlign: "middle",
-  	  columnDefaults: {
-  	    hozAlign: "center",
-  	    vertAlign: "middle",
-  	    headerTooltip: false
-  	  },
-  	  columns: [
-  	    { title: "NO", field: "id", visible: false, headerSort: false, width: 60 },
-  	    { title: "날짜", field: "in_date", headerSort: false, width: 120 ,hozAlign: "center"},
-  	    { title: "설비", field: "mch_name", headerSort: false, width: 100,hozAlign: "center" },
-  	    { title: "교반기", width: 70, field: "m68_mixer_no", headerSort: false},
-  	    { title: "교반룸 습도<br>(15% 이상)", field: "kmp_humidity", width: 120,hozAlign: "center",
-  	      formatter: function(cell){
-  	        const value = cell.getValue();
-  	        return value < 15
-  	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
-  	          : value;
-  	      }, headerSort: false },
-  	    { title: "교반룸 온도<br>(25℃ 이하)", field: "kmp_mixing_temp", width: 120,
-  	      formatter: function(cell){
-  	        const value = cell.getValue();
-  	        return value > 25
-  	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
-  	          : value;
-  	      }, headerSort: false,hozAlign: "center" },
-  	    { title: " 온도(20±5℃)", field: "kmp_mch_temp",
-  	      formatter: function(cell){
-  	        const value = cell.getValue();
-  	        return (value < 15 || value > 25)
-  	          ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
-  	          : value;
-  	      }, headerSort: false,hozAlign: "center" },
-  	    { title: "신액 Lot No.", field: "kmp_liquid_lot_no", headerSort: false, width: 120,hozAlign: "center" },
-  	    { title: "교반 시작 시간", field: "kmp_mixing_start_time", headerSort: false, width: 130 ,hozAlign: "center"},
-  	    { title: "교반 시간<br>(최소 1시간 이상)", field: "kmp_mixing_time", headerSort: false, width: 130,hozAlign: "center" },
-  	    { title: "설비별 점도", field: "kmp_mch_visc", width: 160,
-  	      formatter: function(cell){
-  	        const data = cell.getData();
-  	        const value = cell.getValue();
+          if (value !== "" && (numValue < min || numValue > max)) {
+            return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
+          } else {
+            return displayText;
+          }
+        },
+        accessorDownload: function(value, data){
+          const mch = (data.mch_name || "").trim();
+          let min, max, displayText;
 
-  	      let min, max, displayText;
-
-  	 // ✅ 설비명 정규화 (이 한 줄이 핵심)
-  	 const mch = (data.mch_name || "").trim();
-
-  	 // ✅ 값도 숫자로 변환
-  	 const numValue = Number(value);
-
-  	 if (mch === "K_BLACK") {
-  	   min = 35; max = 55;
-  	   displayText = "K_B점도 (" + min + "~" + max + "): " + value;
-
-  	 } else if (mch === "ML") {
-  	   min = 25; max = 45;
-  	   displayText = "ML점도 (" + min + "~" + max + "): " + value;
-
-  	 } else if (mch === "PL") {
-  	   min = 15; max = 35;
-  	   displayText = "PL점도 (" + min + "~" + max + "): " + value;
-
-  	 } else {
-  	   min = 0; max = 100;
-  	   displayText = value;
-  	 }
-
-  	 // ✅ ":" 뒤에 값 있을 때만 빨간색
-  	 if (value !== "" && (numValue < min || numValue > max)) {
-  	   return "<span style='color:red; font-weight:bold;'>" + displayText + "</span>";
-  	 } else {
-  	   return displayText;
-  	 }
-
-  	      },
-  	      headerSort: false
-  	    },
-
-
-      { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false, width: 110 ,hozAlign: "center" },
-      { title: "교반 rpm<br>7±1Hz", field: "rpm", headerSort: false, width: 90 ,hozAlign: "center",
-    	  formatter: function(cell){
-    	        const value = cell.getValue();
-    	  	      return value === null || typeof value === 'undefined'
-    	    	        ? "" 
-    	    	        : value < 6 || 8 < value
-    	    	        ? "<span style='color:red; font-weight:bold;'>" + value + "</span>" // 기존 로직 (6 미만이거나 8 초과일 때)
-    	    	        : value;
-    	      }
-       },
-      { title: "확인자(작업자)", field: "kmp_checker", headerSort: false , width: 110 ,hozAlign: "center" }
+          if (mch === "K_BLACK") {
+            min = 35; max = 55;
+            displayText = "K_B점도 (" + min + "~" + max + "): " + value;
+          } else if (mch === "ML") {
+            min = 25; max = 45;
+            displayText = "ML점도 (" + min + "~" + max + "): " + value;
+          } else if (mch === "PL") {
+            min = 15; max = 35;
+            displayText = "PL점도 (" + min + "~" + max + "): " + value;
+          } else {
+            displayText = value;
+          }
+          return displayText;
+        },
+        headerSort: false
+      },
+      { title: "약품 출고 시간", field: "kmp_out_time", headerSort: false, width: 110, hozAlign: "center" },
+      { title: "교반 rpm<br>7±1Hz", field: "rpm", headerSort: false, width: 90, hozAlign: "center",
+        formatter: function(cell){
+          const value = cell.getValue();
+          return value === null || typeof value === 'undefined'
+            ? "" 
+            : value < 6 || 8 < value
+            ? "<span style='color:red; font-weight:bold;'>" + value + "</span>"
+            : value;
+        }
+      },
+      { title: "확인자(작업자)", field: "kmp_checker", headerSort: false, width: 110, hozAlign: "center" }
     ],
     rowDblClick: function(e, row) {
       const data = row.getData();
@@ -1258,182 +1370,114 @@
       $('#modalContainer4').addClass('show').show();
     }
   });
+}
+
+$('.bt1_1').on('click', function () {
+  const selectedRows = table1.getSelectedData();
+  if (selectedRows.length === 0) {
+    alert('삭제할 행을 선택해주세요.');
+    return;
   }
 
+  if (!confirm('정말 삭제하시겠습니까?')) return;
 
-
-
-  $('.bt1_1').on('click', function () {
-    const selectedRows = table1.getSelectedData();
-    if (selectedRows.length === 0) {
-      alert('삭제할 행을 선택해주세요.');
-      return;
-    }
-
-    if (!confirm('정말 삭제하시겠습니까?')) return;
-
-    selectedRows.forEach(row => {
-      $.ajax({
-        url: '/geomet/condition/machineliquidmanage/del',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ id: row.id }),
-        success: function () {
-          table1.deleteRow(row.id); // 성공 시 테이블에서 삭제
-          loadWorkDailyData();
-          },
-        error: function () {
-          alert('삭제 중 오류가 발생했습니다.');
-        }
-      });
+  selectedRows.forEach(row => {
+    $.ajax({
+      url: '/geomet/condition/machineliquidmanage/del',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ id: row.id }),
+      success: function () {
+        table1.deleteRow(row.id);
+        loadWorkDailyData();
+      },
+      error: function () {
+        alert('삭제 중 오류가 발생했습니다.');
+      }
     });
   });
+});
 
+$('.bt3_3').on('click', function () {
+  const selectedRows = table3.getSelectedData();
+  if (selectedRows.length === 0) {
+    alert('삭제할 행을 선택해주세요.');
+    return;
+  }
 
+  if (!confirm('정말 삭제하시겠습니까?')) return;
 
-
-
-
-
-
-  $('.bt3_3').on('click', function () {
-	  const selectedRows = table3.getSelectedData();
-	  if (selectedRows.length === 0) {
-	    alert('삭제할 행을 선택해주세요.');
-	    return;
-	  }
-
-	  if (!confirm('정말 삭제하시겠습니까?')) return;
-
-	  selectedRows.forEach(row => {
-	    console.log('삭제 요청 보낼 데이터:', row);  // 콘솔에 데이터 출력
-	    $.ajax({
-	      url: '/geomet/condition/machineliquidmanage/del',
-	      type: 'POST',
-	      contentType: 'application/json',
-	      data: JSON.stringify({ id: row.id }),
-	      success: function () {
-	        table1.deleteRow(row.id);
-	        loadWorkDailyData();
-	      },
-	      error: function () {
-	        alert('삭제 중 오류가 발생했습니다.');
-	      }
-	    });
-	  });
-	});
-
-  $('.bt4_4').on('click', function () {
-	  const selectedRows = table4.getSelectedData();
-	  if (selectedRows.length === 0) {
-	    alert('삭제할 행을 선택해주세요.');
-	    return;
-	  }
-
-	  if (!confirm('정말 삭제하시겠습니까?')) return;
-
-	  selectedRows.forEach(row => {
-	    console.log('삭제 요청 보낼 데이터:', row);  // 콘솔에 데이터 출력
-	    $.ajax({
-	      url: '/geomet/condition/machineliquidmanage/del',
-	      type: 'POST',
-	      contentType: 'application/json',
-	      data: JSON.stringify({ id: row.id }),
-	      success: function () {
-	        table1.deleteRow(row.id);
-	        loadWorkDailyData();
-	      },
-	      error: function () {
-	        alert('삭제 중 오류가 발생했습니다.');
-	      }
-	    });
-	  });
-	});
-
-
-
-  // 테이블2 삭제 버튼 (.bt2_2)
-  $('.bt2_2').on('click', function () {
-    const selectedRows = table2.getSelectedData();
-    if (selectedRows.length === 0) {
-      alert('삭제할 행을 선택해주세요.');
-      return;
-    }
-
-    if (!confirm('정말 삭제하시겠습니까?')) return;
-
-    selectedRows.forEach(row => {
-    	 console.log('삭제2222 요청 보낼 데이터:', row);
-      $.ajax({
-        url: '/geomet/condition/machineliquidmanage2/del',
-        type: 'POST',
-        contentType: 'application/json',
-        data: JSON.stringify({ id: row.id }),
-        success: function () {
-          table2.deleteRow(row.id); 
-          loadWorkDailyData();
-           },
-        error: function () {
-          alert('삭제 중 오류가 발생했습니다.');
-        }
-      });
+  selectedRows.forEach(row => {
+    console.log('삭제 요청 보낼 데이터:', row);
+    $.ajax({
+      url: '/geomet/condition/machineliquidmanage/del',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ id: row.id }),
+      success: function () {
+        table1.deleteRow(row.id);
+        loadWorkDailyData();
+      },
+      error: function () {
+        alert('삭제 중 오류가 발생했습니다.');
+      }
     });
   });
+});
 
-  //엑셀
-  $(".excel-button").on("click", function () {
-	    $("#excelOverlay, #excelLoading").show();
-	    
-	    const in_date = $("#in_date").val();
-	    const mch_name = $("#mch_name").val();
-	    const endDate = $('#endDate').val();
-	    console.log("in_date", in_date);
-	    console.log("mch_name", mch_name);
-	    console.log("endDate", endDate);
+$('.bt4_4').on('click', function () {
+  const selectedRows = table4.getSelectedData();
+  if (selectedRows.length === 0) {
+    alert('삭제할 행을 선택해주세요.');
+    return;
+  }
 
-	    console.log("▶ 엑셀 생성 요청 파라미터:", { in_date, mch_name, endDate });
+  if (!confirm('정말 삭제하시겠습니까?')) return;
 
-	    // 2) AJAX 호출
-	    $.ajax({
-	        url: "/geomet/condition/machineLiquidManage/excel",
-	        method: "POST",
-	        contentType: "application/json",
-	        data: JSON.stringify({ in_date, mch_name, endDate }),
-	        dataType: "json",
+  selectedRows.forEach(row => {
+    console.log('삭제 요청 보낼 데이터:', row);
+    $.ajax({
+      url: '/geomet/condition/machineliquidmanage/del',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ id: row.id }),
+      success: function () {
+        table1.deleteRow(row.id);
+        loadWorkDailyData();
+      },
+      error: function () {
+        alert('삭제 중 오류가 발생했습니다.');
+      }
+    });
+  });
+});
 
-	        success: function (result) {
-	            console.log("▶ 서버가 돌려준 result:", result);
+$('.bt2_2').on('click', function () {
+  const selectedRows = table2.getSelectedData();
+  if (selectedRows.length === 0) {
+    alert('삭제할 행을 선택해주세요.');
+    return;
+  }
 
-	            if (result && result.downloadPath) {
-                             const a = document.createElement('a');
-                             a.href = result.downloadPath;
-                             a.style.display = 'none';
-                             document.body.appendChild(a);
-                             a.click();
-                             document.body.removeChild(a);
+  if (!confirm('정말 삭제하시겠습니까?')) return;
 
-	                alert("액교반 관리일지 엑셀 저장 완료되었습니다.");
-	            } else {
-	                console.warn("✋ downloadPath 키가 없습니다!", result);
-	                alert("엑셀 생성 오류: 다운로드 경로가 전달되지 않았습니다.");
-	            }
-	        },
-
-	        error: function (xhr, status, error) {
-	            console.error("▶ 엑셀 생성/다운로드 중 오류:", {
-	                status: status,
-	                error: error,
-	                responseText: xhr.responseText
-	            });
-	            alert("엑셀 처리 중 오류가 발생했습니다. 다시 시도해주세요.");
-	        },
-
-	        complete: function () {
-	            $("#excelOverlay, #excelLoading").hide();
-	        }
-	    });
-	});
-
+  selectedRows.forEach(row => {
+    console.log('삭제2222 요청 보낼 데이터:', row);
+    $.ajax({
+      url: '/geomet/condition/machineliquidmanage2/del',
+      type: 'POST',
+      contentType: 'application/json',
+      data: JSON.stringify({ id: row.id }),
+      success: function () {
+        table2.deleteRow(row.id); 
+        loadWorkDailyData();
+      },
+      error: function () {
+        alert('삭제 중 오류가 발생했습니다.');
+      }
+    });
+  });
+});
   
 </script>
 

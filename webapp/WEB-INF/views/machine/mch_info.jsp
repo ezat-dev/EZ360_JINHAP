@@ -307,6 +307,9 @@ $(function() {
     	  { title: 'CAPA', field: 'capa', width: 150, hozAlign: 'center' },
     	  { title: '표준 중량', field: 'std_weight', width: 150, hozAlign: 'center' },
 
+    	  { title: '비중', field: 'std_bijung', width: 150, hozAlign: 'center' },
+    	  { title: '점도', field: 'std_jumdo', width: 150, hozAlign: 'center' },
+
  /*    	  { title: '목표가동 시간', field: 'work_time2', width: 150, hozAlign: 'center' },
     	  { title: '비가동 시간', field: 'non_time', width: 150, hozAlign: 'center' },
     	   */

@@ -392,7 +392,7 @@ function getTrend(){
             title:{ text:'시간' },
             labels: {
                 formatter: function() { return dataLabelFormat(this.value); },
-                step: 2
+                step: 1
             },
             tickInterval:1
         },
@@ -526,7 +526,7 @@ function getTrend2(){
             title:{ text:'시간' },
             labels: {
                 formatter: function() { return dataLabelFormat(this.value); },
-                step: 2
+                step: 1
             },
             tickInterval:1
         },
@@ -660,7 +660,7 @@ function getTrend3(){
             title:{ text:'시간' },
             labels: {
                 formatter: function() { return dataLabelFormat(this.value); },
-                step: 2
+                step: 1
             },
             tickInterval:1
         },
@@ -794,7 +794,7 @@ function getTrend4(){
             title:{ text:'시간' },
             labels: {
                 formatter: function() { return dataLabelFormat(this.value); },
-                step: 2
+                step: 1
             },
             tickInterval:1
         },
@@ -928,7 +928,7 @@ function getTrend5(){
             title:{ text:'시간' },
             labels: {
                 formatter: function() { return dataLabelFormat(this.value); },
-                step: 2
+                step: 1
             },
             tickInterval:1
         },

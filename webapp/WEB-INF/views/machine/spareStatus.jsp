@@ -249,7 +249,7 @@ let now_page_code = "h05";
           sheetName: "스페어부품 관리"
       });
   });
-  
+  var dataTable;   // 전역
   $(function() {
 
 	    // 오늘 날짜 기준 월을 yyyy-MM 형태로 반환
@@ -265,7 +265,8 @@ let now_page_code = "h05";
 	    // startDate input에 오늘 날짜 기본값 세팅
 	    $('#startDate').val(todayStr);
 
-	    var dataTable = new Tabulator('#dataTable', {
+	    dataTable = new Tabulator('#dataTable', {
+
 	        height: '790px',
 	        layout: 'fitDataFill',
 	        headerSort: false,
@@ -282,15 +283,49 @@ let now_page_code = "h05";
 	        placeholder: "조회된 데이터가 없습니다.",
 	        columns: [
 	            { title: "NO", field: "id", hozAlign: "center", width: 70,visible: false  },
-	            { title: "대상 설비(3)", field: "equipment_name", hozAlign: "left", width: 180 },
-	            { title: "부품명(8)", field: "category_sub", hozAlign: "left", width: 180 },
-	            { title: "사용처(7)", field: "category_mid", hozAlign: "left", width: 200 },
-	            { title: "규격(15)", field: "part_name", hozAlign: "left", width: 200 },
-	            { title: "제작 업체(22)", field: "manufacturer", hozAlign: "right", width: 130 },
+	            {
+	                title: "대상 설비",
+	                field: "equipment_name",
+	                hozAlign: "left",
+	                width: 180,
+
+	                headerFilter: "select",
+	                headerFilterParams: {
+	                    values: true,        // 데이터 기준 자동 생성
+	                    clearable: true
+	                },
+	                headerFilterPlaceholder: "설비 선택"
+	            },
+	            {
+	                title: "부품명",
+	                field: "category_sub",
+	                hozAlign: "left",
+	                width: 180,
+
+	                headerFilter: "input",
+	                headerFilterPlaceholder: "검색"
+	            },
+	            {
+	                title: "사용처",
+	                field: "category_mid",
+	                hozAlign: "left",
+	                width: 200,
+
+	                headerFilter: "input",
+	                headerFilterPlaceholder: "검색"
+	            },
+	            { title: "규격", field: "part_name", hozAlign: "left", width: 200,
+
+	                headerFilter: "input",
+	                headerFilterPlaceholder: "검색" },
+	            { title: "제작 업체", field: "manufacturer", hozAlign: "right", width: 130,
+
+		                headerFilter: "input",
+		                headerFilterPlaceholder: "검색" },
 	            { title: "교체(입력)</br>상시 / 정기", field: "", hozAlign: "right", width: 130 },
-	            { title: "구매주기</br>월/반기/년(27)", field: "", hozAlign: "right", width: 130 },
-	            { title: "현재고(27)", field: "current_stock", hozAlign: "right", width: 130 },
-	            { title: "안전재고(26)", field: "safety_stock", hozAlign: "right", width: 130 },
+	            { title: "구매주기</br>월/반기/년", field: "", hozAlign: "right", width: 130 },
+	            { title: "현재고", field: "current_stock", hozAlign: "right", width: 130 },
+	            { title: "안전재고", field: "safety_stock", hozAlign: "right", width: 130 },
 	            { title: "구매 필요수량</br>외주 / 자체",   field: "purchase_qty", 
 	                hozAlign: "right", 
 	                width: 130,

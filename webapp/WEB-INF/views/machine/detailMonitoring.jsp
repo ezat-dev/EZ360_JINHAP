@@ -348,7 +348,7 @@
     	          { title: '현재 생산량(ton)', field: 'prodqty', hozAlign: 'center', width: 180 , headerSort: false},
     	       
     	          { title: '달성률%', field: 'rate', formatter: percentFormatter, width: 300, headerSort: false },
-    	          { title: '진도율%', field: 'n_rate', formatter: percentFormatter, width: 300, headerSort: false },
+    	          { title: '시간 대비 진도율%', field: 'n_rate', formatter: percentFormatter, width: 300, headerSort: false },
     	          { title: '바스켓효율%', field: 'c_rate', formatter: percentFormatter, width: 300 , headerSort: false},
     	        ]
     	      }

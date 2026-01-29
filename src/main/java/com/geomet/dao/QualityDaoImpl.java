@@ -33,7 +33,10 @@ public class QualityDaoImpl implements QualityDao {
 		sqlSession.delete("quality.delNonProductManage",quality);
 	}
 
-
+	@Override
+	public void updateNonProductManage(Quality quality) {
+		sqlSession.update("quality.updateNonProductManage", quality);
+	}
 
 	@Override
 	public List<Quality> getqualityList(Quality quality) {
@@ -312,6 +315,10 @@ public class QualityDaoImpl implements QualityDao {
 	@Override
 	public List<Quality> liquidKccChart(Quality quality) {
 		return sqlSession.selectList("quality.liquidKccChart", quality);
+	}
+	@Override
+	public List<Quality> getStandardList(Quality quality) {
+		return sqlSession.selectList("quality.getStandardList", quality);
 	}
 }
 

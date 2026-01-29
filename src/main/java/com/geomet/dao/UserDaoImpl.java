@@ -1,6 +1,7 @@
 package com.geomet.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -246,5 +247,31 @@ public class UserDaoImpl implements UserDao{
 						return false;
 					}
 					return true;
+				}
+				
+				
+				@Override
+				public void saveDay(Map<String, Object> param) {
+				    sqlSession.update("users.saveDay3", param);
+				}
+
+				@Override
+				public void insertDay(Users users) {
+				    sqlSession.insert("users.insertDay3", users);
+				}
+
+				@Override
+				public void delDay(Users users) {
+				    sqlSession.update("users.delDay3", users);
+				}
+
+				@Override
+				public List<Users> getDay(Users users) {
+				    return sqlSession.selectList("users.getDay3", users);
+				}
+				
+				@Override
+				public void updateImage(Users users) {
+				    sqlSession.update("users.updateImage", users);
 				}
 }

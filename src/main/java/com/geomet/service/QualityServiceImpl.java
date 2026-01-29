@@ -29,8 +29,10 @@ public class QualityServiceImpl implements QualityService {
     public void delNonProductManage(Quality quality) {
 		qualityDao.delNonProductManage(quality);
     }
-	
-	
+	@Override
+	public void updateNonProductManage(Quality quality) {
+		qualityDao.updateNonProductManage(quality);
+	}
 	//부적합품 관리
 	@Override
 	public List<Quality> getqualityList(Quality quality) {
@@ -219,5 +221,9 @@ public class QualityServiceImpl implements QualityService {
 	@Override
 	public List<Quality> liquidKccChart(Quality quality) {
 		return qualityDao.liquidKccChart(quality);
+	}
+	@Override
+	public List<Quality> getStandardList(Quality quality) {
+		return qualityDao.getStandardList(quality);
 	}
 }

@@ -1,6 +1,7 @@
 package com.geomet.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import com.geomet.domain.Facility;
 import com.geomet.domain.Permission;
@@ -74,4 +75,15 @@ public interface UserDao {
     boolean deleteUser(Users users);
     
     boolean allR(Users users);
+    
+    
+    
+    void saveDay(Map<String, Object> param);
+
+    void insertDay(Users users);
+
+    void delDay(Users users);
+
+    List<Users> getDay(Users users);
+    void updateImage(Users users);
 }

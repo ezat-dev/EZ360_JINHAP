@@ -3,7 +3,7 @@ package com.geomet.domain;
 public class Quality {
 
 	
-
+	    private String defect_place;
 		private String group_id;
 		private String item_cd;
 		private String item_nm;
@@ -215,6 +215,12 @@ public class Quality {
 
 	    
 	    
+		public String getDefect_place() {
+			return defect_place;
+		}
+		public void setDefect_place(String defect_place) {
+			this.defect_place = defect_place;
+		}
 		public String getMeq_result2() {
 			return meq_result2;
 		}

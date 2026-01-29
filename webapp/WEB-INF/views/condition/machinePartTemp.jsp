@@ -314,7 +314,7 @@
 <script>
 let now_page_code = "c02";
 
-  $(function () {
+$(function () {
     var now    = new Date();
     var year   = now.getFullYear();
     var month  = String(now.getMonth() + 1).padStart(2, '0');
@@ -329,12 +329,76 @@ let now_page_code = "c02";
 
     $('.select-button').click(handleSelectButtonClick);
 
+    // 엑셀 다운로드 버튼 클릭 이벤트
+    $('.excel-button').on("click", function () {
+        console.log("엑셀 다운로드 버튼 클릭됨");
+        
+        if (!dataTable) {
+            alert("다운로드할 데이터가 없습니다. 먼저 조회를 실행해주세요.");
+            return;
+        }
+        
+        var mch_code = $('#mch_code').val();
+        var fileName = "조건관리_";
+        
+        // 설비명에 따른 파일명 설정
+        if (mch_code === 'G03-GG01') fileName += "G800";
+        else if (mch_code === 'G03-GG03') fileName += "G600";
+        else if (mch_code === 'G04-GG07') fileName += "공용관리";
+        else if (mch_code === 'G04-GG05') fileName += "K-BLACK";
+        
+        fileName += ".xlsx";
+        
+        // Tabulator 내장 엑셀 다운로드 기능 사용
+        dataTable.download("xlsx", fileName, {
+            sheetName: "조건관리",
+            columnCalcs: false,
+            columnGroups: false,
+            rowGroups: false,
+            columnHeaders: true,
+            // 열 너비 설정
+            documentProcessing: function(workbook) {
+                var sheet = workbook.Sheets[workbook.SheetNames[0]];
+                
+                // 기본 열 너비 설정
+                var wscols = [
+                    {wch: 12},  // 일자
+                    {wch: 12},  // 주간/야간 or 근무조 or 작업시간
+                    {wch: 25},  // 액탱크 온도
+                    {wch: 20},  // 점도
+                    {wch: 20},  // 비중
+                    {wch: 20}   // 칠러 온도
+                ];
+                
+                // ML (공용관리) 컬럼이 더 많은 경우
+                if (mch_code === 'G04-GG07') {
+                    wscols = [
+                        {wch: 12},  // 일자
+                        {wch: 12},  // 근무조
+                        {wch: 20},  // 액탱크 온도
+                        {wch: 22},  // PLUS 점도
+                        {wch: 20},  // ML 점도
+                        {wch: 22},  // ML 비중
+                        {wch: 22},  // PLUS 비중
+                        {wch: 20}   // 칠러 온도
+                    ];
+                }
+                
+                sheet['!cols'] = wscols;
+                
+                return workbook;
+            }
+        });
+        
+        console.log("엑셀 다운로드 완료");
+    });
+
     getDataList(yearMonth);
-  });
-  
-  var p_code;   //최근에 누른 버튼 번호 저장
-  
-  //버튼 눌러서 데이터 가져오기
+});
+
+var p_code;   //최근에 누른 버튼 번호 저장
+
+//버튼 눌러서 데이터 가져오기
 $('.pCodeBtn').click(function () {
     // 👉 버튼 스타일 토글
     $('.pCodeBtn').removeClass('active');
@@ -371,338 +435,269 @@ $('.pCodeBtn').click(function () {
     });
 });
 
-  var defaultColumns = [
+var defaultColumns = [
+    { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+    { title: '주간/야간', field: 'b_a', width: 200, hozAlign: 'center' },
+    { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value > 38) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '점도(40±10초)', field: 'visocosity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 30 || value > 50) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '비중(1.43±0.05)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 1.38 || value > 1.48) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '칠러 온도(10±2℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 8 || value > 12) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+    { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+    { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+];
 
-/*      tank_temp: 38°C 초과 시 빨간색
+var defaultColumns600 = [
+    { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+    { title: '주간/야간', field: 'b_a', width: 200, hozAlign: 'center' },
+    { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value > 38) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '점도(45±10초)', field: 'visocosity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 35 || value > 55) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '비중(1.43±0.05)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 1.38 || value > 1.48) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { 
+      title: '칠러 온도(15±1.5℃)', 
+      field: 'chiller_temp', 
+      width: 310, 
+      hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 13.5 || value > 16.5) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+    { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+    { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+];
 
-     visocosity: 30초 미만 또는 50초 초과 시 빨간색 (기준: 40±10초)
+var plColumns = [
+    { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+    { title: '주간/야간', field: 'b_a', width: 200, hozAlign: 'center' },
+    { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 10 || value > 30) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        }
+        return value;
+      }
+    },
+    { title: '점도(25±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 20 || value > 30) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        }
+        return value;
+      }
+    },
+    { title: '비중(1.075~0.075)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 1.000 || value > 1.150) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        }
+        return value;
+      }
+    },
+    { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 13.5 || value > 16.5) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        }
+        return value;
+      }
+    },
+    { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+    { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+    { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+];
 
-     specific_gravity: 1.38 미만 또는 1.48 초과 시 빨간색 (기준: 1.43±0.05)
+var mlColumns = [
+    { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+    { title: '근무조', field: 'b_a', width: 200, hozAlign: 'center' },
+    { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 200, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 10 || value > 30) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'PLUS 점도(25±5초)', field: 'visocosity', width: 200, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 20 || value > 30) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'ML 점도(35±5초)', field: 'visocosity1', width: 200, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 30 || value > 40) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'ML 비중(1.075±0.075)', field: 'specific_gravity', width: 200, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 1.0 || value > 1.15) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'PLUS 비중(1.08±0.04)', field: 'specific_gravity1', width: 200, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 1.04 || value > 1.12) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 200, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 13.5 || value > 16.5) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+    { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+    { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+];
 
-     chiller_temp: 8 미만 또는 12 초과 시 빨간색 (기준: 10±2℃)
- */
-     
-     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
-     { title: '주간/야간', field: 'b_a', width: 200, hozAlign: 'center' },
+var g04Columns = [
+    { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
+    { title: '작업 시간', field: 'b_a', width: 200, hozAlign: 'center' },
+    { title: '액탱크 온도(20±10℃))', field: 'tank_temp', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 10 || value > 30) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '점도(48±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 43 || value > 53) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '비중(1.050~1.150)', field: 'specific_gravity', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value < 1.050 || value > 1.150) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: '칠러 온도(Max 20℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
+      formatter: function(cell) {
+        var value = parseFloat(cell.getValue());
+        if (value > 20) {
+          return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
+        } else {
+          return value;
+        }
+      }
+    },
+    { title: 'id', field: 'id', hozAlign: 'center', visible: false },
+    { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
+    { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
+];
 
-     { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value > 38) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
+var dataTable;
 
-     { title: '점도(40±10초)', field: 'visocosity', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 30 || value > 50) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: '비중(1.43±0.05)', field: 'specific_gravity', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 1.38 || value > 1.48) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: '칠러 온도(10±2℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 8 || value > 12) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-   ];
-
-
-  var defaultColumns600 = [
-
-	  /*      tank_temp: 38°C 초과 시 빨간색
-
-	       visocosity: 30초 미만 또는 50초 초과 시 빨간색 (기준: 40±10초)
-
-	       specific_gravity: 1.38 미만 또는 1.48 초과 시 빨간색 (기준: 1.43±0.05)
-
-	       chiller_temp: 8 미만 또는 12 초과 시 빨간색 (기준: 10±2℃)
-	   */
-	       
-	       { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
-	       { title: '주간/야간', field: 'b_a', width: 200, hozAlign: 'center' },
-
-	       { title: '액탱크 온도(38°C이하)', field: 'tank_temp', width: 310, hozAlign: 'center',
-	         formatter: function(cell) {
-	           var value = parseFloat(cell.getValue());
-	           if (value > 38) {
-	             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	           } else {
-	             return value;
-	           }
-	         }
-	       },
-
-	       { title: '점도(45±10초)', field: 'visocosity', width: 310, hozAlign: 'center',
-	         formatter: function(cell) {
-	           var value = parseFloat(cell.getValue());
-	           if (value < 35 || value > 55) {
-	             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	           } else {
-	             return value;
-	           }
-	         }
-	       },
-
-	       { title: '비중(1.43±0.05)', field: 'specific_gravity', width: 310, hozAlign: 'center',
-	         formatter: function(cell) {
-	           var value = parseFloat(cell.getValue());
-	           if (value < 1.38 || value > 1.48) {
-	             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	           } else {
-	             return value;
-	           }
-	         }
-	       },
-
-	       { 
-	    	   title: '칠러 온도(15±1.5℃)', 
-	    	   field: 'chiller_temp', 
-	    	   width: 310, 
-	    	   hozAlign: 'center',
-	    	   formatter: function(cell) {
-	    	     var value = parseFloat(cell.getValue());
-	    	     if (value < 13.5 || value > 16.5) {
-	    	       return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-	    	     } else {
-	    	       return value;
-	    	     }
-	    	   }
-	    	 },
-
-	       { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-	       { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-	       { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-	     ];
-
-
-  var plColumns = [
-     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
-     { title: '주간/야간', field: 'b_a', width: 200, hozAlign: 'center' },
-
-     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 10 || value > 30) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         }
-         return value;
-       }
-     },
-
-     { title: '점도(25±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 20 || value > 30) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         }
-         return value;
-       }
-     },
-
-     { title: '비중(1.075~0.075)', field: 'specific_gravity', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 1.000 || value > 1.150) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         }
-         return value;
-       }
-     },
-
-     { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 13.5 || value > 16.5) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         }
-         return value;
-       }
-     },
-
-     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-   ];
-
-
-  var mlColumns = [
-
-   /*   tank_temp: 10℃ 미만 또는 30℃ 초과일 때 빨간색 (기준: 20±10℃)
-   
-     visocosity: 30초 미만 또는 40초 초과일 때 빨간색 (기준: 35±5초)
-   
-     specific_gravity: 1.0 미만 또는 1.15 초과일 때 빨간색 (기준: 1.075±0.075)
-   
-     chiller_temp: 13.5℃ 미만 또는 16.5℃ 초과일 때 빨간색 (기준: 15±1.5℃) */
-
-     
-     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
-     { title: '근무조', field: 'b_a', width: 200, hozAlign: 'center' },
-
-     { title: '액탱크 온도(20±10℃)', field: 'tank_temp', width: 200, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 10 || value > 30) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: 'PLUS 점도(25±5초)', field: 'visocosity', width: 200, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 20 || value > 30) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-     { title: 'ML 점도(35±5초)', field: 'visocosity1', width: 200, hozAlign: 'center',
-         formatter: function(cell) {
-           var value = parseFloat(cell.getValue());
-           if (value < 30 || value > 40) {
-             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-           } else {
-             return value;
-           }
-         }
-       },
-
-     { title: 'ML 비중(1.075±0.075)', field: 'specific_gravity', width: 200, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 1.0 || value > 1.15) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-     { title: 'PLUS 비중(1.08±0.04)', field: 'specific_gravity1', width: 200, hozAlign: 'center',
-         formatter: function(cell) {
-           var value = parseFloat(cell.getValue());
-           if (value < 1.04 || value > 1.12) {
-             return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-           } else {
-             return value;
-           }
-         }
-       },
-
-     { title: '칠러 온도(15±1.5℃)', field: 'chiller_temp', width: 200, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 13.5 || value > 16.5) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-   ];
-
-
-  var g04Columns = [
-
-/*      tank_temp: 10℃ 미만 또는 30℃ 초과 시 빨간색 (20±10℃)
-
-     visocosity: 43초 미만 또는 53초 초과 시 빨간색 (48±5초)
-   
-     specific_gravity: 1.050 미만 또는 1.150 초과 시 빨간색 (1.050~1.150)
-   
-     chiller_temp: 20℃ 초과 시 빨간색 (최대 20℃) */
-     
-     { title: '일자', field: 'date', width: 200, hozAlign: 'center' },
-     { title: '작업 시간', field: 'b_a', width: 200, hozAlign: 'center' },
-     
-     { title: '액탱크 온도(20±10℃))', field: 'tank_temp', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 10 || value > 30) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: '점도(48±5초)', field: 'visocosity', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 43 || value > 53) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: '비중(1.050~1.150)', field: 'specific_gravity', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value < 1.050 || value > 1.150) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: '칠러 온도(Max 20℃)', field: 'chiller_temp', width: 310, hozAlign: 'center',
-       formatter: function(cell) {
-         var value = parseFloat(cell.getValue());
-         if (value > 20) {
-           return "<span style='color:red; font-weight:bold;'>" + value + "</span>";
-         } else {
-           return value;
-         }
-       }
-     },
-
-     { title: 'id', field: 'id', hozAlign: 'center', visible: false },
-     { title: 'mch_code', field: 'mch_code', hozAlign: 'center', visible: false },
-     { title: 'mch_name', field: 'mch_name', hozAlign: 'center', visible: false }
-   ];
-
-
-  var dataTable;
-
-  function getDataList(initialMonth) {
+function getDataList(initialMonth) {
     var startDate = initialMonth || $('#startDate').val() || '';
     if (startDate.length >= 7) { startDate = startDate.substring(0, 7); }
     var mch_code = $('.mch_code').val() || '';
@@ -748,7 +743,6 @@ $('.pCodeBtn').click(function () {
                 '일자: '  + date
               );
 
-  
               $('#modalContainer').show().addClass('show');
               $('#corrForm input[name="date"]').val(date);
               $('#corrForm input[name="filed"]').val(field);
@@ -762,10 +756,10 @@ $('.pCodeBtn').click(function () {
       dataTable.setColumns(cols);
       dataTable.setData('/geomet/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
     }
-  }
+}
 
 //Ajax로 데이터만 교체
-  function loadData() {
+function loadData() {
    console.log("데이터만 교체할 때 p_code:", p_code);
       $.ajax({
           url: "/geomet/condition/machinePartTemp/list",
@@ -783,10 +777,9 @@ $('.pCodeBtn').click(function () {
               alert("데이터 조회 실패");
           }
       });
-  }
-  
-  
-  function handleSelectButtonClick() {
+}
+
+function handleSelectButtonClick() {
     var startDate = $('#startDate').val() || '';
     if (startDate.length >= 7) { startDate = startDate.substring(0, 7); }
     var mch_code = $('.mch_code').val() || '';
@@ -800,67 +793,66 @@ $('.pCodeBtn').click(function () {
 
     dataTable.setColumns(cols);
     dataTable.setData('/geomet/condition/machinePartTemp/list', { startDate: startDate, mch_code: mch_code }, { method: 'POST' });
-  }
+}
 
-  function toggleModal(show) {
+function toggleModal(show) {
     $('#modalContainer').toggleClass('show', show).toggle(show);
-  }
+}
 
-  function handleFormSubmit(event) {
-	    event.preventDefault();
+function handleFormSubmit(event) {
+    event.preventDefault();
 
-	    var corrForm = new FormData($('#corrForm')[0]);
-	    corrForm.forEach(function(v, k){ 
-	        console.log(k + ' = ' + v); 
-	    });
+    var corrForm = new FormData($('#corrForm')[0]);
+    corrForm.forEach(function(v, k){ 
+        console.log(k + ' = ' + v); 
+    });
 
-	    var startDate = $('#startDate').val();
-	    var mch_code = $('#mch_code').val();
+    var startDate = $('#startDate').val();
+    var mch_code = $('#mch_code').val();
 
-	    // 🔸 현재 스크롤 위치 저장
-	    const scrollTop = document.querySelector('#dataTable .tabulator-tableholder')?.scrollTop || 0;
+    // 🔸 현재 스크롤 위치 저장
+    const scrollTop = document.querySelector('#dataTable .tabulator-tableholder')?.scrollTop || 0;
 
-	    // 🔸 선택된 행 ID 저장 (선택된 행이 있을 경우)
-	    const selectedRow = dataTable.getSelectedRows()[0];
-	    const selectedId = selectedRow ? selectedRow.getData().id : null;
+    // 🔸 선택된 행 ID 저장 (선택된 행이 있을 경우)
+    const selectedRow = dataTable.getSelectedRows()[0];
+    const selectedId = selectedRow ? selectedRow.getData().id : null;
 
-	    $.ajax({
-	        url: '/geomet/condition/machinePartTemp/update', 
-	        type: 'POST',
-	        data: corrForm,
-	        dataType: 'json',
-	        processData: false,
-	        contentType: false,
-	        success: function(response) {
-	            alert(response.data);
-	            toggleModal(false);
+    $.ajax({
+        url: '/geomet/condition/machinePartTemp/update', 
+        type: 'POST',
+        data: corrForm,
+        dataType: 'json',
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            alert(response.data);
+            toggleModal(false);
 
-	            // 🔸 데이터만 다시 불러오고, 완료 후 스크롤과 선택 복원
-	            dataTable.replaceData('/geomet/condition/machinePartTemp/list', {
-	                startDate: $("#startDate").val() || "",
-	                mch_code: $("#mch_code").val() || "",
-	                p_code: p_code
-	            }).then(() => {
-	                // 🔹 스크롤 복원
-	                document.querySelector('#dataTable .tabulator-tableholder')?.scrollTo({ top: scrollTop });
+            // 🔸 데이터만 다시 불러오고, 완료 후 스크롤과 선택 복원
+            dataTable.replaceData('/geomet/condition/machinePartTemp/list', {
+                startDate: $("#startDate").val() || "",
+                mch_code: $("#mch_code").val() || "",
+                p_code: p_code
+            }).then(() => {
+                // 🔹 스크롤 복원
+                document.querySelector('#dataTable .tabulator-tableholder')?.scrollTo({ top: scrollTop });
 
-	                // 🔹 선택 복원
-	                if (selectedId !== null) {
-	                    const row = dataTable.getRowFromData({ id: selectedId });
-	                    if (row) row.select();
-	                }
-	            });
+                // 🔹 선택 복원
+                if (selectedId !== null) {
+                    const row = dataTable.getRowFromData({ id: selectedId });
+                    if (row) row.select();
+                }
+            });
 
-	        },
-	        error: function() {
-	            alert('오류가 발생했습니다. 다시 시도해주세요.');
-	        }
-	    });
-	}
+        },
+        error: function() {
+            alert('오류가 발생했습니다. 다시 시도해주세요.');
+        }
+    });
+}
 
-  
-  //설비명에 다라 버튼 개수 조정
-  $(document).ready(function () {
+//설비명에 다라 버튼 개수 조정
+$(document).ready(function () {
      function updatePCodeButtons(mchCode) {
        // 일단 전체 버튼 숨김
        $(".pCodeBtn").hide();
@@ -936,8 +928,7 @@ $('.pCodeBtn').click(function () {
            }
        });
      });
-   });
-
+});
 </script>
 
 

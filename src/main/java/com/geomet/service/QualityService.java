@@ -13,7 +13,8 @@ public interface QualityService {
     
     void delNonProductManage(Quality quality);
     
-    
+ // 부적합품 관리 수정
+    public void updateNonProductManage(Quality quality);
     
     
     List<Quality> getqualityList(Quality quality); 
@@ -85,4 +86,6 @@ public interface QualityService {
     List<Quality> turbidityListGraph(Quality quality);
     List<Quality> getKccChart(Quality quality);
     List<Quality> liquidKccChart(Quality quality);
+    
+    List<Quality> getStandardList(Quality quality);
 }

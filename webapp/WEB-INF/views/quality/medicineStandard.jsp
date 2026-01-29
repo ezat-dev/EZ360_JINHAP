@@ -253,7 +253,13 @@ display: flex;
     margin-left: 70px;
     gap: 745px;/
 }
-
+.backButton {
+    margin-left: 1400px;
+    width: 200px;
+    font-size: 18px;
+    margin-top: -5px;
+    height: 40px;
+}
     </style>
 </head>
 <body>
@@ -307,6 +313,7 @@ display: flex;
                 </button> -->
             </div>
         </div>
+        <button class="backButton">뒤로가기</button>
 <!-- 
 		<div class="legend">
 		 
@@ -495,7 +502,7 @@ $("#saveCorrStatus").click(function (event) {
 
   function getDataList() {
 	  dataTable = new Tabulator("#dataList", {
-	    height: '750px',
+	    height: '780px',
 	    ajaxConfig: 'POST',
 	    ajaxURL: '/geomet/quality/getMedicineListStandardList1',
 	    columnHeaderVertAlign: 'middle',
@@ -586,7 +593,7 @@ $("#saveCorrStatus").click(function (event) {
 }
   function getDataList2() {
 	  dataTable = new Tabulator("#dataList2", {
-		    height: '700px',
+		    height: '780px',
 		    ajaxConfig: 'POST',
 		    ajaxURL: '/geomet/quality/getMedicineListStandardList2',
 		    columnHeaderVertAlign: 'middle',
@@ -749,6 +756,10 @@ $("#saveCorrStatus").click(function (event) {
           }
       });
   });
+
+    $('.backButton').on('click', function () {
+        history.back();
+    });
     
 });
 </script>

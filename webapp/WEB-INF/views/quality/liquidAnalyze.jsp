@@ -4,7 +4,7 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-
+<script type="text/javascript" src="https://oss.sheetjs.com/sheetjs/xlsx.full.min.js"></script>
 <head>
     <meta charset="UTF-8">
     <title>액분석관리</title>
@@ -629,6 +629,9 @@ select-button {
 <!-- 	          <button class="insert-button">
                     <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">추가
                 </button> -->
+                <button class="excel-button">
+    				<img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >엑셀
+				</button>
                       <button class="delete-button">
 				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image"> 삭제
 				</button>
@@ -1119,7 +1122,7 @@ select-button {
     	        headerTooltip: false
     	    },
     	    columns: [
-    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false},
+    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false, download: false},
     	        { title: "날짜", field: "date", headerSort: false,hozAlign: "center", width: 150  },
     	      
     	        { title: "전위차  자동 측정(자동PC 프로그램 있음)", field: "auto_track", hozAlign: "center", headerSort: false, width: 270 },
@@ -1195,7 +1198,7 @@ select-button {
     	        headerTooltip: false
     	    },
     	    columns: [
-    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false},
+    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false, download: false},
     	    	{ title: "날짜", field: "date", hozAlign: "center",headerSort: false, width: 150 },
     	        { title: "pH 측정 후 입력", field: "ph_input", hozAlign: "center",headerSort: false, width:270  },
     	        { title: "분석결과(합.부)판정", field: "result", hozAlign: "center", headerSort: false, width: 270,
@@ -1253,7 +1256,7 @@ select-button {
     	        headerTooltip: false
     	    },
     	    columns: [
-    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false},
+    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false, download: false},
     	        { title: "날짜", field: "date", hozAlign: "center", headerSort: false, width: 150 },       // 조금 줄임
     	        { title: "전도도 측정 후 입력", field: "conductivity_input", hozAlign: "center", headerSort: false, width: 270},
     	        { title: "분석결과(합.부)판정", field: "result", hozAlign: "center", headerSort: false, width: 270,
@@ -1312,7 +1315,7 @@ select-button {
     	        headerTooltip: false
     	    },
     	    columns: [
-    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false},
+    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false, download: false},
     	        { title: "날짜", field: "date", hozAlign: "center", headerSort: false, width: 150 },       // 조금 줄임
     	        { title: "① Baking후의 무게 ", field: "ash_baking", hozAlign: "center",headerSort: false, width: 150},
     	        { title: "② 도가니 무게", field: "ash_do", hozAlign: "center", headerSort: false, width: 140},
@@ -1383,7 +1386,7 @@ select-button {
     	        headerTooltip: false
     	    },
     	    columns: [
-    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false},
+    	    	{ title: "id", field: "id", headerSort: false,hozAlign: "center", visible: false, download: false},
     	        { title: "날짜", field: "date", hozAlign: "center", headerSort: false, width: 150 },       // 조금 줄임
     	        { title: "① Baking후의 무게 ", field: "nv_baking", hozAlign: "center",headerSort: false, width: 150},
     	        { title: "②호일 무게(g)", field: "nv_foil", hozAlign: "center", headerSort: false, width: 140},
@@ -1769,7 +1772,7 @@ select-button {
 
 
 
-  $(".excel-button").on("click", function () {
+/*   $(".excel-button").on("click", function () {
 	    $("#excelOverlay, #excelLoading").show();
 
 	    // 1) 파라미터 준비
@@ -1823,7 +1826,7 @@ select-button {
 	            $("#excelOverlay, #excelLoading").hide();
 	        }
 	    });
-	});
+	}); */
 
     // 첫 번째 모달창 저장 버튼 클릭 시
     $("#saveCorrStatus1").click(function (event) {
@@ -2091,7 +2094,136 @@ select-button {
       $('#liquidChartPage').click(function() {
     	window.location.href = "/geomet/quality/liquidChartPage";
     });
- 
+
+    //한 파일에 시트로 나누어 엑셀 생성
+      $('.excel-button').click(function() {
+          const today = new Date().toISOString().slice(0, 10).replace(/-/g, "");
+          const fileName = "액분석관리_" + today + ".xlsx";
+          
+          // 1. 새 워크북 생성
+          const workbook = XLSX.utils.book_new();
+
+          // 2. 테이블을 시트로 변환하고 너비를 조절하는 통합 함수
+          function addTableToSheet(tableInstance, sheetName) {
+              if (!tableInstance) return; // 테이블이 없으면 스킵
+
+              // (A) 테이블의 현재 데이터와 컬럼 정의 가져오기
+              const data = tableInstance.getData("active"); 
+              const columns = tableInstance.getColumnDefinitions();
+              
+              // (B) 다운로드 제외 설정(download: false)을 반영하여 데이터 매핑
+              const sheetData = data.map(row => {
+                  let obj = {};
+                  columns.forEach(col => {
+                      // 필드가 있고, download 설정이 false가 아닌 경우만 포함
+                      if(col.field && col.download !== false) {
+                          //obj[col.title] = row[col.field];
+                          let val = row[col.field];
+
+                          if(sheetName === "ASH" || sheetName === "N.V"){
+                       // 1. 첫 번째 'result' 컬럼: 소수점 2자리 숫자 처리
+                          if (col.field === "result" && col.title.includes("④")) {
+                              if (val !== null && val !== undefined && !isNaN(val)) {
+                                  val = parseFloat(parseFloat(val).toFixed(2));
+                              } else {
+                                  val = "";
+                              }
+                          }
+
+                          // 2. 두 번째 'result' 컬럼: 합격/불합격 판정 처리
+                          else if (col.field === "result" && col.title.includes("판정")) {
+                              const resVal = parseFloat(row.result);
+                              const min = parseFloat(row.meq_min_spec);
+                              const max = parseFloat(row.meq_max_spec);
+                              
+                              if (isNaN(resVal) || isNaN(min) || isNaN(max)) {
+                                  val = "데이터 오류";
+                              } else {
+                                  val = (resVal >= min && resVal <= max) ? "합격" : "불합격";
+                              }
+                          }
+                          }else if(sheetName === "MEQ"){
+                        	  if (col.field === "result" && col.title.includes("판정")) {
+                                  const resVal = parseFloat(row.auto_track);
+                                  const min = parseFloat(row.meq_min_spec);
+                                  const max = parseFloat(row.meq_max_spec);
+                                  
+                                  if (isNaN(resVal) || isNaN(min) || isNaN(max)) {
+                                      val = "데이터 오류";
+                                  } else {
+                                      val = (resVal >= min && resVal <= max) ? "합격" : "불합격";
+                                  }
+                              }
+                          }else if(sheetName === "pH"){
+                        	  if (col.field === "result" && col.title.includes("판정")) {
+                                  const resVal = parseFloat(row.ph_input);
+                                  const min = parseFloat(row.ph_min_spec);
+                                  const max = parseFloat(row.ph_max_spec);
+                                  
+                                  if (isNaN(resVal) || isNaN(min) || isNaN(max)) {
+                                      val = "데이터 오류";
+                                  } else {
+                                      val = (resVal >= min && resVal <= max) ? "합격" : "불합격";
+                                  }
+                              }
+                          }else if(sheetName === "Conductivity"){
+                        	  if (col.field === "result" && col.title.includes("판정")) {
+                                  const resVal = parseFloat(row.conductivity_input);
+                                  const min = parseFloat(row.conductivity_min_spec);
+                                  const max = parseFloat(row.conductivity_max_spec);
+                                  
+                                  if (isNaN(resVal) || isNaN(min) || isNaN(max)) {
+                                      val = "데이터 오류";
+                                  } else {
+                                      val = (resVal >= min && resVal <= max) ? "합격" : "불합격";
+                                  }
+                              }
+                          }
+
+                          // 엑셀 시트 객체에 '컬럼제목: 가공된값' 형태로 저장
+                          obj[col.title] = val;
+                      }
+                  });
+                  return obj;
+              });
+
+              // (C) 데이터를 시트로 변환
+              const sheet = XLSX.utils.json_to_sheet(sheetData);
+              
+              // (D) [중요] 각 열마다 데이터 길이를 측정하여 너비(wch) 계산 (두 번째 코드 로직)
+              if (sheet['!ref']) {
+                  const range = XLSX.utils.decode_range(sheet['!ref']);
+                  const colWidths = [];
+
+                  for (let C = range.s.c; C <= range.e.c; ++C) {
+                      let maxWidth = 12; // 헤더 길이를 고려한 기본 최소 너비
+                      for (let R = range.s.r; R <= range.e.r; ++R) {
+                          const cell = sheet[XLSX.utils.encode_cell({r: R, c: C})];
+                          if (cell && cell.v) {
+                              const len = cell.v.toString().length;
+                              if (len > maxWidth) maxWidth = len;
+                          }
+                      }
+                      // 한글 깨짐 방지를 위해 1.5배 가중치 적용
+                      colWidths.push({ wch: maxWidth * 1.5 });
+                  }
+                  sheet['!cols'] = colWidths;
+              }
+
+              // (E) 워크북에 시트 추가
+              XLSX.utils.book_append_sheet(workbook, sheet, sheetName);
+          }
+
+          // 3. 실제 테이블 인스턴스와 시트 이름 매칭하여 추가
+          addTableToSheet(table4, "ASH");
+          addTableToSheet(table5, "N.V");
+          addTableToSheet(table1, "MEQ");
+          addTableToSheet(table2, "pH");
+          addTableToSheet(table3, "Conductivity");
+
+          // 4. 최종 파일 내보내기
+          XLSX.writeFile(workbook, fileName);
+      });
 </script>
 
 </body>

@@ -20,8 +20,8 @@ public class Machine {
 		private String regtime;      // 등록일 (DATETIME)
 		private String month;
 
-	
-	
+		private String std_bijung;
+		private String std_jumdo;
 	
 		private String action_detail_2;
 		private String replacement_name;
@@ -95,6 +95,26 @@ public class Machine {
 		public void setMonth(String month) {
 			this.month = month;
 		}
+
+		
+		
+	public String getStd_bijung() {
+			return std_bijung;
+		}
+
+		public void setStd_bijung(String std_bijung) {
+			this.std_bijung = std_bijung;
+		}
+
+		public String getStd_jumdo() {
+			return std_jumdo;
+		}
+
+		public void setStd_jumdo(String std_jumdo) {
+			this.std_jumdo = std_jumdo;
+		}
+
+
 
 	private String work_time2;
 	private String mach_cod;

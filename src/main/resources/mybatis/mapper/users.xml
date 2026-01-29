@@ -138,6 +138,8 @@
 		       e05 = #{e05},  
 		       e06 = #{e06},
 		       e07 = #{e07},
+		       e08 = #{e08},
+		       e09 = #{e09},
 		       f01 = #{f01},
 		       f02 = #{f02}, 
 		       f03 = #{f03}, 
@@ -688,6 +690,9 @@
     e04 = 'N',
     e05 = 'N',
     e06 = 'N',
+        e07 = 'N',
+            e08 = 'N',
+                e09 = 'N',
     f01 = 'N',
     f02 = 'N',
     g01 = 'N',
@@ -751,6 +756,9 @@
     e04 = NULL,
     e05 = NULL,
     e06 = NULL,
+        e07 = NULL,
+            e08 = NULL,
+                e09 = NULL,
     f01 = NULL,
     f02 = NULL,
     g01 = NULL,
@@ -815,6 +823,9 @@
     e04 = 'R',
     e05 = 'R',
     e06 = 'R',
+    e07 = 'R',
+    e08 = 'R',
+    e09 = 'R',
     f01 = 'R',
     f02 = 'R',
     g01 = 'R',
@@ -844,4 +855,62 @@
     k08 = 'R'
   WHERE user_code = #{user_code}
 </update>
+
+
+
+
+
+
+
+
+<update id="updateDay3Image" parameterType="Users">
+    UPDATE tb_day_3
+    SET img_url = #{img_url}
+    WHERE id = #{cnt}
+</update>
+
+
+
+	<insert id="insertDay3" parameterType="Users">
+	    INSERT INTO tb_day_3 (y_m, page_code)
+	    VALUES (#{y_m}, #{page_code})
+	</insert>
+
+	  <select id="getDay3" parameterType="Users" resultType="Users">
+	    SELECT *
+	    FROM tb_day_3
+	    <where>
+	        <if test="y_m != null and y_m != ''">
+	            AND y_m = REPLACE(#{y_m}, '/', '-')
+	        </if>
+	        <if test="page_code != null and page_code != ''">
+	            AND page_code = #{page_code}
+	        </if>
+	    </where>
+	    ORDER BY id ASC
+	</select>
+
+    
+     <update id="saveDay3" parameterType="Users">
+        UPDATE tb_day_3
+        SET ${column} = #{value}
+        WHERE id = #{id}
+    </update>
+    
+    <update id="delDay3" parameterType="Users">
+        UPDATE tb_day_3
+        SET
+            y_m       = '삭제'
+           
+        WHERE id = #{id}
+    </update>
+
+
+   <update id="updateImage" parameterType="Users">
+        UPDATE tb_day_3
+        SET img_url = #{img_url}
+        WHERE id = #{cnt}
+    </update>
+
+
 </mapper>

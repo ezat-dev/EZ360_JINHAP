@@ -90,7 +90,7 @@
 		    background: white;
 		    width: 40%; /* 가로 길이를 50%로 설정 */
 		    max-width: 400px; /* 최대 너비를 설정하여 너무 커지지 않도록 */
-		    max-height: 700px; /* 화면 높이에 맞게 제한 */
+		    max-height: 880px; /* 화면 높이에 맞게 제한 */
 		    overflow-y: auto;
 		    margin: 2% auto; /* 수평 중앙 정렬 */
 		    padding: 20px;
@@ -199,6 +199,26 @@
 		  background-color: #f0f0f0;
 		  border-color: #007bff;
 		}
+		
+		/* 헤더 필터가 있는 컬럼의 높이 자동 조정 */
+		#dataList .tabulator-col {
+		    height: auto !important;
+		    min-height: 60px;
+		}
+		
+		/* 헤더 타이틀과 필터를 세로 배치 */
+		#dataList .tabulator-col-content {
+		    display: flex;
+		    flex-direction: column;
+		    gap: 5px;
+		}
+		
+		/* 필터 입력창 스타일 */
+		#dataList .tabulator-header-filter input {
+		    width: 100%;
+		    padding: 4px;
+		    box-sizing: border-box;
+		}
 
     </style>
 </head>
@@ -218,7 +238,7 @@
 			
 			<span class="mid" style="font-size: 20px; font-weight: bold; margin-botomm:10px;"> ~ </span>
 
-			<input type="text" class="daySet" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
+			<input type="text" class="daySet daySetToday" id="endDate" style="font-size: 16px; margin-bottom:10px;" placeholder="종료 날짜 선택">
 
             <label class="daylabel">설비명 :</label>
             <select class="dayselect" id="equipment_name">
@@ -269,7 +289,14 @@
         <h2>부적합품 등록</h2>
         <form  id="corrForm"  autocomplete="off">
             <label>발생일</label>
-            <input type="text"name="defect_date"  class="daySet" placeholder="날짜 선택" style="text-align: left;">
+            <input type="text"name="defect_date"  class="daySet daySetToday" placeholder="날짜 선택" style="text-align: left;">
+           
+           
+                <label>발생 위치</label>
+            <input type="text"  name=defect_place placeholder="발생 위치 입력">
+            
+           
+           
             <label>불량유형</label>
 			<select name="defect_type">
 			    <option value="액고임">액고임</option>
@@ -286,8 +313,8 @@
 
             <label>발생설비</label>
 			<select name="equipment" >
-			    <option value="세척 1호기">탈유탈지 1호기</option>
-			    <option value="세척 2호기"">탈유탈지 2호기</option>
+			    <option value="세척 1호기">세척 1호기</option>
+			    <option value="세척 2호기"">세척 2호기</option>
 			    <option value="쇼트1호기">쇼트1호기</option>
 			    <option value="쇼트2호기">쇼트2호기</option>
 			    <option value="쇼트3호기">쇼트3호기</option>
@@ -322,8 +349,8 @@
             <label>선별방법</label>
             <input type="text"   name="selection_method" placeholder="선별방법 입력">
 
-            <label>조치완료일(일자기록)</label>
-   			<input type="text"  name="action_date" class="daySet" placeholder="조치완료일 선택" style="text-align: left;">
+            <label>조치완료일(검색 기준)</label>
+   			<input type="text"  name="action_date" class="daySet daySetToday" placeholder="조치완료일 선택" style="text-align: left;">
    			
    			
             <label>불량수량(EA)</label>
@@ -349,7 +376,7 @@
 
 
              <label>진행일자</label>  
-			<input type="text"  name="start_date" class="daySet" placeholder="진행일자 선택" style="text-align: left;">
+			<input type="text"  name="start_date" class="daySet daySetToday" placeholder="진행일자 선택" style="text-align: left;">
 
             <button type="submit" id="saveCorrStatus">저장</button>
             <button type="button" id="closeModal">닫기</button>
@@ -360,51 +387,59 @@
 <script>
 
 let now_page_code = "d05";
+let dataTable; // 전역 변수로 선언
+let selectedRow; // selectedRow도 전역으로 선언
 
 $(document).ready(function () {
-    // 페이지 로딩 시 데이터 불러오기
- 
+    
+    function setTodayToDateInputs() {
+        const today = new Date();
+        $(".daySetToday").val(today.toISOString().split('T')[0]);
+    }
+    
+    // 🔥 검색 날짜 초기화를 먼저
+    const today = new Date();
+    const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+    $('#startDate').val(firstDay.toISOString().split('T')[0]);
+    $('#endDate').val(today.toISOString().split('T')[0]);
 
-    const today = new Date().toISOString().split('T')[0];
-    $('#startDate').val(today);
-    $('#endDate').val(today);
-
-
+    // 🔥 테이블 생성 (빈 테이블로)
     getDataList();
+    
+    // 🔥 테이블 생성 직후 데이터 로드
+    setTimeout(function() {
+        refreshData();
+    }, 100);
+    
     // 모달 열기
     $(".insert-button").click(function () {
         let modal = $("#modalContainer");
         modal.show();
         modal.addClass("show");
+
+        $("#corrForm")[0].reset();
+        $("input[name='no']").remove();
+        $("#modalContainer h2").text("부적합품 등록");
+        
+        setTodayToDateInputs();
     });
 
     // 모달 닫기
     $(".close, #closeModal").click(function () {
         $("#modalContainer").removeClass("show").hide();
+        
+        $("#corrForm")[0].reset();
+        $("input[name='no']").remove();
+        $("#modalContainer h2").text("부적합품 등록");
     });
 
-    // 설비명 선택 시 로그
     $("#equipment_name").on("change", function () {
         console.log("선택된 설비명:", $(this).val());
     });
 
     // 검색 버튼 클릭 시 데이터 다시 불러오기
     $(".select-button").click(function () {
-        const equipmentName = $("#equipment_name").val() || "";
-        const startDate = $("#startDate").val() || "";
-        const endDate = $("#endDate").val() || "";
-
-        console.log("검색 요청 값 =>", {
-            equipment_name: equipmentName,
-            startDate: startDate,
-            endDate: endDate
-        });
-
-        dataTable.setData("/geomet/quality/nonProductManage/list", {
-            equipment_name: equipmentName,
-            startDate: startDate,
-            endDate: endDate,
-        });
+        refreshData();
     });
 
     // 저장 버튼 클릭 시
@@ -412,13 +447,12 @@ $(document).ready(function () {
         event.preventDefault();
 
         var corrForm = new FormData($("#corrForm")[0]);
-
-        for (let pair of corrForm.entries()) {
-            console.log(pair[0] + ': ' + pair[1]);
-        }
+        
+        var isUpdate = corrForm.get('no') ? true : false;
+        var ajaxUrl = isUpdate ? "/geomet/quality/nonProductManage/update" : "/geomet/quality/nonProductManage/insert";
 
         $.ajax({
-            url: "/geomet/quality/nonProductManage/insert",
+            url: ajaxUrl,
             type: "POST",
             data: corrForm,
             dataType: "json",
@@ -426,9 +460,14 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 if (response.result === "success") {
-                    alert("부적합품 관리가 성공적으로 저장되었습니다!");
-                    $("#modalContainer").hide();
-                    getDataList(); // 성공 시 목록 갱신
+                    alert(isUpdate ? "수정이 완료되었습니다!" : "부적합품 관리가 성공적으로 저장되었습니다!");
+                    $("#modalContainer").removeClass("show").hide();
+                    
+                    $("#corrForm")[0].reset();
+                    $("input[name='no']").remove();
+                    $("#modalContainer h2").text("부적합품 등록");
+                    
+                    refreshData();
                 } else {
                     alert("저장 실패: " + (response.message || "알 수 없는 오류"));
                 }
@@ -439,7 +478,41 @@ $(document).ready(function () {
         });
     });
 
-    // 데이터 목록 로딩 함수 정의
+    // 🔥 데이터만 새로고침하는 함수
+    function refreshData() {
+        const equipmentName = $("#equipment_name").val() || "";
+        const startDate = $("#startDate").val() || "";
+        const endDate = $("#endDate").val() || "";
+
+        console.log("refreshData 호출:", { equipmentName, startDate, endDate });
+
+        $.ajax({
+            url: "/geomet/quality/nonProductManage/list",
+            type: "POST",
+            data: {
+                equipment_name: equipmentName,
+                startDate: startDate,
+                endDate: endDate,
+            },
+            dataType: "json",
+            success: function(response) {
+                console.log("받은 데이터:", response);
+                
+                if (response.status === "success" && response.data) {
+                    dataTable.replaceData(response.data);
+                } else {
+                    console.error("데이터 로드 실패:", response);
+                    alert("데이터를 불러올 수 없습니다.");
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error("데이터 로드 오류:", error);
+                alert("데이터를 불러오는 중 오류가 발생했습니다.");
+            }
+        });
+    }
+
+    // 🔥 데이터 목록 로딩 함수 정의 (빈 테이블 생성만)
     function getDataList() {
         dataTable = new Tabulator("#dataList", {
             height: "760px",
@@ -451,42 +524,75 @@ $(document).ready(function () {
             selectableRangeMode: "click",
             reactiveData: true,
             headerHozAlign: "center",
-            ajaxConfig: "POST",
-            ajaxLoader: false,
-            ajaxURL: "/geomet/quality/nonProductManage/list",
-            ajaxProgressiveLoad: "scroll",
-            ajaxParams: {
-                equipment_name: $("#equipment_name").val() || "",
-                startDate: $("#startDate").val() || "",
-                endDate: $("#endDate").val() || "",
-            },
             placeholder: "조회된 데이터가 없습니다.",
-            paginationSize: 20,
-            ajaxResponse: function (url, params, response) {
-                $("#dataList .tabulator-col.tabulator-sortable").css("height", "29px");
-                return response;
-            },
             columns: [
                 { title: "NO2", field: "no", visible: false },
-
-               
                 { title: "No", formatter: "rownum", hozAlign: "center", width: 70, headerSort: false },
-
                 { title: "발생일", field: "defect_date", width: 120, hozAlign: "center" },
-                { title: "불량유형", field: "defect_type", width: 120, hozAlign: "center" },
+                { title: "발생 위치", field: "defect_place", width: 120, hozAlign: "center" },
+                { 
+                    title: "불량유형", 
+                    field: "defect_type", 
+                    width: 120, 
+                    hozAlign: "center",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "검색..."
+                },
                 { title: "발생설비", field: "equipment", width: 120, hozAlign: "center" },
-                { title: "품번", field: "product_no", width: 120, hozAlign: "center" },
-                { title: "품명", field: "product_name", width: 120, hozAlign: "center" },
-                { title: "불량로트", field: "defect_lot", width: 120, hozAlign: "center" },
-                { title: "작업자", field: "worker", width: 120, hozAlign: "center" },
+                { 
+                    title: "품번", 
+                    field: "product_no", 
+                    width: 120, 
+                    hozAlign: "center",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "검색..."
+                },
+                { 
+                    title: "품명", 
+                    field: "product_name", 
+                    width: 350, 
+                    hozAlign: "left",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "검색..."
+                },
+                { 
+                    title: "불량로트", 
+                    field: "defect_lot", 
+                    width: 120, 
+                    hozAlign: "center",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "검색..."
+                },
+                { 
+                    title: "작업자", 
+                    field: "worker", 
+                    width: 120, 
+                    hozAlign: "center",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "검색..."
+                },
                 { title: "조치사항", field: "action", width: 120, hozAlign: "center" },
                 { title: "선별방법", field: "selection_method", width: 120, hozAlign: "center" },
                 { title: "조치완료일", field: "action_date", width: 120, hozAlign: "center" },
                 { title: "불량수량(EA)", field: "defect_quantity", width: 120, hozAlign: "center" },
-                { title: "발생원인", field: "cause", width: 120, hozAlign: "center" },
-                { title: "개선대책", field: "improvement", width: 120, hozAlign: "center" },
-                { title: "대상유무", field: "yn_a", width: 90, hozAlign: "center" },
-                { title: "실시유무", field: "yn_b", width: 90, hozAlign: "center" },
+                { 
+                    title: "발생원인", 
+                    field: "cause", 
+                    width: 350, 
+                    hozAlign: "left",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "검색..."
+                },
+                { 
+                    title: "개선대책", 
+                    field: "improvement", 
+                    width: 350, 
+                    hozAlign: "left",
+                    headerFilter: "input",
+                    headerFilterPlaceholder: "검색..."
+                },
+                { title: "대상유무", field: "yn_a", width: 110, hozAlign: "center" },
+                { title: "실시유무", field: "yn_b", width: 110, hozAlign: "center" },
                 { title: "진행일자", field: "start_date", width: 120, hozAlign: "center" },
             ],
             rowClick: function (e, row) {
@@ -494,17 +600,47 @@ $(document).ready(function () {
                 row.getElement().classList.add("row_select");
                 selectedRow = row;
                 console.log("선택된 row no:", selectedRow.getData().no);
+            },
+            rowDblClick: function(e, row) {
+                var rowData = row.getData();
+                
+                $("#modalContainer").show().addClass("show");
+                $("#modalContainer h2").text("부적합품 수정");
+                
+                $("input[name='defect_date']").val(rowData.defect_date || "");
+                $("input[name='defect_place']").val(rowData.defect_place || "");
+                $("select[name='defect_type']").val(rowData.defect_type || "");
+                $("select[name='equipment']").val(rowData.equipment || "");
+                $("input[name='product_no']").val(rowData.product_no || "");
+                $("input[name='product_name']").val(rowData.product_name || "");
+                $("input[name='defect_lot']").val(rowData.defect_lot || "");
+                $("input[name='worker']").val(rowData.worker || "");
+                $("textarea[name='action']").val(rowData.action || "");
+                $("input[name='selection_method']").val(rowData.selection_method || "");
+                $("input[name='action_date']").val(rowData.action_date || "");
+                $("input[name='defect_quantity']").val(rowData.defect_quantity || "");
+                $("input[name='cause']").val(rowData.cause || "");
+                $("input[name='improvement']").val(rowData.improvement || "");
+                
+                if(rowData.yn_a) {
+                    $("input[name='yn_a'][value='" + rowData.yn_a + "']").prop("checked", true);
+                }
+                if(rowData.yn_b) {
+                    $("input[name='yn_b'][value='" + rowData.yn_b + "']").prop("checked", true);
+                }
+                
+                $("input[name='start_date']").val(rowData.start_date || "");
+                
+                if($("input[name='no']").length === 0) {
+                    $("#corrForm").prepend('<input type="hidden" name="no">');
+                }
+                $("input[name='no']").val(rowData.no);
             }
         });
     }
 
-
-
-
     $(".delete-button").click(function(event) {
         event.preventDefault();
-
-        console.log("삭제 버튼 클릭됨");
 
         if (!selectedRow) {
             alert("삭제할 행을 선택하세요.");
@@ -513,15 +649,12 @@ $(document).ready(function () {
 
         var no = selectedRow.getData().no;
 
-        console.log("no", no);
-
         if (!no) {
             alert("삭제할 항목이 없습니다.");
             return;
         }
 
         var requestData = JSON.stringify({ "no": no });
-        console.log("전송된 데이터:", requestData);
 
         $.ajax({
             url: "/geomet/quality/nonProductManage/del",
@@ -530,9 +663,9 @@ $(document).ready(function () {
             data: requestData,
             dataType: "json",
             success: function(response) {
-                console.log("행 삭제 성공:", response);
                 alert("행 삭제 완료");
-
+                selectedRow.delete();
+                selectedRow = null;
             },
             error: function(xhr, status, error) {
                 console.error("삭제 오류:", xhr.responseText);
@@ -541,42 +674,31 @@ $(document).ready(function () {
         });
     });
 
-
     $(".excel-button").on("click", function () {
-  	  console.log("엑셀 다운로드 버튼 클릭됨"); 
-
-  	  const equipmentName = $("#equipment_name").val() || "";
-      const startDate = $("#startDate").val() || "";
-      const endDate = $("#endDate").val() || "";
-
-      console.log("엑셀 다운로드 요청 값 =>", {
-          equipment_name: equipmentName,
-          startDate: startDate,
-          endDate: endDate
-      });
-    	  
-        
-      $.ajax({
-          url: "/geomet/quality/nonProductManage/excel",
-          type: "post",
-          data: {
-              equipment_name: equipmentName,
-              startDate: startDate,
-              endDate: endDate
-          },
-          dataType: "json",
-          success: function (result) {
-              console.log(result);
-              alert("D:\\GEOMET양식\\부적합품 관리 저장 완료되었습니다.");
-          },
-          error: function (xhr, status, error) {
-              alert("엑셀 다운로드 중 오류가 발생했습니다. 다시 시도해주세요.");
-              console.error("Error:", error);
-          }
-      });
-  });
+        dataTable.download("xlsx", "부적합품관리.xlsx", {
+            sheetName: "부적합품 관리",
+            columnCalcs: false,
+            columnGroups: false,
+            rowGroups: false,
+            columnHeaders: true,
+            documentProcessing: function(workbook) {
+                var sheet = workbook.Sheets[workbook.SheetNames[0]];
+                
+                var wscols = [
+                    {wch: 8}, {wch: 12}, {wch: 12}, {wch: 12}, {wch: 12},
+                    {wch: 20}, {wch: 30}, {wch: 15}, {wch: 10}, {wch: 15},
+                    {wch: 15}, {wch: 12}, {wch: 15}, {wch: 60}, {wch: 60},
+                    {wch: 12}, {wch: 12}, {wch: 12}
+                ];
+                
+                sheet['!cols'] = wscols;
+                return workbook;
+            }
+        });
+    });
     
 });
+
 </script>
 
 </body>
