@@ -703,8 +703,22 @@
        	        { title: "도금품번", field: "item_cd", hozAlign: "left", headerSort: false, width: 200 }, 
     	        { title: "품명", field: "item_nm", hozAlign: "left", headerSort: false, width: 250 },
     	        { title: "후처리 사양", field: "next_facility",  headerSort: false, width: 200 },
-    	        { title: "구분</br>(신규/재작업)", field: "e", headerSort: false, width: 125, hozAlign: "center" }
-    	      
+    	        { 
+    	            title: "구분</br>(신규/재작업)", 
+    	            field: "e", 
+    	            headerSort: false, 
+    	            width: 125, 
+    	            hozAlign: "center",
+    	            headerFilter: "select",
+    	            headerFilterParams: {
+    	                values: {
+    	                    "": "전체",
+    	                    "신규": "신규",
+    	                    "재작업": "재작업"
+    	                }
+    	            },
+    	            headerFilterPlaceholder: "전체"
+    	        }
     	    ]
     	});
 

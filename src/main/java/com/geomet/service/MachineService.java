@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.geomet.domain.Machine;
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Temp_memo;
 import com.geomet.domain.Work;
 
 	
@@ -18,8 +19,8 @@ public interface MachineService {
 	
 	//온도 트랜드
 	List<Temp_data> getTempDataList(Temp_data temp);
-	
-	
+    List<Temp_memo> getTempMemoList(Temp_memo memo);
+    int insertTempMemo(Temp_memo memo);
 	//통합 모니터링
 	List<Machine> getAllDataList(Machine machine); 
 	
@@ -78,4 +79,6 @@ public interface MachineService {
     List<Work> workReport3(Machine machine);
     List<Machine> workReport4();
 	List<Work> workReport2_nonTime(Machine machine);
+	
+
 }

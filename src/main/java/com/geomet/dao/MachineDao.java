@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import com.geomet.domain.Machine;
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Temp_memo;
 import com.geomet.domain.Work;
 
 
@@ -19,7 +20,8 @@ public interface MachineDao {
 	  void updatecheckPlan(Machine machine);
 	  
 	  List<Temp_data> getTempDataList(Temp_data temp);
-	
+	  List<Temp_memo> getTempMemoList(Temp_memo memo);
+	  int insertTempMemo(Temp_memo memo);
 	  //통합모니터링
 	  List<Machine> getAllDataList(Machine machine);
 	  
@@ -73,4 +75,7 @@ public interface MachineDao {
 	    List<Machine> workReport4();
 	    
 		List<Work> workReport2_nonTime(Machine machine);
+		
+		
+		
 }

@@ -42,6 +42,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.geomet.domain.Machine;
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Temp_memo;
 import com.geomet.domain.Work;
 import com.geomet.service.MachineService;
 
@@ -152,6 +153,70 @@ public class MachineController {
 
 
 
+
+	  /**
+     * 온도 모니터링 메모 리스트 조회
+     */
+    @RequestMapping(value = "/machine/tempMonitoring/memo/list", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> getTempMemoList(
+            @RequestParam(required = false) String startDate,
+            @RequestParam(required = false) String endDate,
+            @RequestParam(required = false) String mch_code) {
+        
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            Temp_memo memo = new Temp_memo();
+            if (startDate != null && !startDate.isEmpty()) memo.setStartDate(startDate);
+            if (endDate != null && !endDate.isEmpty()) memo.setEndDate(endDate);
+            if (mch_code != null && !mch_code.isEmpty()) memo.setMch_code(mch_code);
+            
+            List<Temp_memo> memoList = machineService.getTempMemoList(memo);
+            
+            rtnMap.put("status", "success");
+            rtnMap.put("data", memoList);
+            rtnMap.put("count", memoList.size());
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+        return rtnMap;
+    }
+
+    /**
+     * 온도 모니터링 메모 등록
+     */
+    @RequestMapping(value = "/machine/tempMonitoring/memo/insert", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> insertTempMemo(
+            @RequestParam String mch_code,
+            @RequestParam String memo_time,
+            @RequestParam String memo_content) {
+        
+        Map<String, Object> rtnMap = new HashMap<>();
+        try {
+            Temp_memo memo = new Temp_memo();
+            memo.setMch_code(mch_code);
+            memo.setMemo_time(memo_time);
+            memo.setMemo_content(memo_content);
+            
+            int result = machineService.insertTempMemo(memo);
+            
+            if (result > 0) {
+                rtnMap.put("status", "success");
+                rtnMap.put("message", "메모가 저장되었습니다.");
+            } else {
+                rtnMap.put("status", "error");
+                rtnMap.put("message", "메모 저장에 실패했습니다.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            rtnMap.put("status", "error");
+            rtnMap.put("message", e.getMessage());
+        }
+        return rtnMap;
+    }
 
 
 

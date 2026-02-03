@@ -102,7 +102,40 @@
   ORDER BY temp_time
 </select>
 
+  <!-- 온도 메모 리스트 조회 -->
+    <select id="getTempMemoList" parameterType="temp_memo" resultType="temp_memo">
+        SELECT 
+            memo_id,
+            mch_code,
+            memo_time,
+            memo_content,
+            reg_date
+        FROM tb_temp_memo
+        <where>
+            <if test="mch_code != null and mch_code != ''">
+                AND mch_code = #{mch_code}
+            </if>
+            <if test="startDate != null and endDate != null and startDate != '' and endDate != ''">
+                AND memo_time BETWEEN #{startDate} AND #{endDate}
+            </if>
+        </where>
+        ORDER BY memo_time
+    </select>
 
+    <!-- 온도 메모 등록 -->
+    <insert id="insertTempMemo" parameterType="temp_memo">
+        INSERT INTO tb_temp_memo (
+            mch_code,
+            memo_time,
+            memo_content,
+            reg_date
+        ) VALUES (
+            #{mch_code},
+            #{memo_time},
+            #{memo_content},
+            NOW()
+        )
+    </insert>
 
 <select id="getAllDataList" parameterType="machine" resultType="machine">
 SELECT * FROM v_moniteolingling

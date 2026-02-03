@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.geomet.dao.MachineDao;
 import com.geomet.domain.Machine;
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Temp_memo;
 import com.geomet.domain.Work;
 
 
@@ -32,7 +33,14 @@ public class MachineServiceImpl implements MachineService {
 	public List<Temp_data> getTempDataList(Temp_data temp) {
 		return machineDao.getTempDataList(temp);
 	}
-
+    @Override
+    public List<Temp_memo> getTempMemoList(Temp_memo memo) {
+        return machineDao.getTempMemoList(memo);
+    }
+    @Override
+    public int insertTempMemo(Temp_memo memo) {
+        return machineDao.insertTempMemo(memo);
+    }
 	@Override
 	public List<Machine> getAllDataList(Machine machine) {
 		return machineDao.getAllDataList(machine); 	   

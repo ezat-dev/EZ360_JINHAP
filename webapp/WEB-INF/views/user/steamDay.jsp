@@ -319,7 +319,7 @@
 <div id="modalContainer" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>F/Proof</h2>
+        <h2>추가</h2>
        <form id="corrForm" autocomplete="off" enctype="multipart/form-data">
             
  			<input type="hidden" name="id" id="id">

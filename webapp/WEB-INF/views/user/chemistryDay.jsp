@@ -8,7 +8,7 @@
     <title>스팀</title>
      <%@include file="../include/pluginpage.jsp" %>    
     <jsp:include page="../include/tabBar.jsp"/> 
-    <style>
+  <style>
         .container {
             display: flex;
             justify-content: space-between;
@@ -38,14 +38,14 @@
 		    margin-right: 10px;
 		    margin-top: 40px;
 		}
-		.box1 {
-		    display: flex;
-		    justify-content: right;
-		    align-items: center;
-		    width: 800px;
-		    margin-right: 20px;
-		    margin-top:4px;
-		}
+.box1 {
+    display: flex;
+    justify-content: flex-start;  /* right에서 flex-start로 변경 */
+    align-items: center;
+    margin-right: auto;  /* 왼쪽으로 밀기 */
+    margin-left: 20px;   /* 왼쪽 여백 */
+    margin-top: 4px;
+}
         .dayselect {
             width: 20%;
             text-align: center;
@@ -61,12 +61,12 @@
             border-radius: 5px;
             font-size: 15px;
         }
-        .daylabel {
-            margin-right: 10px;
-            margin-bottom: 13px;
-            font-size: 18px;
-            margin-left: 20px;
-        }
+.daylabel {
+    margin-right: 10px;
+    margin-bottom: 17px;
+    font-size: 20px;
+    margin-left: 20px;
+}
         button-container.button{
         height: 16px;
         }
@@ -127,7 +127,7 @@
 		
 		.modal-content form {
 		    display: flex;
-		    flex-chemection: column;
+		    flex-direction: column;
 		}
 		
 		.modal-content label {
@@ -203,13 +203,15 @@
 		  border-color: #007bff;
 		}
 .legend {
-  font-family: 'Arial', sans-serif;
-  background: #f9f9f9;
-  padding: 12px 20px;
-  border-radius: 8px;
-  max-width:1100px;
-  margin: 20px auto;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: absolute;
+    left: 0px;
+    top: 16px;
+    background: #f9f9f9;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin: 10px 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .legend-items {
@@ -259,36 +261,61 @@
 .tabulator-cell {
     font-size: 16px;
 }
+
+
+.legend {
+    background: #f9f9f9;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin: 10px 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.legend-items {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.legend-item {
+    font-size: 15px;
+    color: #333;
+}
+
+.legend-item strong {
+    color: #000;
+    margin-right: 5px;
+    font-weight: 700;
+    font-size: 16px;
+}
     </style>
 </head>
 <body>
 
-    <main class="main">
-        <div class="tab">
-        
-        
-        
-        
-        
-
-            <div class="button-container">
-            
-             <div class="box1">
-			<p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-			
-			<input type="hidden" id="id" name="id">
-
-			
-			
-			<label class="daylabel">검색 월 :</label>
-			<input type="text" class="monthSet month-search" id="y_m"
-			       placeholder="시작 연도 선택"
-			       style="width: 30%; font-size: 16px; height: 30px; text-align: center; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
-			
+ <main class="main">
 
 
+<div class="tab">
     
-			</div>
+    <!-- 범례 추가 -->
+    <div class="legend">
+        <div class="legend-items">
+             <div class="legend-item"><strong>[1]</strong> 문제없음</div>
+            <div class="legend-item"><strong>[2]</strong> 자체점검 시 조치완료</div>
+            <div class="legend-item"><strong>[3]</strong> 정밀 재점검 필요</div>
+        </div>
+    </div>
+
+    <div class="button-container">
+        
+        <div class="box1">
+            <label class="daylabel">검색 월 :</label>
+            <input type="text" class="monthSet month-search" id="y_m"
+                   placeholder="시작 연도 선택"
+                   style="width: 170px; font-size: 16px; height: 33px; text-align: center; margin-bottom: 13px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
                 <button class="select-button">
                     <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
                 </button>
@@ -319,7 +346,7 @@
 <div id="modalContainer" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>F/Proof</h2>
+        <h2>추가</h2>
        <form id="corrForm" autocomplete="off" enctype="multipart/form-data">
             
  			<input type="hidden" name="id" id="id">
@@ -506,7 +533,7 @@ $(document).ready(function () {
              hozAlign: "center",
              width: 76,
              editor: "select",
-             editorParams: { values: ["O", "X","△","-"] },
+             editorParams: { values: ["1", "2","3","X"] },
              headerSort: false
          });
      }
@@ -520,6 +547,7 @@ $(document).ready(function () {
         	    title: "점검사항", 
         	    field: "box1", 
         	    width: 520, 
+        	     frozen: true,
         	    editor: "input", 
         	    vertAlign: "middle", 
         	    hozAlign: "left", 
@@ -638,7 +666,7 @@ $(document).ready(function () {
         	            const data = row.getData();
         	            // 같은 필드가 비어있으면 "O"로 설정
         	            if (!data[field] || data[field] === "") {
-        	                row.update({ [field]: "O" });
+        	                row.update({ [field]: "1" });
         	                
         	                // 개별 저장 요청
         	                $.ajax({
@@ -648,7 +676,7 @@ $(document).ready(function () {
         	                    data: JSON.stringify({
         	                        id: data.id,
         	                        column: field,
-        	                        value: "O"
+        	                        value: "1"
         	                    }),
         	                    error: function () {
         	                        console.error("행 ID " + data.id + " 업데이트 실패");

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.geomet.domain.Machine;
 import com.geomet.domain.Temp_data;
+import com.geomet.domain.Temp_memo;
 import com.geomet.domain.Work;
 @Repository
 public class MachineDaoImpl implements MachineDao{
@@ -75,7 +76,15 @@ public class MachineDaoImpl implements MachineDao{
         return sqlSession.selectList("machine.getTempDataList", temp);
     }
     
-    
+    @Override
+    public List<Temp_memo> getTempMemoList(Temp_memo memo) {
+        return sqlSession.selectList("machine.getTempMemoList", memo);
+    }
+
+    @Override
+    public int insertTempMemo(Temp_memo memo) {
+        return sqlSession.insert("machine.insertTempMemo", memo);
+    }
     
     //설비카드
     @Override
@@ -233,4 +242,11 @@ public class MachineDaoImpl implements MachineDao{
     public List<Work> workReport2_nonTime(Machine machine) {
         return sqlSessionMssqlJinhap.selectList("machine.workReport2_nontime_mmsql", machine);
     }
+
+    
+    
+    
+    
+
+    
 }

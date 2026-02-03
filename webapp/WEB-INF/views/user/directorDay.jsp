@@ -38,14 +38,14 @@
 		    margin-right: 10px;
 		    margin-top: 40px;
 		}
-		.box1 {
-		    display: flex;
-		    justify-content: right;
-		    align-items: center;
-		    width: 800px;
-		    margin-right: 20px;
-		    margin-top:4px;
-		}
+.box1 {
+    display: flex;
+    justify-content: flex-start;  /* right에서 flex-start로 변경 */
+    align-items: center;
+    margin-right: auto;  /* 왼쪽으로 밀기 */
+    margin-left: 20px;   /* 왼쪽 여백 */
+    margin-top: 4px;
+}
         .dayselect {
             width: 20%;
             text-align: center;
@@ -61,12 +61,12 @@
             border-radius: 5px;
             font-size: 15px;
         }
-        .daylabel {
-            margin-right: 10px;
-            margin-bottom: 13px;
-            font-size: 18px;
-            margin-left: 20px;
-        }
+.daylabel {
+    margin-right: 10px;
+    margin-bottom: 17px;
+    font-size: 20px;
+    margin-left: 20px;
+}
         button-container.button{
         height: 16px;
         }
@@ -203,13 +203,15 @@
 		  border-color: #007bff;
 		}
 .legend {
-  font-family: 'Arial', sans-serif;
-  background: #f9f9f9;
-  padding: 12px 20px;
-  border-radius: 8px;
-  max-width:1100px;
-  margin: 20px auto;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: absolute;
+    left: 0px;
+    top: 16px;
+    background: #f9f9f9;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin: 10px 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .legend-items {
@@ -259,54 +261,77 @@
 .tabulator-cell {
     font-size: 16px;
 }
+
+
+.legend {
+    background: #f9f9f9;
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin: 10px 20px;
+    border: 1px solid #ddd;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.legend-items {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.legend-item {
+    font-size: 15px;
+    color: #333;
+}
+
+.legend-item strong {
+    color: #000;
+    margin-right: 5px;
+    font-weight: 700;
+    font-size: 16px;
+}
     </style>
 </head>
 <body>
 
-    <main class="main">
-        <div class="tab">
-        
-        
-        
-        
-        
-
-            <div class="button-container">
-            
-             <div class="box1">
-			<p class="tabP" style="font-size: 20px; margin-left: 40px; color: white; font-weight: 800;"></p>
-			
-			<input type="hidden" id="id" name="id">
-
-			
-			
-			<label class="daylabel">검색 월 :</label>
-			<input type="text" class="monthSet month-search" id="y_m"
-			       placeholder="시작 연도 선택"
-			       style="width: 30%; font-size: 16px; height: 30px; text-align: center; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 5px;">
-			
+ <main class="main">
 
 
+<div class="tab">
     
-			</div>
-                <button class="select-button">
-                    <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
-                </button>
-                  <button class="insert-button">
-                    <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">행 추가
-                </button>
-                <button class="delete-button">
-				    <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image">행 삭제
-				</button>
-
-				
-   				<button class="excel-button" id="btnExcel">
-                    <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
-                </button>
-          </div>
+    <!-- 범례 추가 -->
+    <div class="legend">
+        <div class="legend-items">
+            <div class="legend-item"><strong>O</strong> : 양호</div>
+            <div class="legend-item"><strong>△</strong> : 미흡</div>
+            <div class="legend-item"><strong>X</strong> : 불량</div>
+            <div class="legend-item"><strong>－</strong> : 해당없음</div>
         </div>
+    </div>
 
-
+    <div class="button-container">
+        
+        <div class="box1">
+            <label class="daylabel">검색 월 :</label>
+            <input type="text" class="monthSet month-search" id="y_m"
+                   placeholder="시작 연도 선택"
+                   style="width: 170px; font-size: 16px; height: 33px; text-align: center; margin-bottom: 13px; border: 1px solid #ccc; border-radius: 5px;">
+        </div>
+        
+        <button class="select-button">
+            <img src="/geomet/css/tabBar/search-icon.png" alt="select" class="button-image">조회
+        </button>
+        <button class="insert-button">
+            <img src="/geomet/css/tabBar/add-outline.png" alt="insert" class="button-image">행 추가
+        </button>
+        <button class="delete-button">
+            <img src="/geomet/css/tabBar/xDel3.png" alt="delete" class="button-image">행 삭제
+        </button>
+        <button class="excel-button" id="btnExcel">
+            <img src="/geomet/css/tabBar/excel-icon.png" alt="excel" class="button-image" >Download
+        </button>
+    </div>
+</div>
 
 
 
@@ -319,7 +344,7 @@
 <div id="modalContainer" class="modal">
     <div class="modal-content">
         <span class="close">&times;</span>
-        <h2>F/Proof</h2>
+        <h2>추가</h2>
        <form id="corrForm" autocomplete="off" enctype="multipart/form-data">
             
  			<input type="hidden" name="id" id="id">

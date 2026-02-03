@@ -1,11 +1,19 @@
 package com.geomet.domain;
 
+import java.util.Date;
+
 public class Machine {
 
     // workReport1 컬럼
 
 	
-	
+	    private int memoId;              // 메모 ID
+	    private String mchCode;          // 설비 코드
+	    private Date memoTime;           // 메모 시간
+	    private String memoContent;      // 메모 내용
+	    private String writer;           // 작성자
+	    private Date regDate;            // 등록일시
+	    private Date updDate;            // 수정일시
 		private Integer idx;                // 순번
 		private String i_equipment_name;    // 설비명
 		private String i_category_mid;      // 중분류
@@ -80,6 +88,62 @@ public class Machine {
 	
 	
 	
+	public int getMemoId() {
+			return memoId;
+		}
+
+		public void setMemoId(int memoId) {
+			this.memoId = memoId;
+		}
+
+		public String getMchCode() {
+			return mchCode;
+		}
+
+		public void setMchCode(String mchCode) {
+			this.mchCode = mchCode;
+		}
+
+		public Date getMemoTime() {
+			return memoTime;
+		}
+
+		public void setMemoTime(Date memoTime) {
+			this.memoTime = memoTime;
+		}
+
+		public String getMemoContent() {
+			return memoContent;
+		}
+
+		public void setMemoContent(String memoContent) {
+			this.memoContent = memoContent;
+		}
+
+		public String getWriter() {
+			return writer;
+		}
+
+		public void setWriter(String writer) {
+			this.writer = writer;
+		}
+
+		public Date getRegDate() {
+			return regDate;
+		}
+
+		public void setRegDate(Date regDate) {
+			this.regDate = regDate;
+		}
+
+		public Date getUpdDate() {
+			return updDate;
+		}
+
+		public void setUpdDate(Date updDate) {
+			this.updDate = updDate;
+		}
+
 	public String getWhere_bt() {
 			return where_bt;
 		}
