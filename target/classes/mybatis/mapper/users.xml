@@ -51,39 +51,33 @@
 
  
     
-    <!-- 작업자등록 -->
-    <insert id="userInsertInsert" parameterType="users">
- INSERT INTO tb_user
-    (user_code,
-     user_id,
-     user_pw,
-     user_name,
-     user_level,
-     user_busu,
-     user_jick,
-     user_phone,
-     st_day)
-  VALUES
-    (#{user_code, jdbcType=INTEGER},
-     #{user_id,   jdbcType=VARCHAR},
-     #{user_pw,   jdbcType=VARCHAR},
-     #{user_name, jdbcType=VARCHAR},
-     #{user_level,jdbcType=INTEGER},
-     #{user_busu, jdbcType=VARCHAR},
-     #{user_jick, jdbcType=VARCHAR},
-     #{user_phone,jdbcType=VARCHAR},
-     #{st_day,    jdbcType=VARCHAR})
-  ON DUPLICATE KEY UPDATE
-    user_id    = VALUES(user_id),
-    user_pw    = VALUES(user_pw),
-    user_name  = VALUES(user_name),
-    user_level = VALUES(user_level),
-    user_busu  = VALUES(user_busu),
-    user_jick  = VALUES(user_jick),
-    user_phone = VALUES(user_phone),
-    st_day     = VALUES(st_day)
-	</insert>
-	
+<insert id="userInsertInsert">
+  <choose>
+    <!-- user_code가 있으면 UPDATE -->
+    <when test="user_code != null and user_code > 0">
+      UPDATE tb_user
+      SET
+        user_id    = #{user_id},
+        user_pw    = #{user_pw},
+        user_name  = #{user_name},
+        user_level = #{user_level},
+        user_busu  = #{user_busu},
+        user_jick  = #{user_jick},
+        user_phone = #{user_phone},
+        user_yn    = #{user_yn},
+        st_day     = #{st_day}
+      WHERE user_code = #{user_code}
+    </when>
+    
+    <!-- user_code가 없으면 INSERT -->
+    <otherwise>
+      INSERT INTO tb_user 
+      (user_id, user_pw, user_name, user_level, user_busu, user_jick, user_phone, user_yn, st_day)
+      VALUES 
+      (#{user_id}, #{user_pw}, #{user_name}, #{user_level}, #{user_busu}, #{user_jick}, #{user_phone}, #{user_yn}, #{st_day})
+    </otherwise>
+  </choose>
+</insert>
 	<delete id="deleteUser" parameterType="users">
 	  DELETE FROM tb_user
 	  WHERE user_code = #{user_code}

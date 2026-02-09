@@ -396,67 +396,67 @@ $(function() {
     $('#modalContainer').removeClass('show').hide();
   });
 
-  // 저장 버튼 클릭 시
   $('#saveCorrStatus').click(function(event) {
-    event.preventDefault();
-    var formData = new FormData($('#corrForm')[0]);
-    if (selectedRowData && selectedRowData.user_code) {
-      formData.append('user_code', selectedRowData.user_code);  // 수정 시 user_code 추가
-    }
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-      }
-        
+	  event.preventDefault();
+	  var formData = new FormData($('#corrForm')[0]);
+	  
+	  // user_yn 추가
+	  formData.append('user_yn', 'Y');
+	  
+	  if (selectedRowData && selectedRowData.user_code) {
+	    formData.append('user_code', selectedRowData.user_code);
+	  }
 
-    $.ajax({
-      url: "/geomet/user/userInsert/insert",
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function() {
-        alert("저장되었습니다!");
-        $('#modalContainer').hide();
-    
-        dataTable.setData("/geomet/user/userInsert/select", {});
-        selectedRowData = null;
-      },
-      error: function() {
-        alert('저장 중 오류가 발생했습니다.');
-      }
-    });
-  });
+	  $.ajax({
+	    url: "/geomet/user/userInsert/insert",
+	    type: "POST",
+	    data: formData,
+	    processData: false,
+	    contentType: false,
+	    success: function() {
+	      alert("저장되었습니다!");
+	      $('#modalContainer').hide();
+	      dataTable.setData("/geomet/user/userInsert/select", {});
+	      selectedRowData = null;
+	    },
+	    error: function() {
+	      alert('저장 중 오류가 발생했습니다.');
+	    }
+	  });
+	});
 
-  //수정 버튼 클릭 시
   $('#updateCorrStatus').click(function(event) {
-    event.preventDefault();
-    var formData = new FormData($('#corrForm')[0]);
-    if (selectedRowData && selectedRowData.user_code) {
-      formData.append('user_code', selectedRowData.user_code);  // 수정 시 user_code 추가
-    }
-    for (var pair of formData.entries()) {
-        console.log(pair[0] + ': ' + pair[1]);
-      }
-        
+	  event.preventDefault();
+	  var formData = new FormData($('#corrForm')[0]);
+	  
+	  // user_yn 추가
+	  formData.append('user_yn', 'Y');
+	  
+	  if (selectedRowData && selectedRowData.user_code) {
+	    formData.append('user_code', selectedRowData.user_code);
+	  }
+	  
+	  for (var pair of formData.entries()) {
+	    console.log(pair[0] + ': ' + pair[1]);
+	  }
 
-    $.ajax({
-      url: "/geomet/user/userInsert/update",
-      type: "POST",
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function() {
-        alert("수정되었습니다!");
-        $('#modalContainer').hide();
-    
-        dataTable.setData("/geomet/user/userInsert/select", {});
-        selectedRowData = null;
-      },
-      error: function() {
-        alert('저장 중 오류가 발생했습니다.');
-      }
-    });
-  });
+	  $.ajax({
+	    url: "/geomet/user/userInsert/update",
+	    type: "POST",
+	    data: formData,
+	    processData: false,
+	    contentType: false,
+	    success: function() {
+	      alert("수정되었습니다!");
+	      $('#modalContainer').hide();
+	      dataTable.setData("/geomet/user/userInsert/select", {});
+	      selectedRowData = null;
+	    },
+	    error: function() {
+	      alert('저장 중 오류가 발생했습니다.');
+	    }
+	  });
+	});
 });
 </script>
 

@@ -125,7 +125,7 @@ public class Users {
 	private String date;
 	private String s_date;
 	private String s_time;
-
+	private String user_group;
 	//tb_user테이블(작업자 등록)
 	private String user_code;
 	private String user_id;
@@ -208,6 +208,12 @@ public class Users {
     
     
 
+	public String getUser_group() {
+		return user_group;
+	}
+	public void setUser_group(String user_group) {
+		this.user_group = user_group;
+	}
 	public int getCnt() {
 		return cnt;
 	}
